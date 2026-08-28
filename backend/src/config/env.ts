@@ -7,7 +7,7 @@ export const config = {
   nodeEnv: process.env.NODE_ENV || 'development',
   frontendUrl: process.env.FRONTEND_URL || 'http://localhost:5173',
   jwtSecret: process.env.JWT_SECRET || 'super_secret_jwt_key_change_in_production_32chars',
-  jwtExpiresIn: process.env.JWT_EXPIRES_IN || '7d',
+  jwtExpiresIn: process.env.JWT_EXPIRES_IN || '15m',
   saltRounds: parseInt(process.env.BCRYPT_SALT_ROUNDS || '10', 10),
   email: {
     host: process.env.SMTP_HOST || 'smtp.gmail.com',

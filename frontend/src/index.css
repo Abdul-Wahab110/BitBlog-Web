@@ -586,3 +586,14 @@ article:hover {
 .footer-subscribe-btn:hover:not(:disabled) .btn-arrow-icon {
   transform: translateX(4px);
 }
+
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}

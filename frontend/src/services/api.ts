@@ -17,11 +17,25 @@ export class ApiService {
     if (contentType && contentType.includes('application/json')) {
       const data = await response.json();
       if (!response.ok) {
+        if (response.status === 401) {
+          window.dispatchEvent(
+            new CustomEvent('bitblog:session-expired', {
+              detail: { message: data.message || 'Your session has expired. Please sign in again.' },
+            })
+          );
+        }
         throw new Error(data.message || `API error: ${response.status}`);
       }
       return data;
     }
     if (!response.ok) {
+      if (response.status === 401) {
+        window.dispatchEvent(
+          new CustomEvent('bitblog:session-expired', {
+            detail: { message: 'Your session has expired. Please sign in again.' },
+          })
+        );
+      }
       if (response.status === 404 || response.status === 502 || response.status === 504) {
         throw new Error(`API server unreachable (${response.status}). Please ensure the backend is running.`);
       }
