@@ -62,7 +62,7 @@ export const BrandLogo: React.FC<BrandLogoProps> = ({
             boxShadow: '0 2px 8px var(--color-secondary-glow, rgba(99,102,241,0.3))',
           }}
         >
-          {siteName ? siteName.charAt(0).toUpperCase() : 'M'}
+          {siteName ? siteName.charAt(0).toUpperCase() : 'B'}
         </span>
       )}
 

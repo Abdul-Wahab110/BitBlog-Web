@@ -3,7 +3,7 @@ import { UserModel } from './models/userModel';
 import { hashPassword } from './utils/password';
 
 async function runStrictAuthTests() {
-  console.log('=== MODERNBLOG CMS — STRICT AUTH & PORTAL VALIDATION TEST SUITE ===\n');
+  console.log('=== BITBLOG CMS — STRICT AUTH & PORTAL VALIDATION TEST SUITE ===\n');
 
   let passed = 0;
   let failed = 0;
@@ -27,7 +27,7 @@ async function runStrictAuthTests() {
       roleId: 1, // Admin role
       name: 'Strict Admin Test',
       username: 'strictadmin_' + Date.now(),
-      email: `strictadmin_${Date.now()}@modernblog.com`,
+      email: `strictadmin_${Date.now()}@bitblog.com`,
       passwordHash: oldHash,
     });
 

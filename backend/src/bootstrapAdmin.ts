@@ -4,7 +4,7 @@ import { UserModel } from './models/userModel';
 
 async function bootstrapAdmin() {
   console.log('================================================================');
-  console.log('MODERNBLOG CMS — SECURE INITIAL ADMINISTRATOR BOOTSTRAP');
+  console.log('BITBLOG CMS — SECURE INITIAL ADMINISTRATOR BOOTSTRAP');
   console.log('================================================================\n');
 
   try {
@@ -22,7 +22,7 @@ async function bootstrapAdmin() {
     }
 
     // 2. Check if an Admin user already exists
-    const existingAdmin = await UserModel.findByEmail('admin@modernblog.com');
+    const existingAdmin = await UserModel.findByEmail('admin@bitblog.com');
     if (existingAdmin && (existingAdmin.role_name === 'Admin' || existingAdmin.role_id === roleId)) {
       console.log('STATUS: Admin account already exists in database.');
       console.log(`- Administrator: ${existingAdmin.name} (@${existingAdmin.username})`);
@@ -43,7 +43,7 @@ async function bootstrapAdmin() {
 
     const adminName = getArg('--name', 'System Administrator');
     const adminUsername = getArg('--username', 'admin');
-    const adminEmail = getArg('--email', 'admin@modernblog.com');
+    const adminEmail = getArg('--email', 'admin@bitblog.com');
     const adminPassword = getArg('--password', 'admin123');
 
     // 4. Check if username or email is already taken by non-admin

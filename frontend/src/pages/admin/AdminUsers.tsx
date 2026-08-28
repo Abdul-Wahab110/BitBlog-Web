@@ -74,7 +74,7 @@ export const AdminUsers: React.FC = () => {
     if (!u) return false;
     return (
       u.username === 'admin' ||
-      u.email === 'admin@modernblog.com' ||
+      u.email === 'admin@bitblog.com' ||
       u.user_id === 1 ||
       (u.name && u.name.toLowerCase() === 'system administrator')
     );

@@ -1,5 +1,5 @@
 -- ============================================================================
--- ModernBlog CMS - Oracle Database Schema
+-- BitBlog CMS - Oracle Database Schema
 -- Script 03: Performance & Search Indexes
 -- ============================================================================
 

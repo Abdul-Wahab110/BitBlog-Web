@@ -16,7 +16,7 @@ const startServer = async () => {
 
     // 3. Start HTTP server listener
     const server = app.listen(PORT, () => {
-      Logger.info(`[ModernBlog REST API] Server listening on port ${PORT} in [${config.nodeEnv}] mode.`);
+      Logger.info(`[BitBlog REST API] Server listening on port ${PORT} in [${config.nodeEnv}] mode.`);
       Logger.info(`[Health Check Endpoint] http://localhost:${PORT}/api/health`);
     });
 

@@ -4,7 +4,7 @@ import { hashPassword } from './utils/password';
 import { JwtPayload } from './types';
 
 async function runReaderNoArticleTests() {
-  console.log('=== MODERNBLOG CMS — READER NO ARTICLE AUTHORING TEST SUITE ===\n');
+  console.log('=== BITBLOG CMS — READER NO ARTICLE AUTHORING TEST SUITE ===\n');
 
   let passed = 0;
   let failed = 0;
@@ -57,7 +57,7 @@ async function runReaderNoArticleTests() {
       roleId: 3, // Role: Author
       name: 'Editorial Staff Author',
       username: 'author_' + Date.now(),
-      email: `author_${Date.now()}@modernblog.com`,
+      email: `author_${Date.now()}@bitblog.com`,
       passwordHash: await hashPassword('AuthorPassword123!'),
     });
 

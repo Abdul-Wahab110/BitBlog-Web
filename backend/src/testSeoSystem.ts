@@ -3,7 +3,7 @@ import { SitemapService } from './services/sitemapService';
 import { RobotsService } from './services/robotsService';
 
 async function runSeoTests() {
-  console.log('=== MODERNBLOG CMS — SEO, AEO & GEO AUTOMATED TEST SUITE ===\n');
+  console.log('=== BITBLOG CMS — SEO, AEO & GEO AUTOMATED TEST SUITE ===\n');
 
   let passed = 0;
   let failed = 0;

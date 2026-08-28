@@ -17,7 +17,7 @@ export const AdminComments: React.FC = () => {
     try {
       const res = await fetch(`/api/admin/comments${statusFilter !== 'all' ? `?status=${statusFilter}` : ''}`, {
         headers: {
-          'Authorization': `Bearer ${localStorage.getItem('modernblog_token')}`,
+          'Authorization': `Bearer ${localStorage.getItem('bitblog_token')}`,
         },
       }).then(r => r.json());
 
@@ -41,7 +41,7 @@ export const AdminComments: React.FC = () => {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${localStorage.getItem('modernblog_token')}`,
+          'Authorization': `Bearer ${localStorage.getItem('bitblog_token')}`,
         },
         body: JSON.stringify({ status: newStatus }),
       });

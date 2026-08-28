@@ -250,19 +250,19 @@ export const AdminSettings: React.FC = () => {
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '1rem' }}>
             <div>
               <label htmlFor="social-x" style={{ display: 'block', fontWeight: 600, marginBottom: '0.25rem', fontSize: '0.83rem' }}>X / Twitter URL</label>
-              <input id="social-x" type="url" value={settings.social_twitter || ''} onChange={e => handleChange('social_twitter', e.target.value)} placeholder="https://x.com/modernblog" style={{ width: '100%', padding: '0.55rem 0.75rem', fontSize: '0.85rem' }} />
+              <input id="social-x" type="url" value={settings.social_twitter || ''} onChange={e => handleChange('social_twitter', e.target.value)} placeholder="https://x.com/bitblog" style={{ width: '100%', padding: '0.55rem 0.75rem', fontSize: '0.85rem' }} />
             </div>
             <div>
               <label htmlFor="social-fb" style={{ display: 'block', fontWeight: 600, marginBottom: '0.25rem', fontSize: '0.83rem' }}>Facebook URL</label>
-              <input id="social-fb" type="url" value={settings.social_facebook || ''} onChange={e => handleChange('social_facebook', e.target.value)} placeholder="https://facebook.com/modernblog" style={{ width: '100%', padding: '0.55rem 0.75rem', fontSize: '0.85rem' }} />
+              <input id="social-fb" type="url" value={settings.social_facebook || ''} onChange={e => handleChange('social_facebook', e.target.value)} placeholder="https://facebook.com/bitblog" style={{ width: '100%', padding: '0.55rem 0.75rem', fontSize: '0.85rem' }} />
             </div>
             <div>
               <label htmlFor="social-li" style={{ display: 'block', fontWeight: 600, marginBottom: '0.25rem', fontSize: '0.83rem' }}>LinkedIn URL</label>
-              <input id="social-li" type="url" value={settings.social_linkedin || ''} onChange={e => handleChange('social_linkedin', e.target.value)} placeholder="https://linkedin.com/company/modernblog" style={{ width: '100%', padding: '0.55rem 0.75rem', fontSize: '0.85rem' }} />
+              <input id="social-li" type="url" value={settings.social_linkedin || ''} onChange={e => handleChange('social_linkedin', e.target.value)} placeholder="https://linkedin.com/company/bitblog" style={{ width: '100%', padding: '0.55rem 0.75rem', fontSize: '0.85rem' }} />
             </div>
             <div>
               <label htmlFor="social-yt" style={{ display: 'block', fontWeight: 600, marginBottom: '0.25rem', fontSize: '0.83rem' }}>YouTube URL</label>
-              <input id="social-yt" type="url" value={settings.social_youtube || ''} onChange={e => handleChange('social_youtube', e.target.value)} placeholder="https://youtube.com/@modernblog" style={{ width: '100%', padding: '0.55rem 0.75rem', fontSize: '0.85rem' }} />
+              <input id="social-yt" type="url" value={settings.social_youtube || ''} onChange={e => handleChange('social_youtube', e.target.value)} placeholder="https://youtube.com/@bitblog" style={{ width: '100%', padding: '0.55rem 0.75rem', fontSize: '0.85rem' }} />
             </div>
           </div>
         </div>

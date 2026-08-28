@@ -1,8 +1,8 @@
-# ModernBlog CMS Architecture Specification
+# BitBlog CMS Architecture Specification
 
 ## Architecture Overview
 
-ModernBlog CMS uses a clean multi-tier client-server architecture:
+BitBlog CMS uses a clean multi-tier client-server architecture:
 
 ```
 +-------------------------------------------------------------------+

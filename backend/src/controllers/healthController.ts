@@ -13,6 +13,6 @@ export class HealthController {
       timestamp: new Date().toISOString(),
     };
 
-    ResponseUtil.success(res, statusData, 'ModernBlog CMS REST API is running');
+    ResponseUtil.success(res, statusData, 'BitBlog CMS REST API is running');
   }
 }

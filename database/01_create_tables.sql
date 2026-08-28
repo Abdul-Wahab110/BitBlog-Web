@@ -1,5 +1,5 @@
 -- ============================================================================
--- ModernBlog CMS - Oracle Database Schema
+-- BitBlog CMS - Oracle Database Schema
 -- Script 01: Table Definitions
 -- ============================================================================
 -- Compatible with Oracle Database 12c, 18c, 19c, 21c, 23c

@@ -1,5 +1,5 @@
 -- ============================================================================
--- ModernBlog CMS - Migration 06: Article Review Workflow & Multi-Role Submission
+-- BitBlog CMS - Migration 06: Article Review Workflow & Multi-Role Submission
 -- ============================================================================
 
 -- 1. Add review workflow columns to posts table if not exists

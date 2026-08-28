@@ -1,5 +1,5 @@
 -- ============================================================================
--- ModernBlog CMS - Oracle Database Schema Upgrade
+-- BitBlog CMS - Oracle Database Schema Upgrade
 -- Script 05: Professional SEO, AEO & GEO Metadata Upgrade
 -- ============================================================================
 

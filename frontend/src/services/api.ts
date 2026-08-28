@@ -5,7 +5,7 @@ export class ApiService {
     const headers: HeadersInit = {
       'Content-Type': 'application/json',
     };
-    const token = localStorage.getItem('modernblog_token');
+    const token = localStorage.getItem('bitblog_token') || localStorage.getItem('modernblog_token');
     if (token) {
       headers['Authorization'] = `Bearer ${token}`;
     }
@@ -594,7 +594,7 @@ export class ApiService {
   public static async uploadAvatar(file: File) {
     const formData = new FormData();
     formData.append('file', file);
-    const token = localStorage.getItem('modernblog_token');
+    const token = localStorage.getItem('bitblog_token');
     const res = await fetch(`${API_BASE_URL}/users/avatar`, {
       method: 'POST',
       headers: token ? { Authorization: `Bearer ${token}` } : {},

@@ -1,5 +1,5 @@
 -- ===============================================================
--- MODERNBLOG CMS — CATEGORY IMAGE SCHEMA MIGRATION
+-- BITBLOG CMS — CATEGORY IMAGE SCHEMA MIGRATION
 -- Safe upgrade script for categories table image column
 -- ===============================================================
 

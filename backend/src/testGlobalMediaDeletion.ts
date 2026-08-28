@@ -7,7 +7,7 @@ import { CategoryModel } from './models/categoryModel';
 import { Database } from './config/database';
 
 async function runGlobalMediaDeletionTests() {
-  console.log('=== MODERNBLOG CMS — GLOBAL MEDIA DELETION TEST SUITE ===\n');
+  console.log('=== BITBLOG CMS — GLOBAL MEDIA DELETION TEST SUITE ===\n');
 
   let passed = 0;
   let failed = 0;

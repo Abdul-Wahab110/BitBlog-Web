@@ -9,7 +9,7 @@ async function runPostTests() {
 
   const testUser: JwtPayload = {
     userId: 1,
-    email: 'admin@modernblog.com',
+    email: 'admin@bitblog.com',
     username: 'admin',
     role: 'Admin',
     name: 'Chief Editor',

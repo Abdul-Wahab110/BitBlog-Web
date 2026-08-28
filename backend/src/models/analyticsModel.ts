@@ -3,7 +3,7 @@ import { Database } from '../config/database';
 
 export class AnalyticsModel {
   public static hashIp(ip: string): string {
-    const salt = process.env.JWT_SECRET || 'modernblog-secret-salt';
+    const salt = process.env.JWT_SECRET || 'bitblog-secret-salt';
     return crypto.createHash('sha256').update(ip + salt).digest('hex');
   }
 

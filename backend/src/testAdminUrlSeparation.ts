@@ -3,7 +3,7 @@ import { UserModel } from './models/userModel';
 import { hashPassword } from './utils/password';
 
 async function runAdminSeparationTests() {
-  console.log('=== MODERNBLOG CMS — ADMIN SEPARATE URL & GATEWAY TEST SUITE ===\n');
+  console.log('=== BITBLOG CMS — ADMIN SEPARATE URL & GATEWAY TEST SUITE ===\n');
 
   let passed = 0;
   let failed = 0;
@@ -61,7 +61,7 @@ async function runAdminSeparationTests() {
       roleId: 1, // Role: Admin
       name: 'Admin Gateway Staff',
       username: 'staffadmin_' + Date.now(),
-      email: `staffadmin_${Date.now()}@modernblog.com`,
+      email: `staffadmin_${Date.now()}@bitblog.com`,
       passwordHash: await hashPassword('StaffSecurityPass123!'),
     });
 

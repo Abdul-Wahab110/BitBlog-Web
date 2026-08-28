@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <defs>
+    <linearGradient id="bitblog-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#4F46E5" />
+      <stop offset="100%" stop-color="#06B6D4" />
+    </linearGradient>
+  </defs>
+  <rect width="32" height="32" rx="8" fill="url(#bitblog-grad)" />
+  <path d="M10 8h6a4.5 4.5 0 0 1 3.5 7.3A4.8 4.8 0 0 1 21 19.5C21 22 19 24 16 24H10V8zm3.5 3v4h2.5a2 2 0 0 0 0-4h-2.5zm0 6.5v4.5h2.8a2.3 2.3 0 0 0 0-4.5h-2.8z" fill="#FFFFFF" />
+</svg>

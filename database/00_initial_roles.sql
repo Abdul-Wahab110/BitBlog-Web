@@ -1,5 +1,5 @@
 -- ============================================================================
--- ModernBlog CMS - Oracle Database Schema
+-- BitBlog CMS - Oracle Database Schema
 -- Script 00: Optional System Roles Initializer
 -- ============================================================================
 -- NOTE: This file ONLY inserts the 4 fundamental system security roles required

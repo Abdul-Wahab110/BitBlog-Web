@@ -4,7 +4,7 @@ A modern, high-performance, modular content management system (CMS) and blogging
 
 ## 🚀 Overview
 
-ModernBlog CMS is built from the ground up for speed, security, elegance, and scale. It features a complete public-facing blog layout inspired by modern news and digital publication platforms, a personalized user dashboard, and a custom WordPress-inspired Admin CMS for full content management.
+BitBlog CMS is built from the ground up for speed, security, elegance, and scale. It features a complete public-facing blog layout inspired by modern news and digital publication platforms, a personalized user dashboard, and a custom WordPress-inspired Admin CMS for full content management.
 
 ### Key Features
 - **Public Publication Web Application**:

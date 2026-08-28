@@ -23,7 +23,7 @@ function logQA(category: string, pass: boolean, details: string) {
 
 async function runFinalQA() {
   console.log('================================================================');
-  console.log('MODERNBLOG CMS — FINAL VISUAL & FUNCTIONAL QA SUITE');
+  console.log('BITBLOG CMS — FINAL VISUAL & FUNCTIONAL QA SUITE');
   console.log('================================================================\n');
 
   await Database.initialize();
@@ -61,7 +61,7 @@ async function runFinalQA() {
     let typeMismatchCaught = false;
     try {
       await AuthService.login({
-        email: 'admin@modernblog.com',
+        email: 'admin@bitblog.com',
         password: 'admin123',
         accountType: 'User',
       });
@@ -81,7 +81,7 @@ async function runFinalQA() {
   let adminJwt: JwtPayload;
   try {
     const adminLogin = await AuthService.login({
-      email: 'admin@modernblog.com',
+      email: 'admin@bitblog.com',
       password: 'admin123',
       accountType: 'Admin',
     });
@@ -105,7 +105,7 @@ async function runFinalQA() {
   let userJwt: JwtPayload;
   try {
     const userLogin = await AuthService.login({
-      email: 'reader@modernblog.com',
+      email: 'reader@bitblog.com',
       password: 'user123',
       accountType: 'User',
     });
@@ -148,7 +148,7 @@ async function runFinalQA() {
       roleId: 1,
       name: 'Operations Admin',
       username: `opsadmin_${time}`,
-      email: `opsadmin.${time}@modernblog.com`,
+      email: `opsadmin.${time}@bitblog.com`,
       passwordHash: await bcrypt.hash('SecurePass123!', 10),
     });
     logQA(
@@ -192,12 +192,12 @@ async function runFinalQA() {
       aeo: {
         directAnswer: 'A publishing pipeline orchestrates editorial drafts from reader submission to reviewed broadcast.',
         keyTakeaways: '• Fast image ingestion\n• Immutable editorial logs',
-        faqList: [{ question: 'What is ModernBlog CMS?', answer: 'An enterprise-grade publishing system built with Oracle Database & React.' }],
+        faqList: [{ question: 'What is BitBlog CMS?', answer: 'An enterprise-grade publishing system built with Oracle Database & React.' }],
         howToData: [{ stepNumber: 1, title: 'Compose Article', text: 'Write content and upload media.' }],
       },
       geo: {
         sourceCitations: 'IEEE Computer, ACM Transactions',
-        entityContext: 'ModernBlog, Oracle Database, TypeScript, React',
+        entityContext: 'BitBlog, Oracle Database, TypeScript, React',
       },
     });
 

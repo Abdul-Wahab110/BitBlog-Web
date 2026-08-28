@@ -1,4 +1,4 @@
-# ModernBlog CMS Developer Setup Guide
+# BitBlog CMS Developer Setup Guide
 
 ## Local Environment Requirements
 

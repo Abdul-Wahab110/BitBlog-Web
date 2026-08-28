@@ -12,7 +12,7 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [theme, setThemeState] = useState<Theme>(() => {
-    const saved = localStorage.getItem('modernblog_theme');
+    const saved = localStorage.getItem('bitblog_theme') || localStorage.getItem('modernblog_theme');
     if (saved === 'light' || saved === 'dark') return saved;
     if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
       return 'dark';
@@ -22,14 +22,14 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', theme);
-    localStorage.setItem('modernblog_theme', theme);
+    localStorage.setItem('bitblog_theme', theme);
   }, [theme]);
 
   // Listen to OS system color scheme changes if no explicit localStorage override is set
   useEffect(() => {
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
     const handleSystemThemeChange = (e: MediaQueryListEvent) => {
-      const saved = localStorage.getItem('modernblog_theme');
+      const saved = localStorage.getItem('bitblog_theme');
       if (!saved) {
         setThemeState(e.matches ? 'dark' : 'light');
       }

@@ -8,7 +8,7 @@ import { JwtPayload } from './types';
 
 async function runWorkflowAndAccountTypeTests() {
   console.log('================================================================');
-  console.log('MODERNBLOG CMS — ACCOUNT TYPE, USER SUBMISSION & APPROVAL TESTS');
+  console.log('BITBLOG CMS — ACCOUNT TYPE, USER SUBMISSION & APPROVAL TESTS');
   console.log('================================================================\n');
 
   await Database.initialize();

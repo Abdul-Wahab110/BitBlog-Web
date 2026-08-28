@@ -1,5 +1,5 @@
 -- ============================================================================
--- ModernBlog CMS - Oracle Database Schema Migration
+-- BitBlog CMS - Oracle Database Schema Migration
 -- Script 05: AEO & GEO Metadata Columns Extension for seo_metadata
 -- ============================================================================
 

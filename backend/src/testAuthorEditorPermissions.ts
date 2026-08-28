@@ -25,7 +25,7 @@ async function testAuthorEditorPermissions() {
       roleId: 3, // Role: Author
       name: 'Verified Staff Author',
       username: 'author_staff_' + Date.now(),
-      email: `author_staff_${Date.now()}@modernblog.com`,
+      email: `author_staff_${Date.now()}@bitblog.com`,
       passwordHash: await hashPassword('AuthorPass123!'),
     });
 
@@ -50,7 +50,7 @@ async function testAuthorEditorPermissions() {
       roleId: 2, // Role: Editor
       name: 'Verified Staff Editor',
       username: 'editor_staff_' + Date.now(),
-      email: `editor_staff_${Date.now()}@modernblog.com`,
+      email: `editor_staff_${Date.now()}@bitblog.com`,
       passwordHash: await hashPassword('EditorPass123!'),
     });
 

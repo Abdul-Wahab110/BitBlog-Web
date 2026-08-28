@@ -41,10 +41,10 @@ async function runProfessionalModulesTests() {
 
   // Test 4: Newsletter Subscription & Unsubscribe
   console.log('\n[Test 4] Testing Newsletter System...');
-  const subRes = await NewsletterModel.subscribe('subscriber.test@modernblog.com');
+  const subRes = await NewsletterModel.subscribe('subscriber.test@bitblog.com');
   console.log(`- Subscription Status: '${subRes.status}', Email='${subRes.subscriber.email}'`);
 
-  const unsubRes = await NewsletterModel.unsubscribe('subscriber.test@modernblog.com');
+  const unsubRes = await NewsletterModel.unsubscribe('subscriber.test@bitblog.com');
   console.log(`- Unsubscribe Handled: ${unsubRes}`);
 
   // Test 5: Contact System Submission & Inbox Processing

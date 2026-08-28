@@ -17,7 +17,7 @@ async function testAllAccounts() {
     },
     {
       role: 'Staff Editor',
-      email: 'editor@modernblog.com',
+      email: 'editor@bitblog.com',
       username: 'editor',
       password: 'editor123',
       accountType: 'User' as const, // can login via public portal and access /admin
@@ -25,7 +25,7 @@ async function testAllAccounts() {
     },
     {
       role: 'Staff Author',
-      email: 'author@modernblog.com',
+      email: 'author@bitblog.com',
       username: 'author',
       password: 'author123',
       accountType: 'User' as const,
@@ -33,7 +33,7 @@ async function testAllAccounts() {
     },
     {
       role: 'Standard Reader',
-      email: 'reader@modernblog.com',
+      email: 'reader@bitblog.com',
       username: 'reader',
       password: 'user123',
       accountType: 'User' as const,

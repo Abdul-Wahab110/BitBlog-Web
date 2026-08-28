@@ -3,7 +3,7 @@ import { PostModel } from './models/postModel';
 import { Database } from './config/database';
 
 async function runCategoryTests() {
-  console.log('=== MODERNBLOG CMS — CATEGORY IMAGE SYSTEM TEST SUITE ===\n');
+  console.log('=== BITBLOG CMS — CATEGORY IMAGE SYSTEM TEST SUITE ===\n');
 
   let passed = 0;
   let failed = 0;

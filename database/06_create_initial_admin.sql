@@ -1,5 +1,5 @@
 -- ============================================================================
--- ModernBlog CMS - Oracle Database Schema
+-- BitBlog CMS - Oracle Database Schema
 -- Script 06: Safe Initial Administrator Bootstrap
 -- ============================================================================
 -- Purpose: Safely initialize the first Administrator account if and ONLY IF
@@ -35,8 +35,8 @@ BEGIN
   IF v_admin_count > 0 THEN
     DBMS_OUTPUT.PUT_LINE('STATUS: Admin account already exists in database. No bootstrap action required.');
   ELSE
-    -- Check if username 'admin' or email 'admin@modernblog.com' is taken
-    SELECT COUNT(*) INTO v_existing_email_count FROM users WHERE LOWER(email) = 'admin@modernblog.com' OR LOWER(username) = 'admin';
+    -- Check if username 'admin' or email 'admin@bitblog.com' is taken
+    SELECT COUNT(*) INTO v_existing_email_count FROM users WHERE LOWER(email) = 'admin@bitblog.com' OR LOWER(username) = 'admin';
 
     IF v_existing_email_count = 0 THEN
       -- Insert default administrator account (Default bcrypt hash for 'admin123')
@@ -54,7 +54,7 @@ BEGIN
         v_admin_role_id,
         'System Administrator',
         'admin',
-        'admin@modernblog.com',
+        'admin@bitblog.com',
         '$2b$10$w8.3f6z489p5z9X2F9Gzge9jN4QZ5Qj8D9E.K.N9tZ3K7V9zP9z8e', -- bcrypt hash
         'ACTIVE',
         CURRENT_TIMESTAMP,
@@ -64,7 +64,7 @@ BEGIN
       DBMS_OUTPUT.PUT_LINE('STATUS: Initial Administrator account successfully created.');
     ELSE
       DBMS_OUTPUT.PUT_LINE('STATUS: Identifier exists. Elevating account to Admin role...');
-      UPDATE users SET role_id = v_admin_role_id WHERE LOWER(email) = 'admin@modernblog.com' OR LOWER(username) = 'admin';
+      UPDATE users SET role_id = v_admin_role_id WHERE LOWER(email) = 'admin@bitblog.com' OR LOWER(username) = 'admin';
       COMMIT;
     END IF;
   END IF;

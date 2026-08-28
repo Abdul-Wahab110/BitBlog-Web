@@ -51,14 +51,14 @@ async function updateAdminCredentials() {
   // Test Verification 3: Verify old email rejected
   try {
     await AuthService.login({
-      email: 'admin@modernblog.com',
+      email: 'admin@bitblog.com',
       password: newPassword,
       accountType: 'Admin',
     });
     console.error(`- Old Email Rejection: FAIL (Old email still logged in!)`);
     process.exit(1);
   } catch (err: any) {
-    console.log(`- Old Email Rejection: PASS ✓ (Old email admin@modernblog.com successfully rejected)`);
+    console.log(`- Old Email Rejection: PASS ✓ (Old email admin@bitblog.com successfully rejected)`);
   }
 
   console.log('\n========================================');

@@ -35,7 +35,7 @@ export const AdminMedia: React.FC = () => {
   const fetchMedia = async () => {
     setLoading(true);
     try {
-      const token = localStorage.getItem('modernblog_token');
+      const token = localStorage.getItem('bitblog_token');
       const res = await fetch(`/api/media${search ? `?search=${encodeURIComponent(search)}` : ''}`, {
         headers: token ? { Authorization: `Bearer ${token}` } : {},
       }).then(r => r.json());
@@ -74,7 +74,7 @@ export const AdminMedia: React.FC = () => {
 
     if (isConfirmed) {
       try {
-        const token = localStorage.getItem('modernblog_token');
+        const token = localStorage.getItem('bitblog_token');
         const res = await fetch(`/api/media/${id}`, {
           method: 'DELETE',
           headers: token ? { Authorization: `Bearer ${token}` } : {},
@@ -116,7 +116,7 @@ export const AdminMedia: React.FC = () => {
     setUpdatingAlt(true);
 
     try {
-      const token = localStorage.getItem('modernblog_token');
+      const token = localStorage.getItem('bitblog_token');
       await fetch(`/api/media/${editingItem.media_id || editingItem.id}/alt`, {
         method: 'PATCH',
         headers: {

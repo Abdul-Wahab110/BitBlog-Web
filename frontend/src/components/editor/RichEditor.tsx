@@ -246,7 +246,7 @@ export const RichEditor: React.FC<RichEditorProps> = ({
       formData.append('file', file);
       formData.append('altText', imageAltInput || file.name.replace(/\.[^/.]+$/, ''));
 
-      const token = localStorage.getItem('modernblog_token');
+      const token = localStorage.getItem('bitblog_token');
       const res = await fetch('/api/media/upload', {
         method: 'POST',
         headers: token ? { Authorization: `Bearer ${token}` } : {},

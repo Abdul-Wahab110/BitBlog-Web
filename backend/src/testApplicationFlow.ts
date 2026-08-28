@@ -42,7 +42,7 @@ async function testApplicationFlow() {
       bio: 'Published writer with 3 years experience covering AI and Cloud computing architectures.',
       sampleUrls: 'https://github.com, https://medium.com/@writer',
       topics: ['Technology', 'AI & Machine Learning'],
-      motivation: 'I want to write in-depth technical deep dives for ModernBlog CMS.',
+      motivation: 'I want to write in-depth technical deep dives for BitBlog CMS.',
     });
 
     assert(app.application_id > 0 && app.status === 'pending', 'Application submitted with status "pending"');

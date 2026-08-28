@@ -98,7 +98,7 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({ chil
 
     // 2. Update Default Document Title
     if (settings.site_name) {
-      if (document.title.includes('ModernBlog') || document.title.includes('BitBlog') || document.title === '') {
+      if (document.title.includes('BitBlog') || document.title.includes('BitBlog') || document.title === '') {
         document.title = settings.default_seo_title || `${settings.site_name} - Publication & Content Platform`;
       }
     }

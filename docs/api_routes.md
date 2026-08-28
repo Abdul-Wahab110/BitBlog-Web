@@ -1,4 +1,4 @@
-# ModernBlog CMS API Route Specifications
+# BitBlog CMS API Route Specifications
 
 Base API Path: `/api/v1`
 

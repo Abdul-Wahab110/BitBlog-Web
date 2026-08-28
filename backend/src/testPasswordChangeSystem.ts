@@ -3,7 +3,7 @@ import { UserModel } from './models/userModel';
 import { comparePassword, hashPassword } from './utils/password';
 
 async function runPasswordTests() {
-  console.log('=== MODERNBLOG CMS — PROFILE PASSWORD CHANGE TEST SUITE ===\n');
+  console.log('=== BITBLOG CMS — PROFILE PASSWORD CHANGE TEST SUITE ===\n');
 
   let passed = 0;
   let failed = 0;

@@ -79,7 +79,7 @@ export const ImageUploadDropzone: React.FC<ImageUploadDropzoneProps> = ({
       formData.append('file', file);
       formData.append('altText', file.name.replace(/\.[^/.]+$/, ''));
 
-      const token = localStorage.getItem('modernblog_token');
+      const token = localStorage.getItem('bitblog_token');
       const res = await fetch('/api/media/upload', {
         method: 'POST',
         headers: token ? { Authorization: `Bearer ${token}` } : {},

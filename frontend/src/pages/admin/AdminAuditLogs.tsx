@@ -99,7 +99,7 @@ export const AdminAuditLogs: React.FC = () => {
     const dataStr = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(logs, null, 2));
     const downloadAnchor = document.createElement('a');
     downloadAnchor.setAttribute('href', dataStr);
-    downloadAnchor.setAttribute('download', `modernblog_audit_logs_${new Date().toISOString().slice(0, 10)}.json`);
+    downloadAnchor.setAttribute('download', `bitblog_audit_logs_${new Date().toISOString().slice(0, 10)}.json`);
     document.body.appendChild(downloadAnchor);
     downloadAnchor.click();
     downloadAnchor.remove();
@@ -123,7 +123,7 @@ export const AdminAuditLogs: React.FC = () => {
     const csvContent = 'data:text/csv;charset=utf-8,' + [headers.join(','), ...rows.map(e => e.join(','))].join('\n');
     const downloadAnchor = document.createElement('a');
     downloadAnchor.setAttribute('href', encodeURI(csvContent));
-    downloadAnchor.setAttribute('download', `modernblog_audit_logs_${new Date().toISOString().slice(0, 10)}.csv`);
+    downloadAnchor.setAttribute('download', `bitblog_audit_logs_${new Date().toISOString().slice(0, 10)}.csv`);
     document.body.appendChild(downloadAnchor);
     downloadAnchor.click();
     downloadAnchor.remove();

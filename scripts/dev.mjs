@@ -1,6 +1,6 @@
 import { spawn, execSync } from 'child_process';
 
-console.log('🚀 Starting ModernBlog CMS (Backend + Frontend)...\n');
+console.log('🚀 Starting BitBlog CMS (Backend + Frontend)...\n');
 
 // Automatically free port 5000 if occupied by a previous zombie process
 try {
@@ -35,7 +35,7 @@ const frontend = spawn('npm', ['run', 'dev'], {
 });
 
 const cleanup = () => {
-  console.log('\n🛑 Stopping ModernBlog CMS development servers...');
+  console.log('\n🛑 Stopping BitBlog CMS development servers...');
   try {
     backend.kill('SIGINT');
   } catch {}

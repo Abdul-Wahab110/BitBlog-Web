@@ -7,7 +7,7 @@ import { JwtPayload } from './types';
 
 async function runRecoveryVerificationSuite() {
   console.log('===========================================================');
-  console.log('MODERNBLOG CMS COMPREHENSIVE RECOVERY & END-TO-END VERIFICATION');
+  console.log('BITBLOG CMS COMPREHENSIVE RECOVERY & END-TO-END VERIFICATION');
   console.log('===========================================================\n');
 
   await Database.initialize();
@@ -15,7 +15,7 @@ async function runRecoveryVerificationSuite() {
   // Test 1: Existing Admin Account Login
   console.log('[Test 1] Testing Admin Account Authentication (Email & Username)...');
   const adminLoginByEmail = await AuthService.login({
-    email: 'admin@modernblog.com',
+    email: 'admin@bitblog.com',
     password: 'admin123',
   });
   console.log(`- Admin Login via Email Success: Name='${adminLoginByEmail.user.name}', Role='${adminLoginByEmail.user.role}'`);

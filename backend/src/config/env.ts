@@ -18,7 +18,7 @@ export const config = {
     from: process.env.EMAIL_FROM || '"BitBlog Digital Publication" <aw419770@gmail.com>',
   },
   db: {
-    user: process.env.DB_USER || 'modernblog_user',
+    user: process.env.DB_USER || 'bitblog_user',
     password: process.env.DB_PASSWORD || 'your_secure_password',
     connectString: process.env.DB_CONNECTION_STRING || process.env.DB_CONNECT_STRING || 'localhost:1521/XEPDB1',
     poolMin: parseInt(process.env.DB_POOL_MIN || '2', 10),

@@ -5,7 +5,7 @@ export class RobotsService {
     const settings = await SettingModel.getSettings();
     const baseUrl = settings.site_canonical_base_url.replace(/\/$/, '');
 
-    let txt = `# Robots.txt for ModernBlog CMS\n`;
+    let txt = `# Robots.txt for BitBlog CMS\n`;
     txt += `User-agent: *\n`;
     txt += `Allow: /\n`;
     txt += `Allow: /blog\n`;

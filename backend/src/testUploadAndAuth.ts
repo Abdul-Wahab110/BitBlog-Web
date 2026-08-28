@@ -9,7 +9,7 @@ async function runUploadAndAuthTests() {
 
   // Test 1: User Registration & Password Hashing
   console.log('[Test 1] Testing User Registration & Password Hashing...');
-  const testUserEmail = `audit.user.${Date.now()}@modernblog.com`;
+  const testUserEmail = `audit.user.${Date.now()}@bitblog.com`;
   const regResult = await AuthService.register({
     name: 'Audit Editor',
     username: `audit_editor_${Date.now()}`,

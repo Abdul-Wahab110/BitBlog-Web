@@ -11,7 +11,7 @@ async function runAuthTests() {
   // Test 1: Payload Validator Tests
   console.log('[Test 1] Testing Payload Validator...');
   const invalidEmail = AuthValidator.isValidEmail('invalid-email-string');
-  const validEmail = AuthValidator.isValidEmail('user@modernblog.com');
+  const validEmail = AuthValidator.isValidEmail('user@bitblog.com');
   const weakPass = AuthValidator.isStrongPassword('short');
   const strongPass = AuthValidator.isStrongPassword('SecurePass123!');
 
@@ -27,7 +27,7 @@ async function runAuthTests() {
   const testUser = {
     name: 'Test Reader',
     username: 'testreader_' + Date.now(),
-    email: `test_${Date.now()}@modernblog.com`,
+    email: `test_${Date.now()}@bitblog.com`,
     password: 'Password123!',
   };
 

@@ -241,7 +241,7 @@ const getDefaultSeedData = (): DbSchema => {
         role_name: 'User',
         name: 'Demo Reader',
         username: 'reader',
-        email: 'reader@modernblog.com',
+        email: 'reader@bitblog.com',
         password_hash: defaultUserHash,
         status: 'ACTIVE',
         created_at: now,
@@ -253,7 +253,7 @@ const getDefaultSeedData = (): DbSchema => {
         role_name: 'Editor',
         name: 'Senior Editor',
         username: 'editor',
-        email: 'editor@modernblog.com',
+        email: 'editor@bitblog.com',
         password_hash: defaultEditorHash,
         status: 'ACTIVE',
         created_at: now,
@@ -265,7 +265,7 @@ const getDefaultSeedData = (): DbSchema => {
         role_name: 'Author',
         name: 'Featured Author',
         username: 'author',
-        email: 'author@modernblog.com',
+        email: 'author@bitblog.com',
         password_hash: defaultAuthorHash,
         status: 'ACTIVE',
         created_at: now,
@@ -337,11 +337,11 @@ const getDefaultSeedData = (): DbSchema => {
         slug: 'building-modern-next-gen-web-applications',
         excerpt: 'Discover how modern component architecture, TypeScript, and clean API design power responsive digital publications.',
         content: `
-          <h2>Welcome to ModernBlog CMS</h2>
-          <p>ModernBlog is designed from the ground up for speed, elegance, and scale. With visual editing tools, rich multimedia integration, and full database persistence, content creators can compose stories effortlessly.</p>
+          <h2>Welcome to BitBlog CMS</h2>
+          <p>BitBlog is designed from the ground up for speed, elegance, and scale. With visual editing tools, rich multimedia integration, and full database persistence, content creators can compose stories effortlessly.</p>
           <div style="background-color:rgba(16,185,129,0.08);border-left:4px solid #10b981;padding:1rem 1.25rem;border-radius:6px;margin:1.5rem 0;">
             <strong style="color:#10b981;display:block;margin-bottom:0.35rem;">💡 Key Highlight</strong>
-            <p style="margin:0;line-height:1.6;">Everything created in ModernBlog CMS is permanently persisted and updated in real-time!</p>
+            <p style="margin:0;line-height:1.6;">Everything created in BitBlog CMS is permanently persisted and updated in real-time!</p>
           </div>
           <p>Explore the admin control panel to write new articles, moderate comments, manage tags and categories, or configure SEO and system preferences.</p>
         `,
@@ -364,17 +364,17 @@ const getDefaultSeedData = (): DbSchema => {
       {
         notification_id: 1,
         user_id: 1,
-        title: 'Welcome to ModernBlog CMS',
+        title: 'Welcome to BitBlog CMS',
         message: 'Your publication platform is online and ready with full database persistence.',
         is_read: false,
         created_at: now,
       },
     ],
     settings: {
-      site_title: 'ModernBlog CMS',
+      site_title: 'BitBlog CMS',
       site_tagline: 'Modern High-Performance Digital Publishing Platform',
       site_description: 'A modular, modern CMS and digital publication platform built with React, Vite, Node.js and TypeScript.',
-      site_email: 'editorial@modernblog.com',
+      site_email: 'editorial@bitblog.com',
       site_logo: '',
       allow_registrations: 'true',
       comments_moderation: 'false',

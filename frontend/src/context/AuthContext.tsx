@@ -41,9 +41,9 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [token, setToken] = useState<string | null>(() => localStorage.getItem('modernblog_token'));
+  const [token, setToken] = useState<string | null>(() => localStorage.getItem('bitblog_token') || localStorage.getItem('modernblog_token'));
   const [user, setUser] = useState<UserContextData | null>(() => {
-    const savedUser = localStorage.getItem('modernblog_user');
+    const savedUser = localStorage.getItem('bitblog_user') || localStorage.getItem('modernblog_user');
     if (savedUser) {
       try {
         return JSON.parse(savedUser);
@@ -74,15 +74,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const isStaff = isAuthor;
 
   const login = useCallback((newToken: string, newUser: UserContextData) => {
-    localStorage.setItem('modernblog_token', newToken);
-    localStorage.setItem('modernblog_user', JSON.stringify(newUser));
+    localStorage.setItem('bitblog_token', newToken);
+    localStorage.setItem('bitblog_user', JSON.stringify(newUser));
     setToken(newToken);
     setUser(newUser);
   }, []);
 
   const logout = useCallback(() => {
-    localStorage.removeItem('modernblog_token');
-    localStorage.removeItem('modernblog_user');
+    localStorage.removeItem('bitblog_token');
+    localStorage.removeItem('bitblog_user');
     setToken(null);
     setUser(null);
   }, []);
@@ -91,7 +91,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setUser(prev => {
       if (!prev) return null;
       const merged = { ...prev, ...updatedFields };
-      localStorage.setItem('modernblog_user', JSON.stringify(merged));
+      localStorage.setItem('bitblog_user', JSON.stringify(merged));
       return merged;
     });
   }, []);
@@ -99,9 +99,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   // Listen to cross-tab storage changes
   useEffect(() => {
     const handleStorageChange = (e: StorageEvent) => {
-      if (e.key === 'modernblog_token' || e.key === 'modernblog_user') {
-        const storedToken = localStorage.getItem('modernblog_token');
-        const storedUser = localStorage.getItem('modernblog_user');
+      if (e.key === 'bitblog_token' || e.key === 'bitblog_user') {
+        const storedToken = localStorage.getItem('bitblog_token');
+        const storedUser = localStorage.getItem('bitblog_user');
         setToken(storedToken);
         try {
           setUser(storedUser ? JSON.parse(storedUser) : null);

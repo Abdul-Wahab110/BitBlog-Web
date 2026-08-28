@@ -23,7 +23,7 @@ function recordResult(item: string, passed: boolean, details: string) {
 
 async function runMasterChecklist() {
   console.log('================================================================');
-  console.log('MODERNBLOG CMS — COMPREHENSIVE VERIFICATION & MASTER CHECKLIST');
+  console.log('BITBLOG CMS — COMPREHENSIVE VERIFICATION & MASTER CHECKLIST');
   console.log('================================================================\n');
 
   await Database.initialize();
@@ -45,7 +45,7 @@ async function runMasterChecklist() {
     `Admin(ID:${adminRole}), Editor(ID:${editorRole}), Author(ID:${authorRole}), User(ID:${userRole})`
   );
 
-  const existingAdmin = await UserModel.findByEmail('admin@modernblog.com');
+  const existingAdmin = await UserModel.findByEmail('admin@bitblog.com');
   const adminValid = !!existingAdmin && existingAdmin.role_name === 'Admin' && existingAdmin.status === 'ACTIVE';
   recordResult(
     '2. Admin Account in DB',
@@ -86,7 +86,7 @@ async function runMasterChecklist() {
 
   // Admin Login
   const adminLogin = await AuthService.login({
-    email: 'admin@modernblog.com',
+    email: 'admin@bitblog.com',
     password: 'admin123',
     accountType: 'Admin',
   });
@@ -101,7 +101,7 @@ async function runMasterChecklist() {
   let adminAsUserFailed = false;
   try {
     await AuthService.login({
-      email: 'admin@modernblog.com',
+      email: 'admin@bitblog.com',
       password: 'admin123',
       accountType: 'User',
     });

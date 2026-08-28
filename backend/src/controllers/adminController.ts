@@ -189,7 +189,7 @@ export class AdminController {
         return;
       }
 
-      if (targetUser.username === 'admin' || targetUser.email === 'admin@modernblog.com' || targetUser.user_id === 1) {
+      if (targetUser.username === 'admin' || targetUser.email === 'admin@bitblog.com' || targetUser.user_id === 1) {
         ResponseUtil.error(res, 'Super Administrator (Website Owner) role is protected and cannot be changed.', 403);
         return;
       }
@@ -222,7 +222,7 @@ export class AdminController {
         return;
       }
 
-      if (targetUser.username === 'admin' || targetUser.email === 'admin@modernblog.com' || targetUser.user_id === 1) {
+      if (targetUser.username === 'admin' || targetUser.email === 'admin@bitblog.com' || targetUser.user_id === 1) {
         ResponseUtil.error(res, 'Super Administrator (Website Owner) status is protected and cannot be modified.', 403);
         return;
       }
@@ -288,7 +288,7 @@ export class AdminController {
         return;
       }
 
-      if (targetUser.username === 'admin' || targetUser.email === 'admin@modernblog.com' || targetUser.user_id === 1) {
+      if (targetUser.username === 'admin' || targetUser.email === 'admin@bitblog.com' || targetUser.user_id === 1) {
         ResponseUtil.error(res, 'The Super Administrator (Website Owner) account is protected and cannot be deleted.', 403);
         return;
       }

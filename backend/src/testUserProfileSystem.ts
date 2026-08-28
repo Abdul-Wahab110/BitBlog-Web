@@ -3,7 +3,7 @@ import { UserModel } from './models/userModel';
 import { hashPassword, comparePassword } from './utils/password';
 
 async function runTest() {
-  console.log('--- MODERNBLOG CMS PROFILE IMAGE & AUTHOR PROFILE TEST ---');
+  console.log('--- BITBLOG CMS PROFILE IMAGE & AUTHOR PROFILE TEST ---');
 
   // 1. Initialize Database
   await Database.initialize();
@@ -21,16 +21,16 @@ async function runTest() {
   const testAvatarUrl = '/uploads/test_avatar_profile_image.webp';
   const updatedUser = await UserModel.updateProfile(adminUser.user_id, {
     name: 'Admin Chief Editor',
-    bio: 'Award-winning technology analyst and Chief Editorial Lead for ModernBlog CMS.',
+    bio: 'Award-winning technology analyst and Chief Editorial Lead for BitBlog CMS.',
     profile_image: testAvatarUrl,
-    website: 'https://modernblog.com/editorial',
+    website: 'https://bitblog.com/editorial',
     author_tags: ['Artificial Intelligence', 'Cybersecurity', 'Web Architecture'],
     social_links: {
-      twitter: '@ModernBlogAdmin',
-      github: 'modernblog-admin',
-      linkedin: 'modernblog-chief-editor',
+      twitter: '@BitBlogAdmin',
+      github: 'bitblog-admin',
+      linkedin: 'bitblog-chief-editor',
     },
-    short_description: 'Chief Editorial Lead at ModernBlog CMS',
+    short_description: 'Chief Editorial Lead at BitBlog CMS',
   });
 
   if (!updatedUser) {

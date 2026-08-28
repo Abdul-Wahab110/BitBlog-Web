@@ -1,8 +1,8 @@
 {
-  "name": "modernblog-cms",
+  "name": "bitblog-cms",
   "version": "1.0.0",
   "private": true,
-  "description": "ModernBlog CMS - Full-stack React & Node.js/Express blogging platform",
+  "description": "BitBlog CMS - Full-stack React & Node.js/Express blogging platform",
   "scripts": {
     "dev": "node scripts/dev.mjs",
     "dev:all": "node scripts/dev.mjs",

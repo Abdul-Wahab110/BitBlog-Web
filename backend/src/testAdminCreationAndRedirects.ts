@@ -8,7 +8,7 @@ import { JwtPayload } from './types';
 
 async function runAdminCreationAndRedirectsTest() {
   console.log('================================================================');
-  console.log('MODERNBLOG CMS — ADMIN CREATION, RBAC & REDIRECT TESTS');
+  console.log('BITBLOG CMS — ADMIN CREATION, RBAC & REDIRECT TESTS');
   console.log('================================================================\n');
 
   await Database.initialize();
@@ -38,7 +38,7 @@ async function runAdminCreationAndRedirectsTest() {
   // TEST 2: Admin Creates Another Admin Account
   // -------------------------------------------------------------
   console.log('\n[Test 2] Existing Admin creates a new Administrator account...');
-  const newAdminEmail = `secondary.admin.${timestamp}@modernblog.com`;
+  const newAdminEmail = `secondary.admin.${timestamp}@bitblog.com`;
   const newAdminUsername = `admin_${timestamp}`;
   const newAdminPassword = 'AdminPassword123!';
 
@@ -76,7 +76,7 @@ async function runAdminCreationAndRedirectsTest() {
     roleId: editorRoleId,
     name: 'Senior Editor',
     username: `editor_${timestamp}`,
-    email: `editor.${timestamp}@modernblog.com`,
+    email: `editor.${timestamp}@bitblog.com`,
     passwordHash: await bcrypt.hash('EditorPass123!', 10),
   });
   console.log(`✓ Editor Created: Role='${editorUser?.role_name}'`);
@@ -85,7 +85,7 @@ async function runAdminCreationAndRedirectsTest() {
     roleId: authorRoleId,
     name: 'Staff Columnist',
     username: `author_${timestamp}`,
-    email: `author.${timestamp}@modernblog.com`,
+    email: `author.${timestamp}@bitblog.com`,
     passwordHash: await bcrypt.hash('AuthorPass123!', 10),
   });
   console.log(`✓ Author Created: Role='${authorUser?.role_name}'`);

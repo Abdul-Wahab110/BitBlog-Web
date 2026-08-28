@@ -1,7 +1,7 @@
 {
-  "name": "modernblog-backend",
+  "name": "bitblog-backend",
   "version": "1.0.0",
-  "description": "REST API Backend for ModernBlog CMS",
+  "description": "REST API Backend for BitBlog CMS",
   "main": "dist/server.js",
   "scripts": {
     "dev": "npx ts-node-dev --respawn --transpile-only src/server.ts",
