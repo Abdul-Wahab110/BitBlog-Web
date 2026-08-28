@@ -1,0 +1,1096 @@
+{
+  "roles": [
+    {
+      "role_id": 1,
+      "role_name": "Admin",
+      "description": "Full system administration"
+    },
+    {
+      "role_id": 2,
+      "role_name": "Editor",
+      "description": "Editorial review and publishing"
+    },
+    {
+      "role_id": 3,
+      "role_name": "Author",
+      "description": "Article authoring"
+    },
+    {
+      "role_id": 4,
+      "role_name": "User",
+      "description": "Standard reader"
+    }
+  ],
+  "users": [
+    {
+      "user_id": 1,
+      "role_id": 1,
+      "role_name": "Admin",
+      "name": "Abdul Wahab",
+      "username": "admin",
+      "email": "aw419770@gmail.com",
+      "password_hash": "$2b$10$9S.n7wXUlkUVUCnjhqcWO.fTAqB3.vBssK7JIZy29xnUBhJd272HS",
+      "status": "ACTIVE",
+      "created_at": "2026-08-19T07:40:57.279Z",
+      "updated_at": "2026-08-25T08:43:25.897Z",
+      "last_login": "2026-08-27T08:16:00.684Z",
+      "profile_image": "/uploads/1787588806977-xexqhoev.png",
+      "bio": "",
+      "website": "",
+      "author_tags": [],
+      "social_links": {},
+      "short_description": ""
+    },
+    {
+      "user_id": 2,
+      "role_id": 4,
+      "role_name": "User",
+      "name": "Demo Reader",
+      "username": "reader",
+      "email": "reader@modernblog.com",
+      "password_hash": "$2b$10$hEGpgJFwdN2U917XGH0ocu/I6MP8K.eelqDs2pNBNfutztgW1Ge3.",
+      "status": "ACTIVE",
+      "created_at": "2026-08-19T07:40:57.279Z",
+      "updated_at": "2026-08-19T08:29:46.677Z",
+      "last_login": "2026-08-26T06:17:03.454Z"
+    },
+    {
+      "user_id": 3,
+      "role_id": 2,
+      "role_name": "Editor",
+      "name": "Senior Editor",
+      "username": "editor",
+      "email": "editor@modernblog.com",
+      "password_hash": "$2b$10$KGgm5PfOJA7sDGgxbGG5dO.Uiv1zM9yE3SMJNPj.YqAffcjTkcx4.",
+      "status": "ACTIVE",
+      "created_at": "2026-08-19T07:40:57.279Z",
+      "updated_at": "2026-08-19T08:41:03.426Z",
+      "last_login": "2026-08-26T06:19:44.924Z"
+    },
+    {
+      "user_id": 4,
+      "role_id": 3,
+      "role_name": "Author",
+      "name": "Featured Author",
+      "username": "author",
+      "email": "author@modernblog.com",
+      "password_hash": "$2b$10$e6haavHdh3egGA/dURa52eBQN/FJjP5h3W9wTaou59I0hKg7qrIj2",
+      "status": "ACTIVE",
+      "created_at": "2026-08-19T07:40:57.279Z",
+      "updated_at": "2026-08-27T08:05:16.043Z",
+      "last_login": "2026-08-27T08:05:43.256Z"
+    },
+    {
+      "user_id": 5,
+      "role_id": 4,
+      "role_name": "User",
+      "name": "Abdul Haseeb",
+      "username": "haseeb",
+      "email": "abdulhaseeb1328@gmail.com",
+      "password_hash": "$2b$10$k9oORJj6f9hn7tvw4lMyce8jeRplYEgIuVgz0DJvdm5PKoi0tC4kC",
+      "is_verified": true,
+      "status": "ACTIVE",
+      "created_at": "2026-08-26T13:07:34.814Z",
+      "updated_at": "2026-08-26T13:07:34.814Z"
+    },
+    {
+      "user_id": 6,
+      "role_id": 4,
+      "role_name": "User",
+      "name": "Abdul Ahad",
+      "username": "ahad121",
+      "email": "ahadmirha1210@gmail.com",
+      "password_hash": "$2b$10$HTuJeVc7RXv3Al97zNjqcuwkXgu.rOUwnfZm2SFa635B8m/WDDD1q",
+      "is_verified": true,
+      "status": "ACTIVE",
+      "created_at": "2026-08-26T13:53:04.643Z",
+      "updated_at": "2026-08-26T13:56:39.337Z",
+      "last_login": "2026-08-27T08:00:10.218Z"
+    }
+  ],
+  "categories": [
+    {
+      "category_id": 1,
+      "name": "Technology",
+      "slug": "technology",
+      "description": "Latest innovations, computing architectures, and digital transformation.",
+      "created_at": "2026-08-19T07:40:57.279Z",
+      "updated_at": "2026-08-19T07:40:57.279Z"
+    },
+    {
+      "category_id": 2,
+      "name": "Web Development",
+      "slug": "web-development",
+      "description": "Modern frontend, backend architectures, APIs, and frameworks.",
+      "created_at": "2026-08-19T07:40:57.279Z",
+      "updated_at": "2026-08-19T07:40:57.279Z"
+    },
+    {
+      "category_id": 3,
+      "name": "AI & Machine Learning",
+      "slug": "ai-machine-learning",
+      "description": "Generative models, LLMs, neural architectures, and intelligent systems.",
+      "created_at": "2026-08-19T07:40:57.279Z",
+      "updated_at": "2026-08-19T07:40:57.279Z"
+    },
+    {
+      "category_id": 4,
+      "name": "Design & UI/UX",
+      "slug": "design-ui-ux",
+      "description": "Design systems, modern aesthetics, micro-interactions, and accessibility.",
+      "created_at": "2026-08-19T07:40:57.279Z",
+      "updated_at": "2026-08-19T07:40:57.279Z"
+    },
+    {
+      "category_id": 5,
+      "name": "Business & Startups",
+      "slug": "business-startups",
+      "description": "Scaling digital products, entrepreneurship, and strategy.",
+      "created_at": "2026-08-19T07:40:57.279Z",
+      "updated_at": "2026-08-19T07:40:57.279Z"
+    },
+    {
+      "category_id": 8,
+      "parent_category_id": 7,
+      "parent_id": 7,
+      "name": "Cloud Computing & DevOps",
+      "slug": "cloud-computing-devops",
+      "description": "Updated DevOps description with new image asset.",
+      "image": null,
+      "image_url": null,
+      "created_at": "2026-08-24T18:05:13.940Z",
+      "updated_at": "2026-08-24T18:05:13.951Z",
+      "post_count": 0
+    },
+    {
+      "category_id": 9,
+      "name": "History",
+      "slug": "history",
+      "created_at": "2026-08-24T18:15:45.695Z",
+      "updated_at": "2026-08-25T06:12:33.879Z",
+      "post_count": 0
+    }
+  ],
+  "tags": [
+    {
+      "tag_id": 4,
+      "name": "Web Dev",
+      "slug": "web-dev",
+      "created_at": "2026-08-19T07:40:57.279Z"
+    },
+    {
+      "tag_id": 5,
+      "name": "AI",
+      "slug": "ai",
+      "created_at": "2026-08-19T07:40:57.279Z"
+    },
+    {
+      "tag_id": 7,
+      "name": "Design Systems",
+      "slug": "design-systems",
+      "created_at": "2026-08-19T07:40:57.279Z"
+    },
+    {
+      "tag_id": 8,
+      "name": "Tutorial",
+      "slug": "tutorial",
+      "created_at": "2026-08-19T07:40:57.279Z"
+    },
+    {
+      "tag_id": 9,
+      "name": "finance",
+      "slug": "finance",
+      "created_at": "2026-08-24T10:06:59.378Z",
+      "post_count": 0
+    },
+    {
+      "tag_id": 10,
+      "name": "insurance",
+      "slug": "insurance",
+      "created_at": "2026-08-24T10:07:55.252Z",
+      "post_count": 0
+    },
+    {
+      "tag_id": 11,
+      "name": "business",
+      "slug": "business",
+      "created_at": "2026-08-24T10:09:09.212Z",
+      "post_count": 0
+    }
+  ],
+  "posts": [
+    {
+      "post_id": 7,
+      "author_id": 7,
+      "author_name": "Verified Staff Editor",
+      "author_username": "editor_staff_1787648665520",
+      "category_name": "General",
+      "category_slug": "general",
+      "title": "Editor Verified Story 1787648665664",
+      "slug": "editor-verified-story-1787648665664",
+      "excerpt": "Content created and reviewed by staff editor....",
+      "content": "Content created and reviewed by staff editor.",
+      "status": "published",
+      "published_at": "2026-08-25T09:04:25.666Z",
+      "reading_time": 1,
+      "views_count": 0,
+      "comment_count": 0,
+      "like_count": 0,
+      "created_at": "2026-08-25T09:04:25.667Z",
+      "updated_at": "2026-08-25T12:54:35.020Z",
+      "tag_ids": []
+    },
+    {
+      "post_id": 6,
+      "author_id": 6,
+      "author_name": "Verified Staff Author",
+      "author_username": "author_staff_1787648665222",
+      "category_name": "General",
+      "category_slug": "general",
+      "title": "Author Exclusive Article 1787648665510",
+      "slug": "author-exclusive-article-1787648665510",
+      "excerpt": "Content authored by verified author....",
+      "content": "Content authored by verified author.",
+      "status": "published",
+      "reading_time": 1,
+      "views_count": 0,
+      "comment_count": 0,
+      "like_count": 0,
+      "created_at": "2026-08-25T09:04:25.518Z",
+      "updated_at": "2026-08-25T12:54:42.154Z",
+      "tag_ids": [],
+      "author_avatar": "",
+      "published_at": "2026-08-25T12:54:42.153Z"
+    },
+    {
+      "post_id": 5,
+      "author_id": 1,
+      "author_name": "Abdul Wahab",
+      "author_username": "admin",
+      "author_avatar": "/uploads/1787588806977-xexqhoev.png",
+      "category_name": "General",
+      "category_slug": "general",
+      "title": "Article in Category Deletion Safety Test",
+      "slug": "safety-test-article-1787594713953",
+      "excerpt": "Sample lead excerpt for safety test.",
+      "content": "<p>Test content to ensure article remains safe after category deletion.</p>",
+      "status": "published",
+      "published_at": "2026-08-24T18:05:13.954Z",
+      "reading_time": 1,
+      "views_count": 8,
+      "comment_count": 0,
+      "like_count": 0,
+      "created_at": "2026-08-24T18:05:13.954Z",
+      "updated_at": "2026-08-25T12:54:25.234Z",
+      "tag_ids": []
+    },
+    {
+      "post_id": 4,
+      "author_id": 2,
+      "author_name": "Demo Reader",
+      "author_username": "reader",
+      "category_id": 3,
+      "category_name": "AI & Machine Learning",
+      "category_slug": "ai-machine-learning",
+      "title": "Burberry: The Invention of Gabardine & The Trench Coat",
+      "slug": "burberry-the-invention-of-gabardine-the-trench-coat",
+      "excerpt": "When protecting yourself against rough weather, your choice of clothing often comes down to a balance between comfort and structural function. In the modern fashion world, few garments manage to blend industrial utility with high-fashion prestige quite like the Burberry Heritage Trench Coat. Worn by cinematic icons, global royalty, and modern style trailblazers, this single article of clothing has spent over a century as a timeless symbol of sophisticated style.",
+      "content": "<p class=\"MsoNormal\" style=\"mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;\nline-height:normal;mso-outline-level:1\"><b><span style=\"font-size:24.0pt;\nfont-family:&quot;Times New Roman&quot;,serif;mso-fareast-font-family:&quot;Times New Roman&quot;;\nmso-font-kerning:18.0pt\">Burberry: The Invention of Gabardine &amp; The Trench\nCoat<o:p></o:p></span></b></p>\n\n<p class=\"MsoNormal\" style=\"mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;\nline-height:normal\"><span style=\"font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;\nmso-fareast-font-family:&quot;Times New Roman&quot;\">When protecting yourself against\nrough weather, your choice of clothing often comes down to a balance between\ncomfort and structural function. In the modern fashion world, few garments\nmanage to blend industrial utility with high-fashion prestige quite like the\nBurberry Heritage Trench Coat. Worn by cinematic icons, global royalty, and\nmodern style trailblazers, this single article of clothing has spent over a\ncentury as a timeless symbol of sophisticated style.<o:p></o:p></span></p>\n\n<p class=\"MsoNormal\" style=\"mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;\nline-height:normal\"><span style=\"font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;\nmso-fareast-font-family:&quot;Times New Roman&quot;\">However, the coat's signature look\nwas not created to capture attention on a fashion runway. Instead, it was\nengineered as a high-performance piece of military hardware designed to help\nsoldiers survive some of the harshest, most unforgiving environments on Earth.\nAt the center of this fashion revolution was a massive textile breakthrough\nthat altered the outerwear industry forever.<o:p></o:p></span></p>\n\n<p class=\"MsoNormal\" style=\"mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;\nline-height:normal\"><span style=\"font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;\nmso-fareast-font-family:&quot;Times New Roman&quot;\">This detailed historical guide\nexplores how founder Thomas Burberry reshaped the garment industry. We will look\nat the material science behind his proprietary fabric invention, trace the\nmilitary history that gave the trench coat its name, examine the practical\nfunction of its classic design details, and look at how this historic piece\nevolved into a cornerstone of modern luxury.<o:p></o:p></span></p>\n\n<p class=\"MsoNormal\" style=\"mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;\nline-height:normal;mso-outline-level:2\"><b><span style=\"font-size:18.0pt;\nfont-family:&quot;Times New Roman&quot;,serif;mso-fareast-font-family:&quot;Times New Roman&quot;\">The\nMaster Weatherproofer: Thomas Burberry’s Vision<o:p></o:p></span></b></p>\n\n<p class=\"MsoNormal\" style=\"mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;\nline-height:normal\"><span style=\"font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;\nmso-fareast-font-family:&quot;Times New Roman&quot;\">The foundation of the historic brand\nwas built far from the high-end fashion avenues of London. In 1856, a\n21-year-old former draper's apprentice named Thomas Burberry opened a modest\noutdoor apparel shop in Basingstoke, Hampshire. He established his business\nwith a clear, practical focus: clothing should protect people from the famously\ndamp, unpredictable British weather.<o:p></o:p></span></p>\n\n<p class=\"MsoNormal\" style=\"mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;\nline-height:normal\"><span style=\"font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;\nmso-fareast-font-family:&quot;Times New Roman&quot;\">During the 19th century, keeping dry\nin a heavy downpour was an uncomfortable experience. The primary waterproof\ngarments available were made of rubberized oilskins or heavy macintosh fabrics.\nWhile these materials were highly effective at blocking rain, they were heavy,\nstiff, and completely lacked breathability. Anyone wearing them during physical\nactivity quickly found themselves uncomfortably warm and damp from the inside\nout. Thomas Burberry recognized this massive flaw and spent years experimenting\nwith textile weaving techniques to develop a lightweight material that could\nrepel water while allowing air to circulate freely.<o:p></o:p></span></p>\n\n<p class=\"MsoNormal\" style=\"mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;\nline-height:normal;mso-outline-level:2\"><b><span style=\"font-size:18.0pt;\nfont-family:&quot;Times New Roman&quot;,serif;mso-fareast-font-family:&quot;Times New Roman&quot;\">The\nEvolution of Outerwear Materials<o:p></o:p></span></b></p>\n\n<p class=\"MsoNormal\" style=\"mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;\nline-height:normal\"><span style=\"font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;\nmso-fareast-font-family:&quot;Times New Roman&quot;\">To understand how revolutionary this\nchange was, it helps to look at the transition of fabrics over time. The table\nbelow outlines how the invention of gabardine fundamentally solved the\nlimitations of traditional outdoor clothing.<o:p></o:p></span></p>\n\n<p class=\"MsoNormal\"><o:p>&nbsp;</o:p></p>\n\n<p class=\"MsoNormal\"><o:p>&nbsp;</o:p></p>\n\n<table class=\"MsoTableGrid\" border=\"1\" cellspacing=\"0\" cellpadding=\"0\" style=\"border-collapse:collapse;border:none;mso-border-alt:solid windowtext .5pt;\n mso-yfti-tbllook:1184;mso-padding-alt:0in 5.4pt 0in 5.4pt\">\n <tbody><tr>\n  <td width=\"156\" valign=\"top\" style=\"width:116.85pt;border:solid windowtext 1.0pt;\n  mso-border-alt:solid windowtext .5pt;padding:0in 5.4pt 0in 5.4pt\">\n  <p class=\"MsoNormal\" style=\"margin-bottom:24.0pt;line-height:normal\"><strong><span style=\"font-family:&quot;Calibri&quot;,sans-serif;mso-ascii-theme-font:minor-latin;\n  mso-hansi-theme-font:minor-latin;mso-bidi-font-family:&quot;Times New Roman&quot;;\n  mso-bidi-theme-font:minor-bidi\">Era &amp; Fabric Type</span></strong><o:p></o:p></p>\n  <p class=\"MsoNormal\" style=\"margin-bottom:0in;line-height:normal\"><o:p>&nbsp;</o:p></p>\n  </td>\n  <td width=\"156\" valign=\"top\" style=\"width:116.85pt;border:solid windowtext 1.0pt;\n  border-left:none;mso-border-left-alt:solid windowtext .5pt;mso-border-alt:\n  solid windowtext .5pt;padding:0in 5.4pt 0in 5.4pt\">\n  <p class=\"MsoNormal\" style=\"margin-bottom:0in;line-height:normal\"><b>Core\n  Materials Used<o:p></o:p></b></p>\n  </td>\n  <td width=\"156\" valign=\"top\" style=\"width:116.9pt;border:solid windowtext 1.0pt;\n  border-left:none;mso-border-left-alt:solid windowtext .5pt;mso-border-alt:\n  solid windowtext .5pt;padding:0in 5.4pt 0in 5.4pt\">\n  <p class=\"MsoNormal\" style=\"margin-bottom:0in;line-height:normal\"><b>Performance\n  Advantages<o:p></o:p></b></p>\n  </td>\n  <td width=\"156\" valign=\"top\" style=\"width:116.9pt;border:solid windowtext 1.0pt;\n  border-left:none;mso-border-left-alt:solid windowtext .5pt;mso-border-alt:\n  solid windowtext .5pt;padding:0in 5.4pt 0in 5.4pt\">\n  <p class=\"MsoNormal\" style=\"margin-bottom:0in;line-height:normal\"><b>Major\n  Design Limitations<o:p></o:p></b></p>\n  </td>\n </tr>\n <tr>\n  <td width=\"156\" valign=\"top\" style=\"width:116.85pt;border:solid windowtext 1.0pt;\n  border-top:none;mso-border-top-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;\n  padding:0in 5.4pt 0in 5.4pt\">\n  <p class=\"MsoNormal\" style=\"margin-bottom:0in;line-height:normal\">Pre-1870s\n  Oilskins<o:p></o:p></p>\n  </td>\n  <td width=\"156\" valign=\"top\" style=\"width:116.85pt;border-top:none;border-left:\n  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;\n  mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;\n  mso-border-alt:solid windowtext .5pt;padding:0in 5.4pt 0in 5.4pt\">\n  <p class=\"MsoNormal\" style=\"margin-bottom:0in;line-height:normal\">Heavy canvas\n  coated in boiled oil or wax<o:p></o:p></p>\n  </td>\n  <td width=\"156\" valign=\"top\" style=\"width:116.9pt;border-top:none;border-left:\n  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;\n  mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;\n  mso-border-alt:solid windowtext .5pt;padding:0in 5.4pt 0in 5.4pt\">\n  <p class=\"MsoNormal\" style=\"margin-bottom:0in;line-height:normal\">High water\n  resistance in heavy downpours<o:p></o:p></p>\n  </td>\n  <td width=\"156\" valign=\"top\" style=\"width:116.9pt;border-top:none;border-left:\n  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;\n  mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;\n  mso-border-alt:solid windowtext .5pt;padding:0in 5.4pt 0in 5.4pt\">\n  <p class=\"MsoNormal\" style=\"margin-bottom:0in;line-height:normal\">Stiff,\n  exceptionally heavy, and prone to cracking over time<o:p></o:p></p>\n  </td>\n </tr>\n <tr>\n  <td width=\"156\" valign=\"top\" style=\"width:116.85pt;border:solid windowtext 1.0pt;\n  border-top:none;mso-border-top-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;\n  padding:0in 5.4pt 0in 5.4pt\">\n  <p class=\"MsoNormal\" style=\"margin-bottom:0in;line-height:normal\">Macintosh\n  Fabrics<o:p></o:p></p>\n  </td>\n  <td width=\"156\" valign=\"top\" style=\"width:116.85pt;border-top:none;border-left:\n  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;\n  mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;\n  mso-border-alt:solid windowtext .5pt;padding:0in 5.4pt 0in 5.4pt\">\n  <p class=\"MsoNormal\" style=\"margin-bottom:0in;line-height:normal\">Layers of\n  cloth bonded with vulcanized rubber<o:p></o:p></p>\n  </td>\n  <td width=\"156\" valign=\"top\" style=\"width:116.9pt;border-top:none;border-left:\n  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;\n  mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;\n  mso-border-alt:solid windowtext .5pt;padding:0in 5.4pt 0in 5.4pt\">\n  <p class=\"MsoNormal\" style=\"margin-bottom:0in;line-height:normal\">Completely\n  impervious to external rain<o:p></o:p></p>\n  </td>\n  <td width=\"156\" valign=\"top\" style=\"width:116.9pt;border-top:none;border-left:\n  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;\n  mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;\n  mso-border-alt:solid windowtext .5pt;padding:0in 5.4pt 0in 5.4pt\">\n  <p class=\"MsoNormal\" style=\"margin-bottom:0in;line-height:normal\">Lacked any\n  air circulation, causing extreme internal condensation<o:p></o:p></p>\n  </td>\n </tr>\n <tr>\n  <td width=\"156\" valign=\"top\" style=\"width:116.85pt;border:solid windowtext 1.0pt;\n  border-top:none;mso-border-top-alt:solid windowtext .5pt;mso-border-alt:solid windowtext .5pt;\n  padding:0in 5.4pt 0in 5.4pt\">\n  <p class=\"MsoNormal\" style=\"margin-bottom:0in;line-height:normal\">1879 Gabardine<o:p></o:p></p>\n  </td>\n  <td width=\"156\" valign=\"top\" style=\"width:116.85pt;border-top:none;border-left:\n  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;\n  mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;\n  mso-border-alt:solid windowtext .5pt;padding:0in 5.4pt 0in 5.4pt\">\n  <p class=\"MsoNormal\" style=\"margin-bottom:0in;line-height:normal\">Long-staple\n  Egyptian cotton yarn treated before weaving<o:p></o:p></p>\n  </td>\n  <td width=\"156\" valign=\"top\" style=\"width:116.9pt;border-top:none;border-left:\n  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;\n  mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;\n  mso-border-alt:solid windowtext .5pt;padding:0in 5.4pt 0in 5.4pt\">\n  <p class=\"MsoNormal\" style=\"margin-bottom:0in;line-height:normal\">Lightweight,\n  completely weatherproof, and highly breathable<o:p></o:p></p>\n  </td>\n  <td width=\"156\" valign=\"top\" style=\"width:116.9pt;border-top:none;border-left:\n  none;border-bottom:solid windowtext 1.0pt;border-right:solid windowtext 1.0pt;\n  mso-border-top-alt:solid windowtext .5pt;mso-border-left-alt:solid windowtext .5pt;\n  mso-border-alt:solid windowtext .5pt;padding:0in 5.4pt 0in 5.4pt\">\n  <p class=\"MsoNormal\" style=\"margin-bottom:0in;line-height:normal\">Required\n  specialized, high-density weaving looms to manufacture<o:p></o:p></p>\n  </td>\n </tr>\n</tbody></table>\n\n<p class=\"MsoNormal\"><o:p>&nbsp;</o:p></p>\n\n<p class=\"MsoNormal\"><o:p>&nbsp;</o:p></p>\n\n<p class=\"MsoNormal\"><o:p>&nbsp;</o:p></p>\n\n<h2>The Invention of Gabardine: A Textile Breakthrough<o:p></o:p></h2>\n\n<p>In 1879, Thomas Burberry perfected his signature invention: gabardine. This\nrevolutionary fabric altered the outerwear market by taking a completely new\napproach to weatherproofing. Instead of coating a finished piece of cloth in a\nthick layer of heavy rubber or wax, Burberry chose to weatherproof the material\nat the individual yarn level.<o:p></o:p></p>\n\n<p>He took high-quality Egyptian cotton threads and treated them with a\nspecialized, secret waterproofing agent before running them through the loom.\nHe then utilized a tight, diagonal twill weave pattern, packing over 100\ninterlocking threads per centimeter. This dense weaving structure created a\nsurface where rain and wind could not easily penetrate the tiny spaces between\nthe fibers. Instead, water droplets simply beaded up and rolled off the\nsurface, while the unsealed weave allowed internal body heat and moisture to\nescape effortlessly.<o:p></o:p></p>\n\n<p>The innovation was an instant success. Patented in 1888, gabardine quickly\nbecame the top choice for polar explorers, aviation pioneers, and military\noutdoor officers who needed reliable, lightweight protection against extreme\nenvironmental conditions.<o:p></o:p></p>\n\n<h2>From Battlefield to Runway: The Trench Coat Timeline<o:p></o:p></h2>\n\n<p>While gabardine provided the ideal raw material, the iconic shape of the\ncoat itself was forged by the grim realities of the First World War. The\nevolution from functional field gear to a global fashion staple followed a\nprecise chronological path.<o:p></o:p></p>\n\n<p class=\"MsoNormal\" style=\"mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;\nline-height:normal;mso-outline-level:2\"><b><span style=\"font-size:18.0pt;\nfont-family:&quot;Times New Roman&quot;,serif;mso-fareast-font-family:&quot;Times New Roman&quot;\">The\nHistoric Milestone Sequence<o:p></o:p></span></b></p>\n\n<p class=\"MsoNormal\" style=\"margin-bottom:0in;line-height:normal\"><b><span style=\"font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;mso-fareast-font-family:\n&quot;Times New Roman&quot;\">1.The Tielocken Coat Design:</span></b><span style=\"font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;mso-fareast-font-family:\n&quot;Times New Roman&quot;\">1901 — Pre-War Innovation.<o:p></o:p></span></p>\n\n<p class=\"MsoNormal\" style=\"mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;\nline-height:normal\"><span style=\"font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;\nmso-fareast-font-family:&quot;Times New Roman&quot;\">Thomas Burberry creates the\nTielocken coat, a precursor to the trench coat that featured a streamlined\nsilhouette secured with a single strap and buckle closure rather than buttons.<o:p></o:p></span></p>\n\n<p class=\"MsoNormal\" style=\"margin-bottom:0in;line-height:normal\"><b><span style=\"font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;mso-fareast-font-family:\n&quot;Times New Roman&quot;\">2.Adapting for Trench Warfare:</span></b><span style=\"font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;mso-fareast-font-family:\n&quot;Times New Roman&quot;\">1914 — Frontline Military Engineering.<o:p></o:p></span></p>\n\n<p class=\"MsoNormal\" style=\"mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;\nline-height:normal\"><span style=\"font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;\nmso-fareast-font-family:&quot;Times New Roman&quot;\">The British War Office officially\ncommissions Burberry to adapt the design for officers on the front lines,\nadding strategic features to meet the intense demands of battlefield\nconditions.<o:p></o:p></span></p>\n\n<p class=\"MsoNormal\" style=\"margin-bottom:0in;line-height:normal\"><b><span style=\"font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;mso-fareast-font-family:\n&quot;Times New Roman&quot;\">3.The Silver Screen Icon Era:</span></b><span style=\"font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;mso-fareast-font-family:\n&quot;Times New Roman&quot;\">1940s-1950s — Hollywood Transformation.<o:p></o:p></span></p>\n\n<p class=\"MsoNormal\" style=\"mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;\nline-height:normal\"><span style=\"font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;\nmso-fareast-font-family:&quot;Times New Roman&quot;\">Returning soldiers bring their\nfunctional coats into civilian life, where Hollywood directors adopt the style,\nwrapping it around legendary film stars to cement its place in pop culture.<o:p></o:p></span></p>\n\n<p class=\"MsoNormal\" style=\"margin-bottom:0in;line-height:normal\"><b><span style=\"font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;mso-fareast-font-family:\n&quot;Times New Roman&quot;\">4.The High-Fashion Staple:</span></b><span style=\"font-size:\n12.0pt;font-family:&quot;Times New Roman&quot;,serif;mso-fareast-font-family:&quot;Times New Roman&quot;\">2026\n&amp; Beyond — Modern Luxury Dominance.<o:p></o:p></span></p>\n\n<p class=\"MsoNormal\" style=\"mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;\nline-height:normal\"><span style=\"font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;\nmso-fareast-font-family:&quot;Times New Roman&quot;\">The garment cements its status as an\nimmutable luxury icon, meticulously manufactured in British mills while\nconstantly reinterpreted by visionary creative directors on global runways.<o:p></o:p></span></p>\n\n<p class=\"MsoNormal\"><o:p>&nbsp;</o:p></p>\n\n<h2>Anatomy of an Icon: The Function Behind Every Detail<o:p></o:p></h2>\n\n<p>Every stitch and buckle on a classic Burberry trench coat has a historical\npurpose. Features that modern consumers often view as simple fashion details\nwere originally engineered to serve as vital tools for soldiers on the\nbattlefield.<o:p></o:p></p>\n\n<p>Understanding the function behind these classic components reveals the deep\nutility of the design:<o:p></o:p></p>\n\n<p style=\"margin-left:.5in;text-indent:-.25in;mso-list:l0 level1 lfo1;\ntab-stops:list .5in\"><!--[if !supportLists]--><span style=\"font-size:10.0pt;\nmso-bidi-font-size:12.0pt;font-family:Symbol;mso-fareast-font-family:Symbol;\nmso-bidi-font-family:Symbol\">·<span style=\"font-style: normal; font-variant: normal; font-size-adjust: none; font-language-override: normal; font-kerning: auto; font-optical-sizing: auto; font-feature-settings: normal; font-variation-settings: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n</span></span><!--[endif]--><b>The Double-Breasted Silhouette:</b> Designed\nwith a generous overlap of fabric across the chest to provide an extra layer of\nwindproofing and protection against cold wind.<o:p></o:p></p>\n\n<p style=\"margin-left:.5in;text-indent:-.25in;mso-list:l0 level1 lfo1;\ntab-stops:list .5in\"><!--[if !supportLists]--><span style=\"font-size:10.0pt;\nmso-bidi-font-size:12.0pt;font-family:Symbol;mso-fareast-font-family:Symbol;\nmso-bidi-font-family:Symbol\">·<span style=\"font-style: normal; font-variant: normal; font-size-adjust: none; font-language-override: normal; font-kerning: auto; font-optical-sizing: auto; font-feature-settings: normal; font-variation-settings: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n</span></span><!--[endif]--><b>The Gun Flap (Storm Patch):</b> This extra\npanel of fabric on the right shoulder was designed to keep rainwater from\nseeping into the jacket when an officer held their rifle across their chest. It\nalso helped cushion the recoil of the firearm.<o:p></o:p></p>\n\n<p style=\"margin-left:.5in;text-indent:-.25in;mso-list:l0 level1 lfo1;\ntab-stops:list .5in\"><!--[if !supportLists]--><span style=\"font-size:10.0pt;\nmso-bidi-font-size:12.0pt;font-family:Symbol;mso-fareast-font-family:Symbol;\nmso-bidi-font-family:Symbol\">·<span style=\"font-style: normal; font-variant: normal; font-size-adjust: none; font-language-override: normal; font-kerning: auto; font-optical-sizing: auto; font-feature-settings: normal; font-variation-settings: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n</span></span><!--[endif]--><b>The D-Ring Belt:</b> The sturdy metal\n\"D\"-shaped rings stitched into the waist belt were designed to\nsecurely hold military equipment, including maps, water canteens, and necessary\ntools.<o:p></o:p></p>\n\n<p style=\"margin-left:.5in;text-indent:-.25in;mso-list:l0 level1 lfo1;\ntab-stops:list .5in\"><!--[if !supportLists]--><span style=\"font-size:10.0pt;\nmso-bidi-font-size:12.0pt;font-family:Symbol;mso-fareast-font-family:Symbol;\nmso-bidi-font-family:Symbol\">·<span style=\"font-style: normal; font-variant: normal; font-size-adjust: none; font-language-override: normal; font-kerning: auto; font-optical-sizing: auto; font-feature-settings: normal; font-variation-settings: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n</span></span><!--[endif]--><b>Epaulettes on the Shoulders:</b> The buttoned\nshoulder straps were added to cleanly display an officer's rank insignias\nwithout damaging the main body of the coat. They also worked well to secure the\nstraps of binoculars or gas masks.<o:p></o:p></p>\n\n<p style=\"margin-left:.5in;text-indent:-.25in;mso-list:l0 level1 lfo1;\ntab-stops:list .5in\"><!--[if !supportLists]--><span style=\"font-size:10.0pt;\nmso-bidi-font-size:12.0pt;font-family:Symbol;mso-fareast-font-family:Symbol;\nmso-bidi-font-family:Symbol\">·<span style=\"font-style: normal; font-variant: normal; font-size-adjust: none; font-language-override: normal; font-kerning: auto; font-optical-sizing: auto; font-feature-settings: normal; font-variation-settings: normal; font-stretch: normal; font-size: 7pt; line-height: normal; font-family: &quot;Times New Roman&quot;;\">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\n</span></span><!--[endif]--><b>The Back Storm Shield:</b> This unique\ncape-like flap across the upper back allows rainwater to run cleanly off the\ncoat and hit the ground, keeping the lower back dry during long hours standing\nin the rain.<o:p></o:p></p>\n\n<h2>Frequently Asked Questions<o:p></o:p></h2>\n\n<h3><span style=\"font-size:14.0pt;line-height:107%;color:windowtext\">Did Thomas\nBurberry invent the trench coat alone?</span><span style=\"font-size:14.0pt;\nline-height:107%\"><o:p></o:p></span></h3>\n\n<p>While Thomas Burberry invented gabardine and finalized the iconic trench\ndesign used by British officers, the development of the style was a\ncollaborative era effort. The historic British brand Aquascutum also developed\nhigh-quality waterproof coats for the military during the same period. However,\nBurberry’s proprietary fabric tech and signature design elements secured its\nspot as the ultimate definition of the classic style.<o:p></o:p></p>\n\n<h3><span style=\"font-size:14.0pt;line-height:107%;color:windowtext\">Why is the\ntraditional lining a check pattern?<o:p></o:p></span></h3>\n\n<p>The famous camel, red, black, and white check pattern—known worldwide as the\nBurberry Check—was first introduced in the 1920s. Originally, it was used\nstrictly as a humble, utilitarian lining for the interior of their raincoats.\nIt wasn't until the 1964 Tokyo Olympics, when the British team traveled with\nthe coats over their arms, that the public caught a glimpse of the lining,\nlaunching it into a global symbol of luxury.<o:p></o:p></p>\n\n<h3><span style=\"font-size:14.0pt;line-height:107%;color:windowtext\">Where are\nthe Heritage Trench Coats manufactured today?<o:p></o:p></span></h3>\n\n<p>To preserve the absolute authenticity and premium quality of the brand,\nevery single Heritage Trench Coat is manufactured at the company's dedicated\nmanufacturing mill in Castleford, Yorkshire, England. The specialized gabardine\nfabric itself continues to be woven nearby at the company's historic mill in\nKeighley.<o:p></o:p></p>\n\n<h2>A Century of Architectural Tailoring<o:p></o:p></h2>\n\n<p>Thomas Burberry’s legacy is a masterclass in combining brilliant material\nscience with functional design. By inventing gabardine and refining the lines\nof the British military trench coat, he created a design framework that has\nsuccessfully resisted the fast-moving trends of the fashion industry for\ngenerations.<o:p></o:p></p>\n\n<p>When you invest in a classic trench coat, you are not simply buying a\nseasonal fashion statement. You are wearing over 140 years of industrial\ninnovation, British military heritage, and meticulous artisan tailoring that\nremains just as protective and stylish today as it was on the historic fields\nof the past.<o:p></o:p></p>\n\n<p class=\"MsoNormal\"><o:p>&nbsp;</o:p></p>",
+      "featured_image": "/uploads/1787554989604-yeovmdl4.jpg",
+      "status": "published",
+      "published_at": "2026-08-24T07:08:20.227Z",
+      "reading_time": 7,
+      "views_count": 152,
+      "comment_count": 0,
+      "like_count": 1,
+      "created_at": "2026-08-24T07:06:03.827Z",
+      "updated_at": "2026-08-24T07:08:20.227Z",
+      "tag_ids": [],
+      "reviewed_by": 3,
+      "reviewed_at": "2026-08-24T07:08:20.227Z"
+    },
+    {
+      "post_id": 3,
+      "author_id": 1,
+      "author_name": "Abdul Wahab",
+      "author_username": "admin",
+      "category_id": 3,
+      "category_name": "AI & Machine Learning",
+      "category_slug": "ai-machine-learning",
+      "title": "Sarah Burton at Alexander McQueen: Royal Romance",
+      "slug": "sarah-burton-at-alexander-mcqueen-royal-romance",
+      "excerpt": "When Lee Alexander McQueen passed away in 2010, the fashion world held its breath. The brand had always been defined by its founder’s raw, rebellious, and often dark theatricality. Sarah Burton, who had worked closely alongside McQueen for over 14 years, stepped into the role of Creative Director with a monumental task: to honor the house's avant-garde heritage while establishing her own signature. Over her 13-year tenure, Burton did more than just preserve the brand—she evolved it into a powerhouse of technical mastery, refined romanticism, and timeless British elegance.",
+      "content": "<p class=\"MsoNormal\" style=\"mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;\nline-height:normal;mso-outline-level:1\"><b><span style=\"font-size:24.0pt;\nfont-family:&quot;Times New Roman&quot;,serif;mso-fareast-font-family:&quot;Times New Roman&quot;;\nmso-font-kerning:18.0pt\">Alexander McQueen (Under Sarah Burton): Technical\nMastery &amp; Royal Romance<o:p></o:p></span></b></p><p class=\"MsoNormal\" style=\"mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;\nline-height:normal;mso-outline-level:1\"><b><span style=\"font-size:24.0pt;\nfont-family:&quot;Times New Roman&quot;,serif;mso-fareast-font-family:&quot;Times New Roman&quot;;\nmso-font-kerning:18.0pt\"><br></span></b></p>\n\n<p class=\"MsoNormal\" style=\"mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;\nline-height:normal\"><span style=\"font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;\nmso-fareast-font-family:&quot;Times New Roman&quot;\">When Lee Alexander McQueen passed\naway in 2010, the fashion world held its breath. The brand had always been\ndefined by its founder’s raw, rebellious, and often dark theatricality. Sarah\nBurton, who had worked closely alongside McQueen for over 14 years, stepped\ninto the role of Creative Director with a monumental task: to honor the house's\navant-garde heritage while establishing her own signature. Over her 13-year tenure,\nBurton did more than just preserve the brand—she evolved it into a powerhouse\nof technical mastery, refined romanticism, and timeless British elegance.<o:p></o:p></span></p><p class=\"MsoNormal\" style=\"mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;\nline-height:normal\"><span style=\"font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;\nmso-fareast-font-family:&quot;Times New Roman&quot;\"><br></span></p>\n\n<p class=\"MsoNormal\" style=\"mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;\nline-height:normal;mso-outline-level:2\"><b><span style=\"font-size:18.0pt;\nfont-family:&quot;Times New Roman&quot;,serif;mso-fareast-font-family:&quot;Times New Roman&quot;\">The\nTransition: Honoring Heritage While Finding a New Voice<o:p></o:p></span></b></p><p class=\"MsoNormal\" style=\"mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;\nline-height:normal;mso-outline-level:2\"><b><span style=\"font-size:18.0pt;\nfont-family:&quot;Times New Roman&quot;,serif;mso-fareast-font-family:&quot;Times New Roman&quot;\"><br></span></b></p>\n\n<p class=\"MsoNormal\" style=\"mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;\nline-height:normal\"><span style=\"font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;\nmso-fareast-font-family:&quot;Times New Roman&quot;\">Sarah Burton’s arrival at the helm\nwas a period of delicate transition. The fashion industry watched to see if the\nbrand would lose its \"edge\" without its founder’s provocative spirit.\nInstead, Burton leaned into the house's core strength: <b>extraordinary\ncraftsmanship</b>.<o:p></o:p></span></p><p class=\"MsoNormal\" style=\"mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;\nline-height:normal\"><span style=\"font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;\nmso-fareast-font-family:&quot;Times New Roman&quot;\"><br></span></p>\n\n<p class=\"MsoNormal\" style=\"mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;\nline-height:normal\"><span style=\"font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;\nmso-fareast-font-family:&quot;Times New Roman&quot;\">While McQueen was known for shock\nvalue, Burton shifted the focus toward the sheer beauty of the garment. She\nproved that the brand did not need to be controversial to be compelling. Her\napproach was rooted in deep respect for the tailoring techniques that McQueen\nhimself had mastered during his early days on Savile Row. Under her guidance,\nthe brand became a celebration of the artisan, emphasizing the hidden handwork\nthat elevates high fashion into fine art.<o:p></o:p></span></p><p class=\"MsoNormal\" style=\"mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;\nline-height:normal\"><span style=\"font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;\nmso-fareast-font-family:&quot;Times New Roman&quot;\"><br></span></p>\n\n<p class=\"MsoNormal\" style=\"mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;\nline-height:normal;mso-outline-level:2\"><b><span style=\"font-size:18.0pt;\nfont-family:&quot;Times New Roman&quot;,serif;mso-fareast-font-family:&quot;Times New Roman&quot;\">The\nRoyal Romance: A Global Cultural Milestone<o:p></o:p></span></b></p><p class=\"MsoNormal\" style=\"mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;\nline-height:normal;mso-outline-level:2\"><br></p>\n\n<p class=\"MsoNormal\" style=\"mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;\nline-height:normal\"><span style=\"font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;\nmso-fareast-font-family:&quot;Times New Roman&quot;\">If there is one moment that\nsolidified Sarah Burton’s place in fashion history, it was the 2011 Royal\nWedding. When Catherine, Princess of Wales, chose a Burton-designed gown for\nher wedding to Prince William, the global perspective on Alexander McQueen\nchanged forever.<o:p></o:p></span></p>\n\n<p class=\"MsoNormal\" style=\"mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;\nline-height:normal\"><span style=\"font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;\nmso-fareast-font-family:&quot;Times New Roman&quot;\">Burton’s design for the royal gown\nwas a masterclass in subtlety and historical reverence. It featured intricate\nlace work created by the Royal School of Needlework, blending traditional\nVictorian corsetry with a modern, clean silhouette. This moment was crucial for\nthe brand; it showed the world that Alexander McQueen could represent the\nhighest level of formality and grace. Burton’s ability to move from avant-garde\nrunway concepts to royal-grade couture showcased the incredible versatility of\nthe brand's technical team.<o:p></o:p></span></p>\n\n<p class=\"MsoNormal\" style=\"mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;\nline-height:normal\"><span style=\"font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;\nmso-fareast-font-family:&quot;Times New Roman&quot;\">&nbsp;</span></p>\n\n<p class=\"MsoNormal\" style=\"mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;\nline-height:normal\"><span style=\"font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;\nmso-fareast-font-family:&quot;Times New Roman&quot;\">&nbsp;</span></p>\n\n<p class=\"MsoNormal\" style=\"mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;\nline-height:normal;mso-outline-level:2\"><b><span style=\"font-size:18.0pt;\nfont-family:&quot;Times New Roman&quot;,serif;mso-fareast-font-family:&quot;Times New Roman&quot;\">Technical\nMastery: The Anatomy of a McQueen Creation<o:p></o:p></span></b></p><p class=\"MsoNormal\" style=\"mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;\nline-height:normal;mso-outline-level:2\"><b><span style=\"font-size:18.0pt;\nfont-family:&quot;Times New Roman&quot;,serif;mso-fareast-font-family:&quot;Times New Roman&quot;\"><br></span></b></p>\n\n<p class=\"MsoNormal\" style=\"mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;\nline-height:normal\"><span style=\"font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;\nmso-fareast-font-family:&quot;Times New Roman&quot;\">Burton’s work was defined by a\ndevotion to the \"how\" of fashion. She did not just design a dress;\nshe engineered it. Her collections frequently highlighted the structural\nintegrity of garments, ensuring that every seam, pleat, and embroidery\nplacement served a specific purpose.<o:p></o:p></span></p><p class=\"MsoNormal\" style=\"mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;\nline-height:normal\"><span style=\"font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;\nmso-fareast-font-family:&quot;Times New Roman&quot;\"><br></span></p>\n\n<p class=\"MsoNormal\" style=\"mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;\nline-height:normal\"><span style=\"font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;\nmso-fareast-font-family:&quot;Times New Roman&quot;\">To understand what defines a\nBurton-era McQueen creation, consider these core design pillars:<o:p></o:p></span></p>\n\n<ul type=\"disc\">\n <li class=\"MsoNormal\" style=\"mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;\n     line-height:normal;mso-list:l0 level1 lfo1;tab-stops:list .5in\"><b><span style=\"font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;mso-fareast-font-family:\n     &quot;Times New Roman&quot;\">Architectural Tailoring:</span></b><span style=\"font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;mso-fareast-font-family:\n     &quot;Times New Roman&quot;\"> Burton maintained the house's signature sharp\n     shoulders and cinched waists, creating a silhouette that is instantly\n     recognizable as powerful, structured, and distinctively\n     \"McQueen.\"<o:p></o:p></span></li>\n <li class=\"MsoNormal\" style=\"mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;\n     line-height:normal;mso-list:l0 level1 lfo1;tab-stops:list .5in\"><b><span style=\"font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;mso-fareast-font-family:\n     &quot;Times New Roman&quot;\">Hand-Applied Embellishment:</span></b><span style=\"font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;mso-fareast-font-family:\n     &quot;Times New Roman&quot;\"> A hallmark of her collections was the intense labor of\n     love—often involving thousands of hours of hand-beading, embroidery, and\n     petal-layering—designed to mimic organic forms like flowers, insects, or\n     skeletal structures.<o:p></o:p></span></li>\n <li class=\"MsoNormal\" style=\"mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;\n     line-height:normal;mso-list:l0 level1 lfo1;tab-stops:list .5in\"><b><span style=\"font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;mso-fareast-font-family:\n     &quot;Times New Roman&quot;\">Fabric Innovation:</span></b><span style=\"font-size:\n     12.0pt;font-family:&quot;Times New Roman&quot;,serif;mso-fareast-font-family:&quot;Times New Roman&quot;\">\n     She often used heavy, dense fabrics (like structured wools and rigid\n     silks) and manipulated them into surprisingly soft, fluid shapes,\n     demonstrating a level of fabric control that few designers can match.<o:p></o:p></span></li>\n <li class=\"MsoNormal\" style=\"mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;\n     line-height:normal;mso-list:l0 level1 lfo1;tab-stops:list .5in\"><b><span style=\"font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;mso-fareast-font-family:\n     &quot;Times New Roman&quot;\">Nature-Inspired Motifs:</span></b><span style=\"font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;mso-fareast-font-family:\n     &quot;Times New Roman&quot;\"> Moving away from the darker themes of the early 2000s,\n     Burton introduced a softer, nature-focused romanticism, often featuring\n     woodland elements, botanical prints, and earth-toned palettes that\n     celebrated the British landscape.<o:p></o:p></span></li>\n</ul><div><font face=\"Times New Roman, serif\"><span style=\"font-size: 16px;\"><br></span></font></div>\n\n<p class=\"MsoNormal\" style=\"mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;\nline-height:normal;mso-outline-level:2\"><b><span style=\"font-size:18.0pt;\nfont-family:&quot;Times New Roman&quot;,serif;mso-fareast-font-family:&quot;Times New Roman&quot;\">Legacy\nand Evolution<o:p></o:p></span></b></p><p class=\"MsoNormal\" style=\"mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;\nline-height:normal;mso-outline-level:2\"><b><span style=\"font-size:18.0pt;\nfont-family:&quot;Times New Roman&quot;,serif;mso-fareast-font-family:&quot;Times New Roman&quot;\"><br></span></b></p>\n\n<p class=\"MsoNormal\" style=\"mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;\nline-height:normal\"><span style=\"font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;\nmso-fareast-font-family:&quot;Times New Roman&quot;\">Sarah Burton’s contribution to\nAlexander McQueen is a testament to the idea that a brand can evolve without\nlosing its soul. She took a label known for its explosive, volatile energy and\nrefined it into a house known for its poetic, almost ethereal, technical\nperfection.<o:p></o:p></span></p>\n\n<p class=\"MsoNormal\" style=\"mso-margin-top-alt:auto;mso-margin-bottom-alt:auto;\nline-height:normal\"><span style=\"font-size:12.0pt;font-family:&quot;Times New Roman&quot;,serif;\nmso-fareast-font-family:&quot;Times New Roman&quot;\">By the time she stepped down in\n2023, she had ensured that the house was no longer just defined by the memory\nof its founder, but by its own continued ability to innovate. She set a\nstandard for technical excellence that will influence the brand’s direction for\nyears to come. Her tenure proved that true creative success is not just about\nthe loud impact of a runway show, but the quiet, rigorous pursuit of the\nperfect stitch.<o:p></o:p></span></p>\n\n<p class=\"MsoNormal\"><o:p>&nbsp;</o:p></p>",
+      "status": "published",
+      "published_at": "2026-08-19T11:13:00.000Z",
+      "scheduled_at": "2026-08-19T11:13:00.000Z",
+      "reading_time": 4,
+      "views_count": 20,
+      "comment_count": 0,
+      "like_count": 1,
+      "created_at": "2026-08-19T11:12:12.459Z",
+      "updated_at": "2026-08-19T11:13:01.111Z",
+      "tag_ids": [],
+      "author_avatar": "/uploads/1787588806977-xexqhoev.png"
+    },
+    {
+      "post_id": 2,
+      "author_id": 1,
+      "author_name": "Abdul Wahab",
+      "author_username": "admin",
+      "category_id": 1,
+      "category_name": "Technology",
+      "category_slug": "technology",
+      "title": "First Live Persistent Story",
+      "slug": "first-live-persistent-story",
+      "excerpt": "Testing real-time persistent saving to disk",
+      "content": "<p>This is a real persistent test story.</p>",
+      "status": "published",
+      "published_at": "2026-08-19T07:52:06.007Z",
+      "reading_time": 1,
+      "views_count": 16,
+      "comment_count": 0,
+      "like_count": 0,
+      "created_at": "2026-08-19T07:52:06.008Z",
+      "updated_at": "2026-08-19T07:52:48.369Z",
+      "tag_ids": [],
+      "author_avatar": "/uploads/1787588806977-xexqhoev.png"
+    },
+    {
+      "post_id": 1,
+      "author_id": 1,
+      "author_name": "Abdul Wahab",
+      "author_username": "admin",
+      "category_id": 2,
+      "category_name": "Web Development",
+      "category_slug": "web-development",
+      "title": "Building Modern Next-Gen Web Applications with React & Node.js",
+      "slug": "building-modern-next-gen-web-applications",
+      "excerpt": "Discover how modern component architecture, TypeScript, and clean API design power responsive digital publications.",
+      "content": "\n          <h2>Welcome to ModernBlog CMS</h2>\n          <p>ModernBlog is designed from the ground up for speed, elegance, and scale. With visual editing tools, rich multimedia integration, and full database persistence, content creators can compose stories effortlessly.</p>\n          <div style=\"background-color:rgba(16,185,129,0.08);border-left:4px solid #10b981;padding:1rem 1.25rem;border-radius:6px;margin:1.5rem 0;\">\n            <strong style=\"color:#10b981;display:block;margin-bottom:0.35rem;\">💡 Key Highlight</strong>\n            <p style=\"margin:0;line-height:1.6;\">Everything created in ModernBlog CMS is permanently persisted and updated in real-time!</p>\n          </div>\n          <p>Explore the admin control panel to write new articles, moderate comments, manage tags and categories, or configure SEO and system preferences.</p>\n        ",
+      "featured_image": "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=1200&auto=format&fit=crop&q=80",
+      "status": "published",
+      "published_at": "2026-08-19T07:40:57.279Z",
+      "reading_time": 3,
+      "views_count": 156,
+      "comment_count": 0,
+      "like_count": 5,
+      "created_at": "2026-08-19T07:40:57.279Z",
+      "updated_at": "2026-08-19T07:40:57.279Z",
+      "tag_ids": [
+        4
+      ],
+      "author_avatar": "/uploads/1787588806977-xexqhoev.png"
+    }
+  ],
+  "comments": [
+    {
+      "comment_id": 1,
+      "post_id": 3,
+      "user_id": 5,
+      "author_name": "Abdul Ahad",
+      "author_username": "ahad121",
+      "content": "This article is very informative for History.",
+      "status": "APPROVED",
+      "created_at": "2026-08-19T11:16:29.785Z",
+      "updated_at": "2026-08-24T08:14:28.800Z"
+    }
+  ],
+  "likes": [
+    {
+      "like_id": 1,
+      "post_id": 3,
+      "user_id": 5,
+      "created_at": "2026-08-19T11:15:52.930Z"
+    },
+    {
+      "like_id": 2,
+      "post_id": 4,
+      "user_id": 2,
+      "created_at": "2026-08-24T07:20:27.604Z"
+    }
+  ],
+  "bookmarks": [
+    {
+      "bookmark_id": 1,
+      "user_id": 5,
+      "post_id": 3,
+      "created_at": "2026-08-19T11:15:54.191Z"
+    },
+    {
+      "bookmark_id": 2,
+      "user_id": 2,
+      "post_id": 4,
+      "created_at": "2026-08-24T07:20:21.138Z"
+    }
+  ],
+  "notifications": [
+    {
+      "notification_id": 1787137981808,
+      "user_id": 1,
+      "title": "Scheduled Article Published",
+      "message": "Your scheduled article \"Sarah Burton at Alexander McQueen: Royal Romance\" has been automatically published.",
+      "is_read": true,
+      "created_at": "2026-08-19T11:13:01.111Z"
+    },
+    {
+      "notification_id": 1,
+      "user_id": 1,
+      "title": "Welcome to ModernBlog CMS",
+      "message": "Your publication platform is online and ready with full database persistence.",
+      "is_read": true,
+      "created_at": "2026-08-19T07:40:57.279Z"
+    },
+    {
+      "notification_id": 1787137981809,
+      "user_id": 5,
+      "title": "Comment Status: APPROVED",
+      "message": "Your comment on article #3 status has been updated to approved.",
+      "is_read": true,
+      "created_at": "2026-08-19T11:18:05.506Z"
+    },
+    {
+      "notification_id": 1787137981810,
+      "user_id": 5,
+      "title": "Comment Status: APPROVED",
+      "message": "Your comment on article #3 status has been updated to approved.",
+      "is_read": true,
+      "created_at": "2026-08-19T11:18:07.581Z"
+    },
+    {
+      "notification_id": 1787137981811,
+      "user_id": 5,
+      "title": "Comment Status: APPROVED",
+      "message": "Your comment on article #3 status has been updated to approved.",
+      "is_read": true,
+      "created_at": "2026-08-19T11:18:08.915Z"
+    },
+    {
+      "notification_id": 1787137981812,
+      "user_id": 5,
+      "title": "Comment Status: APPROVED",
+      "message": "Your comment on article #3 status has been updated to approved.",
+      "is_read": true,
+      "created_at": "2026-08-19T11:18:09.606Z"
+    },
+    {
+      "notification_id": 1787137981813,
+      "user_id": 5,
+      "title": "Comment Status: APPROVED",
+      "message": "Your comment on article #3 status has been updated to approved.",
+      "is_read": true,
+      "created_at": "2026-08-19T11:18:13.498Z"
+    },
+    {
+      "notification_id": 1787137981814,
+      "user_id": 5,
+      "title": "Comment Status: REJECTED",
+      "message": "Your comment on article #3 status has been updated to rejected.",
+      "is_read": true,
+      "created_at": "2026-08-19T11:18:15.037Z"
+    },
+    {
+      "notification_id": 1787137981815,
+      "user_id": 5,
+      "title": "Comment Status: APPROVED",
+      "message": "Your comment on article #3 status has been updated to approved.",
+      "is_read": true,
+      "created_at": "2026-08-19T11:18:16.573Z"
+    },
+    {
+      "notification_id": 1787137981816,
+      "user_id": 5,
+      "title": "Comment Status: REJECTED",
+      "message": "Your comment on article #3 status has been updated to rejected.",
+      "is_read": true,
+      "created_at": "2026-08-19T11:18:44.651Z"
+    },
+    {
+      "notification_id": 1787137981817,
+      "user_id": 5,
+      "title": "Comment Status: APPROVED",
+      "message": "Your comment on article #3 status has been updated to approved.",
+      "is_read": true,
+      "created_at": "2026-08-19T11:19:08.498Z"
+    },
+    {
+      "notification_id": 1787137981818,
+      "user_id": 2,
+      "title": "Article Submitted for Review",
+      "message": "Your story 'Burberry: The Invention of Gabardine & The Trench Coat' has been submitted for editorial review.",
+      "is_read": true,
+      "created_at": "2026-08-24T07:06:03.860Z"
+    },
+    {
+      "notification_id": 1787137981819,
+      "user_id": 2,
+      "title": "Article Approved & Published!",
+      "message": "Congratulations! Your article 'Burberry: The Invention of Gabardine & The Trench Coat' has been approved and published to the public journal.",
+      "is_read": true,
+      "created_at": "2026-08-24T07:08:20.229Z"
+    },
+    {
+      "notification_id": 1787137981820,
+      "user_id": 5,
+      "title": "Comment Status: REJECTED",
+      "message": "Your comment on article #3 status has been updated to rejected.",
+      "is_read": false,
+      "created_at": "2026-08-24T07:10:41.866Z"
+    },
+    {
+      "notification_id": 1787137981821,
+      "user_id": 5,
+      "title": "Comment Status: APPROVED",
+      "message": "Your comment on article #3 status has been updated to approved.",
+      "is_read": false,
+      "created_at": "2026-08-24T08:14:28.802Z"
+    },
+    {
+      "notification_id": 1787137981822,
+      "user_id": 4,
+      "title": "Article Submitted for Review",
+      "message": "Your story 'Alexander McQueen (Under Sarah Burton): Technical Mastery & Royal Romance' has been submitted for editorial review.",
+      "is_read": true,
+      "created_at": "2026-08-25T12:49:15.410Z"
+    },
+    {
+      "notification_id": 1787137981823,
+      "user_id": 4,
+      "title": "Revisions Requested for Article",
+      "message": "Editorial changes requested for 'Alexander McQueen (Under Sarah Burton): Technical Mastery & Royal Romance': nt azsxdcfvx",
+      "is_read": true,
+      "created_at": "2026-08-25T12:50:51.059Z"
+    },
+    {
+      "notification_id": 1787137981824,
+      "user_id": 2,
+      "title": "Author Application Received!",
+      "message": "Your application to join the editorial team as an Author has been received. Our administration will review your portfolio.",
+      "is_read": false,
+      "created_at": "2026-08-26T06:18:55.139Z"
+    },
+    {
+      "notification_id": 1787137981825,
+      "user_id": 2,
+      "type": "SYSTEM",
+      "title": "Application Update: Author Submission",
+      "message": "Thank you for your interest in joining as Author. Your application was not approved at this time. Reason: your are not elligible for this.",
+      "link_url": "/user/apply",
+      "is_read": false,
+      "created_at": "2026-08-26T06:28:45.742Z"
+    },
+    {
+      "notification_id": 1787137981826,
+      "user_id": 6,
+      "type": "SYSTEM",
+      "title": "Author Application Received!",
+      "message": "Your application to join the editorial team as an Author has been received. Our administration will review your portfolio.",
+      "link_url": "/user/apply",
+      "is_read": true,
+      "created_at": "2026-08-26T13:55:02.316Z"
+    },
+    {
+      "notification_id": 1787137981827,
+      "user_id": 1,
+      "type": "SYSTEM",
+      "title": "🔔 New Author Application: Abdul Ahad",
+      "message": "Abdul Ahad (@ahad121) has applied to become an Author. Click to review writing samples & portfolio.",
+      "link_url": "/admin/applications",
+      "is_read": true,
+      "created_at": "2026-08-26T13:55:02.321Z"
+    },
+    {
+      "notification_id": 1787137981828,
+      "user_id": 6,
+      "type": "SYSTEM",
+      "title": "🎉 Application Approved — Welcome Author!",
+      "message": "Congratulations! Your application to become a Author has been approved by our Administration. You have been assigned the Author portal.",
+      "link_url": "/admin",
+      "is_read": true,
+      "created_at": "2026-08-26T13:56:07.438Z"
+    },
+    {
+      "notification_id": 1787137981829,
+      "user_id": 4,
+      "type": "SYSTEM",
+      "title": "Author Application Received!",
+      "message": "Your application to join the editorial team as an Author has been received. Our administration will review your portfolio.",
+      "link_url": "/user/apply",
+      "is_read": false,
+      "created_at": "2026-08-27T08:04:34.392Z"
+    },
+    {
+      "notification_id": 1787137981830,
+      "user_id": 1,
+      "type": "SYSTEM",
+      "title": "🔔 New Author Application: Featured Author",
+      "message": "Featured Author (@author) has applied to become an Author. Click to review writing samples & portfolio.",
+      "link_url": "/admin/applications",
+      "is_read": true,
+      "created_at": "2026-08-27T08:04:34.399Z"
+    },
+    {
+      "notification_id": 1787137981831,
+      "user_id": 4,
+      "type": "SYSTEM",
+      "title": "🎉 Application Approved — Welcome Author!",
+      "message": "Congratulations! Your application to become a Author has been approved by our Administration. You have been assigned the Author portal.",
+      "link_url": "/admin",
+      "is_read": true,
+      "created_at": "2026-08-27T08:05:16.046Z"
+    }
+  ],
+  "settings": {
+    "site_title": "BitBlog CMS",
+    "site_tagline": "Modern High-Performance Digital Publishing Platform",
+    "site_description": "BitBlog is a next-generation digital publishing platform bringing you insightful articles, cutting-edge technology trends, design philosophies, and curated editorial analysis.",
+    "site_email": "editorial@bitblog.com",
+    "site_logo": "/uploads/1787642147939-4s0zsyy7.png",
+    "allow_registrations": "true",
+    "comments_moderation": "false",
+    "site_name": "BitBlog",
+    "contact_email": "chief-editor@bitblog.com",
+    "social_facebook": "https://facebook.com",
+    "social_twitter": "https://x.com",
+    "social_linkedin": "https://linkedin.com",
+    "footer_text": "© 2026 BitBlog. All rights reserved.",
+    "posts_per_page": "12",
+    "comments_enabled": "true",
+    "newsletter_enabled": "true",
+    "default_seo_title": "BitBlog CMS - Digital Journal & Publication",
+    "default_meta_description": "Discover editorial stories, technology commentary, and curated digital journalism.",
+    "default_og_image": "",
+    "default_robots": "index, follow",
+    "site_canonical_base_url": "http://127.0.0.1:5173",
+    "geo_organization_name": "BitBlog Media Corp",
+    "site_favicon": "/uploads/1787642109844-xe6ebdcu.jpg",
+    "social_youtube": "https://youtube.com",
+    "aeo_faq_enabled": "true",
+    "aeo_howto_enabled": "true",
+    "geo_publisher_logo": ""
+  },
+  "messages": [],
+  "subscribers": [
+    {
+      "subscriber_id": 1,
+      "email": "shahzarnab786@gmail.com",
+      "name": "Zarnab",
+      "topics": [
+        "Technology & AI",
+        "Weekly Digest"
+      ],
+      "status": "SUBSCRIBED",
+      "created_at": "2026-08-24T08:13:28.472Z",
+      "subscribed_at": "2026-08-24T08:13:28.472Z",
+      "notes": ""
+    },
+    {
+      "subscriber_id": 2,
+      "email": "aw419770@gmail.com",
+      "name": "Abdul Wahab",
+      "topics": [
+        "Technology & AI",
+        "Weekly Digest"
+      ],
+      "status": "SUBSCRIBED",
+      "created_at": "2026-08-24T08:22:12.718Z",
+      "subscribed_at": "2026-08-24T08:22:12.718Z",
+      "notes": ""
+    }
+  ],
+  "media": [
+    {
+      "media_id": 1,
+      "filename": "1787642091799-fv2yofix.png",
+      "original_name": "1787642091799-fv2yofix.png",
+      "url": "/uploads/1787642091799-fv2yofix.png",
+      "mimetype": "image/png",
+      "size": 9123,
+      "alt_text": "AM Architecture",
+      "uploaded_by": 1,
+      "created_at": "2026-08-25T07:14:51.877Z",
+      "updated_at": "2026-08-25T07:14:51.877Z"
+    },
+    {
+      "media_id": 2,
+      "filename": "1787642109844-xe6ebdcu.jpg",
+      "original_name": "1787642109844-xe6ebdcu.jpg",
+      "url": "/uploads/1787642109844-xe6ebdcu.jpg",
+      "mimetype": "image/jpeg",
+      "size": 25390,
+      "alt_text": "medicare_Logo",
+      "uploaded_by": 1,
+      "created_at": "2026-08-25T07:15:09.847Z",
+      "updated_at": "2026-08-25T07:15:09.847Z"
+    },
+    {
+      "media_id": 3,
+      "filename": "1787642147939-4s0zsyy7.png",
+      "original_name": "1787642147939-4s0zsyy7.png",
+      "url": "/uploads/1787642147939-4s0zsyy7.png",
+      "mimetype": "image/png",
+      "size": 9123,
+      "alt_text": "AM Architecture",
+      "uploaded_by": 1,
+      "created_at": "2026-08-25T07:15:47.943Z",
+      "updated_at": "2026-08-25T07:15:47.943Z"
+    }
+  ],
+  "role_applications": [
+    {
+      "application_id": 4,
+      "user_id": 4,
+      "name": "Featured Author",
+      "username": "author",
+      "email": "author@modernblog.com",
+      "role_applied": "Author",
+      "bio": "I want to write Article.",
+      "sample_urls": "",
+      "topics": [
+        "Technology & Innovation"
+      ],
+      "motivation": "Best Article for ModernBlog.",
+      "status": "approved",
+      "created_at": "2026-08-27T08:04:34.385Z",
+      "updated_at": "2026-08-27T08:05:16.040Z",
+      "reviewed_by": 1,
+      "reviewed_at": "2026-08-27T08:05:16.040Z",
+      "feedback": "Congratulations! Your writing samples and background have been approved. Welcome to the editorial staff!"
+    },
+    {
+      "application_id": 3,
+      "user_id": 6,
+      "name": "Abdul Ahad",
+      "username": "ahad121",
+      "email": "ahadmirha1210@gmail.com",
+      "role_applied": "Author",
+      "bio": "I am a SEO Professional for write the article.",
+      "sample_urls": "",
+      "topics": [
+        "Technology & Innovation",
+        "AI & Machine Learning",
+        "Business & Startups",
+        "Web Development & APIs"
+      ],
+      "motivation": "My work is always good.",
+      "status": "approved",
+      "created_at": "2026-08-26T13:55:02.313Z",
+      "updated_at": "2026-08-26T13:56:07.431Z",
+      "reviewed_by": 1,
+      "reviewed_at": "2026-08-26T13:56:07.431Z",
+      "feedback": "Congratulations! Your writing samples and background have been approved. Welcome to the editorial staff!"
+    },
+    {
+      "application_id": 2,
+      "user_id": 2,
+      "name": "Demo Reader",
+      "username": "reader",
+      "email": "reader@modernblog.com",
+      "role_applied": "Author",
+      "bio": "htfgufutf fyfvb cfcc vdyf tf tfytf v t t iufitf tf ftif tf tftf tf ftyfcgvghtf fg kyu.",
+      "sample_urls": "",
+      "topics": [
+        "Technology & Innovation"
+      ],
+      "motivation": "gyguyguy uyggu yguguybv utfguyguy fgyufguyg yufguygu gyguv uygyugjh",
+      "status": "rejected",
+      "created_at": "2026-08-26T06:18:55.136Z",
+      "updated_at": "2026-08-26T06:28:45.738Z",
+      "reviewed_by": 1,
+      "reviewed_at": "2026-08-26T06:28:45.738Z",
+      "feedback": "your are not elligible for this."
+    },
+    {
+      "application_id": 1,
+      "user_id": 5,
+      "name": "Aspiring Tech Journalist",
+      "username": "journalist_1787724333395",
+      "email": "journalist_1787724333395@example.com",
+      "role_applied": "Author",
+      "bio": "Published writer with 3 years experience covering AI and Cloud computing architectures.",
+      "sample_urls": "https://github.com, https://medium.com/@writer",
+      "topics": [
+        "Technology",
+        "AI & Machine Learning"
+      ],
+      "motivation": "I want to write in-depth technical deep dives for ModernBlog CMS.",
+      "status": "approved",
+      "created_at": "2026-08-26T06:05:33.772Z",
+      "updated_at": "2026-08-26T06:05:33.787Z",
+      "reviewed_by": 1,
+      "reviewed_at": "2026-08-26T06:05:33.787Z",
+      "feedback": "Excellent writing samples and background. Welcome aboard!"
+    }
+  ],
+  "audit_logs": [
+    {
+      "log_id": 23,
+      "user_id": 1,
+      "user_name": "Abdul Wahab",
+      "user_role": "Admin",
+      "action": "USER_LOGIN_SUCCESS",
+      "category": "AUTH",
+      "details": "Admin 'Abdul Wahab' signed into portal.",
+      "ip_address": "::1",
+      "severity": "success",
+      "created_at": "2026-08-27T08:16:00.695Z"
+    },
+    {
+      "log_id": 22,
+      "user_id": 4,
+      "user_name": "Featured Author",
+      "user_role": "Author",
+      "action": "USER_LOGIN_SUCCESS",
+      "category": "AUTH",
+      "details": "Author 'Featured Author' signed into portal.",
+      "ip_address": "::1",
+      "severity": "success",
+      "created_at": "2026-08-27T08:05:43.260Z"
+    },
+    {
+      "log_id": 21,
+      "user_id": 1,
+      "user_name": "Abdul Wahab",
+      "user_role": "Admin",
+      "action": "ROLE_APPLICATION_APPROVED",
+      "category": "APPLICATION",
+      "details": "Administrator approved Application #4 and automatically promoted 'Featured Author' to 'Author'.",
+      "ip_address": "::1",
+      "severity": "success",
+      "created_at": "2026-08-27T08:05:16.050Z"
+    },
+    {
+      "log_id": 20,
+      "user_id": 1,
+      "user_name": "Abdul Wahab",
+      "user_role": "Admin",
+      "action": "USER_LOGIN_SUCCESS",
+      "category": "AUTH",
+      "details": "Admin 'Abdul Wahab' signed into portal.",
+      "ip_address": "::1",
+      "severity": "success",
+      "created_at": "2026-08-27T08:05:08.265Z"
+    },
+    {
+      "log_id": 19,
+      "user_id": 4,
+      "user_name": "Featured Author",
+      "user_role": "Author",
+      "action": "APPLICATION_SUBMITTED",
+      "category": "APPLICATION",
+      "details": "Reader 'Featured Author' submitted an application to become an 'Author'.",
+      "ip_address": "::1",
+      "severity": "info",
+      "created_at": "2026-08-27T08:04:34.404Z"
+    },
+    {
+      "log_id": 18,
+      "user_id": 4,
+      "user_name": "Featured Author",
+      "user_role": "Author",
+      "action": "USER_LOGIN_SUCCESS",
+      "category": "AUTH",
+      "details": "Author 'Featured Author' signed into portal.",
+      "ip_address": "::1",
+      "severity": "success",
+      "created_at": "2026-08-27T08:02:50.532Z"
+    },
+    {
+      "log_id": 17,
+      "user_id": 1,
+      "user_name": "Abdul Wahab",
+      "user_role": "Admin",
+      "action": "USER_LOGIN_SUCCESS",
+      "category": "AUTH",
+      "details": "Admin 'Abdul Wahab' signed into portal.",
+      "ip_address": "::1",
+      "severity": "success",
+      "created_at": "2026-08-27T08:01:39.119Z"
+    },
+    {
+      "log_id": 16,
+      "user_id": 6,
+      "user_name": "Abdul Ahad",
+      "user_role": "User",
+      "action": "USER_LOGIN_SUCCESS",
+      "category": "AUTH",
+      "details": "User 'Abdul Ahad' signed into portal.",
+      "ip_address": "::1",
+      "severity": "success",
+      "created_at": "2026-08-27T08:00:10.222Z"
+    },
+    {
+      "log_id": 15,
+      "user_id": 1,
+      "user_name": "Abdul Wahab",
+      "user_role": "Admin",
+      "action": "USER_LOGIN_SUCCESS",
+      "category": "AUTH",
+      "details": "Admin 'Abdul Wahab' signed into portal.",
+      "ip_address": "::1",
+      "severity": "success",
+      "created_at": "2026-08-27T07:51:43.242Z"
+    },
+    {
+      "log_id": 14,
+      "user_id": 1,
+      "user_name": "Abdul Wahab",
+      "user_role": "Admin",
+      "action": "ROLE_APPLICATION_APPROVED",
+      "category": "APPLICATION",
+      "details": "Administrator approved Application #3 and automatically promoted 'Abdul Ahad' to 'Author'.",
+      "ip_address": "::1",
+      "severity": "success",
+      "created_at": "2026-08-26T13:56:07.442Z"
+    },
+    {
+      "log_id": 13,
+      "user_id": 1,
+      "user_name": "Abdul Wahab",
+      "user_role": "Admin",
+      "action": "USER_LOGIN_SUCCESS",
+      "category": "AUTH",
+      "details": "Admin 'Abdul Wahab' signed into portal.",
+      "ip_address": "::1",
+      "severity": "success",
+      "created_at": "2026-08-26T13:55:49.719Z"
+    },
+    {
+      "log_id": 12,
+      "user_id": 6,
+      "user_name": "Abdul Ahad",
+      "user_role": "User",
+      "action": "APPLICATION_SUBMITTED",
+      "category": "APPLICATION",
+      "details": "Reader 'Abdul Ahad' submitted an application to become an 'Author'.",
+      "ip_address": "::1",
+      "severity": "info",
+      "created_at": "2026-08-26T13:55:02.325Z"
+    },
+    {
+      "log_id": 11,
+      "user_id": 6,
+      "user_name": "Abdul Ahad",
+      "user_role": "User",
+      "action": "READER_REGISTERED_OTP_VERIFIED",
+      "category": "AUTH",
+      "details": "Reader 'Abdul Ahad' verified 6-digit OTP from Gmail (ahadmirha1210@gmail.com) and created active account.",
+      "ip_address": "::1",
+      "severity": "success",
+      "created_at": "2026-08-26T13:53:04.789Z"
+    },
+    {
+      "log_id": 10,
+      "user_name": "Guest User",
+      "user_role": "Public",
+      "action": "REGISTRATION_OTP_SENT",
+      "category": "AUTH",
+      "details": "Registration OTP dispatched to 'ahadmirha1210@gmail.com' for prospective reader 'Abdul Ahad'.",
+      "ip_address": "::1",
+      "severity": "info",
+      "created_at": "2026-08-26T13:51:57.858Z"
+    },
+    {
+      "log_id": 9,
+      "user_name": "Guest User",
+      "user_role": "Public",
+      "action": "REGISTRATION_OTP_SENT",
+      "category": "AUTH",
+      "details": "Registration OTP dispatched to 'ahadmirha1210@gmail.com' for prospective reader 'Abdul Ahad'.",
+      "ip_address": "::1",
+      "severity": "info",
+      "created_at": "2026-08-26T13:39:19.174Z"
+    },
+    {
+      "log_id": 8,
+      "user_name": "Guest User",
+      "user_role": "Public",
+      "action": "REGISTRATION_OTP_SENT",
+      "category": "AUTH",
+      "details": "Registration OTP dispatched to 'ahad@gmail.com' for prospective reader 'Abdul Ahad'.",
+      "ip_address": "::1",
+      "severity": "info",
+      "created_at": "2026-08-26T13:25:32.952Z"
+    },
+    {
+      "log_id": 7,
+      "user_name": "Guest User",
+      "user_role": "Public",
+      "action": "READER_REGISTERED",
+      "category": "AUTH",
+      "details": "Reader 'Abdul Haseeb' registered account (@haseeb).",
+      "ip_address": "::1",
+      "severity": "success",
+      "created_at": "2026-08-26T13:07:36.788Z"
+    },
+    {
+      "log_id": 6,
+      "user_id": 1,
+      "user_name": "Abdul Wahab",
+      "user_role": "Admin",
+      "action": "USER_LOGIN_SUCCESS",
+      "category": "AUTH",
+      "details": "Admin 'Abdul Wahab' signed into portal.",
+      "ip_address": "::1",
+      "severity": "success",
+      "created_at": "2026-08-26T11:56:13.514Z"
+    },
+    {
+      "log_id": 5,
+      "user_name": "Guest User",
+      "user_role": "Public",
+      "action": "READER_REGISTERED",
+      "category": "AUTH",
+      "details": "Reader 'Abdul Haseeb' registered account (@haseeb).",
+      "ip_address": "::1",
+      "severity": "success",
+      "created_at": "2026-08-26T11:54:14.719Z"
+    },
+    {
+      "log_id": 4,
+      "user_name": "Guest User",
+      "user_role": "Public",
+      "action": "READER_REGISTERED",
+      "category": "AUTH",
+      "details": "Reader 'Abdul Ahad' registered account (@ahad).",
+      "ip_address": "::1",
+      "severity": "success",
+      "created_at": "2026-08-26T11:52:03.234Z"
+    },
+    {
+      "log_id": 3,
+      "user_id": 1,
+      "user_name": "Abdul Wahab",
+      "user_role": "Admin",
+      "action": "USER_LOGIN_SUCCESS",
+      "category": "AUTH",
+      "details": "Admin 'Abdul Wahab' signed into portal.",
+      "ip_address": "::1",
+      "severity": "success",
+      "created_at": "2026-08-26T11:50:21.177Z"
+    },
+    {
+      "log_id": 2,
+      "user_name": "Guest User",
+      "user_role": "Public",
+      "action": "READER_REGISTERED",
+      "category": "AUTH",
+      "details": "Reader 'Abdul Ahad' registered account (@ahad).",
+      "ip_address": "::1",
+      "severity": "success",
+      "created_at": "2026-08-26T10:53:06.028Z"
+    },
+    {
+      "log_id": 1,
+      "user_id": 1,
+      "user_name": "Abdul Wahab",
+      "user_role": "Admin",
+      "action": "AUDIT_LOGS_PURGED",
+      "category": "SETTINGS",
+      "details": "Administrator cleared all historical audit logs.",
+      "ip_address": "::1",
+      "severity": "warning",
+      "created_at": "2026-08-26T10:51:27.347Z"
+    }
+  ]
+}
