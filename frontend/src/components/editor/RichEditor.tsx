@@ -42,9 +42,10 @@ import {
   Play,
   Crop as CropIcon,
   RotateCcw,
+  Undo2,
 } from 'lucide-react';
 import { PictureFormatStudio, PictureFormatState } from './PictureFormatStudio';
-import { ImageCropModal } from './ImageCropModal';
+import { ImageCropModal, CropStateData } from './ImageCropModal';
 
 interface RichEditorProps {
   value: string;
@@ -68,6 +69,8 @@ export const RichEditor: React.FC<RichEditorProps> = ({
   const [videoModalOpen, setVideoModalOpen] = useState(false);
   const [cropModalOpen, setCropModalOpen] = useState(false);
   const [cropImageSrc, setCropImageSrc] = useState('');
+  const [cropOriginalSrc, setCropOriginalSrc] = useState('');
+  const [cropInitialState, setCropInitialState] = useState<CropStateData | null>(null);
 
   // Link form state
   const [linkText, setLinkText] = useState('');
@@ -338,23 +341,52 @@ export const RichEditor: React.FC<RichEditorProps> = ({
     }
   };
 
-  // 5. Open Modal for Interactive Pointer Crop
+  // 5. Open Modal for Interactive Pointer Crop (Non-Destructive)
   const openCropModalForSelectedFigure = () => {
     if (!selectedFigure) return;
     const img = selectedFigure.querySelector('img');
     if (img) {
-      setCropImageSrc(img.getAttribute('src') || '');
+      const curSrc = img.getAttribute('src') || '';
+      const origSrc = img.getAttribute('data-original-src') || curSrc;
+      const savedCropState = img.getAttribute('data-crop-state');
+      let parsedState: CropStateData | null = null;
+      try {
+        if (savedCropState) parsedState = JSON.parse(savedCropState);
+      } catch {
+        parsedState = null;
+      }
+
+      setCropImageSrc(curSrc);
+      setCropOriginalSrc(origSrc);
+      setCropInitialState(parsedState);
       setCropModalOpen(true);
     }
   };
 
-  const handleCropComplete = (croppedUrl: string) => {
+  const handleCropComplete = (croppedUrl: string, originalUrl: string, cropState: CropStateData) => {
     if (!selectedFigure || !visualEditorRef.current) return;
     const img = selectedFigure.querySelector('img');
     if (img) {
       img.setAttribute('src', croppedUrl);
+      if (originalUrl) img.setAttribute('data-original-src', originalUrl);
+      if (cropState) img.setAttribute('data-crop-state', JSON.stringify(cropState));
       onChange(visualEditorRef.current.innerHTML);
       updateOverlayBox();
+    }
+  };
+
+  // Revert Crop & Restore Full Original Upload Photo
+  const handleRevertOriginalPhoto = () => {
+    if (!selectedFigure || !visualEditorRef.current) return;
+    const img = selectedFigure.querySelector('img');
+    if (img) {
+      const orig = img.getAttribute('data-original-src');
+      if (orig) {
+        img.setAttribute('src', orig);
+        img.removeAttribute('data-crop-state');
+        onChange(visualEditorRef.current.innerHTML);
+        updateOverlayBox();
+      }
     }
   };
 
@@ -515,7 +547,7 @@ export const RichEditor: React.FC<RichEditorProps> = ({
       // Insert new image figure
       const imageHtml = `
         <figure style="${figureStyle}">
-          <img src="${url}" alt="${alt}" style="width:100%;max-width:100%;height:auto;border-radius:${radiusPx};box-shadow:0 4px 16px rgba(0,0,0,0.12);object-fit:cover;" />
+          <img src="${url}" alt="${alt}" data-original-src="${url}" style="width:100%;max-width:100%;height:auto;border-radius:${radiusPx};box-shadow:0 4px 16px rgba(0,0,0,0.12);object-fit:cover;" />
           ${caption ? `<figcaption style="font-size:0.84rem;color:var(--color-muted, #71717a);margin-top:0.5rem;font-style:italic;line-height:1.4;">${caption}</figcaption>` : ''}
         </figure>
         <p><br></p>
@@ -1245,6 +1277,8 @@ export const RichEditor: React.FC<RichEditorProps> = ({
             selectedFigure={selectedFigure}
             onApply={applyPictureFormatStudio}
             onCropImage={openCropModalForSelectedFigure}
+            onRevertOriginalPhoto={handleRevertOriginalPhoto}
+            hasCropHistory={!!selectedFigure.querySelector('img')?.hasAttribute('data-crop-state')}
             onReplaceImage={openEditModalForSelectedFigure}
             onDeleteImage={deleteSelectedFigure}
             onClose={() => setSelectedFigure(null)}
@@ -1320,6 +1354,35 @@ export const RichEditor: React.FC<RichEditorProps> = ({
               >
                 <CropIcon size={11} /> Crop
               </button>
+
+              {selectedFigure.querySelector('img')?.hasAttribute('data-crop-state') && (
+                <button
+                  type="button"
+                  onClick={e => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    handleRevertOriginalPhoto();
+                  }}
+                  title="Revert Crop to Full Original Upload Photo"
+                  style={{
+                    backgroundColor: 'rgba(245, 158, 11, 0.25)',
+                    color: '#fef3c7',
+                    border: '1px solid rgba(245, 158, 11, 0.6)',
+                    borderRadius: '6px',
+                    padding: '0.12rem 0.45rem',
+                    fontSize: '0.7rem',
+                    fontWeight: 700,
+                    cursor: 'pointer',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '0.25rem',
+                    pointerEvents: 'auto',
+                    transition: 'all 0.15s ease',
+                  }}
+                >
+                  <Undo2 size={11} /> Revert Crop
+                </button>
+              )}
 
               <button
                 type="button"
@@ -2126,12 +2189,15 @@ export const RichEditor: React.FC<RichEditorProps> = ({
         </div>
       )}
 
-      {/* Modal 4: Interactive Image Crop Studio */}
+      {/* Modal 4: Interactive Non-Destructive Image Crop Studio */}
       <ImageCropModal
         isOpen={cropModalOpen}
         imageSrc={cropImageSrc}
+        originalSrc={cropOriginalSrc}
+        initialCropState={cropInitialState}
         onClose={() => setCropModalOpen(false)}
         onCropComplete={handleCropComplete}
+        onRevertOriginal={handleRevertOriginalPhoto}
       />
 
       {/* Editor CSS helper styles */}

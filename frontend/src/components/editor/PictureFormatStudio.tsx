@@ -22,6 +22,7 @@ import {
   Minus,
   Check,
   ChevronDown,
+  Undo2,
 } from 'lucide-react';
 
 export interface PictureFormatState {
@@ -43,6 +44,8 @@ interface PictureFormatStudioProps {
   selectedFigure: HTMLElement | null;
   onApply: (styles: PictureFormatState) => void;
   onCropImage?: () => void;
+  onRevertOriginalPhoto?: () => void;
+  hasCropHistory?: boolean;
   onReplaceImage: () => void;
   onDeleteImage: () => void;
   onClose: () => void;
@@ -52,6 +55,8 @@ export const PictureFormatStudio: React.FC<PictureFormatStudioProps> = ({
   selectedFigure,
   onApply,
   onCropImage,
+  onRevertOriginalPhoto,
+  hasCropHistory,
   onReplaceImage,
   onDeleteImage,
   onClose,
@@ -267,6 +272,32 @@ export const PictureFormatStudio: React.FC<PictureFormatStudioProps> = ({
           >
             <RotateCcw size={13} color="var(--color-secondary)" /> Reset Picture
           </button>
+
+          {/* Revert Full Uncropped Photo Action */}
+          {onRevertOriginalPhoto && (hasCropHistory || selectedFigure?.querySelector('img')?.hasAttribute('data-crop-state')) && (
+            <button
+              type="button"
+              onClick={onRevertOriginalPhoto}
+              title="Revert Crop & Restore Full Original Upload Photo"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.25rem',
+                padding: '0.25rem 0.65rem',
+                fontSize: '0.76rem',
+                fontWeight: 700,
+                backgroundColor: 'rgba(245, 158, 11, 0.1)',
+                border: '1px solid #d97706',
+                color: '#d97706',
+                borderRadius: 'var(--radius-sm)',
+                cursor: 'pointer',
+                whiteSpace: 'nowrap',
+                flexShrink: 0,
+              }}
+            >
+              <Undo2 size={13} /> Revert Full Photo
+            </button>
+          )}
 
           {onCropImage && (
             <button
@@ -719,6 +750,28 @@ export const PictureFormatStudio: React.FC<PictureFormatStudioProps> = ({
                 >
                   <Crop size={14} /> Open Pointer Crop Studio
                 </button>
+
+                {onRevertOriginalPhoto && (hasCropHistory || selectedFigure?.querySelector('img')?.hasAttribute('data-crop-state')) && (
+                  <button
+                    type="button"
+                    onClick={onRevertOriginalPhoto}
+                    style={{
+                      display: 'inline-flex',
+                      alignItems: 'center',
+                      gap: '0.3rem',
+                      padding: '0.3rem 0.75rem',
+                      fontSize: '0.76rem',
+                      fontWeight: 700,
+                      borderRadius: 'var(--radius-sm)',
+                      backgroundColor: 'rgba(245, 158, 11, 0.1)',
+                      color: '#d97706',
+                      border: '1px solid #d97706',
+                      cursor: 'pointer',
+                    }}
+                  >
+                    <Undo2 size={13} /> Restore Full Photo
+                  </button>
+                )}
               </div>
             )}
           </div>

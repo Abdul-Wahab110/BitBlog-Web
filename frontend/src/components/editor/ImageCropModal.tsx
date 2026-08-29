@@ -5,20 +5,33 @@ import {
   RotateCcw,
   FlipHorizontal,
   FlipVertical,
-  Maximize2,
   Check,
   X,
-  Sparkles,
   Loader2,
   RefreshCw,
-  Sliders,
+  Undo2,
+  Sparkles,
 } from 'lucide-react';
+
+export interface CropStateData {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+  aspectPreset?: AspectPreset;
+  rotation?: number;
+  flipH?: boolean;
+  flipV?: boolean;
+}
 
 interface ImageCropModalProps {
   isOpen: boolean;
   imageSrc: string;
+  originalSrc?: string;
+  initialCropState?: CropStateData | null;
   onClose: () => void;
-  onCropComplete: (croppedUrl: string) => void;
+  onCropComplete: (croppedUrl: string, originalUrl: string, cropState: CropStateData) => void;
+  onRevertOriginal?: () => void;
 }
 
 type AspectPreset = 'free' | '16:9' | '4:3' | '1:1' | '3:2' | '9:16' | '2:1';
@@ -26,9 +39,15 @@ type AspectPreset = 'free' | '16:9' | '4:3' | '1:1' | '3:2' | '9:16' | '2:1';
 export const ImageCropModal: React.FC<ImageCropModalProps> = ({
   isOpen,
   imageSrc,
+  originalSrc,
+  initialCropState,
   onClose,
   onCropComplete,
+  onRevertOriginal,
 }) => {
+  // Always use original uncropped source if available so cropping is 100% non-destructive
+  const effectiveSource = originalSrc || imageSrc;
+
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [aspectPreset, setAspectPreset] = useState<AspectPreset>('free');
@@ -38,10 +57,10 @@ export const ImageCropModal: React.FC<ImageCropModalProps> = ({
 
   // Normalized Crop Box in Percentages (0 to 100)
   const [cropBox, setCropBox] = useState<{ x: number; y: number; width: number; height: number }>({
-    x: 10,
-    y: 10,
-    width: 80,
-    height: 80,
+    x: 5,
+    y: 5,
+    width: 90,
+    height: 90,
   });
 
   const [activeDrag, setActiveDrag] = useState<string | null>(null);
@@ -54,21 +73,34 @@ export const ImageCropModal: React.FC<ImageCropModalProps> = ({
   const containerRef = useRef<HTMLDivElement>(null);
   const imgRef = useRef<HTMLImageElement>(null);
 
-  // Initialize or reset crop box when image or aspect changes
-  const resetCrop = useCallback(() => {
-    setRotation(0);
-    setFlipH(false);
-    setFlipV(false);
-    setAspectPreset('free');
-    setCropBox({ x: 5, y: 5, width: 90, height: 90 });
-  }, []);
+  // Initialize or restore saved crop state when opening
+  const initCrop = useCallback(() => {
+    if (initialCropState) {
+      setCropBox({
+        x: initialCropState.x ?? 5,
+        y: initialCropState.y ?? 5,
+        width: initialCropState.width ?? 90,
+        height: initialCropState.height ?? 90,
+      });
+      setAspectPreset(initialCropState.aspectPreset || 'free');
+      setRotation(initialCropState.rotation || 0);
+      setFlipH(initialCropState.flipH || false);
+      setFlipV(initialCropState.flipV || false);
+    } else {
+      setRotation(0);
+      setFlipH(false);
+      setFlipV(false);
+      setAspectPreset('free');
+      setCropBox({ x: 5, y: 5, width: 90, height: 90 });
+    }
+  }, [initialCropState]);
 
   useEffect(() => {
     if (isOpen) {
       setLoading(true);
-      resetCrop();
+      initCrop();
     }
-  }, [isOpen, imageSrc, resetCrop]);
+  }, [isOpen, effectiveSource, initCrop]);
 
   // Apply Aspect Ratio Constraints
   const applyAspectPreset = (preset: AspectPreset) => {
@@ -174,7 +206,7 @@ export const ImageCropModal: React.FC<ImageCropModalProps> = ({
     window.addEventListener('pointerup', onPointerUp);
   };
 
-  // Perform High-Resolution HTML5 Canvas Cropping
+  // Perform High-Resolution HTML5 Canvas Cropping from the Original Full Image
   const handlePerformCrop = async () => {
     if (!imgRef.current) return;
     setSaving(true);
@@ -182,7 +214,7 @@ export const ImageCropModal: React.FC<ImageCropModalProps> = ({
     try {
       const img = new Image();
       img.crossOrigin = 'anonymous';
-      img.src = imageSrc;
+      img.src = effectiveSource;
 
       await new Promise((resolve, reject) => {
         img.onload = resolve;
@@ -231,6 +263,17 @@ export const ImageCropModal: React.FC<ImageCropModalProps> = ({
       );
       ctx.restore();
 
+      const cropStatePayload: CropStateData = {
+        x: cropBox.x,
+        y: cropBox.y,
+        width: cropBox.width,
+        height: cropBox.height,
+        aspectPreset,
+        rotation,
+        flipH,
+        flipV,
+      };
+
       // Convert canvas to Blob and upload to server
       const blob = await new Promise<Blob | null>(res => canvas.toBlob(res, 'image/jpeg', 0.92));
 
@@ -248,7 +291,7 @@ export const ImageCropModal: React.FC<ImageCropModalProps> = ({
           }).then(r => r.json());
 
           if (uploadRes && uploadRes.success && uploadRes.data && uploadRes.data.url) {
-            onCropComplete(uploadRes.data.url);
+            onCropComplete(uploadRes.data.url, effectiveSource, cropStatePayload);
             onClose();
             return;
           }
@@ -257,7 +300,7 @@ export const ImageCropModal: React.FC<ImageCropModalProps> = ({
         }
 
         const dataUrl = canvas.toDataURL('image/jpeg', 0.92);
-        onCropComplete(dataUrl);
+        onCropComplete(dataUrl, effectiveSource, cropStatePayload);
         onClose();
       }
     } catch (err) {
@@ -265,6 +308,20 @@ export const ImageCropModal: React.FC<ImageCropModalProps> = ({
       alert('Unable to process image crop. Please try again.');
     } finally {
       setSaving(false);
+    }
+  };
+
+  // Revert Crop and Restore Original Upload Look
+  const handleRevertToOriginal = () => {
+    if (onRevertOriginal) {
+      onRevertOriginal();
+      onClose();
+    } else {
+      setRotation(0);
+      setFlipH(false);
+      setFlipV(false);
+      setAspectPreset('free');
+      setCropBox({ x: 0, y: 0, width: 100, height: 100 });
     }
   };
 
@@ -293,8 +350,8 @@ export const ImageCropModal: React.FC<ImageCropModalProps> = ({
       <div
         style={{
           width: '100%',
-          maxWidth: '860px',
-          maxHeight: '92vh',
+          maxWidth: '880px',
+          maxHeight: '94vh',
           backgroundColor: 'var(--color-surface)',
           borderRadius: 'var(--radius-lg, 14px)',
           border: '1px solid var(--color-border)',
@@ -313,13 +370,14 @@ export const ImageCropModal: React.FC<ImageCropModalProps> = ({
             padding: '1rem 1.5rem',
             backgroundColor: 'var(--color-surface-alt)',
             borderBottom: '1px solid var(--color-border)',
+            gap: '1rem',
           }}
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
             <div
               style={{
-                width: '32px',
-                height: '32px',
+                width: '34px',
+                height: '34px',
                 borderRadius: '8px',
                 backgroundColor: 'var(--color-secondary)',
                 color: '#FFFFFF',
@@ -327,16 +385,30 @@ export const ImageCropModal: React.FC<ImageCropModalProps> = ({
                 alignItems: 'center',
                 justifyContent: 'center',
                 boxShadow: '0 2px 8px var(--color-secondary-glow)',
+                flexShrink: 0,
               }}
             >
               <CropIcon size={18} />
             </div>
             <div>
-              <h2 style={{ fontSize: '1.15rem', fontWeight: 800, margin: 0 }}>
+              <h2 style={{ fontSize: '1.1rem', fontWeight: 800, margin: 0, display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
                 Interactive Picture Crop & Framing Studio
+                <span
+                  style={{
+                    fontSize: '0.7rem',
+                    fontWeight: 700,
+                    color: 'var(--color-success, #10b981)',
+                    backgroundColor: 'rgba(16, 185, 129, 0.1)',
+                    padding: '0.15rem 0.5rem',
+                    borderRadius: 'var(--radius-full)',
+                    border: '1px solid rgba(16, 185, 129, 0.2)',
+                  }}
+                >
+                  Non-Destructive
+                </span>
               </h2>
-              <span style={{ fontSize: '0.75rem', color: 'var(--color-muted)' }}>
-                Drag corner and edge handles with mouse pointer to adjust crop boundaries
+              <span style={{ fontSize: '0.74rem', color: 'var(--color-muted)' }}>
+                Drag corner and edge handles with mouse pointer to adjust crop boundaries. You can always re-crop or revert to the original full upload.
               </span>
             </div>
           </div>
@@ -398,7 +470,7 @@ export const ImageCropModal: React.FC<ImageCropModalProps> = ({
             ))}
           </div>
 
-          {/* Transformation Controls: Rotate & Flip */}
+          {/* Transformation Controls: Rotate, Flip & Revert */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
             <button
               type="button"
@@ -460,25 +532,27 @@ export const ImageCropModal: React.FC<ImageCropModalProps> = ({
             >
               <FlipHorizontal size={13} /> Flip H
             </button>
+
+            {/* Revert to Full Uncropped Original */}
             <button
               type="button"
-              onClick={resetCrop}
-              title="Reset Crop"
+              onClick={handleRevertToOriginal}
+              title="Revert Crop to Full Original Upload Photo"
               style={{
-                padding: '0.35rem 0.55rem',
+                padding: '0.35rem 0.65rem',
                 fontSize: '0.76rem',
-                fontWeight: 600,
+                fontWeight: 700,
                 borderRadius: 'var(--radius-sm)',
                 border: '1px solid var(--color-border)',
-                backgroundColor: 'var(--color-surface-alt)',
-                color: 'var(--color-muted)',
+                backgroundColor: 'rgba(245, 158, 11, 0.1)',
+                color: '#d97706',
                 cursor: 'pointer',
                 display: 'inline-flex',
                 alignItems: 'center',
-                gap: '0.25rem',
+                gap: '0.3rem',
               }}
             >
-              <RefreshCw size={12} /> Reset
+              <Undo2 size={13} /> Revert to Full Photo
             </button>
           </div>
         </div>
@@ -501,7 +575,7 @@ export const ImageCropModal: React.FC<ImageCropModalProps> = ({
         >
           {loading && (
             <div style={{ position: 'absolute', display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#FFFFFF', zIndex: 10 }}>
-              <Loader2 size={24} className="animate-spin" /> Loading image asset...
+              <Loader2 size={24} className="animate-spin" /> Loading full original asset...
             </div>
           )}
 
@@ -519,7 +593,7 @@ export const ImageCropModal: React.FC<ImageCropModalProps> = ({
           >
             <img
               ref={imgRef}
-              src={imageSrc}
+              src={effectiveSource}
               alt="Source"
               onLoad={() => setLoading(false)}
               style={{
@@ -705,7 +779,7 @@ export const ImageCropModal: React.FC<ImageCropModalProps> = ({
           }}
         >
           <span style={{ fontSize: '0.78rem', color: 'var(--color-muted)' }}>
-            💡 Tip: Click and drag inside the frame to move, or drag the white brackets to resize the crop area.
+            💡 Tip: Click and drag inside the frame to move, or drag the white brackets to adjust your crop.
           </span>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
@@ -748,7 +822,7 @@ export const ImageCropModal: React.FC<ImageCropModalProps> = ({
             >
               {saving ? (
                 <>
-                  <Loader2 size={15} className="animate-spin" /> Applying Crop...
+                  <Loader2 size={15} className="animate-spin" /> Saving Crop...
                 </>
               ) : (
                 <>
