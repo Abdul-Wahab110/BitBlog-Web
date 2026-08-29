@@ -5,6 +5,7 @@ import { RichEditor } from '../../components/editor/RichEditor';
 import { ArticlePreviewModal } from '../../components/editor/ArticlePreviewModal';
 import { ImageUploadDropzone } from '../../components/common/ImageUploadDropzone';
 import { SeoAeoGeoEditor, SeoData, AeoData, GeoData } from '../../components/editor/SeoAeoGeoEditor';
+import { EditorSidebarTools } from '../../components/editor/EditorSidebarTools';
 import { generateSlug } from '../../utils/slug';
 import { ApiService } from '../../services/api';
 import { useAuth } from '../../context/AuthContext';
@@ -772,6 +773,16 @@ export const AddPost: React.FC = () => {
                 </div>
               )}
             </div>
+
+            {/* Editorial Tools Suite: Health Score, Content Metrics, Outline & Checklist */}
+            <EditorSidebarTools
+              title={title}
+              excerpt={excerpt}
+              content={content}
+              featuredImage={featuredImage}
+              categorySelected={categoryId !== undefined}
+              tagsCount={selectedTags.length}
+            />
           </div>
         </div>
       </form>

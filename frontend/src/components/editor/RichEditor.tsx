@@ -33,6 +33,8 @@ import {
   Type,
   Trash2,
   FileText,
+  Edit3,
+  Plus,
 } from 'lucide-react';
 
 interface RichEditorProps {
@@ -74,6 +76,12 @@ export const RichEditor: React.FC<RichEditorProps> = ({
   const [imageCustomWidth, setImageCustomWidth] = useState<number>(65);
   const [imageBorderRadius, setImageBorderRadius] = useState<'none' | 'sm' | 'md' | 'lg'>('md');
   const [uploadError, setUploadError] = useState<string | null>(null);
+
+  // In-Editor Selected Image State for Instant Live Editing, Resizing & Deletion
+  const [selectedFigure, setSelectedFigure] = useState<HTMLElement | null>(null);
+  const [selectedFigureAlign, setSelectedFigureAlign] = useState<'left' | 'center' | 'right' | 'full'>('center');
+  const [selectedFigureWidth, setSelectedFigureWidth] = useState<number>(60);
+  const [isEditingExisting, setIsEditingExisting] = useState<boolean>(false);
 
   const visualEditorRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -212,7 +220,105 @@ export const RichEditor: React.FC<RichEditorProps> = ({
     insertHtmlAtCursor('<hr style="border:none;border-top:2px dashed var(--color-border, #cbd5e1);margin:2.5rem 0;" /><p><br></p>');
   };
 
-  // Image Upload & Insertion Handling with Alignment & Custom Sizing
+  // In-Editor Image Selection Detection
+  const handleEditorClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    const target = e.target as HTMLElement;
+    const figure = target.closest('figure') as HTMLElement | null;
+    const img = target.tagName === 'IMG' ? (target as HTMLImageElement) : figure?.querySelector('img');
+
+    if (figure && img) {
+      setSelectedFigure(figure);
+
+      // Determine current alignment
+      const fStyle = figure.getAttribute('style') || '';
+      let align: 'left' | 'center' | 'right' | 'full' = 'center';
+      if (fStyle.includes('align-items:flex-start') || fStyle.includes('margin:1.5rem auto 1.5rem 0') || fStyle.includes('margin-right:auto')) {
+        align = 'left';
+      } else if (fStyle.includes('align-items:flex-end') || fStyle.includes('margin:1.5rem 0 1.5rem auto') || fStyle.includes('margin-left:auto')) {
+        align = 'right';
+      } else if (fStyle.includes('display:block;width:100%') || fStyle.includes('margin:2rem 0')) {
+        align = 'full';
+      }
+      setSelectedFigureAlign(align);
+
+      // Determine width
+      const widthMatch = fStyle.match(/width:\s*(\d+)%/);
+      const width = widthMatch ? parseInt(widthMatch[1], 10) : 60;
+      setSelectedFigureWidth(width);
+    } else if (target.tagName !== 'BUTTON' && !target.closest('button')) {
+      setSelectedFigure(null);
+    }
+  };
+
+  // 1. Instant In-Editor Alignment Mutation
+  const updateSelectedFigureAlignment = (newAlign: 'left' | 'center' | 'right' | 'full') => {
+    if (!selectedFigure || !visualEditorRef.current) return;
+    const width = selectedFigureWidth || 60;
+
+    let figureStyle = '';
+    if (newAlign === 'left') {
+      figureStyle = `display:flex;flex-direction:column;align-items:flex-start;width:${width}%;max-width:100%;margin:1.5rem auto 1.5rem 0;text-align:left;`;
+    } else if (newAlign === 'right') {
+      figureStyle = `display:flex;flex-direction:column;align-items:flex-end;width:${width}%;max-width:100%;margin:1.5rem 0 1.5rem auto;text-align:right;`;
+    } else if (newAlign === 'full') {
+      figureStyle = `display:block;width:100%;max-width:100%;margin:2rem 0;text-align:center;`;
+    } else {
+      figureStyle = `display:flex;flex-direction:column;align-items:center;width:${width}%;max-width:100%;margin:1.75rem auto;text-align:center;`;
+    }
+
+    selectedFigure.setAttribute('style', figureStyle);
+    setSelectedFigureAlign(newAlign);
+    onChange(visualEditorRef.current.innerHTML);
+  };
+
+  // 2. Instant In-Editor Resizing Mutation
+  const updateSelectedFigureWidth = (newWidth: number) => {
+    if (!selectedFigure || !visualEditorRef.current) return;
+    const clamped = Math.max(20, Math.min(100, newWidth));
+    const align = selectedFigureAlign || 'center';
+
+    let figureStyle = '';
+    if (align === 'left') {
+      figureStyle = `display:flex;flex-direction:column;align-items:flex-start;width:${clamped}%;max-width:100%;margin:1.5rem auto 1.5rem 0;text-align:left;`;
+    } else if (align === 'right') {
+      figureStyle = `display:flex;flex-direction:column;align-items:flex-end;width:${clamped}%;max-width:100%;margin:1.5rem 0 1.5rem auto;text-align:right;`;
+    } else if (align === 'full') {
+      figureStyle = `display:block;width:100%;max-width:100%;margin:2rem 0;text-align:center;`;
+    } else {
+      figureStyle = `display:flex;flex-direction:column;align-items:center;width:${clamped}%;max-width:100%;margin:1.75rem auto;text-align:center;`;
+    }
+
+    selectedFigure.setAttribute('style', figureStyle);
+    setSelectedFigureWidth(clamped);
+    onChange(visualEditorRef.current.innerHTML);
+  };
+
+  // 3. Instant In-Editor Delete Mutation
+  const deleteSelectedFigure = () => {
+    if (!selectedFigure || !visualEditorRef.current) return;
+    selectedFigure.remove();
+    setSelectedFigure(null);
+    onChange(visualEditorRef.current.innerHTML);
+  };
+
+  // 4. Open Modal for Existing Image Edit
+  const openEditModalForSelectedFigure = () => {
+    if (!selectedFigure) return;
+    const img = selectedFigure.querySelector('img');
+    const figcaption = selectedFigure.querySelector('figcaption');
+    if (img) {
+      setImageUrlInput(img.getAttribute('src') || '');
+      setImageAltInput(img.getAttribute('alt') || '');
+      setImageCaption(figcaption?.textContent || img.getAttribute('alt') || '');
+      setUploadedPreview(img.getAttribute('src') || '');
+      setImageAlignment(selectedFigureAlign);
+      setImageCustomWidth(selectedFigureWidth);
+      setIsEditingExisting(true);
+      setImageModalOpen(true);
+    }
+  };
+
+  // Image Upload & Insertion/Update Handling
   const handleInsertImageHtml = (
     url: string,
     altText?: string,
@@ -250,18 +356,44 @@ export const RichEditor: React.FC<RichEditorProps> = ({
     } else if (align === 'full') {
       figureStyle = `display:block;width:100%;max-width:100%;margin:2rem 0;text-align:center;`;
     } else {
-      // center
       figureStyle = `display:flex;flex-direction:column;align-items:center;width:${widthPercent}%;max-width:100%;margin:1.75rem auto;text-align:center;`;
     }
 
-    const imageHtml = `
-      <figure style="${figureStyle}">
-        <img src="${url}" alt="${alt}" style="width:100%;max-width:100%;height:auto;border-radius:${radiusPx};box-shadow:0 4px 16px rgba(0,0,0,0.12);object-fit:cover;" />
-        ${caption ? `<figcaption style="font-size:0.84rem;color:var(--color-muted, #71717a);margin-top:0.5rem;font-style:italic;line-height:1.4;">${caption}</figcaption>` : ''}
-      </figure>
-      <p><br></p>
-    `;
-    insertHtmlAtCursor(imageHtml);
+    if (isEditingExisting && selectedFigure && visualEditorRef.current) {
+      // Update existing figure in place
+      const img = selectedFigure.querySelector('img');
+      if (img) {
+        img.setAttribute('src', url);
+        img.setAttribute('alt', alt);
+        img.setAttribute('style', `width:100%;max-width:100%;height:auto;border-radius:${radiusPx};box-shadow:0 4px 16px rgba(0,0,0,0.12);object-fit:cover;`);
+      }
+      let figcaption = selectedFigure.querySelector('figcaption');
+      if (caption) {
+        if (!figcaption) {
+          figcaption = document.createElement('figcaption');
+          figcaption.setAttribute('style', 'font-size:0.84rem;color:var(--color-muted, #71717a);margin-top:0.5rem;font-style:italic;line-height:1.4;');
+          selectedFigure.appendChild(figcaption);
+        }
+        figcaption.textContent = caption;
+      } else if (figcaption) {
+        figcaption.remove();
+      }
+      selectedFigure.setAttribute('style', figureStyle);
+      onChange(visualEditorRef.current.innerHTML);
+      setIsEditingExisting(false);
+      setSelectedFigure(null);
+    } else {
+      // Insert new image figure
+      const imageHtml = `
+        <figure style="${figureStyle}">
+          <img src="${url}" alt="${alt}" style="width:100%;max-width:100%;height:auto;border-radius:${radiusPx};box-shadow:0 4px 16px rgba(0,0,0,0.12);object-fit:cover;" />
+          ${caption ? `<figcaption style="font-size:0.84rem;color:var(--color-muted, #71717a);margin-top:0.5rem;font-style:italic;line-height:1.4;">${caption}</figcaption>` : ''}
+        </figure>
+        <p><br></p>
+      `;
+      insertHtmlAtCursor(imageHtml);
+    }
+
     setImageModalOpen(false);
     setImageUrlInput('');
     setImageAltInput('');
@@ -786,11 +918,232 @@ export const RichEditor: React.FC<RichEditorProps> = ({
 
       {/* 3. Main Editing Surfaces based on Active Tab */}
       <div style={{ minHeight, position: 'relative', backgroundColor: 'var(--color-card)' }}>
+        {/* Floating In-Editor Image Action Toolbar */}
+        {activeTab === 'visual' && selectedFigure && (
+          <div
+            style={{
+              position: 'sticky',
+              top: 0,
+              zIndex: 40,
+              backgroundColor: 'var(--color-surface)',
+              borderBottom: '2px solid var(--color-secondary)',
+              padding: '0.45rem 0.85rem',
+              display: 'flex',
+              flexWrap: 'wrap',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              gap: '0.5rem',
+              boxShadow: '0 4px 14px rgba(0, 0, 0, 0.1)',
+            }}
+          >
+            {/* Left: Indicator & Alignments */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
+              <span
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.3rem',
+                  fontSize: '0.76rem',
+                  fontWeight: 800,
+                  color: 'var(--color-secondary)',
+                  backgroundColor: 'rgba(99, 102, 241, 0.12)',
+                  padding: '0.2rem 0.55rem',
+                  borderRadius: 'var(--radius-full)',
+                }}
+              >
+                <ImageIcon size={13} /> Active Image:
+              </span>
+
+              {/* Alignment Buttons */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.15rem', backgroundColor: 'var(--color-surface-alt)', padding: '0.15rem', borderRadius: 'var(--radius-sm)' }}>
+                <button
+                  type="button"
+                  onClick={() => updateSelectedFigureAlignment('left')}
+                  title="Align Image Left"
+                  style={{
+                    padding: '0.25rem 0.45rem',
+                    borderRadius: 'var(--radius-sm)',
+                    border: 'none',
+                    backgroundColor: selectedFigureAlign === 'left' ? 'var(--color-secondary)' : 'transparent',
+                    color: selectedFigureAlign === 'left' ? '#FFF' : 'var(--color-text)',
+                    cursor: 'pointer',
+                  }}
+                >
+                  <AlignLeft size={14} />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => updateSelectedFigureAlignment('center')}
+                  title="Align Image Center"
+                  style={{
+                    padding: '0.25rem 0.45rem',
+                    borderRadius: 'var(--radius-sm)',
+                    border: 'none',
+                    backgroundColor: selectedFigureAlign === 'center' ? 'var(--color-secondary)' : 'transparent',
+                    color: selectedFigureAlign === 'center' ? '#FFF' : 'var(--color-text)',
+                    cursor: 'pointer',
+                  }}
+                >
+                  <AlignCenter size={14} />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => updateSelectedFigureAlignment('right')}
+                  title="Align Image Right"
+                  style={{
+                    padding: '0.25rem 0.45rem',
+                    borderRadius: 'var(--radius-sm)',
+                    border: 'none',
+                    backgroundColor: selectedFigureAlign === 'right' ? 'var(--color-secondary)' : 'transparent',
+                    color: selectedFigureAlign === 'right' ? '#FFF' : 'var(--color-text)',
+                    cursor: 'pointer',
+                  }}
+                >
+                  <AlignRight size={14} />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => updateSelectedFigureAlignment('full')}
+                  title="Full Width Image"
+                  style={{
+                    padding: '0.25rem 0.45rem',
+                    borderRadius: 'var(--radius-sm)',
+                    border: 'none',
+                    backgroundColor: selectedFigureAlign === 'full' ? 'var(--color-secondary)' : 'transparent',
+                    color: selectedFigureAlign === 'full' ? '#FFF' : 'var(--color-text)',
+                    cursor: 'pointer',
+                  }}
+                >
+                  <Maximize2 size={14} />
+                </button>
+              </div>
+
+              {/* Sizing Preset Buttons */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                {[
+                  { label: '35%', val: 35 },
+                  { label: '60%', val: 60 },
+                  { label: '85%', val: 85 },
+                  { label: '100%', val: 100 },
+                ].map(sz => (
+                  <button
+                    key={sz.val}
+                    type="button"
+                    onClick={() => updateSelectedFigureWidth(sz.val)}
+                    style={{
+                      padding: '0.2rem 0.45rem',
+                      fontSize: '0.72rem',
+                      fontWeight: 700,
+                      borderRadius: 'var(--radius-sm)',
+                      border: `1px solid ${selectedFigureWidth === sz.val ? 'var(--color-secondary)' : 'var(--color-border)'}`,
+                      backgroundColor: selectedFigureWidth === sz.val ? 'var(--color-secondary)' : 'var(--color-surface-alt)',
+                      color: selectedFigureWidth === sz.val ? '#FFF' : 'var(--color-text)',
+                      cursor: 'pointer',
+                    }}
+                  >
+                    {sz.label}
+                  </button>
+                ))}
+
+                <button
+                  type="button"
+                  onClick={() => updateSelectedFigureWidth(selectedFigureWidth - 10)}
+                  title="Decrease Width"
+                  style={{
+                    padding: '0.2rem 0.4rem',
+                    borderRadius: 'var(--radius-sm)',
+                    border: '1px solid var(--color-border)',
+                    backgroundColor: 'var(--color-surface-alt)',
+                    color: 'var(--color-text)',
+                    cursor: 'pointer',
+                  }}
+                >
+                  <Minus size={12} />
+                </button>
+                <button
+                  type="button"
+                  onClick={() => updateSelectedFigureWidth(selectedFigureWidth + 10)}
+                  title="Increase Width"
+                  style={{
+                    padding: '0.2rem 0.4rem',
+                    borderRadius: 'var(--radius-sm)',
+                    border: '1px solid var(--color-border)',
+                    backgroundColor: 'var(--color-surface-alt)',
+                    color: 'var(--color-text)',
+                    cursor: 'pointer',
+                  }}
+                >
+                  <Plus size={12} />
+                </button>
+              </div>
+            </div>
+
+            {/* Right: Edit Modal, Delete, Close */}
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+              <button
+                type="button"
+                onClick={openEditModalForSelectedFigure}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.25rem',
+                  padding: '0.25rem 0.6rem',
+                  fontSize: '0.76rem',
+                  fontWeight: 700,
+                  backgroundColor: 'var(--color-surface-alt)',
+                  color: 'var(--color-secondary)',
+                  border: '1px solid var(--color-secondary)',
+                  borderRadius: 'var(--radius-sm)',
+                  cursor: 'pointer',
+                }}
+              >
+                <Edit3 size={12} /> Edit Details
+              </button>
+
+              <button
+                type="button"
+                onClick={deleteSelectedFigure}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '0.25rem',
+                  padding: '0.25rem 0.6rem',
+                  fontSize: '0.76rem',
+                  fontWeight: 700,
+                  backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                  color: 'var(--color-danger)',
+                  border: '1px solid var(--color-danger)',
+                  borderRadius: 'var(--radius-sm)',
+                  cursor: 'pointer',
+                }}
+              >
+                <Trash2 size={12} /> Delete
+              </button>
+
+              <button
+                type="button"
+                onClick={() => setSelectedFigure(null)}
+                title="Deselect image"
+                style={{
+                  padding: '0.25rem',
+                  backgroundColor: 'transparent',
+                  color: 'var(--color-muted)',
+                  border: 'none',
+                  cursor: 'pointer',
+                }}
+              >
+                <X size={15} />
+              </button>
+            </div>
+          </div>
+        )}
+
         {/* Visual WYSIWYG Surface */}
         {activeTab === 'visual' && (
           <div
             ref={visualEditorRef}
             contentEditable
+            onClick={handleEditorClick}
             onInput={() => {
               if (visualEditorRef.current) {
                 onChange(visualEditorRef.current.innerHTML);
