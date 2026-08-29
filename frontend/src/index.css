@@ -868,4 +868,42 @@ article:hover {
   z-index: 1005;
 }
 
+/* 7. Brand Tagline & Header Anti-Overlap Layout */
+.brand-tagline {
+  font-size: 0.65rem;
+  color: var(--color-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-weight: 700;
+  display: block;
+  margin-top: 1px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 140px;
+}
+
+@media (max-width: 1280px) {
+  .brand-tagline {
+    display: none !important;
+  }
+}
+
+.header-nav-center {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 0;
+  overflow: hidden;
+  padding: 0 0.5rem;
+}
+
+@media (max-width: 1080px) {
+  .header-nav-center {
+    display: none !important;
+  }
+}
+
+
 

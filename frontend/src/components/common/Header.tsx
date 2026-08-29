@@ -142,26 +142,15 @@ export const Header: React.FC = () => {
                 >
                   {settings.site_name || 'BitBlog'}
                 </span>
-                <span
-                  className="desktop-only"
-                  style={{
-                    fontSize: '0.65rem',
-                    color: 'var(--color-muted)',
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.12em',
-                    fontWeight: 700,
-                    display: 'block',
-                    marginTop: '1px',
-                  }}
-                >
-                  Digital Publication • Tech & Ideas
+                <span className="brand-tagline">
+                  Tech & Ideas
                 </span>
               </div>
             </Link>
           </div>
 
           {/* Center: Desktop Navigation */}
-          <div className="desktop-only" style={{ flex: 1, justifyContent: 'center' }}>
+          <div className="header-nav-center">
             <Navigation />
           </div>
 

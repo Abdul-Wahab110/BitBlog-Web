@@ -19,7 +19,7 @@ export const Navigation: React.FC = () => {
   }, []);
 
   return (
-    <nav style={{ display: 'flex', gap: '2rem', alignItems: 'center' }}>
+    <nav style={{ display: 'flex', gap: 'clamp(0.85rem, 1.5vw, 1.75rem)', alignItems: 'center', whiteSpace: 'nowrap', flexWrap: 'nowrap' }}>
       <Link
         to="/"
         className={`nav-link-item ${path === '/' ? 'active' : ''}`}
