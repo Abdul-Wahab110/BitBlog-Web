@@ -104,7 +104,7 @@ export const ArticlePreviewModal: React.FC<ArticlePreviewModalProps> = ({
 
         {/* Modal Footer */}
         <div style={{ padding: '1rem 1.5rem', borderTop: '1px solid var(--color-border)', display: 'flex', justifyContent: 'flex-end' }}>
-          <button onClick={onClose} style={{ backgroundColor: 'var(--color-primary)', color: '#FFF', padding: '0.5rem 1.25rem' }}>
+          <button onClick={onClose} style={{ backgroundColor: 'var(--color-secondary)', color: '#FFF', padding: '0.5rem 1.25rem', borderRadius: 'var(--radius-sm)', border: 'none', cursor: 'pointer', fontWeight: 600 }}>
             Close Preview
           </button>
         </div>

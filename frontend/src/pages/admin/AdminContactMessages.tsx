@@ -74,7 +74,7 @@ export const AdminContactMessages: React.FC = () => {
               {selectedMsg.message}
             </div>
             <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-              <button onClick={() => setSelectedMsg(null)} style={{ backgroundColor: 'var(--color-primary)', color: '#FFF', padding: '0.45rem 1rem' }}>
+              <button onClick={() => setSelectedMsg(null)} style={{ backgroundColor: 'var(--color-secondary)', color: '#FFF', padding: '0.45rem 1.25rem', borderRadius: 'var(--radius-sm)', border: 'none', cursor: 'pointer', fontWeight: 600 }}>
                 Close
               </button>
             </div>

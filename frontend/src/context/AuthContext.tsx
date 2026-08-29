@@ -345,15 +345,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           aria-live="assertive"
           style={{
             position: 'fixed',
-            top: '1.25rem',
-            right: '1.25rem',
-            zIndex: 99999,
+            bottom: '2rem',
+            right: '2rem',
+            zIndex: 9999,
             maxWidth: '420px',
-            width: 'calc(100% - 2.5rem)',
-            background: 'var(--color-surface, #ffffff)',
-            color: 'var(--color-text, #1e293b)',
-            borderRadius: '12px',
-            boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.15), 0 10px 10px -5px rgba(0, 0, 0, 0.08), 0 0 0 1px var(--color-border, #e2e8f0)',
+            backgroundColor: 'var(--color-card, #FFFFFF)',
+            color: 'var(--color-text, #18181B)',
+            borderRadius: 'var(--radius-lg, 12px)',
+            boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.25), 0 10px 10px -5px rgba(0, 0, 0, 0.1), 0 0 0 1px var(--color-border)',
             borderLeft: '5px solid #EF4444',
             padding: '1rem 1.25rem',
             animation: 'slideInRight 0.3s ease-out',
@@ -369,7 +368,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                   width: '32px',
                   height: '32px',
                   borderRadius: '50%',
-                  background: 'rgba(239, 68, 68, 0.1)',
+                  background: 'rgba(239, 68, 68, 0.15)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
@@ -380,10 +379,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                 <Clock size={18} />
               </div>
               <div>
-                <h4 style={{ margin: 0, fontSize: '0.95rem', fontWeight: 700, color: 'var(--color-text, #0f172a)' }}>
+                <h4 style={{ margin: 0, fontSize: '0.95rem', fontWeight: 700, color: 'var(--color-text, #18181B)' }}>
                   Session Expired
                 </h4>
-                <p style={{ margin: '0.2rem 0 0', fontSize: '0.825rem', color: 'var(--color-text-muted, #64748b)', lineHeight: 1.4 }}>
+                <p style={{ margin: '0.2rem 0 0', fontSize: '0.825rem', color: 'var(--color-text-secondary, #71717A)', lineHeight: 1.4 }}>
                   {sessionExpired.message}
                 </p>
               </div>
@@ -394,7 +393,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                 background: 'transparent',
                 border: 'none',
                 cursor: 'pointer',
-                color: 'var(--color-text-muted, #94a3b8)',
+                color: 'var(--color-muted, #A1A1AA)',
                 padding: '4px',
                 borderRadius: '6px',
                 display: 'flex',
@@ -407,18 +406,19 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
             </button>
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '0.5rem', paddingTop: '0.25rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '0.6rem', paddingTop: '0.25rem' }}>
             <button
               onClick={dismissSessionExpired}
               style={{
-                padding: '0.45rem 0.85rem',
+                padding: '0.45rem 0.9rem',
                 fontSize: '0.825rem',
                 fontWeight: 600,
-                color: 'var(--color-text, #475569)',
-                background: 'var(--color-bg, #f1f5f9)',
-                border: '1px solid var(--color-border, #cbd5e1)',
-                borderRadius: '6px',
+                color: 'var(--color-text, #18181B)',
+                backgroundColor: 'var(--color-surface-alt, #F5F3FF)',
+                border: '1px solid var(--color-border, #E4E4E7)',
+                borderRadius: 'var(--radius-sm, 6px)',
                 cursor: 'pointer',
+                transition: 'all 0.15s ease',
               }}
             >
               Dismiss
@@ -429,17 +429,19 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
                 openAuthModal('login');
               }}
               style={{
-                padding: '0.45rem 0.95rem',
+                padding: '0.45rem 1rem',
                 fontSize: '0.825rem',
-                fontWeight: 600,
-                color: '#ffffff',
-                background: 'var(--color-primary, #4F46E5)',
+                fontWeight: 700,
+                color: '#FFFFFF',
+                backgroundColor: 'var(--color-secondary, #6366F1)',
                 border: 'none',
-                borderRadius: '6px',
+                borderRadius: 'var(--radius-sm, 6px)',
                 cursor: 'pointer',
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: '0.4rem',
+                boxShadow: '0 2px 8px var(--color-secondary-glow)',
+                transition: 'all 0.15s ease',
               }}
             >
               <LogIn size={14} />
