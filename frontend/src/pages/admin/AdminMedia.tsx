@@ -22,7 +22,7 @@ import { useAuth } from '../../context/AuthContext';
 export const AdminMedia: React.FC = () => {
   const confirm = useConfirm();
   const { user } = useAuth();
-  const isStaff = user?.role === 'Admin' || user?.role === 'Editor';
+  const isAdmin = user?.role === 'Admin';
 
   const [mediaList, setMediaList] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -43,7 +43,7 @@ export const AdminMedia: React.FC = () => {
       const token = localStorage.getItem('bitblog_token');
       const params = new URLSearchParams();
       if (search.trim()) params.append('search', search.trim());
-      if (isStaff && scope === 'mine') params.append('scope', 'mine');
+      if (isAdmin && scope === 'mine') params.append('scope', 'mine');
 
       const queryString = params.toString() ? `?${params.toString()}` : '';
       const res = await fetch(`/api/media${queryString}`, {
@@ -220,8 +220,8 @@ export const AdminMedia: React.FC = () => {
             Uploaded Assets ({mediaList.length})
           </h3>
 
-          {/* Admin / Editor Scope Toggle */}
-          {isStaff ? (
+          {/* Admin-Exclusive All Portal Media Toggle */}
+          {isAdmin ? (
             <div style={{ display: 'flex', alignItems: 'center', backgroundColor: 'var(--color-surface-alt)', padding: '0.2rem', borderRadius: 'var(--radius-sm)', border: '1px solid var(--color-border)' }}>
               <button
                 type="button"
@@ -238,7 +238,7 @@ export const AdminMedia: React.FC = () => {
                   transition: 'all 0.15s ease',
                 }}
               >
-                All Portal Media
+                All Portal Media (Admin)
               </button>
               <button
                 type="button"
@@ -270,7 +270,7 @@ export const AdminMedia: React.FC = () => {
                 border: '1px solid rgba(99, 102, 241, 0.2)',
               }}
             >
-              🔒 Author Workspace: Showing assets uploaded by your account
+              🔒 Workspace Asset Isolation: Showing only assets uploaded by your account ({user?.name || user?.username})
             </span>
           )}
         </div>
