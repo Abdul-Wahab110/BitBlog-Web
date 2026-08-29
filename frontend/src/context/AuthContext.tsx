@@ -40,6 +40,7 @@ interface AuthContextType {
   login: (token: string, user: UserContextData) => void;
   logout: (reason?: 'inactivity' | 'token_expired' | 'unauthorized' | 'manual') => void;
   updateUser: (user: Partial<UserContextData>) => void;
+  refreshUser: () => Promise<void>;
   recordActivity: () => void;
   // Auth Modal State & Controls
   isAuthModalOpen: boolean;
@@ -176,6 +177,39 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     });
   }, []);
 
+  // Fetch latest profile & role from backend to keep active session synchronized
+  const refreshUser = useCallback(async () => {
+    const currentToken = localStorage.getItem(STORAGE_KEY_TOKEN) || localStorage.getItem('modernblog_token');
+    if (!currentToken) return;
+    try {
+      const res = await fetch('/api/auth/me', {
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${currentToken}`,
+        },
+      });
+      if (res.ok) {
+        const json = await res.json();
+        if (json && json.data) {
+          setUser(prev => {
+            const merged = { ...(prev || {}), ...json.data };
+            localStorage.setItem(STORAGE_KEY_USER, JSON.stringify(merged));
+            return merged;
+          });
+        }
+      }
+    } catch {
+      // Background sync, suppress network errors
+    }
+  }, []);
+
+  // Synchronize user role upon initial mount if authenticated
+  useEffect(() => {
+    if (token) {
+      refreshUser();
+    }
+  }, [token, refreshUser]);
+
   const isAuthenticated = !!token && !!user;
   const role = user?.role || '';
   const isAdmin = role === 'Admin';
@@ -294,6 +328,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         login,
         logout,
         updateUser,
+        refreshUser,
         recordActivity,
         isAuthModalOpen,
         authModalMode,

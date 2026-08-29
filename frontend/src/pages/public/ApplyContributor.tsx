@@ -88,8 +88,15 @@ export const ApplyContributor: React.FC = () => {
   const siteName = settings.site_name || 'BitBlog';
   const navigate = useNavigate();
 
+  // Role classification
+  const isAuthor = user?.role === 'Author';
+  const isEditor = user?.role === 'Editor';
+  const isAdmin = user?.role === 'Admin';
+  const isStaffAlready = isAuthor || isEditor || isAdmin;
+  const isTopRole = isEditor || isAdmin;
+
   // Application State
-  const [roleApplied, setRoleApplied] = useState<'Author' | 'Editor'>('Author');
+  const [roleApplied, setRoleApplied] = useState<'Author' | 'Editor'>(isAuthor ? 'Editor' : 'Author');
   const [bio, setBio] = useState('');
   const [sampleUrls, setSampleUrls] = useState('');
   const [selectedTopics, setSelectedTopics] = useState<string[]>([
@@ -103,6 +110,12 @@ export const ApplyContributor: React.FC = () => {
   const [currentApp, setCurrentApp] = useState<any>(null);
   const [reapplyMode, setReapplyMode] = useState(false);
   const [feedback, setFeedback] = useState<{ type: 'success' | 'error'; message: string } | null>(null);
+
+  useEffect(() => {
+    if (isAuthor && roleApplied === 'Author') {
+      setRoleApplied('Editor');
+    }
+  }, [isAuthor]);
 
   // Check user application status if logged in
   useEffect(() => {
@@ -181,8 +194,6 @@ export const ApplyContributor: React.FC = () => {
       setSubmitting(false);
     }
   };
-
-  const isStaffAlready = user?.role === 'Author' || user?.role === 'Editor' || user?.role === 'Admin';
 
   return (
     <div style={{ backgroundColor: 'var(--color-background)', minHeight: '100vh', paddingBottom: '6rem' }}>
@@ -360,10 +371,12 @@ export const ApplyContributor: React.FC = () => {
               </div>
               <div>
                 <h3 style={{ fontSize: '1.1rem', fontWeight: 800, margin: '0 0 0.2rem 0', color: 'var(--color-text)' }}>
-                  You are already a verified {user?.role}!
+                  You are a verified {user?.role}!
                 </h3>
                 <p style={{ fontSize: '0.88rem', color: 'var(--color-text-secondary)', margin: 0 }}>
-                  You have full publishing permissions in your author workspace.
+                  {isAuthor
+                    ? 'You have publishing permissions in your author workspace. You can also apply for promotion to Editor below.'
+                    : `You have full access to the ${user?.role} editorial workspace.`}
                 </p>
               </div>
             </div>
@@ -389,7 +402,7 @@ export const ApplyContributor: React.FC = () => {
         )}
 
         {/* Pending / Existing Application Status */}
-        {currentApp && !reapplyMode && !isStaffAlready && (
+        {currentApp && !reapplyMode && (
           <div
             style={{
               padding: '2rem',
@@ -464,7 +477,9 @@ export const ApplyContributor: React.FC = () => {
               {currentApp.status === 'pending'
                 ? 'Your submission is currently in our review queue. Our editors evaluate writing quality, technical accuracy, and domain expertise.'
                 : currentApp.status === 'approved'
-                ? 'Congratulations! Your contributor account is active. You can now compose and publish stories directly.'
+                ? isAuthor
+                  ? 'Congratulations! Your Author account is active. You can write stories directly or submit an application below to become an Editor.'
+                  : 'Congratulations! Your contributor account is active. You can now compose and publish stories directly.'
                 : `Feedback: ${currentApp.admin_feedback || 'We encourage updating your writing samples or submitting again with detailed technical drafts.'}`}
             </p>
 
@@ -514,7 +529,7 @@ export const ApplyContributor: React.FC = () => {
         )}
 
         {/* Main Application Form Container */}
-        {(!currentApp || currentApp.status !== 'pending' || reapplyMode) && !isStaffAlready && (
+        {((!currentApp || currentApp.status !== 'pending' || reapplyMode) && !isTopRole) && (
           <div
             style={{
               backgroundColor: 'var(--color-card)',
@@ -534,10 +549,12 @@ export const ApplyContributor: React.FC = () => {
                   fontFamily: 'var(--font-heading)',
                 }}
               >
-                Contributor Application
+                {isAuthor ? 'Apply for Editor Role' : 'Contributor Application'}
               </h2>
               <p style={{ fontSize: '0.9rem', color: 'var(--color-text-secondary)', margin: 0 }}>
-                Tell us about your background, the topics you specialize in, and share samples of your writing.
+                {isAuthor
+                  ? 'Step up to an Editor position to review drafts, manage tags & categories, and direct-publish stories.'
+                  : 'Tell us about your background, the topics you specialize in, and share samples of your writing.'}
               </p>
             </div>
 
@@ -641,27 +658,60 @@ export const ApplyContributor: React.FC = () => {
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1rem' }}>
                   {/* Author Track */}
                   <div
-                    onClick={() => setRoleApplied('Author')}
+                    onClick={() => {
+                      if (!isAuthor) setRoleApplied('Author');
+                    }}
                     style={{
                       padding: '1.25rem',
                       borderRadius: 'var(--radius-lg)',
-                      border: `2px solid ${roleApplied === 'Author' ? 'var(--color-secondary)' : 'var(--color-border)'}`,
-                      backgroundColor: roleApplied === 'Author' ? 'var(--color-surface-alt)' : 'transparent',
-                      cursor: 'pointer',
+                      border: `2px solid ${
+                        isAuthor
+                          ? 'rgba(16, 185, 129, 0.4)'
+                          : roleApplied === 'Author'
+                          ? 'var(--color-secondary)'
+                          : 'var(--color-border)'
+                      }`,
+                      backgroundColor: isAuthor
+                        ? 'rgba(16, 185, 129, 0.06)'
+                        : roleApplied === 'Author'
+                        ? 'var(--color-surface-alt)'
+                        : 'transparent',
+                      cursor: isAuthor ? 'default' : 'pointer',
                       transition: 'all var(--transition-fast)',
+                      opacity: isAuthor ? 0.8 : 1,
+                      position: 'relative',
                     }}
                   >
+                    {isAuthor && (
+                      <span
+                        style={{
+                          position: 'absolute',
+                          top: '10px',
+                          right: '10px',
+                          fontSize: '0.72rem',
+                          fontWeight: 700,
+                          backgroundColor: 'rgba(16, 185, 129, 0.18)',
+                          color: '#10B981',
+                          padding: '0.15rem 0.5rem',
+                          borderRadius: 'var(--radius-full)',
+                        }}
+                      >
+                        ✓ Current Role
+                      </span>
+                    )}
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                        <Feather size={18} color={roleApplied === 'Author' ? 'var(--color-secondary)' : 'var(--color-text-secondary)'} />
+                        <Feather size={18} color={isAuthor ? '#10B981' : roleApplied === 'Author' ? 'var(--color-secondary)' : 'var(--color-text-secondary)'} />
                         <strong style={{ fontSize: '0.98rem', color: 'var(--color-text)' }}>Author / Writer</strong>
                       </div>
-                      <input
-                        type="radio"
-                        name="role"
-                        checked={roleApplied === 'Author'}
-                        onChange={() => setRoleApplied('Author')}
-                      />
+                      {!isAuthor && (
+                        <input
+                          type="radio"
+                          name="role"
+                          checked={roleApplied === 'Author'}
+                          onChange={() => setRoleApplied('Author')}
+                        />
+                      )}
                     </div>
                     <p style={{ fontSize: '0.82rem', color: 'var(--color-text-secondary)', margin: 0, lineHeight: 1.5 }}>
                       Draft, submit, and publish stories, guides, deep-dives, and technical analysis.
@@ -678,6 +728,7 @@ export const ApplyContributor: React.FC = () => {
                       backgroundColor: roleApplied === 'Editor' ? 'var(--color-surface-alt)' : 'transparent',
                       cursor: 'pointer',
                       transition: 'all var(--transition-fast)',
+                      boxShadow: roleApplied === 'Editor' ? '0 0 0 1px var(--color-secondary)' : 'none',
                     }}
                   >
                     <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
@@ -869,7 +920,7 @@ export const ApplyContributor: React.FC = () => {
                     'Submitting Application...'
                   ) : (
                     <>
-                      <Send size={16} /> Submit Application
+                      <Send size={16} /> Submit {roleApplied} Application
                     </>
                   )}
                 </button>

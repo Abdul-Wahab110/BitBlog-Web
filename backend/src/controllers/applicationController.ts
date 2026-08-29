@@ -41,6 +41,16 @@ export class ApplicationController {
         throw new ApiError('You already hold Super Administrator privileges with full system permissions.', 400);
       }
 
+      // If user is already an Editor, prevent re-applying
+      if (req.user.role === 'Editor') {
+        throw new ApiError('You already hold Editor privileges with full editorial review access.', 400);
+      }
+
+      // If user is already an Author and applying for Author again
+      if (req.user.role === 'Author' && roleApplied === 'Author') {
+        throw new ApiError('You already hold Author privileges. You can apply for the Editor role below.', 400);
+      }
+
       const newApp = await ApplicationModel.createApplication({
         userId: req.user.userId,
         name: req.user.name,

@@ -1,6 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Award, PenTool, ShieldCheck, CheckCircle2, Clock, XCircle, ArrowRight, Sparkles, Send, FileText, AlertCircle } from 'lucide-react';
+import {
+  Award,
+  PenTool,
+  ShieldCheck,
+  CheckCircle2,
+  Clock,
+  XCircle,
+  ArrowRight,
+  Sparkles,
+  Send,
+  FileText,
+  AlertCircle,
+  ChevronRight,
+  HelpCircle,
+} from 'lucide-react';
 import { SeoHead } from '../../components/common/SeoHead';
 import { LoadingState } from '../../components/common/LoadingState';
 import { ApiService } from '../../services/api';
@@ -27,8 +41,13 @@ export const UserApplyRole: React.FC = () => {
   const [currentApp, setCurrentApp] = useState<any>(null);
   const [reapplyMode, setReapplyMode] = useState(false);
 
-  // Form State
-  const [roleApplied, setRoleApplied] = useState<'Author' | 'Editor'>('Author');
+  // Form State: If user is already Author, default to 'Editor'
+  const isAuthor = user?.role === 'Author';
+  const isEditor = user?.role === 'Editor';
+  const isAdmin = user?.role === 'Admin';
+  const isStaffAlready = isAuthor || isEditor || isAdmin;
+
+  const [roleApplied, setRoleApplied] = useState<'Author' | 'Editor'>(isAuthor ? 'Editor' : 'Author');
   const [bio, setBio] = useState('');
   const [sampleUrls, setSampleUrls] = useState('');
   const [selectedTopics, setSelectedTopics] = useState<string[]>(['Technology & Innovation']);
@@ -39,6 +58,12 @@ export const UserApplyRole: React.FC = () => {
   useEffect(() => {
     fetchApplicationStatus();
   }, []);
+
+  useEffect(() => {
+    if (isAuthor && roleApplied === 'Author') {
+      setRoleApplied('Editor');
+    }
+  }, [isAuthor]);
 
   const fetchApplicationStatus = async () => {
     try {
@@ -65,7 +90,7 @@ export const UserApplyRole: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!bio.trim() || !motivation.trim()) {
-      setFeedback({ type: 'error', message: 'Please complete all required fields.' });
+      setFeedback({ type: 'error', message: 'Please complete all required fields (bio and motivation).' });
       return;
     }
 
@@ -83,7 +108,7 @@ export const UserApplyRole: React.FC = () => {
 
       setFeedback({
         type: 'success',
-        message: res.message || 'Application submitted successfully! Our administration will review your submission.',
+        message: res.message || `Application for ${roleApplied} submitted successfully! Our administration will review your portfolio.`,
       });
       setReapplyMode(false);
       fetchApplicationStatus();
@@ -98,7 +123,13 @@ export const UserApplyRole: React.FC = () => {
     return <LoadingState message="Loading your contributor status..." />;
   }
 
-  const isStaffAlready = user?.role === 'Author' || user?.role === 'Editor' || user?.role === 'Admin';
+  // Determine if application form should be shown:
+  // - Show if no app, or rejected/reapply
+  // - Show if user is Author (so they can apply for Editor!) unless they already have a pending Editor application
+  // - Hide only if currentApp is pending OR user is already Editor/Admin
+  const hasPendingApp = currentApp && currentApp.status === 'pending';
+  const isTopRole = isEditor || isAdmin;
+  const canShowForm = (!hasPendingApp && !isTopRole) || reapplyMode;
 
   return (
     <div style={{ maxWidth: '850px', margin: '0 auto' }}>
@@ -109,7 +140,21 @@ export const UserApplyRole: React.FC = () => {
 
       {/* Page Header */}
       <div style={{ marginBottom: '2rem' }}>
-        <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', padding: '0.25rem 0.75rem', borderRadius: 'var(--radius-full)', backgroundColor: 'var(--color-surface-alt)', border: '1px solid var(--color-border)', fontSize: '0.8rem', color: 'var(--color-secondary)', fontWeight: 700, marginBottom: '0.75rem' }}>
+        <div
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '0.4rem',
+            padding: '0.25rem 0.75rem',
+            borderRadius: 'var(--radius-full)',
+            backgroundColor: 'var(--color-surface-alt)',
+            border: '1px solid var(--color-border)',
+            fontSize: '0.8rem',
+            color: 'var(--color-secondary)',
+            fontWeight: 700,
+            marginBottom: '0.75rem',
+          }}
+        >
           <Sparkles size={14} /> Contributor Network
         </div>
         <h1 style={{ fontSize: '1.8rem', fontWeight: 800, marginBottom: '0.4rem', fontFamily: 'var(--font-heading)' }}>
@@ -120,7 +165,7 @@ export const UserApplyRole: React.FC = () => {
         </p>
       </div>
 
-      {/* Feedback Messages */}
+      {/* Feedback Alert */}
       {feedback && (
         <div
           style={{
@@ -141,7 +186,7 @@ export const UserApplyRole: React.FC = () => {
         </div>
       )}
 
-      {/* Existing Active Staff Badge */}
+      {/* 1. Existing Active Staff Badge */}
       {isStaffAlready && (
         <div
           style={{
@@ -155,16 +200,32 @@ export const UserApplyRole: React.FC = () => {
             justifyContent: 'space-between',
             flexWrap: 'wrap',
             gap: '1rem',
+            boxShadow: 'var(--shadow-sm)',
           }}
         >
           <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-            <div style={{ width: '48px', height: '48px', borderRadius: 'var(--radius-md)', backgroundColor: 'var(--color-secondary-glow)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--color-secondary)' }}>
+            <div
+              style={{
+                width: '48px',
+                height: '48px',
+                borderRadius: 'var(--radius-md)',
+                backgroundColor: 'rgba(99, 102, 241, 0.12)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: 'var(--color-secondary)',
+              }}
+            >
               <ShieldCheck size={28} />
             </div>
             <div>
-              <h3 style={{ fontSize: '1.1rem', fontWeight: 700, margin: 0 }}>You are a Verified {user?.role}!</h3>
+              <h3 style={{ fontSize: '1.1rem', fontWeight: 700, margin: 0, color: 'var(--color-text)' }}>
+                You are a Verified {user?.role}!
+              </h3>
               <p style={{ fontSize: '0.85rem', color: 'var(--color-text-secondary)', margin: '0.25rem 0 0 0' }}>
-                You already hold {user?.role} privileges with access to the Staff Editorial Studio.
+                {isAuthor
+                  ? 'You hold Author privileges with access to the Staff Editorial Studio. You can also apply for the Editor role below.'
+                  : `You hold full ${user?.role} clearance with access to the complete Editorial Workspace.`}
               </p>
             </div>
           </div>
@@ -181,6 +242,7 @@ export const UserApplyRole: React.FC = () => {
               fontWeight: 700,
               fontSize: '0.88rem',
               textDecoration: 'none',
+              boxShadow: '0 2px 8px var(--color-secondary-glow)',
             }}
           >
             Go to Staff Studio <ArrowRight size={16} />
@@ -188,7 +250,7 @@ export const UserApplyRole: React.FC = () => {
         </div>
       )}
 
-      {/* Existing Application Status Card */}
+      {/* 2. Existing Application Status Card (Pending / Approved / Rejected) */}
       {currentApp && !reapplyMode && (
         <div
           style={{
@@ -196,24 +258,24 @@ export const UserApplyRole: React.FC = () => {
             border: '1px solid var(--color-border)',
             borderRadius: 'var(--radius-lg)',
             padding: '1.75rem',
-            marginBottom: '2.5rem',
+            marginBottom: '2rem',
             boxShadow: 'var(--shadow-sm)',
           }}
         >
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.25rem', flexWrap: 'wrap', gap: '0.75rem' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
               <span style={{ fontSize: '0.85rem', color: 'var(--color-text-secondary)', fontWeight: 600 }}>Application ID:</span>
-              <span style={{ fontSize: '0.85rem', fontWeight: 700 }}>#{currentApp.application_id}</span>
+              <span style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--color-text)' }}>#{currentApp.application_id}</span>
             </div>
 
             {/* Status Pill */}
             {currentApp.status === 'pending' && (
-              <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', padding: '0.35rem 0.85rem', borderRadius: 'var(--radius-full)', backgroundColor: 'rgba(245, 158, 11, 0.15)', color: 'var(--color-warning)', fontSize: '0.82rem', fontWeight: 700, border: '1px solid rgba(245, 158, 11, 0.3)' }}>
+              <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', padding: '0.35rem 0.85rem', borderRadius: 'var(--radius-full)', backgroundColor: 'rgba(245, 158, 11, 0.15)', color: '#F59E0B', fontSize: '0.82rem', fontWeight: 700, border: '1px solid rgba(245, 158, 11, 0.3)' }}>
                 <Clock size={14} /> Pending Administration Review
               </span>
             )}
             {currentApp.status === 'approved' && (
-              <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', padding: '0.35rem 0.85rem', borderRadius: 'var(--radius-full)', backgroundColor: 'rgba(16, 185, 129, 0.15)', color: 'var(--color-success)', fontSize: '0.82rem', fontWeight: 700, border: '1px solid rgba(16, 185, 129, 0.3)' }}>
+              <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', padding: '0.35rem 0.85rem', borderRadius: 'var(--radius-full)', backgroundColor: 'rgba(16, 185, 129, 0.15)', color: '#10B981', fontSize: '0.82rem', fontWeight: 700, border: '1px solid rgba(16, 185, 129, 0.3)' }}>
                 <CheckCircle2 size={14} /> Application Approved
               </span>
             )}
@@ -231,11 +293,11 @@ export const UserApplyRole: React.FC = () => {
             </div>
             <div>
               <p style={{ fontSize: '0.75rem', color: 'var(--color-muted)', margin: 0, textTransform: 'uppercase', fontWeight: 700 }}>Submitted On</p>
-              <p style={{ fontSize: '0.95rem', fontWeight: 600, margin: '0.2rem 0 0 0' }}>{new Date(currentApp.created_at).toLocaleDateString()}</p>
+              <p style={{ fontSize: '0.95rem', fontWeight: 600, margin: '0.2rem 0 0 0', color: 'var(--color-text)' }}>{new Date(currentApp.created_at).toLocaleDateString()}</p>
             </div>
             <div>
               <p style={{ fontSize: '0.75rem', color: 'var(--color-muted)', margin: 0, textTransform: 'uppercase', fontWeight: 700 }}>Topics</p>
-              <p style={{ fontSize: '0.85rem', margin: '0.2rem 0 0 0' }}>{currentApp.topics ? currentApp.topics.join(', ') : 'General'}</p>
+              <p style={{ fontSize: '0.85rem', margin: '0.2rem 0 0 0', color: 'var(--color-text)' }}>{currentApp.topics ? currentApp.topics.join(', ') : 'General'}</p>
             </div>
           </div>
 
@@ -246,53 +308,59 @@ export const UserApplyRole: React.FC = () => {
             </div>
           )}
 
-          {currentApp.status === 'rejected' && (
-            <button
-              onClick={() => setReapplyMode(true)}
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '0.5rem',
-                backgroundColor: 'var(--color-secondary)',
-                color: '#FFFFFF',
-                padding: '0.55rem 1.1rem',
-                borderRadius: 'var(--radius-md)',
-                fontWeight: 700,
-                fontSize: '0.88rem',
-              }}
-            >
-              Submit Updated Application
-            </button>
-          )}
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
+            {currentApp.status === 'rejected' && (
+              <button
+                onClick={() => setReapplyMode(true)}
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.5rem',
+                  backgroundColor: 'var(--color-secondary)',
+                  color: '#FFFFFF',
+                  padding: '0.55rem 1.1rem',
+                  borderRadius: 'var(--radius-md)',
+                  fontWeight: 700,
+                  fontSize: '0.88rem',
+                  border: 'none',
+                  cursor: 'pointer',
+                }}
+              >
+                Submit Updated Application <ArrowRight size={16} />
+              </button>
+            )}
 
-          {currentApp.status === 'approved' && (
-            <Link
-              to="/admin"
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '0.5rem',
-                backgroundColor: 'var(--color-secondary)',
-                color: '#FFFFFF',
-                padding: '0.55rem 1.1rem',
-                borderRadius: 'var(--radius-md)',
-                fontWeight: 700,
-                fontSize: '0.88rem',
-                textDecoration: 'none',
-              }}
-            >
-              Open Your Staff Studio <ArrowRight size={16} />
-            </Link>
-          )}
+            {currentApp.status === 'approved' && isAuthor && (
+              <span style={{ fontSize: '0.85rem', color: 'var(--color-text-secondary)', fontWeight: 500 }}>
+                💡 Want to step up to an <strong>Editor</strong> role? Complete the application form below.
+              </span>
+            )}
+          </div>
         </div>
       )}
 
-      {/* Application Submission Form */}
-      {(!currentApp || currentApp.status === 'rejected' || reapplyMode) && (
-        <form onSubmit={handleSubmit} style={{ backgroundColor: 'var(--color-card)', padding: '2rem', borderRadius: 'var(--radius-lg)', border: '1px solid var(--color-border)', boxShadow: 'var(--shadow-sm)' }}>
-          <h2 style={{ fontSize: '1.25rem', fontWeight: 700, marginBottom: '1.5rem' }}>
-            Contributor Application Form
-          </h2>
+      {/* 3. Application Submission Form */}
+      {canShowForm && (
+        <form
+          onSubmit={handleSubmit}
+          style={{
+            backgroundColor: 'var(--color-card)',
+            padding: '2rem',
+            borderRadius: 'var(--radius-lg)',
+            border: '1px solid var(--color-border)',
+            boxShadow: 'var(--shadow-sm)',
+          }}
+        >
+          <div style={{ borderBottom: '1px solid var(--color-border)', paddingBottom: '1.25rem', marginBottom: '1.75rem' }}>
+            <h2 style={{ fontSize: '1.3rem', fontWeight: 800, margin: '0 0 0.3rem 0', color: 'var(--color-text)' }}>
+              {isAuthor ? 'Apply for Editor Role' : 'Contributor Application Form'}
+            </h2>
+            <p style={{ fontSize: '0.88rem', color: 'var(--color-text-secondary)', margin: 0 }}>
+              {isAuthor
+                ? 'As a verified Author, you can apply for promotion to Editor to gain full publication review, draft approval, and category management privileges.'
+                : 'Tell us about your background, the topics you specialize in, and share samples of your writing.'}
+            </p>
+          </div>
 
           {/* Step 1: Role Selection Cards */}
           <div style={{ marginBottom: '1.75rem' }}>
@@ -302,19 +370,50 @@ export const UserApplyRole: React.FC = () => {
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '1rem' }}>
               {/* Author Card */}
               <div
-                onClick={() => setRoleApplied('Author')}
+                onClick={() => {
+                  if (!isAuthor) setRoleApplied('Author');
+                }}
                 style={{
                   padding: '1.25rem',
                   borderRadius: 'var(--radius-md)',
-                  border: `2px solid ${roleApplied === 'Author' ? 'var(--color-secondary)' : 'var(--color-border)'}`,
-                  backgroundColor: roleApplied === 'Author' ? 'var(--color-surface-alt)' : 'transparent',
-                  cursor: 'pointer',
+                  border: `2px solid ${
+                    isAuthor
+                      ? 'rgba(16, 185, 129, 0.4)'
+                      : roleApplied === 'Author'
+                      ? 'var(--color-secondary)'
+                      : 'var(--color-border)'
+                  }`,
+                  backgroundColor: isAuthor
+                    ? 'rgba(16, 185, 129, 0.06)'
+                    : roleApplied === 'Author'
+                    ? 'var(--color-surface-alt)'
+                    : 'transparent',
+                  cursor: isAuthor ? 'default' : 'pointer',
                   transition: 'all 0.2s ease',
+                  opacity: isAuthor ? 0.75 : 1,
+                  position: 'relative',
                 }}
               >
+                {isAuthor && (
+                  <span
+                    style={{
+                      position: 'absolute',
+                      top: '10px',
+                      right: '10px',
+                      fontSize: '0.72rem',
+                      fontWeight: 700,
+                      backgroundColor: 'rgba(16, 185, 129, 0.18)',
+                      color: '#10B981',
+                      padding: '0.15rem 0.5rem',
+                      borderRadius: 'var(--radius-full)',
+                    }}
+                  >
+                    ✓ Already Held
+                  </span>
+                )}
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', marginBottom: '0.5rem' }}>
-                  <PenTool size={20} color={roleApplied === 'Author' ? 'var(--color-secondary)' : 'var(--color-muted)'} />
-                  <h3 style={{ fontSize: '1rem', fontWeight: 700, margin: 0 }}>Author (Writer)</h3>
+                  <PenTool size={20} color={isAuthor ? '#10B981' : roleApplied === 'Author' ? 'var(--color-secondary)' : 'var(--color-muted)'} />
+                  <h3 style={{ fontSize: '1rem', fontWeight: 700, margin: 0, color: 'var(--color-text)' }}>Author (Writer)</h3>
                 </div>
                 <p style={{ fontSize: '0.82rem', color: 'var(--color-text-secondary)', margin: 0, lineHeight: 1.5 }}>
                   Write and draft technical articles, submit stories for review, schedule releases, and manage your author portfolio.
@@ -331,11 +430,14 @@ export const UserApplyRole: React.FC = () => {
                   backgroundColor: roleApplied === 'Editor' ? 'var(--color-surface-alt)' : 'transparent',
                   cursor: 'pointer',
                   transition: 'all 0.2s ease',
+                  boxShadow: roleApplied === 'Editor' ? '0 0 0 1px var(--color-secondary)' : 'none',
                 }}
               >
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', marginBottom: '0.5rem' }}>
                   <Award size={20} color={roleApplied === 'Editor' ? 'var(--color-secondary)' : 'var(--color-muted)'} />
-                  <h3 style={{ fontSize: '1rem', fontWeight: 700, margin: 0 }}>Editor (Editorial Desk)</h3>
+                  <h3 style={{ fontSize: '1rem', fontWeight: 700, margin: 0, color: 'var(--color-text)' }}>
+                    Editor (Editorial Desk)
+                  </h3>
                 </div>
                 <p style={{ fontSize: '0.82rem', color: 'var(--color-text-secondary)', margin: 0, lineHeight: 1.5 }}>
                   Review submissions, request changes, direct publish stories, moderate reader discussions, and organize categories.
@@ -420,13 +522,17 @@ export const UserApplyRole: React.FC = () => {
           {/* Motivation */}
           <div style={{ marginBottom: '2rem' }}>
             <label style={{ display: 'block', fontWeight: 700, fontSize: '0.88rem', marginBottom: '0.4rem' }}>
-              Why do you want to write or edit for {siteName}? *
+              Why do you want to {roleApplied === 'Editor' ? 'become an Editor' : 'write'} for {siteName}? *
             </label>
             <textarea
               rows={4}
               value={motivation}
               onChange={e => setMotivation(e.target.value)}
-              placeholder="Share your goals, ideas for upcoming articles, or why you would like to be an editor..."
+              placeholder={
+                roleApplied === 'Editor'
+                  ? 'Share your experience reviewing technical articles, maintaining editorial standards, or managing publication workflows...'
+                  : 'Share your goals, ideas for upcoming articles, or why you would like to contribute...'
+              }
               required
               style={{ width: '100%', padding: '0.65rem 0.85rem', fontSize: '0.88rem', borderRadius: 'var(--radius-sm)' }}
             />
@@ -446,6 +552,7 @@ export const UserApplyRole: React.FC = () => {
                   borderRadius: 'var(--radius-md)',
                   fontWeight: 600,
                   fontSize: '0.88rem',
+                  cursor: 'pointer',
                 }}
               >
                 Cancel
@@ -467,6 +574,7 @@ export const UserApplyRole: React.FC = () => {
                 fontSize: '0.92rem',
                 boxShadow: '0 4px 14px var(--color-secondary-glow)',
                 cursor: submitting ? 'not-allowed' : 'pointer',
+                border: 'none',
               }}
             >
               <Send size={16} />

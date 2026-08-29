@@ -34,3 +34,7 @@ oracle_wallet/
 
 # Vite temp files
 *.timestamp-*.mjs
+
+# User uploads (dynamic media)
+backend/uploads/
+uploads/

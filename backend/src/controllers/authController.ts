@@ -3,6 +3,7 @@ import { AuthService } from '../services/authService';
 import { ResponseUtil } from '../utils/apiResponse';
 import { AuthenticatedRequest } from '../types';
 import { AuditService } from '../services/auditService';
+import { UserModel } from '../models/userModel';
 
 export class AuthController {
   // 1. Send Registration 6-Digit OTP to Gmail
@@ -131,7 +132,30 @@ export class AuthController {
         ResponseUtil.error(res, 'Unauthenticated user identity', 401);
         return;
       }
-      ResponseUtil.success(res, req.user, 'Current user profile retrieved');
+      const user = await UserModel.findById(req.user.userId);
+      if (!user) {
+        ResponseUtil.error(res, 'User not found', 404);
+        return;
+      }
+      const profile = {
+        userId: user.user_id,
+        user_id: user.user_id,
+        name: user.name,
+        username: user.username,
+        email: user.email,
+        role: user.role_name,
+        role_id: user.role_id,
+        status: user.status,
+        avatar_url: user.profile_image,
+        profile_image: user.profile_image,
+        profileImage: user.profile_image,
+        bio: user.bio,
+        website: user.website,
+        author_tags: user.author_tags,
+        social_links: user.social_links,
+        short_description: user.short_description,
+      };
+      ResponseUtil.success(res, profile, 'Current user profile retrieved');
     } catch (error) {
       next(error);
     }

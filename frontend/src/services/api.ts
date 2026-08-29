@@ -44,6 +44,14 @@ export class ApiService {
     return { success: true };
   }
 
+  // Auth Profile / Role Sync
+  public static async getMe() {
+    const res = await fetch(`${API_BASE_URL}/auth/me`, {
+      headers: this.getHeaders(),
+    });
+    return this.handleResponse(res);
+  }
+
   // Articles Endpoints (Public)
   public static async getPosts(options: {
     page?: number;
