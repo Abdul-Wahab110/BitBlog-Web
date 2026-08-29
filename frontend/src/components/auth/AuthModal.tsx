@@ -136,7 +136,11 @@ export const AuthModal: React.FC = () => {
       if (data && data.token && data.user) {
         login(data.token, data.user);
         setSuccessMsg(`Welcome, ${data.user.name}!`);
-        setTimeout(() => closeAuthModal(), 600);
+        const isStaffUser = data.user.role === 'Admin' || data.user.role === 'Editor' || data.user.role === 'Author';
+        setTimeout(() => {
+          closeAuthModal();
+          navigate(isStaffUser ? '/admin' : '/user/dashboard');
+        }, 400);
       }
     } catch (err: any) {
       setErrorMsg(err.message || 'Google authentication failed.');
@@ -166,7 +170,11 @@ export const AuthModal: React.FC = () => {
           if (fbSession && fbSession.token && fbSession.user) {
             login(fbSession.token, fbSession.user);
             setSuccessMsg(`Welcome back, ${fbSession.user.name}!`);
-            setTimeout(() => closeAuthModal(), 500);
+            const isStaffUser = fbSession.user.role === 'Admin' || fbSession.user.role === 'Editor' || fbSession.user.role === 'Author';
+            setTimeout(() => {
+              closeAuthModal();
+              navigate(isStaffUser ? '/admin' : '/user/dashboard');
+            }, 400);
             return;
           }
         } catch (fbErr: any) {
@@ -191,7 +199,11 @@ export const AuthModal: React.FC = () => {
       if (res && res.success && res.data && res.data.token) {
         login(res.data.token, res.data.user);
         setSuccessMsg(`Welcome back, ${res.data.user.name}!`);
-        setTimeout(() => closeAuthModal(), 500);
+        const isStaffUser = res.data.user.role === 'Admin' || res.data.user.role === 'Editor' || res.data.user.role === 'Author';
+        setTimeout(() => {
+          closeAuthModal();
+          navigate(isStaffUser ? '/admin' : '/user/dashboard');
+        }, 400);
       } else {
         throw new Error(res?.message || 'Invalid email/username or password.');
       }
