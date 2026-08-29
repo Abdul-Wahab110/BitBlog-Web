@@ -1,5 +1,5 @@
 import React from 'react';
-import { Facebook, Twitter, Youtube, Linkedin, TrendingUp, Sparkles, Radio } from 'lucide-react';
+import { Facebook, Linkedin, TrendingUp, Sparkles, Radio } from 'lucide-react';
 import { useSettings } from '../../context/SettingsContext';
 
 export const TopBar: React.FC = () => {
@@ -7,9 +7,7 @@ export const TopBar: React.FC = () => {
 
   const socialLinks = [
     { icon: Facebook, href: settings.social_facebook || 'https://facebook.com', label: 'Facebook' },
-    { icon: Twitter, href: settings.social_twitter || 'https://x.com', label: 'Twitter / X' },
     { icon: Linkedin, href: settings.social_linkedin || 'https://linkedin.com', label: 'LinkedIn' },
-    { icon: Youtube, href: settings.social_youtube || 'https://youtube.com', label: 'YouTube' },
   ];
 
   return (
