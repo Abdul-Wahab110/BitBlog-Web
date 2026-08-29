@@ -41,6 +41,7 @@ import {
   Film,
   Play,
   Crop as CropIcon,
+  RotateCcw,
 } from 'lucide-react';
 import { PictureFormatStudio, PictureFormatState } from './PictureFormatStudio';
 import { ImageCropModal } from './ImageCropModal';
@@ -357,7 +358,35 @@ export const RichEditor: React.FC<RichEditorProps> = ({
     }
   };
 
-  // 6. Apply MS Word Picture Format Studio Changes
+  // 6. Reset Selected Figure to Clean Default Upload Look
+  const handleResetSelectedFigure = () => {
+    if (!selectedFigure || !visualEditorRef.current) return;
+    const img = selectedFigure.querySelector('img');
+    const figcaption = selectedFigure.querySelector('figcaption');
+
+    selectedFigure.setAttribute(
+      'style',
+      'display:flex;flex-direction:column;align-items:center;width:65%;max-width:100%;margin:1.75rem auto;text-align:center;'
+    );
+    if (img) {
+      img.setAttribute(
+        'style',
+        'width:100%;max-width:100%;height:auto;border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,0.12);object-fit:cover;'
+      );
+    }
+    if (figcaption) {
+      figcaption.setAttribute(
+        'style',
+        'font-size:0.84rem;color:var(--color-muted, #71717a);margin-top:0.5rem;font-style:italic;line-height:1.4;'
+      );
+    }
+    setSelectedFigureAlign('center');
+    setSelectedFigureWidth(65);
+    onChange(visualEditorRef.current.innerHTML);
+    updateOverlayBox();
+  };
+
+  // 7. Apply MS Word Picture Format Studio Changes
   const applyPictureFormatStudio = (fmt: PictureFormatState) => {
     if (!selectedFigure || !visualEditorRef.current) return;
     const img = selectedFigure.querySelector('img');
@@ -1290,6 +1319,33 @@ export const RichEditor: React.FC<RichEditorProps> = ({
                 }}
               >
                 <CropIcon size={11} /> Crop
+              </button>
+
+              <button
+                type="button"
+                onClick={e => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  handleResetSelectedFigure();
+                }}
+                title="Reset Image Styles to Original Upload Look"
+                style={{
+                  backgroundColor: 'rgba(255,255,255,0.2)',
+                  color: '#FFFFFF',
+                  border: '1px solid rgba(255,255,255,0.4)',
+                  borderRadius: '6px',
+                  padding: '0.12rem 0.45rem',
+                  fontSize: '0.7rem',
+                  fontWeight: 700,
+                  cursor: 'pointer',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.25rem',
+                  pointerEvents: 'auto',
+                  transition: 'all 0.15s ease',
+                }}
+              >
+                <RotateCcw size={11} /> Reset
               </button>
             </div>
 

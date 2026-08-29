@@ -144,6 +144,25 @@ export const PictureFormatStudio: React.FC<PictureFormatStudioProps> = ({
     updateFormat(updates);
   };
 
+  const handleResetPicture = () => {
+    const resetState: PictureFormatState = {
+      stylePreset: 'default',
+      borderWidth: 0,
+      borderColor: '#6366F1',
+      borderStyle: 'solid',
+      borderRadius: 8,
+      shadow: 'subtle',
+      filter: 'none',
+      wrapText: 'inline',
+      widthPercent: 65,
+      aspectRatio: 'auto',
+      alt: format.alt,
+      caption: format.caption,
+    };
+    setFormat(resetState);
+    onApply(resetState);
+  };
+
   return (
     <div
       style={{
@@ -155,20 +174,26 @@ export const PictureFormatStudio: React.FC<PictureFormatStudioProps> = ({
         zIndex: 50,
         fontSize: '0.82rem',
         animation: 'slideDown 0.2s cubic-bezier(0.16, 1, 0.3, 1)',
+        overflowX: 'auto',
+        scrollbarWidth: 'thin',
       }}
     >
-      {/* 1. MS Word Ribbon Header Tabs */}
+      {/* 1. MS Word Ribbon Header Tabs (Horizontal Scrollable) */}
       <div
         style={{
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          padding: '0.35rem 0.85rem',
+          padding: '0.4rem 0.85rem',
           backgroundColor: 'var(--color-surface-alt)',
           borderBottom: '1px solid var(--color-border)',
+          gap: '0.75rem',
+          overflowX: 'auto',
+          scrollbarWidth: 'thin',
+          whiteSpace: 'nowrap',
         }}
       >
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', flexShrink: 0 }}>
           <span
             style={{
               display: 'inline-flex',
@@ -182,6 +207,7 @@ export const PictureFormatStudio: React.FC<PictureFormatStudioProps> = ({
               borderRadius: 'var(--radius-sm, 4px)',
               textTransform: 'uppercase',
               letterSpacing: '0.06em',
+              flexShrink: 0,
             }}
           >
             <Sparkles size={12} /> Picture Format
@@ -209,6 +235,7 @@ export const PictureFormatStudio: React.FC<PictureFormatStudioProps> = ({
                 color: activeTab === tab.id ? 'var(--color-secondary)' : 'var(--color-text-secondary)',
                 boxShadow: activeTab === tab.id ? '0 1px 4px rgba(0,0,0,0.08)' : 'none',
                 cursor: 'pointer',
+                flexShrink: 0,
               }}
             >
               {tab.label}
@@ -216,8 +243,31 @@ export const PictureFormatStudio: React.FC<PictureFormatStudioProps> = ({
           ))}
         </div>
 
-        {/* Action Controls: Crop, Replace, Delete, Close */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+        {/* Action Controls: Reset, Crop, Replace, Delete, Close */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', flexShrink: 0 }}>
+          <button
+            type="button"
+            onClick={handleResetPicture}
+            title="Reset Picture Styles & Formatting to Original Look"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.25rem',
+              padding: '0.25rem 0.65rem',
+              fontSize: '0.76rem',
+              fontWeight: 700,
+              backgroundColor: 'var(--color-surface)',
+              border: '1px solid var(--color-border)',
+              color: 'var(--color-text)',
+              borderRadius: 'var(--radius-sm)',
+              cursor: 'pointer',
+              whiteSpace: 'nowrap',
+              flexShrink: 0,
+            }}
+          >
+            <RotateCcw size={13} color="var(--color-secondary)" /> Reset Picture
+          </button>
+
           {onCropImage && (
             <button
               type="button"
@@ -235,6 +285,8 @@ export const PictureFormatStudio: React.FC<PictureFormatStudioProps> = ({
                 color: 'var(--color-secondary)',
                 borderRadius: 'var(--radius-sm)',
                 cursor: 'pointer',
+                whiteSpace: 'nowrap',
+                flexShrink: 0,
               }}
             >
               <Crop size={13} /> Crop Picture
@@ -257,6 +309,8 @@ export const PictureFormatStudio: React.FC<PictureFormatStudioProps> = ({
               color: 'var(--color-text)',
               borderRadius: 'var(--radius-sm)',
               cursor: 'pointer',
+              whiteSpace: 'nowrap',
+              flexShrink: 0,
             }}
           >
             <Edit3 size={13} /> Replace Image
@@ -278,6 +332,8 @@ export const PictureFormatStudio: React.FC<PictureFormatStudioProps> = ({
               color: 'var(--color-danger)',
               borderRadius: 'var(--radius-sm)',
               cursor: 'pointer',
+              whiteSpace: 'nowrap',
+              flexShrink: 0,
             }}
           >
             <Trash2 size={13} /> Delete
@@ -293,6 +349,7 @@ export const PictureFormatStudio: React.FC<PictureFormatStudioProps> = ({
               border: 'none',
               color: 'var(--color-muted)',
               cursor: 'pointer',
+              flexShrink: 0,
             }}
           >
             <X size={16} />
