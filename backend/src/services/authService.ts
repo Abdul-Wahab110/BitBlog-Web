@@ -219,18 +219,20 @@ export class AuthService {
   }
 
   public static async login(credentials: {
-    email: string;
+    email?: string;
+    emailOrUsername?: string;
     password: string;
     accountType?: 'User' | 'Admin';
   }) {
-    if (!credentials.email || !credentials.password) {
+    const identifier = (credentials.email || credentials.emailOrUsername || '').trim();
+    if (!identifier || !credentials.password) {
       throw new ApiError('Email and password are required', 400, ['Email and password are required']);
     }
 
     // 1. Fetch user by email or username
-    let user = await UserModel.findByEmail(credentials.email);
+    let user = await UserModel.findByEmail(identifier);
     if (!user) {
-      user = await UserModel.findByUsername(credentials.email);
+      user = await UserModel.findByUsername(identifier);
     }
     if (!user) {
       throw new ApiError('Invalid email or password credentials', 401, ['Invalid email or password']);

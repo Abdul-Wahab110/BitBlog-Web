@@ -35,8 +35,10 @@ export const AdminLogin: React.FC = () => {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
+          email: emailOrUsername.trim(),
           emailOrUsername: emailOrUsername.trim(),
           password: password.trim(),
+          accountType: 'Admin',
         }),
       });
 
