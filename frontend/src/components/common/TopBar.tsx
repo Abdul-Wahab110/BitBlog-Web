@@ -1,9 +1,16 @@
 import React from 'react';
-import { Facebook, Twitter, Youtube, Linkedin, TrendingUp } from 'lucide-react';
+import { Facebook, Twitter, Youtube, Linkedin, TrendingUp, Sparkles, Radio } from 'lucide-react';
 import { useSettings } from '../../context/SettingsContext';
 
 export const TopBar: React.FC = () => {
   const { settings } = useSettings();
+
+  const socialLinks = [
+    { icon: Facebook, href: settings.social_facebook || 'https://facebook.com', label: 'Facebook' },
+    { icon: Twitter, href: settings.social_twitter || 'https://x.com', label: 'Twitter / X' },
+    { icon: Linkedin, href: settings.social_linkedin || 'https://linkedin.com', label: 'LinkedIn' },
+    { icon: Youtube, href: settings.social_youtube || 'https://youtube.com', label: 'YouTube' },
+  ];
 
   return (
     <div
@@ -23,84 +30,84 @@ export const TopBar: React.FC = () => {
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
-          padding: '0.45rem 1rem',
+          padding: '0.4rem 1rem',
         }}
       >
-        {/* Left: Trending */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
+        {/* Left: Trending publication live status */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem' }}>
+          <span
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.4rem',
+              color: 'var(--color-accent)',
+              fontWeight: 700,
+              fontSize: '0.72rem',
+              textTransform: 'uppercase',
+              letterSpacing: '0.07em',
+            }}
+          >
+            <TrendingUp size={13} /> {settings.site_name || 'BITBLOG'} • DIGITAL PUBLICATION
+          </span>
+
           <span
             style={{
               display: 'inline-flex',
               alignItems: 'center',
               gap: '0.35rem',
-              color: 'var(--color-accent)',
-              fontWeight: 700,
+              color: 'var(--color-muted)',
               fontSize: '0.7rem',
-              textTransform: 'uppercase',
-              letterSpacing: '0.06em',
+              fontWeight: 600,
             }}
           >
-            <TrendingUp size={13} /> {settings.site_name || 'BitBlog'} • Digital Publication
+            <span
+              style={{
+                width: '6px',
+                height: '6px',
+                borderRadius: '50%',
+                backgroundColor: 'var(--color-success, #10B981)',
+                boxShadow: '0 0 6px rgba(16, 185, 129, 0.6)',
+                display: 'inline-block',
+              }}
+            />
+            LIVE TECH FEED
           </span>
         </div>
 
-        {/* Right: Dynamic Social Channels */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-          {settings.social_facebook && (
-            <a
-              href={settings.social_facebook}
-              target="_blank"
-              rel="noreferrer"
-              aria-label="Facebook"
-              style={{ color: 'var(--color-muted)', transition: 'color var(--transition-fast)' }}
-              onMouseEnter={e => (e.currentTarget.style.color = 'var(--color-secondary)')}
-              onMouseLeave={e => (e.currentTarget.style.color = 'var(--color-muted)')}
-            >
-              <Facebook size={13} />
-            </a>
-          )}
-
-          {settings.social_twitter && (
-            <a
-              href={settings.social_twitter}
-              target="_blank"
-              rel="noreferrer"
-              aria-label="Twitter / X"
-              style={{ color: 'var(--color-muted)', transition: 'color var(--transition-fast)' }}
-              onMouseEnter={e => (e.currentTarget.style.color = 'var(--color-secondary)')}
-              onMouseLeave={e => (e.currentTarget.style.color = 'var(--color-muted)')}
-            >
-              <Twitter size={13} />
-            </a>
-          )}
-
-          {settings.social_linkedin && (
-            <a
-              href={settings.social_linkedin}
-              target="_blank"
-              rel="noreferrer"
-              aria-label="LinkedIn"
-              style={{ color: 'var(--color-muted)', transition: 'color var(--transition-fast)' }}
-              onMouseEnter={e => (e.currentTarget.style.color = 'var(--color-secondary)')}
-              onMouseLeave={e => (e.currentTarget.style.color = 'var(--color-muted)')}
-            >
-              <Linkedin size={13} />
-            </a>
-          )}
-
-          {settings.social_youtube && (
-            <a
-              href={settings.social_youtube}
-              target="_blank"
-              rel="noreferrer"
-              aria-label="YouTube"
-              style={{ color: 'var(--color-muted)', transition: 'color var(--transition-fast)' }}
-              onMouseEnter={e => (e.currentTarget.style.color = 'var(--color-secondary)')}
-              onMouseLeave={e => (e.currentTarget.style.color = 'var(--color-muted)')}
-            >
-              <Youtube size={13} />
-            </a>
-          )}
+        {/* Right: Dynamic Social Channels with micro-animations */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
+          {socialLinks.map((item, index) => {
+            const Icon = item.icon;
+            return (
+              <a
+                key={index}
+                href={item.href}
+                target="_blank"
+                rel="noreferrer"
+                aria-label={item.label}
+                style={{
+                  color: 'var(--color-muted)',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  padding: '0.2rem',
+                  borderRadius: 'var(--radius-sm, 4px)',
+                  transition: 'all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1)',
+                  textDecoration: 'none',
+                }}
+                onMouseEnter={e => {
+                  e.currentTarget.style.color = 'var(--color-secondary)';
+                  e.currentTarget.style.transform = 'translateY(-1.5px) scale(1.15)';
+                }}
+                onMouseLeave={e => {
+                  e.currentTarget.style.color = 'var(--color-muted)';
+                  e.currentTarget.style.transform = 'none';
+                }}
+              >
+                <Icon size={13} />
+              </a>
+            );
+          })}
         </div>
       </div>
     </div>

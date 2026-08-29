@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { ChevronDown, Sparkles } from 'lucide-react';
+import { ChevronDown, Sparkles, Layers, ArrowRight } from 'lucide-react';
 import { ApiService } from '../../services/api';
 
 export const Navigation: React.FC = () => {
@@ -18,88 +18,124 @@ export const Navigation: React.FC = () => {
       .catch(() => {});
   }, []);
 
-  const linkStyle = (active: boolean): React.CSSProperties => ({
-    color: active ? 'var(--color-secondary)' : 'var(--color-text)',
-    fontSize: '0.85rem',
-    fontWeight: active ? 700 : 600,
-    textTransform: 'uppercase',
-    letterSpacing: '0.04em',
-    padding: '0.5rem 0',
-    position: 'relative',
-    transition: 'color var(--transition-fast)',
-    display: 'inline-flex',
-    alignItems: 'center',
-    gap: '0.2rem',
-  });
-
   return (
-    <nav style={{ gap: '1.75rem', fontWeight: 600, fontSize: '0.85rem', alignItems: 'center' }}>
-      <Link to="/" style={linkStyle(path === '/')}>
+    <nav style={{ display: 'flex', gap: '2rem', alignItems: 'center' }}>
+      <Link
+        to="/"
+        className={`nav-link-item ${path === '/' ? 'active' : ''}`}
+      >
         Home
       </Link>
 
-      <Link to="/blog" style={linkStyle(path === '/blog')}>
+      <Link
+        to="/blog"
+        className={`nav-link-item ${path === '/blog' || path.startsWith('/post/') ? 'active' : ''}`}
+      >
         Articles
       </Link>
 
-      {/* Categories Dropdown */}
-      <div className="dropdown" style={{ position: 'relative', cursor: 'pointer', display: 'inline-flex', alignItems: 'center' }}>
-        <Link to="/categories" style={linkStyle(path.startsWith('/categor'))}>
-          Categories <ChevronDown size={13} style={{ marginLeft: '1px' }} />
+      {/* Categories Dropdown with Glassmorphic Animation */}
+      <div className="nav-dropdown-wrapper">
+        <Link
+          to="/categories"
+          className={`nav-link-item ${path.startsWith('/categor') ? 'active' : ''}`}
+        >
+          Categories <ChevronDown size={14} style={{ transition: 'transform 0.2s ease' }} />
         </Link>
 
-        <div className="dropdown-menu" style={{ width: '260px', padding: '0.75rem' }}>
-          <div style={{ fontSize: '0.7rem', fontWeight: 700, color: 'var(--color-secondary)', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.08em', padding: '0 0.5rem' }}>
-            Featured Topics
+        <div className="nav-dropdown-panel">
+          <div
+            style={{
+              fontSize: '0.68rem',
+              fontWeight: 800,
+              color: 'var(--color-secondary)',
+              marginBottom: '0.45rem',
+              textTransform: 'uppercase',
+              letterSpacing: '0.08em',
+              padding: '0.2rem 0.5rem',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.35rem',
+            }}
+          >
+            <Sparkles size={12} /> Featured Topics
           </div>
-          {categories.length > 0 ? (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.15rem' }}>
-              {categories.map(cat => (
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.15rem' }}>
+            {categories.length > 0 ? (
+              categories.map(cat => (
                 <Link
                   key={cat.category_id}
                   to={`/category/${cat.slug}`}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'space-between',
-                    padding: '0.45rem 0.65rem',
-                    fontSize: '0.85rem',
-                  }}
+                  className="nav-dropdown-item"
                 >
-                  <span>{cat.name}</span>
+                  <span style={{ fontWeight: 600 }}>{cat.name}</span>
                   {cat.post_count > 0 && (
-                    <span style={{ fontSize: '0.7rem', color: 'var(--color-muted)' }}>{cat.post_count}</span>
+                    <span
+                      style={{
+                        fontSize: '0.7rem',
+                        color: 'var(--color-muted)',
+                        backgroundColor: 'var(--color-surface-alt)',
+                        padding: '0.1rem 0.4rem',
+                        borderRadius: 'var(--radius-full)',
+                        fontWeight: 600,
+                      }}
+                    >
+                      {cat.post_count}
+                    </span>
                   )}
                 </Link>
-              ))}
-              <div style={{ height: '1px', backgroundColor: 'var(--color-border)', margin: '0.35rem 0' }} />
-              <Link to="/categories" style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--color-secondary)', padding: '0.35rem 0.65rem' }}>
-                View All Categories →
-              </Link>
-            </div>
-          ) : (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '0.15rem' }}>
-              <Link to="/category/technology" style={{ padding: '0.45rem 0.65rem', fontSize: '0.85rem' }}>Technology</Link>
-              <Link to="/category/design" style={{ padding: '0.45rem 0.65rem', fontSize: '0.85rem' }}>Design</Link>
-              <Link to="/category/business" style={{ padding: '0.45rem 0.65rem', fontSize: '0.85rem' }}>Business</Link>
-              <Link to="/category/culture" style={{ padding: '0.45rem 0.65rem', fontSize: '0.85rem' }}>Culture</Link>
-              <Link to="/categories" style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--color-secondary)', padding: '0.35rem 0.65rem' }}>
-                All Categories →
-              </Link>
-            </div>
-          )}
+              ))
+            ) : (
+              <>
+                <Link to="/category/technology" className="nav-dropdown-item">Technology</Link>
+                <Link to="/category/design" className="nav-dropdown-item">Design & UX</Link>
+                <Link to="/category/business" className="nav-dropdown-item">Business</Link>
+                <Link to="/category/culture" className="nav-dropdown-item">Culture & AI</Link>
+              </>
+            )}
+
+            <div style={{ height: '1px', backgroundColor: 'var(--color-border)', margin: '0.4rem 0' }} />
+
+            <Link
+              to="/categories"
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                fontSize: '0.8rem',
+                fontWeight: 700,
+                color: 'var(--color-secondary)',
+                padding: '0.4rem 0.65rem',
+                borderRadius: 'var(--radius-sm)',
+                textDecoration: 'none',
+              }}
+            >
+              <span>Explore All Categories</span>
+              <ArrowRight size={13} />
+            </Link>
+          </div>
         </div>
       </div>
 
-      <Link to="/authors" style={linkStyle(path === '/authors')}>
+      <Link
+        to="/authors"
+        className={`nav-link-item ${path === '/authors' || path.startsWith('/author/') ? 'active' : ''}`}
+      >
         Authors
       </Link>
 
-      <Link to="/about" style={linkStyle(path === '/about')}>
+      <Link
+        to="/about"
+        className={`nav-link-item ${path === '/about' ? 'active' : ''}`}
+      >
         About
       </Link>
 
-      <Link to="/contact" style={linkStyle(path === '/contact')}>
+      <Link
+        to="/contact"
+        className={`nav-link-item ${path === '/contact' ? 'active' : ''}`}
+      >
         Contact
       </Link>
     </nav>

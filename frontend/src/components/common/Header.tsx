@@ -99,6 +99,7 @@ export const Header: React.FC = () => {
             {/* Brand Logo */}
             <Link
               to="/"
+              className="header-brand-link"
               style={{
                 display: 'flex',
                 alignItems: 'center',
@@ -107,13 +108,15 @@ export const Header: React.FC = () => {
                 textDecoration: 'none',
               }}
             >
-              <BrandLogo size={38} showText={false} />
+              <div className="header-brand-logo-badge">
+                <BrandLogo size={38} showText={false} />
+              </div>
               <div style={{ lineHeight: 1.15 }}>
                 <span
                   style={{
-                    fontSize: '1.3rem',
+                    fontSize: '1.35rem',
                     fontWeight: 800,
-                    letterSpacing: '-0.02em',
+                    letterSpacing: '-0.025em',
                     fontFamily: 'var(--font-heading)',
                     display: 'block',
                     color: 'var(--color-text)',
@@ -124,15 +127,16 @@ export const Header: React.FC = () => {
                 <span
                   className="desktop-only"
                   style={{
-                    fontSize: '0.62rem',
+                    fontSize: '0.65rem',
                     color: 'var(--color-muted)',
                     textTransform: 'uppercase',
                     letterSpacing: '0.12em',
-                    fontWeight: 600,
+                    fontWeight: 700,
                     display: 'block',
+                    marginTop: '1px',
                   }}
                 >
-                  {settings.site_description ? (settings.site_description.length > 30 ? settings.site_description.substring(0, 30) + '...' : settings.site_description) : 'Digital Journal & CMS'}
+                  Digital Publication • Tech & Ideas
                 </span>
               </div>
             </Link>
@@ -144,18 +148,22 @@ export const Header: React.FC = () => {
           </div>
 
           {/* Right: Actions (Search, Theme, Auth) */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexShrink: 0 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', flexShrink: 0 }}>
             {/* Search Toggle Button */}
             <button
               onClick={() => setSearchOpen(!searchOpen)}
               aria-label={searchOpen ? 'Close search bar' : 'Open search bar'}
+              className="header-action-btn"
               style={{
-                background: 'transparent',
-                border: '1px solid var(--color-border)',
+                background: searchOpen ? 'var(--color-surface-alt)' : 'transparent',
+                border: `1px solid ${searchOpen ? 'var(--color-secondary)' : 'var(--color-border)'}`,
                 padding: '0.45rem',
                 borderRadius: 'var(--radius-full)',
                 color: searchOpen ? 'var(--color-secondary)' : 'var(--color-text)',
-                transition: 'all var(--transition-fast)',
+                cursor: 'pointer',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
               }}
             >
               {searchOpen ? <X size={17} /> : <Search size={17} />}
@@ -165,14 +173,14 @@ export const Header: React.FC = () => {
             {isAuthenticated && isStaff && (
               <Link
                 to="/admin/posts/new"
-                className="desktop-only"
+                className="desktop-only header-action-btn"
                 style={{
                   display: 'inline-flex',
                   alignItems: 'center',
                   gap: '0.4rem',
                   backgroundColor: 'var(--color-secondary)',
                   color: '#FFFFFF',
-                  padding: '0.35rem 0.85rem',
+                  padding: '0.4rem 0.95rem',
                   borderRadius: 'var(--radius-full)',
                   fontSize: '0.8rem',
                   fontWeight: 700,
@@ -192,6 +200,7 @@ export const Header: React.FC = () => {
               <div style={{ position: 'relative' }}>
                 <button
                   onClick={() => setUserDropdownOpen(!userDropdownOpen)}
+                  className="header-action-btn"
                   style={{
                     display: 'inline-flex',
                     alignItems: 'center',
@@ -200,7 +209,7 @@ export const Header: React.FC = () => {
                     fontWeight: 600,
                     color: 'var(--color-text)',
                     backgroundColor: 'var(--color-surface-alt)',
-                    padding: '0.25rem 0.65rem 0.25rem 0.35rem',
+                    padding: '0.25rem 0.7rem 0.25rem 0.35rem',
                     borderRadius: 'var(--radius-full)',
                     border: '1px solid var(--color-border)',
                     cursor: 'pointer',
@@ -366,17 +375,20 @@ export const Header: React.FC = () => {
               <button
                 type="button"
                 onClick={() => openAuthModal('login')}
+                className="header-action-btn"
                 style={{
                   display: 'inline-flex',
                   alignItems: 'center',
-                  gap: '0.35rem',
-                  fontSize: '0.82rem',
-                  fontWeight: 600,
+                  gap: '0.45rem',
+                  fontSize: '0.84rem',
+                  fontWeight: 700,
                   color: '#FFFFFF',
                   backgroundColor: 'var(--color-secondary)',
-                  padding: '0.45rem 0.95rem',
+                  padding: '0.45rem 1.05rem',
                   borderRadius: 'var(--radius-full)',
-                  transition: 'all var(--transition-fast)',
+                  border: 'none',
+                  cursor: 'pointer',
+                  boxShadow: '0 2px 10px var(--color-secondary-glow)',
                 }}
               >
                 <User size={15} />

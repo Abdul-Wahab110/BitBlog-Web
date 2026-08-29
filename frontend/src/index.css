@@ -18,8 +18,8 @@
   --color-accent: #DB2777;
   --color-accent-hover: #BE185D;
 
-  --color-cream: #FEFCE8;
-  --color-cream-border: #FEF08A;
+  --color-cream: #F5F3FF;
+  --color-cream-border: #E0E7FF;
 
   --color-text: #18181B;
   --color-text-secondary: #52525B;
@@ -75,8 +75,8 @@
   --color-accent: #F472B6;
   --color-accent-hover: #FB7185;
 
-  --color-cream: #29240D;
-  --color-cream-border: #4A400F;
+  --color-cream: rgba(99, 102, 241, 0.08);
+  --color-cream-border: rgba(99, 102, 241, 0.22);
 
   --color-text: #FAFAFA;
   --color-text-secondary: #A1A1AA;
@@ -596,4 +596,213 @@ article:hover {
     transform: translateX(0);
     opacity: 1;
   }
-}
+}
+
+/* ============================================================================
+   Professional Header, Navigation & Breaking Ticker Animations
+   ============================================================================ */
+
+/* 1. Header Brand Logo Hover Glow */
+.header-brand-link {
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.25s ease;
+}
+
+.header-brand-link:hover {
+  transform: translateY(-1px) scale(1.02);
+}
+
+.header-brand-logo-badge {
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.header-brand-link:hover .header-brand-logo-badge {
+  box-shadow: 0 0 16px var(--color-secondary-glow), 0 0 30px rgba(99, 102, 241, 0.2);
+  transform: rotate(-3deg) scale(1.05);
+}
+
+/* 2. Interactive Navigation Links with Animated Gradient Underline */
+.nav-link-item {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.5rem 0.15rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text-secondary);
+  text-decoration: none;
+  transition: color 0.2s cubic-bezier(0.4, 0, 0.2, 1), transform 0.2s ease;
+}
+
+.nav-link-item::after {
+  content: '';
+  position: absolute;
+  bottom: 0px;
+  left: 50%;
+  width: 0;
+  height: 2.5px;
+  background: linear-gradient(90deg, var(--color-secondary) 0%, var(--color-accent) 100%);
+  border-radius: 9999px;
+  transition: width 0.28s cubic-bezier(0.4, 0, 0.2, 1), left 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 0 8px var(--color-secondary-glow);
+}
+
+.nav-link-item:hover {
+  color: var(--color-text);
+  transform: translateY(-1px);
+}
+
+.nav-link-item:hover::after {
+  width: 100%;
+  left: 0;
+}
+
+.nav-link-item.active {
+  color: var(--color-secondary);
+  font-weight: 700;
+}
+
+.nav-link-item.active::after {
+  width: 100%;
+  left: 0;
+}
+
+/* 3. Smooth Glassmorphic Dropdown Animation */
+.nav-dropdown-wrapper {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
+.nav-dropdown-panel {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 260px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 20px 30px -8px var(--color-shadow), 0 8px 16px -4px var(--color-shadow);
+  padding: 0.75rem;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(10px) scale(0.97);
+  transform-origin: top left;
+  transition: opacity 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+              visibility 0.22s;
+  z-index: 120;
+  backdrop-filter: blur(16px);
+}
+
+.nav-dropdown-wrapper:hover .nav-dropdown-panel,
+.nav-dropdown-wrapper:focus-within .nav-dropdown-panel {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(4px) scale(1);
+}
+
+.nav-dropdown-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.55rem 0.85rem;
+  border-radius: var(--radius-md);
+  color: var(--color-text);
+  font-size: 0.86rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.18s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.nav-dropdown-item:hover {
+  background-color: var(--color-surface-alt);
+  color: var(--color-secondary);
+  transform: translateX(4px);
+}
+
+/* 4. Breaking News Ticker Animation */
+@keyframes pulseBadge {
+  0% {
+    box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.6);
+  }
+  70% {
+    box-shadow: 0 0 0 8px rgba(99, 102, 241, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(99, 102, 241, 0);
+  }
+}
+
+.ticker-breaking-badge {
+  animation: pulseBadge 2.2s infinite cubic-bezier(0.4, 0, 0.6, 1);
+  transition: transform 0.2s ease;
+}
+
+.ticker-breaking-badge:hover {
+  transform: scale(1.04);
+}
+
+@keyframes tickerSlideIn {
+  0% {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.ticker-content-animated {
+  animation: tickerSlideIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.ticker-headline-link {
+  color: var(--color-text);
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.ticker-headline-link:hover {
+  color: var(--color-secondary);
+}
+
+.ticker-nav-btn {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-secondary);
+  width: 26px;
+  height: 26px;
+  border-radius: var(--radius-sm);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.18s ease;
+}
+
+.ticker-nav-btn:hover {
+  background-color: var(--color-secondary);
+  border-color: var(--color-secondary);
+  color: #FFFFFF;
+  transform: scale(1.08);
+}
+
+/* 5. Header Interactive Buttons */
+.header-action-btn {
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.header-action-btn:hover {
+  transform: translateY(-1.5px);
+  box-shadow: 0 4px 12px var(--color-secondary-glow);
+}
+
+.header-action-btn:active {
+  transform: translateY(0) scale(0.97);
+}
+
