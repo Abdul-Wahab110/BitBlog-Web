@@ -38,7 +38,10 @@ export const Home: React.FC = () => {
     slug: p.slug,
   }));
 
-  const recommendedPosts = posts.slice(3, 9);
+  // Top 3 highest-viewed articles for Recommended Reads
+  const recommendedPosts = [...posts]
+    .sort((a, b) => (b.views_count || 0) - (a.views_count || 0))
+    .slice(0, 3);
 
   return (
     <div>

@@ -57,7 +57,10 @@ export const UserDashboard: React.FC = () => {
         }
 
         if (postsRes.status === 'fulfilled' && postsRes.value?.data) {
-          setRecommendedPosts(postsRes.value.data);
+          const sorted = [...postsRes.value.data]
+            .sort((a: any, b: any) => (b.views_count || 0) - (a.views_count || 0))
+            .slice(0, 3);
+          setRecommendedPosts(sorted);
         }
       } catch (err) {
         console.error('Failed to load user dashboard data:', err);
