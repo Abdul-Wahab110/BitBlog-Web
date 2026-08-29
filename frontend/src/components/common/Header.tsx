@@ -62,6 +62,12 @@ export const Header: React.FC = () => {
     <header
       className={`sticky-header-container ${scrolled ? 'is-scrolled' : ''}`}
       style={{
+        position: 'sticky',
+        top: 0,
+        left: 0,
+        right: 0,
+        width: '100%',
+        zIndex: 1000,
         backgroundColor: scrolled ? undefined : 'var(--color-surface)',
         borderBottom: scrolled ? undefined : '1px solid var(--color-border)',
       }}
