@@ -15,6 +15,7 @@ export const Header: React.FC = () => {
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [scrolled, setScrolled] = useState(false);
+  const [scrollProgress, setScrollProgress] = useState(0);
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
 
   const { isAuthenticated, user, isStaff, logout, openAuthModal } = useAuth();
@@ -22,13 +23,23 @@ export const Header: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Track scroll position to enhance sticky shadow elevation
+  // Track scroll position and calculate real-time reading progress percentage
   const handleScroll = useCallback(() => {
-    setScrolled(window.scrollY > 10);
+    const scrollTop = window.scrollY || document.documentElement.scrollTop;
+    setScrolled(scrollTop > 8);
+
+    const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+    if (docHeight > 0) {
+      const progress = Math.min(100, Math.max(0, (scrollTop / docHeight) * 100));
+      setScrollProgress(progress);
+    } else {
+      setScrollProgress(0);
+    }
   }, []);
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll();
     return () => window.removeEventListener('scroll', handleScroll);
   }, [handleScroll]);
 
@@ -49,18 +60,25 @@ export const Header: React.FC = () => {
 
   return (
     <header
+      className={`sticky-header-container ${scrolled ? 'is-scrolled' : ''}`}
       style={{
-        position: 'sticky',
-        top: 0,
-        zIndex: 100,
-        backgroundColor: 'var(--color-surface)',
-        borderBottom: scrolled ? 'none' : '1px solid var(--color-border)',
-        boxShadow: scrolled
-          ? '0 4px 20px -2px var(--color-shadow), 0 2px 6px -1px var(--color-shadow)'
-          : 'none',
-        transition: 'box-shadow var(--transition-normal), border-color var(--transition-normal), background-color var(--transition-normal)',
+        backgroundColor: scrolled ? undefined : 'var(--color-surface)',
+        borderBottom: scrolled ? undefined : '1px solid var(--color-border)',
       }}
     >
+      {/* Dynamic Animated Scroll Progress Line */}
+      {scrolled && scrollProgress > 0 && (
+        <div
+          className="scroll-progress-bar"
+          style={{
+            width: `${scrollProgress}%`,
+          }}
+        />
+      )}
+
+      {/* Ambient subtle glow line when sticky scrolled */}
+      {scrolled && <div className="header-scrolled-ambient-line" />}
+
       {/* Top Utility Bar on Desktop */}
       <TopBar />
 

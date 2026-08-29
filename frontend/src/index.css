@@ -805,4 +805,67 @@ article:hover {
 .header-action-btn:active {
   transform: translateY(0) scale(0.97);
 }
+
+/* 6. Sticky Header & Scroll Progress Line Animations */
+.sticky-header-container {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  width: 100%;
+  transition: background-color 0.25s ease, backdrop-filter 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+}
+
+.sticky-header-container.is-scrolled {
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  background-color: rgba(21, 17, 38, 0.88);
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.45), 0 2px 6px -1px rgba(0, 0, 0, 0.3);
+  border-bottom: 1px solid rgba(129, 140, 248, 0.15);
+}
+
+:root:not([data-theme="dark"]) .sticky-header-container.is-scrolled {
+  background-color: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 4px 20px -2px rgba(24, 24, 27, 0.08), 0 2px 6px -1px rgba(24, 24, 27, 0.04);
+  border-bottom: 1px solid rgba(99, 102, 241, 0.15);
+}
+
+@keyframes scrollLineShimmer {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.scroll-progress-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #6366F1 0%, #A855F7 35%, #EC4899 70%, #F59E0B 100%);
+  background-size: 200% 200%;
+  animation: scrollLineShimmer 3s ease infinite;
+  box-shadow: 0 0 10px rgba(99, 102, 241, 0.8), 0 0 20px rgba(236, 72, 153, 0.5);
+  border-radius: 0 9999px 9999px 0;
+  z-index: 1010;
+  pointer-events: none;
+  transition: width 0.08s linear;
+}
+
+/* Subtle glow line along the entire bottom when scrolled */
+.header-scrolled-ambient-line {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent 0%, rgba(99, 102, 241, 0.4) 50%, transparent 100%);
+  pointer-events: none;
+  z-index: 1005;
+}
+
 
