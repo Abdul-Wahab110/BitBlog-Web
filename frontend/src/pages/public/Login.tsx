@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import {
   LogIn,
@@ -29,9 +29,23 @@ export const Login: React.FC = () => {
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
 
-  const { login } = useAuth();
+  const { login, isAuthenticated, user, isStaff } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+
+  // If already authenticated, redirect straight to the appropriate portal dashboard directly
+  useEffect(() => {
+    if (isAuthenticated) {
+      const redirectUrl = new URLSearchParams(location.search).get('redirect');
+      if (redirectUrl) {
+        navigate(redirectUrl, { replace: true });
+      } else if (isStaff || user?.role === 'Admin' || user?.role === 'Editor' || user?.role === 'Author') {
+        navigate('/admin', { replace: true });
+      } else {
+        navigate('/user/dashboard', { replace: true });
+      }
+    }
+  }, [isAuthenticated, isStaff, user, navigate, location.search]);
 
   // 1. Google 1-Click Login
   const handleGoogleSignIn = async () => {
@@ -42,9 +56,11 @@ export const Login: React.FC = () => {
       if (data && data.token && data.user) {
         setSuccessMsg(`Welcome back, ${data.user.name}!`);
         login(data.token, data.user);
+        const isStaffUser = data.user.role === 'Admin' || data.user.role === 'Editor' || data.user.role === 'Author';
+        const redirectUrl = new URLSearchParams(location.search).get('redirect');
         setTimeout(() => {
-          navigate('/user/dashboard');
-        }, 500);
+          navigate(redirectUrl || (isStaffUser ? '/admin' : '/user/dashboard'), { replace: true });
+        }, 400);
       }
     } catch (err: any) {
       setErrorMsg(err.message || 'Google sign-in failed. Please try again.');
@@ -73,10 +89,11 @@ export const Login: React.FC = () => {
           const fbSession = await FirebaseAuthService.loginWithEmail(inputLogin, password);
           if (fbSession && fbSession.token && fbSession.user) {
             login(fbSession.token, fbSession.user);
+            const isStaffAccount = fbSession.user.role === 'Admin' || fbSession.user.role === 'Editor' || fbSession.user.role === 'Author';
             const redirectUrl = new URLSearchParams(location.search).get('redirect');
             setTimeout(() => {
-              navigate(redirectUrl || '/user/dashboard');
-            }, 500);
+              navigate(redirectUrl || (isStaffAccount ? '/admin' : '/user/dashboard'), { replace: true });
+            }, 400);
             return;
           }
         } catch (fbErr: any) {

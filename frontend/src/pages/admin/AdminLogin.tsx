@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { Shield, Lock, Mail, Eye, EyeOff, AlertCircle, CheckCircle2, Loader2, ShieldCheck, ArrowLeft, KeyRound, Sparkles } from 'lucide-react';
 import { SeoHead } from '../../components/common/SeoHead';
 import { BrandLogo } from '../../components/common/BrandLogo';
@@ -14,9 +14,24 @@ export const AdminLogin: React.FC = () => {
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
 
-  const { login } = useAuth();
+  const { login, isAuthenticated, user, isStaff } = useAuth();
   const { settings } = useSettings();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // If already authenticated, redirect straight to the portal dashboard directly
+  useEffect(() => {
+    if (isAuthenticated) {
+      const redirectUrl = new URLSearchParams(location.search).get('redirect');
+      if (redirectUrl) {
+        navigate(redirectUrl, { replace: true });
+      } else if (isStaff || user?.role === 'Admin' || user?.role === 'Editor' || user?.role === 'Author') {
+        navigate('/admin', { replace: true });
+      } else {
+        navigate('/user/dashboard', { replace: true });
+      }
+    }
+  }, [isAuthenticated, isStaff, user, navigate, location.search]);
 
   const handleSuperAdminLogin = async (e: React.FormEvent) => {
     e.preventDefault();
