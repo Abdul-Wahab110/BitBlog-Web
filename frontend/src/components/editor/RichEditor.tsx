@@ -36,6 +36,7 @@ import {
   Edit3,
   Plus,
 } from 'lucide-react';
+import { PictureFormatStudio, PictureFormatState } from './PictureFormatStudio';
 
 interface RichEditorProps {
   value: string;
@@ -316,6 +317,67 @@ export const RichEditor: React.FC<RichEditorProps> = ({
       setIsEditingExisting(true);
       setImageModalOpen(true);
     }
+  };
+
+  // 5. Apply MS Word Picture Format Studio Changes
+  const applyPictureFormatStudio = (fmt: PictureFormatState) => {
+    if (!selectedFigure || !visualEditorRef.current) return;
+    const img = selectedFigure.querySelector('img');
+    const figcaption = selectedFigure.querySelector('figcaption');
+
+    // Calculate Figure Layout
+    let figureStyle = '';
+    if (fmt.wrapText === 'left') {
+      figureStyle = `display:flex;flex-direction:column;align-items:flex-start;float:left;width:${fmt.widthPercent}%;max-width:100%;margin:0.5rem 1.5rem 1rem 0;text-align:left;`;
+    } else if (fmt.wrapText === 'right') {
+      figureStyle = `display:flex;flex-direction:column;align-items:flex-end;float:right;width:${fmt.widthPercent}%;max-width:100%;margin:0.5rem 0 1rem 1.5rem;text-align:right;`;
+    } else if (fmt.wrapText === 'full') {
+      figureStyle = `display:block;clear:both;width:100%;max-width:100%;margin:2.5rem 0;text-align:center;`;
+    } else if (fmt.wrapText === 'break') {
+      figureStyle = `display:flex;flex-direction:column;align-items:center;clear:both;width:${fmt.widthPercent}%;max-width:100%;margin:2rem auto;text-align:center;`;
+    } else {
+      // inline center
+      figureStyle = `display:flex;flex-direction:column;align-items:center;width:${fmt.widthPercent}%;max-width:100%;margin:1.75rem auto;text-align:center;`;
+    }
+
+    selectedFigure.setAttribute('style', figureStyle);
+
+    // Apply Picture Styles, Border, Shadow, Filters to <img>
+    if (img) {
+      const radius = fmt.borderRadius === 9999 ? '9999px' : `${fmt.borderRadius}px`;
+      let border = 'none';
+      if (fmt.borderWidth > 0) {
+        border = `${fmt.borderWidth}px ${fmt.borderStyle} ${fmt.borderColor}`;
+      }
+
+      let shadow = '0 4px 14px rgba(0,0,0,0.12)';
+      if (fmt.shadow === 'none') shadow = 'none';
+      else if (fmt.shadow === 'deep') shadow = '0 16px 32px -4px rgba(0,0,0,0.4)';
+      else if (fmt.shadow === 'glow') shadow = `0 0 24px ${fmt.borderColor || 'rgba(99,102,241,0.6)'}`;
+
+      let filter = 'none';
+      if (fmt.filter === 'grayscale') filter = 'grayscale(100%)';
+      else if (fmt.filter === 'sepia') filter = 'sepia(80%)';
+      else if (fmt.filter === 'contrast') filter = 'contrast(130%) brightness(105%)';
+      else if (fmt.filter === 'vibrant') filter = 'saturate(150%) contrast(110%)';
+
+      const imgStyle = `width:100%;max-width:100%;height:auto;border-radius:${radius};border:${border};box-shadow:${shadow};filter:${filter};object-fit:cover;`;
+      img.setAttribute('style', imgStyle);
+      if (fmt.alt) img.setAttribute('alt', fmt.alt);
+    }
+
+    if (fmt.caption) {
+      if (!figcaption) {
+        const newCap = document.createElement('figcaption');
+        newCap.setAttribute('style', 'font-size:0.84rem;color:var(--color-muted, #71717a);margin-top:0.5rem;font-style:italic;line-height:1.4;');
+        newCap.textContent = fmt.caption;
+        selectedFigure.appendChild(newCap);
+      } else {
+        figcaption.textContent = fmt.caption;
+      }
+    }
+
+    onChange(visualEditorRef.current.innerHTML);
   };
 
   // Image Upload & Insertion/Update Handling
@@ -918,224 +980,15 @@ export const RichEditor: React.FC<RichEditorProps> = ({
 
       {/* 3. Main Editing Surfaces based on Active Tab */}
       <div style={{ minHeight, position: 'relative', backgroundColor: 'var(--color-card)' }}>
-        {/* Floating In-Editor Image Action Toolbar */}
+        {/* Full MS Word "Picture Format" Ribbon Studio */}
         {activeTab === 'visual' && selectedFigure && (
-          <div
-            style={{
-              position: 'sticky',
-              top: 0,
-              zIndex: 40,
-              backgroundColor: 'var(--color-surface)',
-              borderBottom: '2px solid var(--color-secondary)',
-              padding: '0.45rem 0.85rem',
-              display: 'flex',
-              flexWrap: 'wrap',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              gap: '0.5rem',
-              boxShadow: '0 4px 14px rgba(0, 0, 0, 0.1)',
-            }}
-          >
-            {/* Left: Indicator & Alignments */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
-              <span
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '0.3rem',
-                  fontSize: '0.76rem',
-                  fontWeight: 800,
-                  color: 'var(--color-secondary)',
-                  backgroundColor: 'rgba(99, 102, 241, 0.12)',
-                  padding: '0.2rem 0.55rem',
-                  borderRadius: 'var(--radius-full)',
-                }}
-              >
-                <ImageIcon size={13} /> Active Image:
-              </span>
-
-              {/* Alignment Buttons */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.15rem', backgroundColor: 'var(--color-surface-alt)', padding: '0.15rem', borderRadius: 'var(--radius-sm)' }}>
-                <button
-                  type="button"
-                  onClick={() => updateSelectedFigureAlignment('left')}
-                  title="Align Image Left"
-                  style={{
-                    padding: '0.25rem 0.45rem',
-                    borderRadius: 'var(--radius-sm)',
-                    border: 'none',
-                    backgroundColor: selectedFigureAlign === 'left' ? 'var(--color-secondary)' : 'transparent',
-                    color: selectedFigureAlign === 'left' ? '#FFF' : 'var(--color-text)',
-                    cursor: 'pointer',
-                  }}
-                >
-                  <AlignLeft size={14} />
-                </button>
-                <button
-                  type="button"
-                  onClick={() => updateSelectedFigureAlignment('center')}
-                  title="Align Image Center"
-                  style={{
-                    padding: '0.25rem 0.45rem',
-                    borderRadius: 'var(--radius-sm)',
-                    border: 'none',
-                    backgroundColor: selectedFigureAlign === 'center' ? 'var(--color-secondary)' : 'transparent',
-                    color: selectedFigureAlign === 'center' ? '#FFF' : 'var(--color-text)',
-                    cursor: 'pointer',
-                  }}
-                >
-                  <AlignCenter size={14} />
-                </button>
-                <button
-                  type="button"
-                  onClick={() => updateSelectedFigureAlignment('right')}
-                  title="Align Image Right"
-                  style={{
-                    padding: '0.25rem 0.45rem',
-                    borderRadius: 'var(--radius-sm)',
-                    border: 'none',
-                    backgroundColor: selectedFigureAlign === 'right' ? 'var(--color-secondary)' : 'transparent',
-                    color: selectedFigureAlign === 'right' ? '#FFF' : 'var(--color-text)',
-                    cursor: 'pointer',
-                  }}
-                >
-                  <AlignRight size={14} />
-                </button>
-                <button
-                  type="button"
-                  onClick={() => updateSelectedFigureAlignment('full')}
-                  title="Full Width Image"
-                  style={{
-                    padding: '0.25rem 0.45rem',
-                    borderRadius: 'var(--radius-sm)',
-                    border: 'none',
-                    backgroundColor: selectedFigureAlign === 'full' ? 'var(--color-secondary)' : 'transparent',
-                    color: selectedFigureAlign === 'full' ? '#FFF' : 'var(--color-text)',
-                    cursor: 'pointer',
-                  }}
-                >
-                  <Maximize2 size={14} />
-                </button>
-              </div>
-
-              {/* Sizing Preset Buttons */}
-              <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-                {[
-                  { label: '35%', val: 35 },
-                  { label: '60%', val: 60 },
-                  { label: '85%', val: 85 },
-                  { label: '100%', val: 100 },
-                ].map(sz => (
-                  <button
-                    key={sz.val}
-                    type="button"
-                    onClick={() => updateSelectedFigureWidth(sz.val)}
-                    style={{
-                      padding: '0.2rem 0.45rem',
-                      fontSize: '0.72rem',
-                      fontWeight: 700,
-                      borderRadius: 'var(--radius-sm)',
-                      border: `1px solid ${selectedFigureWidth === sz.val ? 'var(--color-secondary)' : 'var(--color-border)'}`,
-                      backgroundColor: selectedFigureWidth === sz.val ? 'var(--color-secondary)' : 'var(--color-surface-alt)',
-                      color: selectedFigureWidth === sz.val ? '#FFF' : 'var(--color-text)',
-                      cursor: 'pointer',
-                    }}
-                  >
-                    {sz.label}
-                  </button>
-                ))}
-
-                <button
-                  type="button"
-                  onClick={() => updateSelectedFigureWidth(selectedFigureWidth - 10)}
-                  title="Decrease Width"
-                  style={{
-                    padding: '0.2rem 0.4rem',
-                    borderRadius: 'var(--radius-sm)',
-                    border: '1px solid var(--color-border)',
-                    backgroundColor: 'var(--color-surface-alt)',
-                    color: 'var(--color-text)',
-                    cursor: 'pointer',
-                  }}
-                >
-                  <Minus size={12} />
-                </button>
-                <button
-                  type="button"
-                  onClick={() => updateSelectedFigureWidth(selectedFigureWidth + 10)}
-                  title="Increase Width"
-                  style={{
-                    padding: '0.2rem 0.4rem',
-                    borderRadius: 'var(--radius-sm)',
-                    border: '1px solid var(--color-border)',
-                    backgroundColor: 'var(--color-surface-alt)',
-                    color: 'var(--color-text)',
-                    cursor: 'pointer',
-                  }}
-                >
-                  <Plus size={12} />
-                </button>
-              </div>
-            </div>
-
-            {/* Right: Edit Modal, Delete, Close */}
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-              <button
-                type="button"
-                onClick={openEditModalForSelectedFigure}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '0.25rem',
-                  padding: '0.25rem 0.6rem',
-                  fontSize: '0.76rem',
-                  fontWeight: 700,
-                  backgroundColor: 'var(--color-surface-alt)',
-                  color: 'var(--color-secondary)',
-                  border: '1px solid var(--color-secondary)',
-                  borderRadius: 'var(--radius-sm)',
-                  cursor: 'pointer',
-                }}
-              >
-                <Edit3 size={12} /> Edit Details
-              </button>
-
-              <button
-                type="button"
-                onClick={deleteSelectedFigure}
-                style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '0.25rem',
-                  padding: '0.25rem 0.6rem',
-                  fontSize: '0.76rem',
-                  fontWeight: 700,
-                  backgroundColor: 'rgba(239, 68, 68, 0.1)',
-                  color: 'var(--color-danger)',
-                  border: '1px solid var(--color-danger)',
-                  borderRadius: 'var(--radius-sm)',
-                  cursor: 'pointer',
-                }}
-              >
-                <Trash2 size={12} /> Delete
-              </button>
-
-              <button
-                type="button"
-                onClick={() => setSelectedFigure(null)}
-                title="Deselect image"
-                style={{
-                  padding: '0.25rem',
-                  backgroundColor: 'transparent',
-                  color: 'var(--color-muted)',
-                  border: 'none',
-                  cursor: 'pointer',
-                }}
-              >
-                <X size={15} />
-              </button>
-            </div>
-          </div>
+          <PictureFormatStudio
+            selectedFigure={selectedFigure}
+            onApply={applyPictureFormatStudio}
+            onReplaceImage={openEditModalForSelectedFigure}
+            onDeleteImage={deleteSelectedFigure}
+            onClose={() => setSelectedFigure(null)}
+          />
         )}
 
         {/* Visual WYSIWYG Surface */}
