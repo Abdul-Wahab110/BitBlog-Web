@@ -59,13 +59,17 @@ export class MediaModel {
     };
   }
 
-  public static async findAll(search?: string): Promise<MediaRecord[]> {
+  public static async findAll(search?: string, uploadedBy?: number): Promise<MediaRecord[]> {
     const store = Database.getStore();
     let list = [...(store.media || [])];
 
+    if (uploadedBy !== undefined && uploadedBy !== null) {
+      list = list.filter(m => Number(m.uploaded_by) === Number(uploadedBy));
+    }
+
     if (search && search.trim()) {
       const q = search.trim().toLowerCase();
-      list = list.filter(m => (m.filename || '').toLowerCase().includes(q) || (m.alt_text || '').toLowerCase().includes(q));
+      list = list.filter((m: any) => (m.filename || m.file_name || '').toLowerCase().includes(q) || (m.alt_text || '').toLowerCase().includes(q));
     }
 
     list.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
@@ -140,21 +144,30 @@ export class MediaModel {
     const filePath = mediaItem.url || mediaItem.file_path || '';
     const fileName = mediaItem.filename || mediaItem.file_name || path.basename(filePath);
 
-    // 1. Delete physical file from disk storage
+    // 1. Delete physical file from disk storage (checks all uploads locations)
     if (fileName) {
       const possiblePaths = [
         path.join(process.cwd(), 'uploads', fileName),
         path.join(process.cwd(), 'backend', 'uploads', fileName),
         path.join(__dirname, '..', '..', 'uploads', fileName),
         path.join(__dirname, '..', '..', '..', 'uploads', fileName),
+        path.resolve(process.cwd(), 'uploads', fileName),
       ];
+
+      if (filePath) {
+        const cleanPath = filePath.startsWith('/') ? filePath.slice(1) : filePath;
+        possiblePaths.push(
+          path.join(process.cwd(), cleanPath),
+          path.join(process.cwd(), 'backend', cleanPath),
+          path.join(__dirname, '..', '..', cleanPath)
+        );
+      }
 
       for (const p of possiblePaths) {
         try {
-          if (fs.existsSync(p)) {
+          if (fs.existsSync(p) && fs.statSync(p).isFile()) {
             fs.unlinkSync(p);
             affected.diskDeleted = true;
-            break;
           }
         } catch (err) {
           console.warn(`[Media Cleanup] Notice: Could not unlink file ${p}:`, err);

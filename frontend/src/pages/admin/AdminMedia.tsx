@@ -17,12 +17,17 @@ import { ImageUploadDropzone } from '../../components/common/ImageUploadDropzone
 import { LoadingState } from '../../components/common/LoadingState';
 import { EmptyState } from '../../components/common/EmptyState';
 import { useConfirm } from '../../context/ConfirmDialogContext';
+import { useAuth } from '../../context/AuthContext';
 
 export const AdminMedia: React.FC = () => {
   const confirm = useConfirm();
+  const { user } = useAuth();
+  const isStaff = user?.role === 'Admin' || user?.role === 'Editor';
+
   const [mediaList, setMediaList] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
+  const [scope, setScope] = useState<'all' | 'mine'>('all');
   const [uploadedUrl, setUploadedUrl] = useState('');
   const [msg, setMsg] = useState<string | null>(null);
   const [copiedId, setCopiedId] = useState<number | null>(null);
@@ -36,7 +41,12 @@ export const AdminMedia: React.FC = () => {
     setLoading(true);
     try {
       const token = localStorage.getItem('bitblog_token');
-      const res = await fetch(`/api/media${search ? `?search=${encodeURIComponent(search)}` : ''}`, {
+      const params = new URLSearchParams();
+      if (search.trim()) params.append('search', search.trim());
+      if (isStaff && scope === 'mine') params.append('scope', 'mine');
+
+      const queryString = params.toString() ? `?${params.toString()}` : '';
+      const res = await fetch(`/api/media${queryString}`, {
         headers: token ? { Authorization: `Bearer ${token}` } : {},
       }).then(r => r.json());
 
@@ -52,7 +62,7 @@ export const AdminMedia: React.FC = () => {
 
   useEffect(() => {
     fetchMedia();
-  }, [search]);
+  }, [search, scope]);
 
   const handleUploadComplete = (url: string) => {
     setUploadedUrl(url);
@@ -205,9 +215,66 @@ export const AdminMedia: React.FC = () => {
           gap: '1rem',
         }}
       >
-        <h3 style={{ fontSize: '1.1rem' }}>
-          Uploaded Assets ({mediaList.length})
-        </h3>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
+          <h3 style={{ fontSize: '1.1rem', margin: 0 }}>
+            Uploaded Assets ({mediaList.length})
+          </h3>
+
+          {/* Admin / Editor Scope Toggle */}
+          {isStaff ? (
+            <div style={{ display: 'flex', alignItems: 'center', backgroundColor: 'var(--color-surface-alt)', padding: '0.2rem', borderRadius: 'var(--radius-sm)', border: '1px solid var(--color-border)' }}>
+              <button
+                type="button"
+                onClick={() => setScope('all')}
+                style={{
+                  padding: '0.25rem 0.65rem',
+                  fontSize: '0.78rem',
+                  fontWeight: scope === 'all' ? 700 : 500,
+                  border: 'none',
+                  borderRadius: 'var(--radius-sm)',
+                  backgroundColor: scope === 'all' ? 'var(--color-secondary)' : 'transparent',
+                  color: scope === 'all' ? '#FFFFFF' : 'var(--color-text)',
+                  cursor: 'pointer',
+                  transition: 'all 0.15s ease',
+                }}
+              >
+                All Portal Media
+              </button>
+              <button
+                type="button"
+                onClick={() => setScope('mine')}
+                style={{
+                  padding: '0.25rem 0.65rem',
+                  fontSize: '0.78rem',
+                  fontWeight: scope === 'mine' ? 700 : 500,
+                  border: 'none',
+                  borderRadius: 'var(--radius-sm)',
+                  backgroundColor: scope === 'mine' ? 'var(--color-secondary)' : 'transparent',
+                  color: scope === 'mine' ? '#FFFFFF' : 'var(--color-text)',
+                  cursor: 'pointer',
+                  transition: 'all 0.15s ease',
+                }}
+              >
+                My Uploads
+              </button>
+            </div>
+          ) : (
+            <span
+              style={{
+                fontSize: '0.75rem',
+                fontWeight: 600,
+                color: 'var(--color-secondary)',
+                backgroundColor: 'rgba(99, 102, 241, 0.1)',
+                padding: '0.2rem 0.6rem',
+                borderRadius: 'var(--radius-full)',
+                border: '1px solid rgba(99, 102, 241, 0.2)',
+              }}
+            >
+              🔒 Author Workspace: Showing assets uploaded by your account
+            </span>
+          )}
+        </div>
+
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', width: '100%', maxWidth: '300px' }}>
           <Search size={16} color="var(--color-muted)" />
           <input
