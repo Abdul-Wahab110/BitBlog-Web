@@ -956,5 +956,175 @@ article:hover {
   }
 }
 
+/* ============================================================================
+   8. Mobile-First Comprehensive Viewport Optimizations (320px - 768px)
+   ============================================================================ */
+
+/* Global Mobile Media Rules */
+@media (max-width: 768px) {
+  /* Prevent horizontal overflow across the entire mobile document */
+  body, #root {
+    overflow-x: clip !important;
+    width: 100% !important;
+    max-width: 100vw !important;
+  }
+
+  .container {
+    padding-left: 0.85rem !important;
+    padding-right: 0.85rem !important;
+  }
+
+  /* Responsive Headings on Phones */
+  h1 {
+    font-size: clamp(1.4rem, 5.5vw, 1.85rem) !important;
+    line-height: 1.25 !important;
+  }
+
+  h2 {
+    font-size: clamp(1.2rem, 4.5vw, 1.5rem) !important;
+    line-height: 1.3 !important;
+  }
+
+  h3 {
+    font-size: clamp(1.05rem, 3.8vw, 1.25rem) !important;
+  }
+
+  /* Mobile Header Bar */
+  header {
+    padding: 0.5rem 0.85rem !important;
+  }
+
+  header .container {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+  .header-action-btn {
+    min-width: 36px !important;
+    min-height: 36px !important;
+    padding: 0.35rem !important;
+  }
+
+  /* Single Column Layout on Mobile */
+  .grid-main-sidebar {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 2rem !important;
+  }
+
+  /* Featured Hero Grid Stacking on Mobile */
+  .featured-grid-container {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0.85rem !important;
+  }
+
+  .featured-grid-container article {
+    min-height: 280px !important;
+    padding: 1.15rem !important;
+  }
+
+  .featured-grid-sub {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 0.75rem !important;
+  }
+
+  .featured-grid-sub article {
+    min-height: 160px !important;
+    padding: 1rem !important;
+  }
+
+  /* Article Cards & Grids on Mobile */
+  .grid-layout {
+    grid-template-columns: 1fr !important;
+    gap: 1.25rem !important;
+  }
+
+  article[style*="border-radius"] {
+    margin-bottom: 0.25rem;
+  }
+
+  /* Article Content Mobile Typography & Responsive Media */
+  .article-content {
+    font-size: 1rem !important;
+    line-height: 1.7 !important;
+  }
+
+  .article-content img,
+  .article-content figure,
+  .article-content video,
+  .article-content iframe {
+    max-width: 100% !important;
+    width: 100% !important;
+    height: auto !important;
+    border-radius: var(--radius-md) !important;
+  }
+
+  .article-content pre {
+    padding: 0.85rem !important;
+    font-size: 0.82rem !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  .article-content table {
+    display: block !important;
+    width: 100% !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+    font-size: 0.82rem !important;
+  }
+
+  .article-content blockquote {
+    padding: 0.75rem 1rem !important;
+    margin: 1.25rem 0 !important;
+    font-size: 0.95rem !important;
+  }
+
+  /* Mobile Modals (AuthModal, CropModal, etc.) */
+  div[role="dialog"] > div {
+    max-width: 95vw !important;
+    max-height: 92vh !important;
+    margin: auto !important;
+    border-radius: var(--radius-lg) !important;
+  }
+
+  /* Mobile Footer Stacking */
+  footer .container {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+
+  footer .container > div:first-child {
+    grid-template-columns: 1fr !important;
+    gap: 2rem !important;
+  }
+
+  /* Comfortable Tap Targets */
+  button,
+  a,
+  input[type="checkbox"],
+  input[type="radio"] {
+    touch-action: manipulation;
+  }
+}
+
+/* Extra Small Phones (320px - 400px) */
+@media (max-width: 400px) {
+  .featured-grid-container article {
+    min-height: 240px !important;
+  }
+
+  .featured-grid-sub article {
+    min-height: 140px !important;
+  }
+
+  .header-brand-link span {
+    font-size: 1.15rem !important;
+  }
+}
+
+
 
 
