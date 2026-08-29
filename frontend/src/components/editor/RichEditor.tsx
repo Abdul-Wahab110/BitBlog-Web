@@ -35,6 +35,11 @@ import {
   FileText,
   Edit3,
   Plus,
+  Unlink,
+  ExternalLink,
+  MousePointer2,
+  Film,
+  Play,
 } from 'lucide-react';
 import { PictureFormatStudio, PictureFormatState } from './PictureFormatStudio';
 
@@ -62,9 +67,12 @@ export const RichEditor: React.FC<RichEditorProps> = ({
   // Link form state
   const [linkText, setLinkText] = useState('');
   const [linkUrl, setLinkUrl] = useState('');
+  const [selectedLinkNode, setSelectedLinkNode] = useState<HTMLAnchorElement | null>(null);
+  const [savedRange, setSavedRange] = useState<Range | null>(null);
 
-  // Video form state
+  // Video form state & Caption
   const [videoUrl, setVideoUrl] = useState('');
+  const [videoCaption, setVideoCaption] = useState('');
 
   // Image form state: URL, Alt, Alignment & Sizing Controls
   const [uploading, setUploading] = useState(false);
@@ -84,7 +92,13 @@ export const RichEditor: React.FC<RichEditorProps> = ({
   const [selectedFigureWidth, setSelectedFigureWidth] = useState<number>(60);
   const [isEditingExisting, setIsEditingExisting] = useState<boolean>(false);
 
+  // Interactive MS Word Mouse/Pointer Drag Resize State
+  const [isResizing, setIsResizing] = useState<boolean>(false);
+  const [overlayBox, setOverlayBox] = useState<{ top: number; left: number; width: number; height: number } | null>(null);
+  const [dragFeedback, setDragFeedback] = useState<{ percent: number; px: number } | null>(null);
+
   const visualEditorRef = useRef<HTMLDivElement>(null);
+  const editorContainerRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -523,39 +537,231 @@ export const RichEditor: React.FC<RichEditorProps> = ({
     }
   };
 
-  // Link Modal Submit
+  // Overlay Box tracking for MS Word style mouse pointer resize handles
+  const updateOverlayBox = useCallback(() => {
+    if (!selectedFigure || !editorContainerRef.current) {
+      setOverlayBox(null);
+      return;
+    }
+    const figureRect = selectedFigure.getBoundingClientRect();
+    const containerRect = editorContainerRef.current.getBoundingClientRect();
+
+    setOverlayBox({
+      top: figureRect.top - containerRect.top,
+      left: figureRect.left - containerRect.left,
+      width: figureRect.width,
+      height: figureRect.height,
+    });
+  }, [selectedFigure]);
+
+  useEffect(() => {
+    updateOverlayBox();
+    window.addEventListener('resize', updateOverlayBox);
+    window.addEventListener('scroll', updateOverlayBox, true);
+    return () => {
+      window.removeEventListener('resize', updateOverlayBox);
+      window.removeEventListener('scroll', updateOverlayBox, true);
+    };
+  }, [updateOverlayBox]);
+
+  // Interactive Pointer / Mouse Drag-to-Resize Handler
+  const handleStartResize = (e: React.PointerEvent, direction: 'se' | 'sw' | 'ne' | 'nw' | 'e' | 'w') => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (!selectedFigure || !visualEditorRef.current) return;
+
+    setIsResizing(true);
+    const startX = e.clientX;
+    const editorWidth = visualEditorRef.current.getBoundingClientRect().width;
+    const initialWidthPx = selectedFigure.getBoundingClientRect().width;
+    const isLeftHandle = direction === 'sw' || direction === 'nw' || direction === 'w';
+
+    const onPointerMove = (moveEvent: PointerEvent) => {
+      moveEvent.preventDefault();
+      const deltaX = moveEvent.clientX - startX;
+      const effectiveDelta = isLeftHandle ? -deltaX : deltaX;
+      const newWidthPx = Math.max(120, Math.min(editorWidth, initialWidthPx + effectiveDelta * 1.5));
+      const newPercent = Math.max(20, Math.min(100, Math.round((newWidthPx / editorWidth) * 100)));
+
+      // Realtime inline style update
+      selectedFigure.style.width = `${newPercent}%`;
+      setSelectedFigureWidth(newPercent);
+      setDragFeedback({ percent: newPercent, px: Math.round(newWidthPx) });
+      updateOverlayBox();
+    };
+
+    const onPointerUp = () => {
+      window.removeEventListener('pointermove', onPointerMove);
+      window.removeEventListener('pointerup', onPointerUp);
+      setIsResizing(false);
+      setDragFeedback(null);
+      if (visualEditorRef.current) {
+        onChange(visualEditorRef.current.innerHTML);
+      }
+      updateOverlayBox();
+    };
+
+    window.addEventListener('pointermove', onPointerMove);
+    window.addEventListener('pointerup', onPointerUp);
+  };
+
+  // Open Link Modal with selection pre-population
+  const openLinkModal = () => {
+    const selection = window.getSelection();
+    let text = '';
+    let url = '';
+    let anchor: HTMLAnchorElement | null = null;
+
+    if (selection && selection.rangeCount > 0) {
+      setSavedRange(selection.getRangeAt(0).cloneRange());
+      text = selection.toString();
+
+      // Check if inside <a>
+      let node: Node | null = selection.anchorNode;
+      while (node && node !== visualEditorRef.current) {
+        if (node.nodeName === 'A') {
+          anchor = node as HTMLAnchorElement;
+          break;
+        }
+        node = node.parentNode;
+      }
+    }
+
+    if (anchor) {
+      setSelectedLinkNode(anchor);
+      setLinkText(anchor.textContent || '');
+      setLinkUrl(anchor.getAttribute('href') || '');
+    } else {
+      setSelectedLinkNode(null);
+      setLinkText(text);
+      setLinkUrl('');
+    }
+
+    setLinkModalOpen(true);
+  };
+
+  // Link Modal Submit with proper protocol formatting and anchor creation
   const handleLinkSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!linkUrl.trim()) return;
-    const href = linkUrl.startsWith('http') ? linkUrl.trim() : `https://${linkUrl.trim()}`;
+
+    let href = linkUrl.trim();
+    if (!href.startsWith('http://') && !href.startsWith('https://') && !href.startsWith('mailto:') && !href.startsWith('tel:') && !href.startsWith('#')) {
+      href = `https://${href}`;
+    }
+
     const text = linkText.trim() || href;
-    insertHtmlAtCursor(`<a href="${href}" target="_blank" rel="noopener noreferrer" style="color:var(--color-secondary, #6366f1);text-decoration:underline;font-weight:600;">${text}</a> `);
+
+    if (selectedLinkNode) {
+      selectedLinkNode.setAttribute('href', href);
+      selectedLinkNode.setAttribute('target', '_blank');
+      selectedLinkNode.setAttribute('rel', 'noopener noreferrer');
+      selectedLinkNode.textContent = text;
+      if (visualEditorRef.current) {
+        onChange(visualEditorRef.current.innerHTML);
+      }
+    } else {
+      if (savedRange && visualEditorRef.current) {
+        const selection = window.getSelection();
+        if (selection) {
+          selection.removeAllRanges();
+          selection.addRange(savedRange);
+        }
+      }
+      const linkHtml = `<a href="${href}" target="_blank" rel="noopener noreferrer" style="color:var(--color-secondary, #6366f1);text-decoration:underline;font-weight:600;">${text}</a> `;
+      insertHtmlAtCursor(linkHtml);
+    }
+
     setLinkModalOpen(false);
     setLinkUrl('');
     setLinkText('');
+    setSelectedLinkNode(null);
+    setSavedRange(null);
+  };
+
+  // Unlink / Remove Link
+  const handleUnlink = () => {
+    if (selectedLinkNode && visualEditorRef.current) {
+      const text = selectedLinkNode.textContent || '';
+      selectedLinkNode.replaceWith(document.createTextNode(text));
+      onChange(visualEditorRef.current.innerHTML);
+    }
+    setLinkModalOpen(false);
+    setSelectedLinkNode(null);
+    setLinkUrl('');
+    setLinkText('');
+  };
+
+  // Robust Video Embed Parser (YouTube Shorts, Standard, Vimeo, Direct MP4/WebM)
+  const parseVideoEmbed = (inputUrl: string): { type: 'youtube' | 'vimeo' | 'html5' | 'embed'; embedUrl: string } => {
+    const trimmed = inputUrl.trim();
+    if (!trimmed) return { type: 'embed', embedUrl: '' };
+
+    // YouTube formats (standard, watch?v=, youtu.be, shorts, embed, live)
+    const ytMatch = trimmed.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?|shorts|live)\/|.*[?&]v=)|youtu\.be\/)([^"&?/\s]{11})/i);
+    if (ytMatch && ytMatch[1]) {
+      return {
+        type: 'youtube',
+        embedUrl: `https://www.youtube-nocookie.com/embed/${ytMatch[1]}`,
+      };
+    }
+
+    // Vimeo format
+    const vimeoMatch = trimmed.match(/(?:vimeo\.com\/(?:channels\/(?:\w+\/)?|groups\/(?:[^\/]*)\/videos\/|album\/(?:\d+)\/video\/|video\/|)(\d+))/i);
+    if (vimeoMatch && vimeoMatch[1]) {
+      return {
+        type: 'vimeo',
+        embedUrl: `https://player.vimeo.com/video/${vimeoMatch[1]}`,
+      };
+    }
+
+    // Direct MP4/WebM video
+    if (trimmed.match(/\.(mp4|webm|ogg|mov)(\?.*)?$/i)) {
+      return {
+        type: 'html5',
+        embedUrl: trimmed,
+      };
+    }
+
+    return {
+      type: 'embed',
+      embedUrl: trimmed.startsWith('http') ? trimmed : `https://${trimmed}`,
+    };
   };
 
   // Video Modal Submit
   const handleVideoSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!videoUrl.trim()) return;
-    let embedSrc = videoUrl.trim();
 
-    if (embedSrc.includes('youtube.com/watch?v=')) {
-      embedSrc = embedSrc.replace('watch?v=', 'embed/');
-    } else if (embedSrc.includes('youtu.be/')) {
-      embedSrc = embedSrc.replace('youtu.be/', 'youtube.com/embed/');
+    const parsed = parseVideoEmbed(videoUrl);
+    const caption = videoCaption.trim();
+
+    let videoHtml = '';
+    if (parsed.type === 'html5') {
+      videoHtml = `
+        <figure style="margin:1.75rem auto;width:100%;max-width:100%;text-align:center;">
+          <video controls src="${parsed.embedUrl}" style="width:100%;max-height:480px;border-radius:10px;box-shadow:0 4px 18px rgba(0,0,0,0.15);background:#000;"></video>
+          ${caption ? `<figcaption style="font-size:0.84rem;color:var(--color-muted, #71717a);margin-top:0.5rem;font-style:italic;line-height:1.4;">${caption}</figcaption>` : ''}
+        </figure>
+        <p><br></p>
+      `;
+    } else {
+      videoHtml = `
+        <figure style="margin:1.75rem auto;width:100%;max-width:100%;text-align:center;">
+          <div style="position:relative;padding-bottom:56.25%;height:0;margin:0 auto;overflow:hidden;border-radius:10px;box-shadow:0 4px 18px rgba(0,0,0,0.15);background:#000;">
+            <iframe src="${parsed.embedUrl}" style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;border-radius:10px;" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+          </div>
+          ${caption ? `<figcaption style="font-size:0.84rem;color:var(--color-muted, #71717a);margin-top:0.5rem;font-style:italic;line-height:1.4;">${caption}</figcaption>` : ''}
+        </figure>
+        <p><br></p>
+      `;
     }
 
-    const videoHtml = `
-      <div style="position:relative;padding-bottom:56.25%;height:0;margin:1.75rem 0;overflow:hidden;border-radius:8px;box-shadow:0 4px 14px rgba(0,0,0,0.15);">
-        <iframe src="${embedSrc}" style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;border-radius:8px;" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-      </div>
-      <p><br></p>
-    `;
     insertHtmlAtCursor(videoHtml);
     setVideoModalOpen(false);
     setVideoUrl('');
+    setVideoCaption('');
   };
 
   // Word count & Reading time calculator
@@ -859,8 +1065,8 @@ export const RichEditor: React.FC<RichEditorProps> = ({
           </button>
           <button
             type="button"
-            onClick={() => setLinkModalOpen(true)}
-            title="Insert Link"
+            onClick={openLinkModal}
+            title="Insert or Edit Link"
             style={{ padding: '0.35rem 0.5rem', borderRadius: 'var(--radius-sm)', border: '1px solid var(--color-border)', backgroundColor: 'var(--color-card)', color: 'var(--color-text)' }}
           >
             <LinkIcon size={15} />
@@ -868,7 +1074,7 @@ export const RichEditor: React.FC<RichEditorProps> = ({
           <button
             type="button"
             onClick={() => setVideoModalOpen(true)}
-            title="Embed YouTube Video"
+            title="Embed YouTube / Vimeo / Video"
             style={{ padding: '0.35rem 0.5rem', borderRadius: 'var(--radius-sm)', border: '1px solid var(--color-border)', backgroundColor: 'var(--color-card)', color: 'var(--color-text)' }}
           >
             <Video size={15} />
@@ -979,7 +1185,7 @@ export const RichEditor: React.FC<RichEditorProps> = ({
       </div>
 
       {/* 3. Main Editing Surfaces based on Active Tab */}
-      <div style={{ minHeight, position: 'relative', backgroundColor: 'var(--color-card)' }}>
+      <div ref={editorContainerRef} style={{ minHeight, position: 'relative', backgroundColor: 'var(--color-card)' }}>
         {/* Full MS Word "Picture Format" Ribbon Studio */}
         {activeTab === 'visual' && selectedFigure && (
           <PictureFormatStudio
@@ -989,6 +1195,162 @@ export const RichEditor: React.FC<RichEditorProps> = ({
             onDeleteImage={deleteSelectedFigure}
             onClose={() => setSelectedFigure(null)}
           />
+        )}
+
+        {/* MS Word Interactive Mouse / Pointer Drag Resize Handles Overlay */}
+        {activeTab === 'visual' && selectedFigure && overlayBox && (
+          <div
+            style={{
+              position: 'absolute',
+              top: `${overlayBox.top}px`,
+              left: `${overlayBox.left}px`,
+              width: `${overlayBox.width}px`,
+              height: `${overlayBox.height}px`,
+              pointerEvents: 'none',
+              border: '2px dashed var(--color-secondary, #6366f1)',
+              borderRadius: '6px',
+              zIndex: 30,
+              boxShadow: '0 0 0 1px rgba(255,255,255,0.4)',
+              transition: isResizing ? 'none' : 'all 0.1s ease',
+            }}
+          >
+            {/* Live Size & Tooltip Pill Badge */}
+            <div
+              style={{
+                position: 'absolute',
+                top: '-32px',
+                left: '50%',
+                transform: 'translateX(-50%)',
+                backgroundColor: 'var(--color-secondary, #6366f1)',
+                color: '#FFFFFF',
+                padding: '0.25rem 0.65rem',
+                borderRadius: '12px',
+                fontSize: '0.74rem',
+                fontWeight: 700,
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.35rem',
+                boxShadow: '0 4px 12px rgba(0,0,0,0.25)',
+                whiteSpace: 'nowrap',
+                pointerEvents: 'none',
+              }}
+            >
+              <MousePointer2 size={12} />
+              {dragFeedback ? `${dragFeedback.percent}% (${dragFeedback.px}px)` : `${selectedFigureWidth}% (Drag handles to resize)`}
+            </div>
+
+            {/* Corner Resize Handles */}
+            {/* Top-Left */}
+            <div
+              onPointerDown={e => handleStartResize(e, 'nw')}
+              title="Drag to resize (Top-Left)"
+              style={{
+                position: 'absolute',
+                top: '-7px',
+                left: '-7px',
+                width: '14px',
+                height: '14px',
+                backgroundColor: '#FFFFFF',
+                border: '2px solid var(--color-secondary, #6366f1)',
+                borderRadius: '3px',
+                cursor: 'nwse-resize',
+                pointerEvents: 'auto',
+                boxShadow: '0 2px 6px rgba(0,0,0,0.3)',
+              }}
+            />
+            {/* Top-Right */}
+            <div
+              onPointerDown={e => handleStartResize(e, 'ne')}
+              title="Drag to resize (Top-Right)"
+              style={{
+                position: 'absolute',
+                top: '-7px',
+                right: '-7px',
+                width: '14px',
+                height: '14px',
+                backgroundColor: '#FFFFFF',
+                border: '2px solid var(--color-secondary, #6366f1)',
+                borderRadius: '3px',
+                cursor: 'nesw-resize',
+                pointerEvents: 'auto',
+                boxShadow: '0 2px 6px rgba(0,0,0,0.3)',
+              }}
+            />
+            {/* Bottom-Left */}
+            <div
+              onPointerDown={e => handleStartResize(e, 'sw')}
+              title="Drag to resize (Bottom-Left)"
+              style={{
+                position: 'absolute',
+                bottom: '-7px',
+                left: '-7px',
+                width: '14px',
+                height: '14px',
+                backgroundColor: '#FFFFFF',
+                border: '2px solid var(--color-secondary, #6366f1)',
+                borderRadius: '3px',
+                cursor: 'nesw-resize',
+                pointerEvents: 'auto',
+                boxShadow: '0 2px 6px rgba(0,0,0,0.3)',
+              }}
+            />
+            {/* Bottom-Right */}
+            <div
+              onPointerDown={e => handleStartResize(e, 'se')}
+              title="Drag to resize (Bottom-Right)"
+              style={{
+                position: 'absolute',
+                bottom: '-7px',
+                right: '-7px',
+                width: '14px',
+                height: '14px',
+                backgroundColor: '#FFFFFF',
+                border: '2px solid var(--color-secondary, #6366f1)',
+                borderRadius: '3px',
+                cursor: 'nwse-resize',
+                pointerEvents: 'auto',
+                boxShadow: '0 2px 6px rgba(0,0,0,0.3)',
+              }}
+            />
+
+            {/* Edge Resize Handles */}
+            {/* Middle-Left */}
+            <div
+              onPointerDown={e => handleStartResize(e, 'w')}
+              title="Drag to resize width (Left)"
+              style={{
+                position: 'absolute',
+                top: 'calc(50% - 7px)',
+                left: '-7px',
+                width: '14px',
+                height: '14px',
+                backgroundColor: '#FFFFFF',
+                border: '2px solid var(--color-secondary, #6366f1)',
+                borderRadius: '3px',
+                cursor: 'ew-resize',
+                pointerEvents: 'auto',
+                boxShadow: '0 2px 6px rgba(0,0,0,0.3)',
+              }}
+            />
+            {/* Middle-Right */}
+            <div
+              onPointerDown={e => handleStartResize(e, 'e')}
+              title="Drag to resize width (Right)"
+              style={{
+                position: 'absolute',
+                top: 'calc(50% - 7px)',
+                right: '-7px',
+                width: '14px',
+                height: '14px',
+                backgroundColor: '#FFFFFF',
+                border: '2px solid var(--color-secondary, #6366f1)',
+                borderRadius: '3px',
+                cursor: 'ew-resize',
+                pointerEvents: 'auto',
+                boxShadow: '0 2px 6px rgba(0,0,0,0.3)',
+              }}
+            />
+          </div>
         )}
 
         {/* Visual WYSIWYG Surface */}
@@ -1001,6 +1363,7 @@ export const RichEditor: React.FC<RichEditorProps> = ({
               if (visualEditorRef.current) {
                 onChange(visualEditorRef.current.innerHTML);
               }
+              updateOverlayBox();
             }}
             onBlur={() => {
               if (visualEditorRef.current) {
@@ -1428,7 +1791,7 @@ export const RichEditor: React.FC<RichEditorProps> = ({
         </div>
       )}
 
-      {/* Modal 2: Insert Link */}
+      {/* Modal 2: Insert or Edit Link */}
       {linkModalOpen && (
         <div
           role="dialog"
@@ -1452,7 +1815,7 @@ export const RichEditor: React.FC<RichEditorProps> = ({
             onSubmit={handleLinkSubmit}
             style={{
               width: '100%',
-              maxWidth: '440px',
+              maxWidth: '460px',
               backgroundColor: 'var(--color-surface)',
               borderRadius: 'var(--radius-lg, 12px)',
               padding: '1.75rem',
@@ -1462,7 +1825,7 @@ export const RichEditor: React.FC<RichEditorProps> = ({
           >
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem' }}>
               <h3 style={{ fontSize: '1.15rem', margin: 0, fontWeight: 800, display: 'flex', alignItems: 'center', gap: '0.45rem' }}>
-                <LinkIcon size={20} color="var(--color-secondary)" /> Insert Website Link
+                <LinkIcon size={20} color="var(--color-secondary)" /> {selectedLinkNode ? 'Edit Hyperlink' : 'Insert Website Link'}
               </h3>
               <button type="button" onClick={() => setLinkModalOpen(false)} style={{ background: 'transparent', padding: '0.3rem', color: 'var(--color-muted)' }}>
                 <X size={20} />
@@ -1475,38 +1838,66 @@ export const RichEditor: React.FC<RichEditorProps> = ({
                 type="text"
                 value={linkText}
                 onChange={e => setLinkText(e.target.value)}
-                placeholder="e.g. Read full guide here"
+                placeholder="e.g. Read comprehensive guide here"
                 style={{ width: '100%', padding: '0.6rem 0.85rem', fontSize: '0.88rem' }}
               />
             </div>
 
-            <div style={{ marginBottom: '1.5rem' }}>
+            <div style={{ marginBottom: '1rem' }}>
               <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 600, marginBottom: '0.35rem' }}>Web Address (URL) *</label>
               <input
                 type="text"
                 value={linkUrl}
                 onChange={e => setLinkUrl(e.target.value)}
-                placeholder="https://example.com"
+                placeholder="https://example.com/article"
                 required
                 autoFocus
                 style={{ width: '100%', padding: '0.6rem 0.85rem', fontSize: '0.88rem' }}
               />
             </div>
 
-            <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.6rem' }}>
-              <button
-                type="button"
-                onClick={() => setLinkModalOpen(false)}
-                style={{ backgroundColor: 'var(--color-surface-alt)', color: 'var(--color-text)', padding: '0.55rem 1.15rem', fontSize: '0.88rem', borderRadius: 'var(--radius-md)' }}
-              >
-                Cancel
-              </button>
-              <button
-                type="submit"
-                style={{ backgroundColor: 'var(--color-secondary)', color: '#FFFFFF', padding: '0.55rem 1.4rem', fontSize: '0.88rem', fontWeight: 700, borderRadius: 'var(--radius-md)' }}
-              >
-                Insert Link
-              </button>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.75rem', color: 'var(--color-muted)', marginBottom: '1.5rem' }}>
+              <ExternalLink size={13} color="var(--color-secondary)" /> Links automatically open in a new secure tab (<code style={{ fontSize: '0.72rem' }}>target="_blank"</code>).
+            </div>
+
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '0.6rem' }}>
+              {selectedLinkNode ? (
+                <button
+                  type="button"
+                  onClick={handleUnlink}
+                  style={{
+                    backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                    color: '#ef4444',
+                    border: '1px solid rgba(239, 68, 68, 0.25)',
+                    padding: '0.55rem 0.9rem',
+                    fontSize: '0.82rem',
+                    fontWeight: 600,
+                    borderRadius: 'var(--radius-md)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.35rem',
+                    cursor: 'pointer',
+                  }}
+                >
+                  <Unlink size={14} /> Remove Link
+                </button>
+              ) : <div />}
+
+              <div style={{ display: 'flex', gap: '0.6rem' }}>
+                <button
+                  type="button"
+                  onClick={() => setLinkModalOpen(false)}
+                  style={{ backgroundColor: 'var(--color-surface-alt)', color: 'var(--color-text)', padding: '0.55rem 1.15rem', fontSize: '0.88rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', cursor: 'pointer' }}
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  style={{ backgroundColor: 'var(--color-secondary)', color: '#FFFFFF', padding: '0.55rem 1.4rem', fontSize: '0.88rem', fontWeight: 700, borderRadius: 'var(--radius-md)', border: 'none', cursor: 'pointer', boxShadow: '0 2px 8px var(--color-secondary-glow)' }}
+                >
+                  {selectedLinkNode ? 'Save Link' : 'Insert Link'}
+                </button>
+              </div>
             </div>
           </form>
         </div>
@@ -1536,7 +1927,7 @@ export const RichEditor: React.FC<RichEditorProps> = ({
             onSubmit={handleVideoSubmit}
             style={{
               width: '100%',
-              maxWidth: '480px',
+              maxWidth: '520px',
               backgroundColor: 'var(--color-surface)',
               borderRadius: 'var(--radius-lg, 12px)',
               padding: '1.75rem',
@@ -1546,37 +1937,77 @@ export const RichEditor: React.FC<RichEditorProps> = ({
           >
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem' }}>
               <h3 style={{ fontSize: '1.15rem', margin: 0, fontWeight: 800, display: 'flex', alignItems: 'center', gap: '0.45rem' }}>
-                <Video size={20} color="var(--color-secondary)" /> Embed YouTube Video
+                <Film size={20} color="var(--color-secondary)" /> Embed Video Player
               </h3>
               <button type="button" onClick={() => setVideoModalOpen(false)} style={{ background: 'transparent', padding: '0.3rem', color: 'var(--color-muted)' }}>
                 <X size={20} />
               </button>
             </div>
 
-            <div style={{ marginBottom: '1.5rem' }}>
-              <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 600, marginBottom: '0.35rem' }}>YouTube Video URL *</label>
+            <div style={{ marginBottom: '1rem' }}>
+              <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 600, marginBottom: '0.35rem' }}>
+                Video URL (YouTube, YouTube Shorts, Vimeo, or Direct MP4) *
+              </label>
               <input
                 type="text"
                 value={videoUrl}
                 onChange={e => setVideoUrl(e.target.value)}
-                placeholder="https://www.youtube.com/watch?v=..."
+                placeholder="https://www.youtube.com/watch?v=... or https://youtu.be/..."
                 required
                 autoFocus
                 style={{ width: '100%', padding: '0.6rem 0.85rem', fontSize: '0.88rem' }}
               />
             </div>
 
+            <div style={{ marginBottom: '1.25rem' }}>
+              <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 600, marginBottom: '0.35rem' }}>
+                Caption / Description (Optional)
+              </label>
+              <input
+                type="text"
+                value={videoCaption}
+                onChange={e => setVideoCaption(e.target.value)}
+                placeholder="e.g. Watch the full walkthrough demo video"
+                style={{ width: '100%', padding: '0.6rem 0.85rem', fontSize: '0.88rem' }}
+              />
+            </div>
+
+            {/* Live Video Embed Preview */}
+            {videoUrl.trim() && (
+              <div style={{ marginBottom: '1.25rem' }}>
+                <label style={{ display: 'block', fontSize: '0.76rem', fontWeight: 700, color: 'var(--color-muted)', marginBottom: '0.35rem', textTransform: 'uppercase' }}>
+                  Live Player Preview
+                </label>
+                <div style={{ position: 'relative', paddingBottom: '56.25%', height: 0, overflow: 'hidden', borderRadius: '8px', backgroundColor: '#000' }}>
+                  {parseVideoEmbed(videoUrl).type === 'html5' ? (
+                    <video
+                      controls
+                      src={parseVideoEmbed(videoUrl).embedUrl}
+                      style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', objectFit: 'contain' }}
+                    />
+                  ) : (
+                    <iframe
+                      src={parseVideoEmbed(videoUrl).embedUrl}
+                      style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', border: 'none' }}
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                    />
+                  )}
+                </div>
+              </div>
+            )}
+
             <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.6rem' }}>
               <button
                 type="button"
                 onClick={() => setVideoModalOpen(false)}
-                style={{ backgroundColor: 'var(--color-surface-alt)', color: 'var(--color-text)', padding: '0.55rem 1.15rem', fontSize: '0.88rem', borderRadius: 'var(--radius-md)' }}
+                style={{ backgroundColor: 'var(--color-surface-alt)', color: 'var(--color-text)', padding: '0.55rem 1.15rem', fontSize: '0.88rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', cursor: 'pointer' }}
               >
                 Cancel
               </button>
               <button
                 type="submit"
-                style={{ backgroundColor: 'var(--color-secondary)', color: '#FFFFFF', padding: '0.55rem 1.4rem', fontSize: '0.88rem', fontWeight: 700, borderRadius: 'var(--radius-md)' }}
+                style={{ backgroundColor: 'var(--color-secondary)', color: '#FFFFFF', padding: '0.55rem 1.4rem', fontSize: '0.88rem', fontWeight: 700, borderRadius: 'var(--radius-md)', border: 'none', cursor: 'pointer', boxShadow: '0 2px 8px var(--color-secondary-glow)' }}
               >
                 Embed Video
               </button>

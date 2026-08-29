@@ -33,7 +33,7 @@
       "status": "ACTIVE",
       "created_at": "2026-08-19T07:40:57.279Z",
       "updated_at": "2026-08-28T11:50:50.600Z",
-      "last_login": "2026-08-29T07:36:51.506Z",
+      "last_login": "2026-08-29T08:32:55.229Z",
       "profile_image": "/uploads/1787588806977-xexqhoev.png",
       "bio": "",
       "website": "",
@@ -650,7 +650,7 @@
     "comments_moderation": "false",
     "site_name": "BitBlog",
     "contact_email": "chief-editor@bitblog.com",
-    "social_facebook": "https://facebook.com",
+    "social_facebook": "https://www.facebook.com",
     "social_twitter": "https://x.com",
     "social_linkedin": "https://linkedin.com",
     "footer_text": "© 2026 BitBlog. All rights reserved.",
@@ -698,44 +698,7 @@
       "notes": ""
     }
   ],
-  "media": [
-    {
-      "media_id": 1,
-      "filename": "1787983657269-2618rue5.jpeg",
-      "original_name": "1787983657269-2618rue5.jpeg",
-      "url": "/uploads/1787983657269-2618rue5.jpeg",
-      "mimetype": "image/jpeg",
-      "size": 2722818,
-      "alt_text": "Zarnab.jpg",
-      "uploaded_by": 4,
-      "created_at": "2026-08-29T06:07:37.378Z",
-      "updated_at": "2026-08-29T06:07:37.378Z"
-    },
-    {
-      "media_id": 2,
-      "filename": "1787987962879-29p61x78.jpeg",
-      "original_name": "1787987962879-29p61x78.jpeg",
-      "url": "/uploads/1787987962879-29p61x78.jpeg",
-      "mimetype": "image/jpeg",
-      "size": 2722818,
-      "alt_text": "Zarnab.jpg",
-      "uploaded_by": 1,
-      "created_at": "2026-08-29T07:19:23.320Z",
-      "updated_at": "2026-08-29T07:19:23.320Z"
-    },
-    {
-      "media_id": 3,
-      "filename": "1787989311440-31y4ongx.jpeg",
-      "original_name": "1787989311440-31y4ongx.jpeg",
-      "url": "/uploads/1787989311440-31y4ongx.jpeg",
-      "mimetype": "image/jpeg",
-      "size": 2722818,
-      "alt_text": "Zarnab.jpg",
-      "uploaded_by": 1,
-      "created_at": "2026-08-29T07:41:51.616Z",
-      "updated_at": "2026-08-29T07:41:51.616Z"
-    }
-  ],
+  "media": [],
   "role_applications": [
     {
       "application_id": 4,
@@ -823,6 +786,30 @@
     }
   ],
   "audit_logs": [
+    {
+      "log_id": 33,
+      "user_id": 1,
+      "user_name": "Abdul Wahab",
+      "user_role": "Admin",
+      "action": "USER_LOGIN_SUCCESS",
+      "category": "AUTH",
+      "details": "Admin 'Abdul Wahab' signed into portal.",
+      "ip_address": "::1",
+      "severity": "success",
+      "created_at": "2026-08-29T08:32:55.235Z"
+    },
+    {
+      "log_id": 32,
+      "user_id": 1,
+      "user_name": "Abdul Wahab",
+      "user_role": "Admin",
+      "action": "USER_LOGIN_SUCCESS",
+      "category": "AUTH",
+      "details": "Admin 'Abdul Wahab' signed into portal.",
+      "ip_address": "::1",
+      "severity": "success",
+      "created_at": "2026-08-29T08:17:38.372Z"
+    },
     {
       "log_id": 31,
       "user_id": 4,
