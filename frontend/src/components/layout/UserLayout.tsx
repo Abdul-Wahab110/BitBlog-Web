@@ -17,6 +17,7 @@ import {
   Sparkles,
   BookOpen,
   Award,
+  ShieldCheck,
 } from 'lucide-react';
 import { ThemeToggle } from '../common/ThemeToggle';
 import { UserAvatar } from '../common/UserAvatar';
@@ -81,12 +82,22 @@ export const UserLayout: React.FC = () => {
     navigate('/');
   };
 
+  const isStaff = user?.role === 'Author' || user?.role === 'Editor' || user?.role === 'Admin';
+  const isAuthor = user?.role === 'Author';
+
   const navItems = [
     { label: 'Overview', path: '/user/dashboard', icon: LayoutDashboard },
+    ...(isStaff
+      ? [{ label: 'Go to Staff Studio', path: '/admin', icon: ShieldCheck, isStaffLink: true }]
+      : []),
     { label: 'Saved Bookmarks', path: '/user/bookmarks', icon: Bookmark },
     { label: 'My Comments', path: '/user/comments', icon: MessageSquare },
     { label: 'Notifications', path: '/user/notifications', icon: Bell, count: unreadNotifications },
-    { label: 'Apply as Author/Editor', path: '/user/apply', icon: Award },
+    ...(!user?.role || user?.role === 'User'
+      ? [{ label: 'Apply as Author/Editor', path: '/user/apply', icon: Award }]
+      : isAuthor
+      ? [{ label: 'Apply for Editor Role', path: '/user/apply', icon: Award }]
+      : []),
     { label: 'My Profile & Photo', path: '/user/profile', icon: User },
     { label: 'Reader Preferences', path: '/user/settings', icon: Settings },
   ];

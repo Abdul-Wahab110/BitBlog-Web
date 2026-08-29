@@ -12,6 +12,7 @@ import {
   TrendingUp,
   Compass,
   Award,
+  ShieldCheck,
 } from 'lucide-react';
 import { LoadingState } from '../../components/common/LoadingState';
 import { useAuth } from '../../context/AuthContext';
@@ -177,54 +178,140 @@ export const UserDashboard: React.FC = () => {
         })}
       </div>
 
-      {/* Join Editorial Staff Contributor Banner */}
-      <div
-        style={{
-          background: 'linear-gradient(135deg, rgba(99, 102, 241, 0.12) 0%, rgba(139, 92, 246, 0.12) 100%)',
-          border: '1px solid rgba(99, 102, 241, 0.25)',
-          borderRadius: 'var(--radius-lg)',
-          padding: '1.5rem 1.75rem',
-          marginBottom: '2rem',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          flexWrap: 'wrap',
-          gap: '1.25rem',
-        }}
-      >
-        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', maxWidth: '580px' }}>
-          <div style={{ width: '48px', height: '48px', borderRadius: 'var(--radius-md)', backgroundColor: 'var(--color-secondary)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#FFFFFF', flexShrink: 0, boxShadow: '0 4px 12px var(--color-secondary-glow)' }}>
-            <Award size={26} />
-          </div>
-          <div>
-            <h3 style={{ fontSize: '1.05rem', fontWeight: 800, margin: '0 0 0.25rem 0', fontFamily: 'var(--font-heading)' }}>
-              Want to write stories or review content?
-            </h3>
-            <p style={{ fontSize: '0.85rem', color: 'var(--color-text-secondary)', margin: 0, lineHeight: 1.5 }}>
-              Apply to become a verified <strong>Author</strong> (to draft & submit articles) or an <strong>Editor</strong> (to review submissions & organize categories).
-            </p>
-          </div>
-        </div>
-
-        <Link
-          to="/user/apply"
+      {/* Verified Staff Studio Access Banner / Contributor Application Banner */}
+      {user?.role && user.role !== 'User' ? (
+        <div
           style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '0.5rem',
-            backgroundColor: 'var(--color-secondary)',
-            color: '#FFFFFF',
-            padding: '0.65rem 1.35rem',
-            borderRadius: 'var(--radius-md)',
-            fontWeight: 700,
-            fontSize: '0.88rem',
-            textDecoration: 'none',
-            boxShadow: '0 2px 8px var(--color-secondary-glow)',
+            backgroundColor: 'var(--color-card)',
+            border: '1px solid var(--color-border)',
+            borderRadius: 'var(--radius-lg, 12px)',
+            padding: '1.5rem 1.75rem',
+            marginBottom: '2rem',
+            boxShadow: 'var(--shadow-sm)',
           }}
         >
-          Apply for Role <ArrowRight size={16} />
-        </Link>
-      </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.25rem' }}>
+            <div
+              style={{
+                width: '44px',
+                height: '44px',
+                borderRadius: 'var(--radius-md, 8px)',
+                backgroundColor: 'rgba(99, 102, 241, 0.12)',
+                border: '1px solid rgba(99, 102, 241, 0.25)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: 'var(--color-secondary)',
+                flexShrink: 0,
+              }}
+            >
+              <ShieldCheck size={24} />
+            </div>
+            <div>
+              <h3 style={{ fontSize: '1.15rem', fontWeight: 800, margin: '0 0 0.3rem 0', color: 'var(--color-text)', fontFamily: 'var(--font-heading)' }}>
+                You are a Verified {user?.role}!
+              </h3>
+              <p style={{ fontSize: '0.88rem', color: 'var(--color-text-secondary)', margin: 0, lineHeight: 1.5 }}>
+                {user?.role === 'Author'
+                  ? 'You hold Author privileges with access to the Staff Editorial Studio. You can also apply for the Editor role below.'
+                  : `You hold full ${user?.role} clearance with access to the complete Editorial Workspace.`}
+              </p>
+            </div>
+          </div>
+
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
+            <Link
+              to="/admin"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.5rem',
+                backgroundColor: 'var(--color-secondary)',
+                color: '#FFFFFF',
+                padding: '0.65rem 1.35rem',
+                borderRadius: 'var(--radius-md, 8px)',
+                fontWeight: 700,
+                fontSize: '0.9rem',
+                textDecoration: 'none',
+                boxShadow: '0 4px 12px var(--color-secondary-glow, rgba(99, 102, 241, 0.35))',
+                transition: 'transform var(--transition-fast)',
+              }}
+            >
+              Go to Staff Studio <ArrowRight size={16} />
+            </Link>
+
+            {user?.role === 'Author' && (
+              <Link
+                to="/user/apply"
+                style={{
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.45rem',
+                  padding: '0.65rem 1.15rem',
+                  backgroundColor: 'transparent',
+                  border: '1px solid var(--color-border)',
+                  color: 'var(--color-text)',
+                  borderRadius: 'var(--radius-md, 8px)',
+                  fontWeight: 600,
+                  fontSize: '0.86rem',
+                  textDecoration: 'none',
+                  transition: 'background-color var(--transition-fast)',
+                }}
+              >
+                <Award size={15} color="var(--color-secondary)" /> Apply for Editor Role
+              </Link>
+            )}
+          </div>
+        </div>
+      ) : (
+        <div
+          style={{
+            background: 'linear-gradient(135deg, rgba(99, 102, 241, 0.12) 0%, rgba(139, 92, 246, 0.12) 100%)',
+            border: '1px solid rgba(99, 102, 241, 0.25)',
+            borderRadius: 'var(--radius-lg)',
+            padding: '1.5rem 1.75rem',
+            marginBottom: '2rem',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            flexWrap: 'wrap',
+            gap: '1.25rem',
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', maxWidth: '580px' }}>
+            <div style={{ width: '48px', height: '48px', borderRadius: 'var(--radius-md)', backgroundColor: 'var(--color-secondary)', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#FFFFFF', flexShrink: 0, boxShadow: '0 4px 12px var(--color-secondary-glow)' }}>
+              <Award size={26} />
+            </div>
+            <div>
+              <h3 style={{ fontSize: '1.05rem', fontWeight: 800, margin: '0 0 0.25rem 0', fontFamily: 'var(--font-heading)' }}>
+                Want to write stories or review content?
+              </h3>
+              <p style={{ fontSize: '0.85rem', color: 'var(--color-text-secondary)', margin: 0, lineHeight: 1.5 }}>
+                Apply to become a verified <strong>Author</strong> (to draft & submit articles) or an <strong>Editor</strong> (to review submissions & organize categories).
+              </p>
+            </div>
+          </div>
+
+          <Link
+            to="/user/apply"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.5rem',
+              backgroundColor: 'var(--color-secondary)',
+              color: '#FFFFFF',
+              padding: '0.65rem 1.35rem',
+              borderRadius: 'var(--radius-md)',
+              fontWeight: 700,
+              fontSize: '0.88rem',
+              textDecoration: 'none',
+              boxShadow: '0 2px 8px var(--color-secondary-glow)',
+            }}
+          >
+            Apply for Role <ArrowRight size={16} />
+          </Link>
+        </div>
+      )}
 
       {/* Recent Saved Bookmarks Section */}
       {recentBookmarks.length > 0 && (

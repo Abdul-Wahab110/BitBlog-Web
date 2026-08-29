@@ -78,7 +78,7 @@
       "status": "ACTIVE",
       "created_at": "2026-08-19T07:40:57.279Z",
       "updated_at": "2026-08-27T08:05:16.043Z",
-      "last_login": "2026-08-29T05:58:41.685Z"
+      "last_login": "2026-08-29T06:41:22.556Z"
     },
     {
       "user_id": 5,
@@ -799,6 +799,18 @@
     }
   ],
   "audit_logs": [
+    {
+      "log_id": 28,
+      "user_id": 4,
+      "user_name": "Featured Author",
+      "user_role": "Author",
+      "action": "USER_LOGIN_SUCCESS",
+      "category": "AUTH",
+      "details": "Author 'Featured Author' signed into portal.",
+      "ip_address": "::1",
+      "severity": "success",
+      "created_at": "2026-08-29T06:41:22.634Z"
+    },
     {
       "log_id": 27,
       "user_id": 4,
