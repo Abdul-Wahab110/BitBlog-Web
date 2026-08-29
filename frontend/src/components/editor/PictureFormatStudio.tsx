@@ -42,6 +42,7 @@ export interface PictureFormatState {
 interface PictureFormatStudioProps {
   selectedFigure: HTMLElement | null;
   onApply: (styles: PictureFormatState) => void;
+  onCropImage?: () => void;
   onReplaceImage: () => void;
   onDeleteImage: () => void;
   onClose: () => void;
@@ -50,6 +51,7 @@ interface PictureFormatStudioProps {
 export const PictureFormatStudio: React.FC<PictureFormatStudioProps> = ({
   selectedFigure,
   onApply,
+  onCropImage,
   onReplaceImage,
   onDeleteImage,
   onClose,
@@ -214,8 +216,31 @@ export const PictureFormatStudio: React.FC<PictureFormatStudioProps> = ({
           ))}
         </div>
 
-        {/* Action Controls: Replace, Delete, Close */}
+        {/* Action Controls: Crop, Replace, Delete, Close */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+          {onCropImage && (
+            <button
+              type="button"
+              onClick={onCropImage}
+              title="Crop Picture Boundaries with Interactive Pointer"
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.25rem',
+                padding: '0.25rem 0.65rem',
+                fontSize: '0.76rem',
+                fontWeight: 700,
+                backgroundColor: 'rgba(99, 102, 241, 0.1)',
+                border: '1px solid var(--color-secondary)',
+                color: 'var(--color-secondary)',
+                borderRadius: 'var(--radius-sm)',
+                cursor: 'pointer',
+              }}
+            >
+              <Crop size={13} /> Crop Picture
+            </button>
+          )}
+
           <button
             type="button"
             onClick={onReplaceImage}
@@ -613,6 +638,32 @@ export const PictureFormatStudio: React.FC<PictureFormatStudioProps> = ({
                 </button>
               ))}
             </div>
+
+            {/* Interactive Crop Tool Launcher */}
+            {onCropImage && (
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', borderLeft: '1px solid var(--color-border)', paddingLeft: '0.75rem' }}>
+                <button
+                  type="button"
+                  onClick={onCropImage}
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '0.35rem',
+                    padding: '0.3rem 0.75rem',
+                    fontSize: '0.76rem',
+                    fontWeight: 700,
+                    borderRadius: 'var(--radius-sm)',
+                    backgroundColor: 'var(--color-secondary)',
+                    color: '#FFFFFF',
+                    border: 'none',
+                    cursor: 'pointer',
+                    boxShadow: '0 2px 6px var(--color-secondary-glow)',
+                  }}
+                >
+                  <Crop size={14} /> Open Pointer Crop Studio
+                </button>
+              </div>
+            )}
           </div>
         )}
       </div>

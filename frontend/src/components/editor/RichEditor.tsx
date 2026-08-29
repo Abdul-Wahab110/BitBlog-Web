@@ -40,8 +40,10 @@ import {
   MousePointer2,
   Film,
   Play,
+  Crop as CropIcon,
 } from 'lucide-react';
 import { PictureFormatStudio, PictureFormatState } from './PictureFormatStudio';
+import { ImageCropModal } from './ImageCropModal';
 
 interface RichEditorProps {
   value: string;
@@ -63,6 +65,8 @@ export const RichEditor: React.FC<RichEditorProps> = ({
   const [imageModalOpen, setImageModalOpen] = useState(false);
   const [linkModalOpen, setLinkModalOpen] = useState(false);
   const [videoModalOpen, setVideoModalOpen] = useState(false);
+  const [cropModalOpen, setCropModalOpen] = useState(false);
+  const [cropImageSrc, setCropImageSrc] = useState('');
 
   // Link form state
   const [linkText, setLinkText] = useState('');
@@ -333,7 +337,27 @@ export const RichEditor: React.FC<RichEditorProps> = ({
     }
   };
 
-  // 5. Apply MS Word Picture Format Studio Changes
+  // 5. Open Modal for Interactive Pointer Crop
+  const openCropModalForSelectedFigure = () => {
+    if (!selectedFigure) return;
+    const img = selectedFigure.querySelector('img');
+    if (img) {
+      setCropImageSrc(img.getAttribute('src') || '');
+      setCropModalOpen(true);
+    }
+  };
+
+  const handleCropComplete = (croppedUrl: string) => {
+    if (!selectedFigure || !visualEditorRef.current) return;
+    const img = selectedFigure.querySelector('img');
+    if (img) {
+      img.setAttribute('src', croppedUrl);
+      onChange(visualEditorRef.current.innerHTML);
+      updateOverlayBox();
+    }
+  };
+
+  // 6. Apply MS Word Picture Format Studio Changes
   const applyPictureFormatStudio = (fmt: PictureFormatState) => {
     if (!selectedFigure || !visualEditorRef.current) return;
     const img = selectedFigure.querySelector('img');
@@ -1191,6 +1215,7 @@ export const RichEditor: React.FC<RichEditorProps> = ({
           <PictureFormatStudio
             selectedFigure={selectedFigure}
             onApply={applyPictureFormatStudio}
+            onCropImage={openCropModalForSelectedFigure}
             onReplaceImage={openEditModalForSelectedFigure}
             onDeleteImage={deleteSelectedFigure}
             onClose={() => setSelectedFigure(null)}
@@ -1229,14 +1254,43 @@ export const RichEditor: React.FC<RichEditorProps> = ({
                 fontWeight: 700,
                 display: 'flex',
                 alignItems: 'center',
-                gap: '0.35rem',
+                gap: '0.4rem',
                 boxShadow: '0 4px 12px rgba(0,0,0,0.25)',
                 whiteSpace: 'nowrap',
                 pointerEvents: 'none',
               }}
             >
-              <MousePointer2 size={12} />
-              {dragFeedback ? `${dragFeedback.percent}% (${dragFeedback.px}px)` : `${selectedFigureWidth}% (Drag handles to resize)`}
+              <span style={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+                <MousePointer2 size={12} />
+                {dragFeedback ? `${dragFeedback.percent}% (${dragFeedback.px}px)` : `${selectedFigureWidth}%`}
+              </span>
+
+              <button
+                type="button"
+                onClick={e => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  openCropModalForSelectedFigure();
+                }}
+                title="Open Interactive Crop Framing Tool"
+                style={{
+                  backgroundColor: 'rgba(255,255,255,0.2)',
+                  color: '#FFFFFF',
+                  border: '1px solid rgba(255,255,255,0.4)',
+                  borderRadius: '6px',
+                  padding: '0.12rem 0.45rem',
+                  fontSize: '0.7rem',
+                  fontWeight: 700,
+                  cursor: 'pointer',
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '0.25rem',
+                  pointerEvents: 'auto',
+                  transition: 'all 0.15s ease',
+                }}
+              >
+                <CropIcon size={11} /> Crop
+              </button>
             </div>
 
             {/* Corner Resize Handles */}
@@ -2015,6 +2069,14 @@ export const RichEditor: React.FC<RichEditorProps> = ({
           </form>
         </div>
       )}
+
+      {/* Modal 4: Interactive Image Crop Studio */}
+      <ImageCropModal
+        isOpen={cropModalOpen}
+        imageSrc={cropImageSrc}
+        onClose={() => setCropModalOpen(false)}
+        onCropComplete={handleCropComplete}
+      />
 
       {/* Editor CSS helper styles */}
       <style>{`
