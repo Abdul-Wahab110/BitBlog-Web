@@ -88,7 +88,9 @@ export const ArticleCard: React.FC<ArticleCardProps> = (props) => {
         style={{
           position: 'relative',
           width: '100%',
-          height: '190px',
+          aspectRatio: '16 / 10',
+          minHeight: '185px',
+          maxHeight: '210px',
           overflow: 'hidden',
           backgroundColor: 'var(--color-surface-alt)',
           display: 'block',
@@ -96,18 +98,32 @@ export const ArticleCard: React.FC<ArticleCardProps> = (props) => {
         tabIndex={-1}
       >
         {coverImage && !imgError ? (
-          <img
-            src={coverImage}
-            alt={title}
-            onError={() => setImgError(true)}
-            style={{
-              width: '100%',
-              height: '100%',
-              objectFit: 'cover',
-              transform: isHovered ? 'scale(1.07)' : 'scale(1)',
-              transition: 'transform 0.5s cubic-bezier(0.16, 1, 0.3, 1)',
-            }}
-          />
+          <>
+            <img
+              src={coverImage}
+              alt={title}
+              loading="lazy"
+              onError={() => setImgError(true)}
+              style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+                objectPosition: 'center',
+                transform: isHovered ? 'scale(1.06)' : 'scale(1)',
+                transition: 'transform 0.45s cubic-bezier(0.16, 1, 0.3, 1)',
+                display: 'block',
+              }}
+            />
+            {/* Subtle bottom shadow overlay to guarantee badge readability */}
+            <div
+              style={{
+                position: 'absolute',
+                inset: 0,
+                background: 'linear-gradient(to top, rgba(0, 0, 0, 0.45) 0%, rgba(0, 0, 0, 0.05) 50%, transparent 100%)',
+                pointerEvents: 'none',
+              }}
+            />
+          </>
         ) : (
           /* High-aesthetic gradient fallback cover if image is not supplied */
           <div

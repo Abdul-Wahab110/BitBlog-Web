@@ -25,6 +25,8 @@ import {
   AlignLeft,
   AlignCenter,
   AlignRight,
+  Maximize2,
+  Sliders,
   Sparkles,
   Lightbulb,
   CheckSquare,
@@ -61,11 +63,16 @@ export const RichEditor: React.FC<RichEditorProps> = ({
   // Video form state
   const [videoUrl, setVideoUrl] = useState('');
 
-  // Image form state
+  // Image form state: URL, Alt, Alignment & Sizing Controls
   const [uploading, setUploading] = useState(false);
   const [uploadedPreview, setUploadedPreview] = useState('');
   const [imageUrlInput, setImageUrlInput] = useState('');
   const [imageAltInput, setImageAltInput] = useState('');
+  const [imageCaption, setImageCaption] = useState('');
+  const [imageAlignment, setImageAlignment] = useState<'left' | 'center' | 'right' | 'full'>('center');
+  const [imageSizePreset, setImageSizePreset] = useState<'small' | 'medium' | 'large' | 'full'>('medium');
+  const [imageCustomWidth, setImageCustomWidth] = useState<number>(65);
+  const [imageBorderRadius, setImageBorderRadius] = useState<'none' | 'sm' | 'md' | 'lg'>('md');
   const [uploadError, setUploadError] = useState<string | null>(null);
 
   const visualEditorRef = useRef<HTMLDivElement>(null);
@@ -205,14 +212,52 @@ export const RichEditor: React.FC<RichEditorProps> = ({
     insertHtmlAtCursor('<hr style="border:none;border-top:2px dashed var(--color-border, #cbd5e1);margin:2.5rem 0;" /><p><br></p>');
   };
 
-  // Image Upload Handling
-  const handleInsertImageHtml = (url: string, altText?: string) => {
+  // Image Upload & Insertion Handling with Alignment & Custom Sizing
+  const handleInsertImageHtml = (
+    url: string,
+    altText?: string,
+    alignOverride?: 'left' | 'center' | 'right' | 'full',
+    sizeOverride?: 'small' | 'medium' | 'large' | 'full',
+    widthOverride?: number,
+    radiusOverride?: 'none' | 'sm' | 'md' | 'lg'
+  ) => {
     if (!url) return;
-    const alt = altText || 'Article illustration';
+    const alt = altText || imageAltInput || 'Article illustration';
+    const caption = imageCaption.trim() || alt;
+    const align = alignOverride || imageAlignment;
+    const size = sizeOverride || imageSizePreset;
+    const customW = widthOverride !== undefined ? widthOverride : imageCustomWidth;
+    const radius = radiusOverride || imageBorderRadius;
+
+    let widthPercent = 100;
+    if (size === 'small') widthPercent = 35;
+    else if (size === 'medium') widthPercent = 60;
+    else if (size === 'large') widthPercent = 85;
+    else if (size === 'full') widthPercent = 100;
+    else widthPercent = customW || 100;
+
+    let radiusPx = '8px';
+    if (radius === 'none') radiusPx = '0px';
+    else if (radius === 'sm') radiusPx = '4px';
+    else if (radius === 'md') radiusPx = '8px';
+    else if (radius === 'lg') radiusPx = '16px';
+
+    let figureStyle = '';
+    if (align === 'left') {
+      figureStyle = `display:flex;flex-direction:column;align-items:flex-start;width:${widthPercent}%;max-width:100%;margin:1.5rem auto 1.5rem 0;text-align:left;`;
+    } else if (align === 'right') {
+      figureStyle = `display:flex;flex-direction:column;align-items:flex-end;width:${widthPercent}%;max-width:100%;margin:1.5rem 0 1.5rem auto;text-align:right;`;
+    } else if (align === 'full') {
+      figureStyle = `display:block;width:100%;max-width:100%;margin:2rem 0;text-align:center;`;
+    } else {
+      // center
+      figureStyle = `display:flex;flex-direction:column;align-items:center;width:${widthPercent}%;max-width:100%;margin:1.75rem auto;text-align:center;`;
+    }
+
     const imageHtml = `
-      <figure style="margin:1.75rem 0;text-align:center;">
-        <img src="${url}" alt="${alt}" style="max-width:100%;height:auto;border-radius:8px;box-shadow:0 4px 14px rgba(0,0,0,0.12);" />
-        <figcaption style="font-size:0.82rem;color:var(--color-muted, #64748b);margin-top:0.5rem;font-style:italic;">${alt}</figcaption>
+      <figure style="${figureStyle}">
+        <img src="${url}" alt="${alt}" style="width:100%;max-width:100%;height:auto;border-radius:${radiusPx};box-shadow:0 4px 16px rgba(0,0,0,0.12);object-fit:cover;" />
+        ${caption ? `<figcaption style="font-size:0.84rem;color:var(--color-muted, #71717a);margin-top:0.5rem;font-style:italic;line-height:1.4;">${caption}</figcaption>` : ''}
       </figure>
       <p><br></p>
     `;
@@ -220,6 +265,7 @@ export const RichEditor: React.FC<RichEditorProps> = ({
     setImageModalOpen(false);
     setImageUrlInput('');
     setImageAltInput('');
+    setImageCaption('');
     setUploadedPreview('');
     setUploadError(null);
   };
@@ -952,16 +998,189 @@ export const RichEditor: React.FC<RichEditorProps> = ({
               />
             </div>
 
-            <div style={{ marginBottom: '1.5rem' }}>
-              <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 600, marginBottom: '0.35rem' }}>Image Caption / Title *</label>
+            <div style={{ marginBottom: '1.25rem' }}>
+              <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 600, marginBottom: '0.35rem' }}>Image Caption / Alt Text</label>
               <input
                 type="text"
                 value={imageAltInput}
                 onChange={e => setImageAltInput(e.target.value)}
-                placeholder="e.g. Modern Office Workspace, Beautiful Sunset..."
+                placeholder="e.g. System architecture diagram, Modern workspace..."
                 style={{ width: '100%', padding: '0.6rem 0.85rem', fontSize: '0.88rem' }}
               />
             </div>
+
+            {/* 1. Image Alignment Selector */}
+            <div style={{ marginBottom: '1.25rem' }}>
+              <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 700, marginBottom: '0.4rem' }}>
+                Image Alignment
+              </label>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '0.5rem' }}>
+                {[
+                  { id: 'left', label: 'Left', icon: AlignLeft },
+                  { id: 'center', label: 'Center', icon: AlignCenter },
+                  { id: 'right', label: 'Right', icon: AlignRight },
+                  { id: 'full', label: 'Full Width', icon: Maximize2 },
+                ].map(opt => {
+                  const Icon = opt.icon;
+                  const selected = imageAlignment === opt.id;
+                  return (
+                    <button
+                      type="button"
+                      key={opt.id}
+                      onClick={() => setImageAlignment(opt.id as any)}
+                      style={{
+                        display: 'flex',
+                        flexDirection: 'column',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        gap: '0.3rem',
+                        padding: '0.6rem 0.35rem',
+                        borderRadius: 'var(--radius-md)',
+                        border: `1.5px solid ${selected ? 'var(--color-secondary)' : 'var(--color-border)'}`,
+                        backgroundColor: selected ? 'var(--color-surface-alt)' : 'transparent',
+                        color: selected ? 'var(--color-secondary)' : 'var(--color-text)',
+                        fontWeight: selected ? 700 : 500,
+                        fontSize: '0.78rem',
+                        cursor: 'pointer',
+                        transition: 'all 0.15s ease',
+                      }}
+                    >
+                      <Icon size={16} />
+                      <span>{opt.label}</span>
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+
+            {/* 2. Image Size Presets & Custom Width Slider */}
+            <div style={{ marginBottom: '1.25rem' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.4rem' }}>
+                <label style={{ fontSize: '0.82rem', fontWeight: 700, margin: 0 }}>
+                  Image Size & Width
+                </label>
+                <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--color-secondary)' }}>
+                  {imageSizePreset === 'small'
+                    ? '35% (Small)'
+                    : imageSizePreset === 'medium'
+                    ? '60% (Medium)'
+                    : imageSizePreset === 'large'
+                    ? '85% (Large)'
+                    : '100% (Full)'}
+                </span>
+              </div>
+
+              {/* Preset Buttons */}
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '0.5rem', marginBottom: '0.75rem' }}>
+                {[
+                  { id: 'small', label: 'Small (35%)' },
+                  { id: 'medium', label: 'Medium (60%)' },
+                  { id: 'large', label: 'Large (85%)' },
+                  { id: 'full', label: 'Full (100%)' },
+                ].map(sz => {
+                  const isSel = imageSizePreset === sz.id;
+                  return (
+                    <button
+                      type="button"
+                      key={sz.id}
+                      onClick={() => {
+                        setImageSizePreset(sz.id as any);
+                        if (sz.id === 'small') setImageCustomWidth(35);
+                        else if (sz.id === 'medium') setImageCustomWidth(60);
+                        else if (sz.id === 'large') setImageCustomWidth(85);
+                        else setImageCustomWidth(100);
+                      }}
+                      style={{
+                        padding: '0.45rem 0.25rem',
+                        fontSize: '0.76rem',
+                        fontWeight: isSel ? 700 : 500,
+                        borderRadius: 'var(--radius-sm)',
+                        border: `1px solid ${isSel ? 'var(--color-secondary)' : 'var(--color-border)'}`,
+                        backgroundColor: isSel ? 'var(--color-secondary)' : 'var(--color-surface-alt)',
+                        color: isSel ? '#FFFFFF' : 'var(--color-text)',
+                        cursor: 'pointer',
+                        transition: 'all 0.15s ease',
+                      }}
+                    >
+                      {sz.label}
+                    </button>
+                  );
+                })}
+              </div>
+
+              {/* Fine-tune Width Slider */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.5rem 0.75rem', backgroundColor: 'var(--color-surface-alt)', borderRadius: 'var(--radius-sm)' }}>
+                <span style={{ fontSize: '0.75rem', color: 'var(--color-muted)', fontWeight: 600 }}>Custom:</span>
+                <input
+                  type="range"
+                  min="20"
+                  max="100"
+                  step="5"
+                  value={
+                    imageSizePreset === 'small'
+                      ? 35
+                      : imageSizePreset === 'medium'
+                      ? 60
+                      : imageSizePreset === 'large'
+                      ? 85
+                      : imageSizePreset === 'full'
+                      ? 100
+                      : imageCustomWidth
+                  }
+                  onChange={e => {
+                    const val = parseInt(e.target.value, 10);
+                    setImageCustomWidth(val);
+                    if (val <= 40) setImageSizePreset('small');
+                    else if (val <= 70) setImageSizePreset('medium');
+                    else if (val < 100) setImageSizePreset('large');
+                    else setImageSizePreset('full');
+                  }}
+                  style={{ flex: 1, accentColor: 'var(--color-secondary)', cursor: 'pointer' }}
+                />
+                <span style={{ fontSize: '0.78rem', fontWeight: 700, minWidth: '38px', textAlign: 'right' }}>
+                  {imageCustomWidth}%
+                </span>
+              </div>
+            </div>
+
+            {/* 3. Live Preview Box */}
+            {(imageUrlInput || uploadedPreview) && (
+              <div style={{ marginBottom: '1.5rem' }}>
+                <label style={{ display: 'block', fontSize: '0.78rem', fontWeight: 700, color: 'var(--color-muted)', marginBottom: '0.35rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                  Live Article Preview
+                </label>
+                <div
+                  style={{
+                    padding: '1rem',
+                    backgroundColor: 'var(--color-surface-alt)',
+                    borderRadius: 'var(--radius-md)',
+                    border: '1px dashed var(--color-border)',
+                    minHeight: '120px',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: imageAlignment === 'left' ? 'flex-start' : imageAlignment === 'right' ? 'flex-end' : 'center',
+                    overflow: 'hidden',
+                  }}
+                >
+                  <img
+                    src={imageUrlInput || uploadedPreview}
+                    alt={imageAltInput || 'Preview'}
+                    style={{
+                      width: `${imageSizePreset === 'small' ? 35 : imageSizePreset === 'medium' ? 60 : imageSizePreset === 'large' ? 85 : 100}%`,
+                      maxHeight: '160px',
+                      objectFit: 'cover',
+                      borderRadius: imageBorderRadius === 'none' ? '0px' : imageBorderRadius === 'sm' ? '4px' : imageBorderRadius === 'lg' ? '16px' : '8px',
+                      boxShadow: '0 4px 12px rgba(0,0,0,0.12)',
+                    }}
+                  />
+                  {imageAltInput && (
+                    <span style={{ fontSize: '0.75rem', color: 'var(--color-muted)', marginTop: '0.35rem', fontStyle: 'italic', textAlign: imageAlignment === 'left' ? 'left' : imageAlignment === 'right' ? 'right' : 'center' }}>
+                      {imageAltInput}
+                    </span>
+                  )}
+                </div>
+              </div>
+            )}
 
             <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.6rem' }}>
               <button
@@ -973,6 +1192,8 @@ export const RichEditor: React.FC<RichEditorProps> = ({
                   padding: '0.55rem 1.15rem',
                   fontSize: '0.88rem',
                   borderRadius: 'var(--radius-md)',
+                  border: '1px solid var(--color-border)',
+                  cursor: 'pointer',
                 }}
               >
                 Cancel
@@ -989,9 +1210,12 @@ export const RichEditor: React.FC<RichEditorProps> = ({
                   fontWeight: 700,
                   borderRadius: 'var(--radius-md)',
                   boxShadow: '0 2px 8px var(--color-secondary-glow)',
+                  border: 'none',
+                  cursor: (!imageUrlInput.trim() && !uploadedPreview) ? 'not-allowed' : 'pointer',
+                  opacity: (!imageUrlInput.trim() && !uploadedPreview) ? 0.6 : 1,
                 }}
               >
-                Insert Image
+                Insert Aligned Image
               </button>
             </div>
           </div>
