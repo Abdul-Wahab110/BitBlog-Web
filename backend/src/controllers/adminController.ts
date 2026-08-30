@@ -16,7 +16,7 @@ export class AdminController {
       const userId = req.user?.userId;
 
       if (userRole === 'Author' && userId) {
-        // Author-specific personal metrics
+
         const authorPosts = store.posts.filter(p => p.author_id === userId);
         const authorPostIds = authorPosts.map(p => p.post_id);
         const comments = (store.comments || []).filter(c => authorPostIds.includes(c.post_id)).length;
@@ -37,7 +37,6 @@ export class AdminController {
         return;
       }
 
-      // Editor and Admin metrics
       const published = store.posts.filter(p => p.status === 'published').length;
       const drafts = store.posts.filter(p => p.status === 'draft').length;
       const scheduled = store.posts.filter(p => p.status === 'scheduled').length;
@@ -182,7 +181,7 @@ export class AdminController {
         return;
       }
       const userId = parseInt(req.params.id);
-      const { role } = req.body; // 'Admin' | 'Editor' | 'Author' | 'User'
+      const { role } = req.body;
 
       const targetUser = await UserModel.findById(userId);
       if (!targetUser) {
@@ -215,7 +214,7 @@ export class AdminController {
         return;
       }
       const userId = parseInt(req.params.id);
-      const { status } = req.body; // 'ACTIVE' | 'SUSPENDED'
+      const { status } = req.body;
 
       const targetUser = await UserModel.findById(userId);
       if (!targetUser) {
@@ -257,7 +256,6 @@ export class AdminController {
         return;
       }
 
-      // If new password provided by Admin
       const passToSet = password || newPassword;
       if (passToSet && passToSet.trim().length >= 6) {
         const hash = await bcrypt.hash(passToSet.trim(), 10);
@@ -388,7 +386,6 @@ export class AdminController {
         originalMessage
       );
 
-      // Mark message as READ if present
       const store = Database.getStore();
       const msg = (store.messages || []).find(m => m.message_id === id);
       if (msg) {
@@ -407,3 +404,4 @@ export class AdminController {
     ResponseUtil.success(res, { status: 'OPTIMAL', nodeVersion: process.version }, 'System overview retrieved');
   }
 }
+

@@ -24,7 +24,6 @@ export const BreakingNews: React.FC<BreakingNewsProps> = ({ items = [] }) => {
 
   const newsItems = items.length > 0 ? items : defaultItems;
 
-  // Auto-advance ticker every 5.5 seconds unless user hovers
   useEffect(() => {
     if (isPaused || newsItems.length <= 1) return;
 
@@ -59,7 +58,7 @@ export const BreakingNews: React.FC<BreakingNewsProps> = ({ items = [] }) => {
     >
       <div className="container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '1rem' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flex: 1, minWidth: 0 }}>
-          {/* Animated Glowing Breaking News Badge */}
+
           <span
             className="ticker-breaking-badge"
             style={{
@@ -81,7 +80,6 @@ export const BreakingNews: React.FC<BreakingNewsProps> = ({ items = [] }) => {
             <Zap size={12} fill="#FFFFFF" /> BREAKING &gt;
           </span>
 
-          {/* Animated Headline Ticker Content */}
           <div key={currentIndex} className="ticker-content-animated" style={{ flex: 1, minWidth: 0, overflow: 'hidden' }}>
             <Link
               to={`/post/${currentItem.slug}`}
@@ -99,7 +97,6 @@ export const BreakingNews: React.FC<BreakingNewsProps> = ({ items = [] }) => {
           </div>
         </div>
 
-        {/* Prev / Next Controls with Animation */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', flexShrink: 0 }}>
           <span
             className="desktop-only"
@@ -132,3 +129,4 @@ export const BreakingNews: React.FC<BreakingNewsProps> = ({ items = [] }) => {
     </div>
   );
 };
+

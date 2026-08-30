@@ -40,7 +40,7 @@ export const AuthorProfile: React.FC = () => {
 
     const loadAuthorAndPosts = async () => {
       try {
-        // 1. Fetch Author Profile
+
         let authorData: any = null;
         try {
           const res = await ApiService.getAuthorById(id);
@@ -66,12 +66,10 @@ export const AuthorProfile: React.FC = () => {
         }
         setAuthor(authorData);
 
-        // 2. Fetch Author Posts (try id, username, or user_id)
         const primaryQuery = authorData.username || String(authorData.user_id || id);
         let postsRes = await ApiService.getPosts({ author: primaryQuery, limit: 50 }).catch(() => null);
         let authorPosts = postsRes?.data || [];
 
-        // Fallback: If 0 posts found by username, try by numeric user_id
         if (authorPosts.length === 0 && authorData.user_id) {
           const fallbackRes = await ApiService.getPosts({ author: String(authorData.user_id), limit: 50 }).catch(() => null);
           if (fallbackRes?.data && fallbackRes.data.length > 0) {
@@ -79,7 +77,6 @@ export const AuthorProfile: React.FC = () => {
           }
         }
 
-        // Fallback: If still 0 and URL id was different, try URL id
         if (authorPosts.length === 0 && id && id !== primaryQuery) {
           const fallbackRes2 = await ApiService.getPosts({ author: String(id), limit: 50 }).catch(() => null);
           if (fallbackRes2?.data && fallbackRes2.data.length > 0) {
@@ -115,7 +112,6 @@ export const AuthorProfile: React.FC = () => {
         description={author?.short_description || author?.bio || `Read articles and editorial insights by ${author?.name || 'author'} on ${siteName}.`}
       />
 
-      {/* Breadcrumb Navigation */}
       <nav
         aria-label="Breadcrumb"
         style={{
@@ -134,7 +130,6 @@ export const AuthorProfile: React.FC = () => {
         <span style={{ color: 'var(--color-text)', fontWeight: 600 }}>{author?.name || `Author #${id}`}</span>
       </nav>
 
-      {/* Author Hero Profile Header */}
       <header
         style={{
           backgroundColor: 'var(--color-card)',
@@ -147,7 +142,7 @@ export const AuthorProfile: React.FC = () => {
           overflow: 'hidden',
         }}
       >
-        {/* Subtle Ambient Background Glow */}
+
         <div
           style={{
             position: 'absolute',
@@ -172,7 +167,7 @@ export const AuthorProfile: React.FC = () => {
             zIndex: 1,
           }}
         >
-          {/* Author Large Avatar Image */}
+
           <UserAvatar
             src={author?.profile_image}
             name={author?.name}
@@ -184,7 +179,6 @@ export const AuthorProfile: React.FC = () => {
             }}
           />
 
-          {/* Author Details & Bio */}
           <div style={{ flex: 1, minWidth: '280px' }}>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.75rem', marginBottom: '0.35rem' }}>
               <div>
@@ -206,7 +200,6 @@ export const AuthorProfile: React.FC = () => {
                 </h1>
               </div>
 
-              {/* Share Profile Button */}
               <button
                 type="button"
                 onClick={handleShare}
@@ -229,19 +222,16 @@ export const AuthorProfile: React.FC = () => {
               </button>
             </div>
 
-            {/* Short Tagline / Headline */}
             {author?.short_description && (
               <p style={{ color: 'var(--color-secondary)', fontSize: '0.95rem', fontWeight: 600, margin: '0.25rem 0 0.6rem 0' }}>
                 {author.short_description}
               </p>
             )}
 
-            {/* Full Biography */}
             <p style={{ color: 'var(--color-text-secondary)', fontSize: '0.92rem', lineHeight: '1.6', margin: '0 0 1rem 0' }}>
               {author?.bio || 'Journalist and analyst contributing stories on modern technology, design, and editorial insights.'}
             </p>
 
-            {/* Author Expertise Tags */}
             {author?.author_tags && author.author_tags.length > 0 && (
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem', marginBottom: '1.25rem' }}>
                 {author.author_tags.map((t: string) => (
@@ -263,7 +253,6 @@ export const AuthorProfile: React.FC = () => {
               </div>
             )}
 
-            {/* Statistics & Social Links Bar */}
             <div
               style={{
                 display: 'flex',
@@ -275,7 +264,7 @@ export const AuthorProfile: React.FC = () => {
                 borderTop: '1px solid var(--color-border)',
               }}
             >
-              {/* Publication Stats */}
+
               <div style={{ display: 'flex', gap: '1.25rem', fontSize: '0.85rem' }}>
                 <span style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', fontWeight: 600 }}>
                   <FileText size={15} color="var(--color-secondary)" /> {author?.published_count || posts.length} Published Stories
@@ -287,7 +276,6 @@ export const AuthorProfile: React.FC = () => {
                 )}
               </div>
 
-              {/* Social Channels */}
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                 {author?.website && (
                   <a
@@ -367,7 +355,6 @@ export const AuthorProfile: React.FC = () => {
         </div>
       </header>
 
-      {/* Main Grid: Articles + Sidebar */}
       <div className="grid-main-sidebar">
         <main style={{ minHeight: 'auto' }}>
           {loading ? (
@@ -387,3 +374,4 @@ export const AuthorProfile: React.FC = () => {
     </div>
   );
 };
+

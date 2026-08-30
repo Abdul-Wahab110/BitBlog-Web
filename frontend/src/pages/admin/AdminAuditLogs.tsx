@@ -166,7 +166,7 @@ export const AdminAuditLogs: React.FC = () => {
 
   return (
     <div>
-      {/* Header */}
+
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.5rem', flexWrap: 'wrap', gap: '1rem' }}>
         <div>
           <h1 style={{ fontSize: '1.6rem', marginBottom: '0.2rem', fontFamily: 'var(--font-heading)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
@@ -238,7 +238,6 @@ export const AdminAuditLogs: React.FC = () => {
         </div>
       </div>
 
-      {/* Feedback Banner */}
       {feedback && (
         <div
           style={{
@@ -259,7 +258,6 @@ export const AdminAuditLogs: React.FC = () => {
         </div>
       )}
 
-      {/* Top Stat Cards */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '0.85rem', marginBottom: '1.5rem' }}>
         <div style={{ backgroundColor: 'var(--color-card)', padding: '1rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', boxSizing: 'border-box' }}>
           <p style={{ fontSize: '0.75rem', color: 'var(--color-muted)', fontWeight: 700, margin: 0, textTransform: 'uppercase' }}>Total Logged Events</p>
@@ -282,9 +280,8 @@ export const AdminAuditLogs: React.FC = () => {
         </div>
       </div>
 
-      {/* Filter Category Toolbar & Search */}
       <div style={{ backgroundColor: 'var(--color-card)', border: '1px solid var(--color-border)', borderRadius: 'var(--radius-lg)', padding: '1.25rem', marginBottom: '1.5rem', boxSizing: 'border-box' }}>
-        {/* Category Tabs */}
+
         <div style={{ display: 'flex', gap: '0.45rem', flexWrap: 'wrap', marginBottom: '1rem' }}>
           {CATEGORIES.map(cat => {
             const isSelected = category === cat.id;
@@ -310,7 +307,6 @@ export const AdminAuditLogs: React.FC = () => {
           })}
         </div>
 
-        {/* Search & Severity Filter Bar */}
         <form onSubmit={handleSearchSubmit} style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
           <div style={{ position: 'relative', flex: 1, minWidth: '220px' }}>
             <Search size={16} color="var(--color-muted)" style={{ position: 'absolute', left: '0.75rem', top: '50%', transform: 'translateY(-50%)' }} />
@@ -352,7 +348,6 @@ export const AdminAuditLogs: React.FC = () => {
         </form>
       </div>
 
-      {/* Logs Table / Stream */}
       {loading ? (
         <LoadingState message="Querying persistent audit records from Oracle Database..." />
       ) : logs.length === 0 ? (
@@ -380,7 +375,7 @@ export const AdminAuditLogs: React.FC = () => {
 
                 return (
                   <tr key={log.log_id} className="cms-table-row">
-                    {/* Exact Timestamp & Relative Elapsed Time */}
+
                     <td className="cms-td-title" style={{ padding: '0.85rem 1rem', whiteSpace: 'nowrap' }}>
                       <span className="cms-mobile-label">Timestamp</span>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', flexWrap: 'wrap' }}>
@@ -423,7 +418,6 @@ export const AdminAuditLogs: React.FC = () => {
                       </div>
                     </td>
 
-                    {/* User & Role */}
                     <td className="cms-td-author" style={{ padding: '0.85rem 1rem' }}>
                       <span className="cms-mobile-label">User</span>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', flexWrap: 'wrap' }}>
@@ -446,7 +440,6 @@ export const AdminAuditLogs: React.FC = () => {
                       </div>
                     </td>
 
-                    {/* Action & Category */}
                     <td className="cms-td-category" style={{ padding: '0.85rem 1rem' }}>
                       <span className="cms-mobile-label">Action</span>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', flexWrap: 'wrap' }}>
@@ -473,7 +466,6 @@ export const AdminAuditLogs: React.FC = () => {
                       </div>
                     </td>
 
-                    {/* Activity Details */}
                     <td className="cms-td-title" style={{ padding: '0.85rem 1rem' }}>
                       <span className="cms-mobile-label">Details</span>
                       <div style={{ fontSize: '0.84rem', color: 'var(--color-text)', lineHeight: 1.45, backgroundColor: 'var(--color-surface)', padding: '0.5rem 0.75rem', borderRadius: 'var(--radius-sm)', borderLeft: '3px solid var(--color-secondary)' }}>
@@ -481,7 +473,6 @@ export const AdminAuditLogs: React.FC = () => {
                       </div>
                     </td>
 
-                    {/* IP Address */}
                     <td className="cms-td-updated" style={{ padding: '0.85rem 1rem' }}>
                       <span className="cms-mobile-label">IP Address</span>
                       <span style={{ fontSize: '0.78rem', color: 'var(--color-muted)', fontFamily: 'monospace' }}>
@@ -496,7 +487,6 @@ export const AdminAuditLogs: React.FC = () => {
         </div>
       )}
 
-      {/* Confirmation Modal to Clear Trail */}
       {clearConfirmOpen && (
         <div
           style={{
@@ -578,3 +568,4 @@ export const AdminAuditLogs: React.FC = () => {
     </div>
   );
 };
+

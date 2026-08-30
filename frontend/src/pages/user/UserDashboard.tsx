@@ -141,7 +141,6 @@ export const UserDashboard: React.FC = () => {
         </div>
       </header>
 
-      {/* Overview Stat Cards Grid */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1.25rem', marginBottom: '2rem' }}>
         {statCards.map(card => {
           const Icon = card.icon;
@@ -181,7 +180,6 @@ export const UserDashboard: React.FC = () => {
         })}
       </div>
 
-      {/* Verified Staff Studio Access Banner / Contributor Application Banner */}
       {user?.role && user.role !== 'User' ? (
         <div
           style={{
@@ -316,7 +314,6 @@ export const UserDashboard: React.FC = () => {
         </div>
       )}
 
-      {/* Recent Saved Bookmarks Section */}
       {recentBookmarks.length > 0 && (
         <div style={{ marginBottom: '2rem' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.85rem' }}>
@@ -365,7 +362,6 @@ export const UserDashboard: React.FC = () => {
         </div>
       )}
 
-      {/* Quick Action Discovery Banner */}
       <div style={{ backgroundColor: 'var(--color-card)', padding: '1.75rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1.25rem' }}>
         <div>
           <h3 style={{ fontSize: '1.15rem', marginBottom: '0.25rem', fontFamily: 'var(--font-heading)', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
@@ -397,3 +393,4 @@ export const UserDashboard: React.FC = () => {
     </div>
   );
 };
+

@@ -64,10 +64,8 @@ export const SingleArticle: React.FC = () => {
           setPost(article);
           setLikesCount(article.likes_count || 0);
 
-          // Record privacy-aware view metric
           ApiService.recordView(article.post_id).catch(() => {});
 
-          // Fetch SEO, AEO & GEO Metadata and Approved Comments concurrently for optimal load speed
           const [seoRes, commRes] = await Promise.allSettled([
             ApiService.getSeoByPost(article.post_id),
             ApiService.getPostComments(article.post_id),
@@ -149,7 +147,6 @@ export const SingleArticle: React.FC = () => {
       setCommentText('');
       setCommentMsg({ type: 'success', text: 'Thank you! Your comment has been submitted for moderation.' });
 
-      // Refresh comments
       const commRes = await ApiService.getPostComments(post.post_id);
       if (commRes && commRes.data) setComments(commRes.data);
     } catch (err: any) {
@@ -185,7 +182,6 @@ export const SingleArticle: React.FC = () => {
     );
   }
 
-  // Parse FAQ and How-To data for AEO
   let faqList: Array<{ question: string; answer: string }> = [];
   if (seoMeta?.faq_data) {
     try {
@@ -208,7 +204,7 @@ export const SingleArticle: React.FC = () => {
 
   return (
     <div className="container" style={{ paddingTop: '1.5rem', paddingBottom: '3rem' }}>
-      {/* Dynamic SEO, AEO, GEO & JSON-LD Meta Head */}
+
       <SeoHead
         title={seoMeta?.meta_title || `${post.title} | ${siteName}`}
         description={seoMeta?.meta_description || post.excerpt}
@@ -236,7 +232,6 @@ export const SingleArticle: React.FC = () => {
         breadcrumbs={breadcrumbs}
       />
 
-      {/* Semantic Breadcrumbs Navigation */}
       <nav aria-label="Breadcrumbs" style={{ fontSize: '0.85rem', color: 'var(--color-text-secondary)', marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.4rem', flexWrap: 'wrap' }}>
         <Link to="/">Home</Link>
         <span>/</span>
@@ -254,7 +249,7 @@ export const SingleArticle: React.FC = () => {
       <div className="grid-main-sidebar">
         <main style={{ minHeight: 'auto' }}>
           <article style={{ border: 'none', backgroundColor: 'transparent', boxShadow: 'none' }}>
-            {/* Header */}
+
             <header style={{ border: 'none', backgroundColor: 'transparent', padding: 0, marginBottom: '1.5rem' }}>
               <div style={{ marginBottom: '0.75rem' }}>
                 <CategoryBadge name={post.category_name || 'General'} slug={post.category_slug || 'general'} />
@@ -270,7 +265,6 @@ export const SingleArticle: React.FC = () => {
                 </p>
               )}
 
-              {/* Author & Meta Attribution Bar */}
               <div
                 style={{
                   display: 'flex',
@@ -314,7 +308,6 @@ export const SingleArticle: React.FC = () => {
               </div>
             </header>
 
-            {/* Featured Image */}
             {post.featured_image && (
               <figure style={{ marginBottom: '2.5rem', margin: 0, borderRadius: 'var(--radius-md)', overflow: 'hidden' }}>
                 <img
@@ -326,7 +319,6 @@ export const SingleArticle: React.FC = () => {
               </figure>
             )}
 
-            {/* AEO Direct Answer Summary Box */}
             {seoMeta?.direct_answer && (
               <section
                 aria-label="Direct Summary"
@@ -347,7 +339,6 @@ export const SingleArticle: React.FC = () => {
               </section>
             )}
 
-            {/* AEO Key Takeaways */}
             {seoMeta?.key_takeaways && (
               <section
                 aria-label="Key Takeaways"
@@ -368,7 +359,6 @@ export const SingleArticle: React.FC = () => {
               </section>
             )}
 
-            {/* Main Article Body */}
             <section
               style={{
                 fontSize: '1.1rem',
@@ -381,7 +371,6 @@ export const SingleArticle: React.FC = () => {
               dangerouslySetInnerHTML={{ __html: sanitizeHtml(post.content) }}
             />
 
-            {/* AEO Step-by-Step How-To */}
             {howToData && howToData.steps && howToData.steps.length > 0 && (
               <section
                 aria-label="How-To Step-by-Step Guide"
@@ -412,7 +401,6 @@ export const SingleArticle: React.FC = () => {
               </section>
             )}
 
-            {/* AEO FAQ Section */}
             {faqList.length > 0 && (
               <section
                 aria-label="Frequently Asked Questions"
@@ -438,7 +426,6 @@ export const SingleArticle: React.FC = () => {
               </section>
             )}
 
-            {/* Article Topic Tags */}
             {post.tags && post.tags.length > 0 && (
               <div
                 style={{
@@ -481,7 +468,6 @@ export const SingleArticle: React.FC = () => {
               </div>
             )}
 
-            {/* Social Engagement Actions */}
             <div
               style={{
                 display: 'flex',
@@ -527,7 +513,6 @@ export const SingleArticle: React.FC = () => {
                 </button>
               </div>
 
-              {/* Social Share Buttons */}
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                 <span style={{ fontSize: '0.85rem', color: 'var(--color-text-secondary)', fontWeight: 600 }}>Share:</span>
                 <button onClick={handleCopyLink} title="Copy link to clipboard" style={{ padding: '0.45rem 0.65rem', backgroundColor: 'var(--color-surface-alt)', color: 'var(--color-text)' }}>
@@ -545,7 +530,6 @@ export const SingleArticle: React.FC = () => {
               </div>
             </div>
 
-            {/* Reader Discussion / Comments Section */}
             <section style={{ marginBottom: '2.5rem' }}>
               <h3 style={{ fontSize: '1.3rem', fontWeight: 700, marginBottom: '1.25rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                 <MessageSquare size={20} color="var(--color-secondary)" /> Reader Discussion ({comments.length})
@@ -558,7 +542,6 @@ export const SingleArticle: React.FC = () => {
                 </div>
               )}
 
-              {/* Add Comment Form */}
               <form onSubmit={handleCommentSubmit} style={{ marginBottom: '2rem', backgroundColor: 'var(--color-card)', border: '1px solid var(--color-border)', borderRadius: 'var(--radius-md)', padding: '1.25rem' }}>
                 <label htmlFor="article-comment" style={{ display: 'block', fontWeight: 600, fontSize: '0.85rem', marginBottom: '0.4rem' }}>
                   Leave a Comment
@@ -608,7 +591,6 @@ export const SingleArticle: React.FC = () => {
                 </div>
               </form>
 
-              {/* Comments List */}
               <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                 {comments.length === 0 ? (
                   <div style={{ padding: '2rem', backgroundColor: 'var(--color-card)', borderRadius: 'var(--radius-md)', textAlign: 'center', border: '1px solid var(--color-border)' }}>
@@ -652,3 +634,4 @@ export const SingleArticle: React.FC = () => {
     </div>
   );
 };
+

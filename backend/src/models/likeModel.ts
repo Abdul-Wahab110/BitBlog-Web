@@ -29,7 +29,6 @@ export class LikeModel {
 
     const totalLikes = store.likes.filter(l => l.post_id === postId).length;
 
-    // Sync post like_count
     const post = store.posts.find(p => p.post_id === postId);
     if (post) {
       post.like_count = totalLikes;
@@ -39,3 +38,4 @@ export class LikeModel {
     return { liked, totalLikes };
   }
 }
+

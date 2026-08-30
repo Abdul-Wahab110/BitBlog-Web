@@ -173,7 +173,6 @@ export const UserArticles: React.FC = () => {
         robots="noindex, nofollow"
       />
 
-      {/* Top Action Bar */}
       <div
         style={{
           display: 'flex',
@@ -386,3 +385,4 @@ export const UserArticles: React.FC = () => {
     </div>
   );
 };
+

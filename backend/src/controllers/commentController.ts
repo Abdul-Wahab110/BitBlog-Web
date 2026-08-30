@@ -45,7 +45,6 @@ export class CommentController {
         status: 'approved',
       });
 
-      // Send real notification if this is a reply to another user's comment
       if (parentCommentId) {
         const parentComment = await CommentModel.findById(parseInt(parentCommentId));
         if (parentComment && parentComment.user_id && parentComment.user_id !== userId) {
@@ -147,3 +146,4 @@ export class CommentController {
     }
   }
 }
+

@@ -126,7 +126,6 @@ export const SeoAeoGeoEditor: React.FC<SeoAeoGeoEditorProps> = ({
   const [isExpanded, setIsExpanded] = useState(true);
   const [filterCategory, setFilterCategory] = useState<string>('all');
 
-  // Input Change Handlers
   const handleSeoChange = (field: keyof SeoData, value: string) => {
     onChangeSeo({ ...seo, [field]: value });
   };
@@ -139,7 +138,6 @@ export const SeoAeoGeoEditor: React.FC<SeoAeoGeoEditorProps> = ({
     onChangeGeo({ ...geo, [field]: value });
   };
 
-  // FAQ Handlers
   const addFaq = () => {
     const list = [...(aeo.faqList || [])];
     list.push({ question: '', answer: '' });
@@ -157,7 +155,6 @@ export const SeoAeoGeoEditor: React.FC<SeoAeoGeoEditorProps> = ({
     onChangeAeo({ ...aeo, faqList: list });
   };
 
-  // HowTo Handlers
   const addHowTo = () => {
     const list = [...(aeo.howToData || [])];
     list.push({ stepNumber: list.length + 1, title: '', text: '' });
@@ -177,7 +174,6 @@ export const SeoAeoGeoEditor: React.FC<SeoAeoGeoEditorProps> = ({
     onChangeAeo({ ...aeo, howToData: list });
   };
 
-  // Plain Text & Content Metrics
   const titleText = (seo.metaTitle || defaultTitle || '').trim();
   const descText = (seo.metaDescription || defaultExcerpt || '').trim();
   const focusKw = (seo.focusKeyword || '').trim().toLowerCase();
@@ -192,7 +188,6 @@ export const SeoAeoGeoEditor: React.FC<SeoAeoGeoEditorProps> = ({
     return plainContent ? plainContent.split(/\s+/).length : 0;
   }, [plainContent]);
 
-  // Headings Analysis
   const headingsCount = useMemo(() => {
     const h1Matches = content.match(/<h1[^>]*>/gi) || [];
     const h2Matches = content.match(/<h2[^>]*>/gi) || [];
@@ -204,7 +199,6 @@ export const SeoAeoGeoEditor: React.FC<SeoAeoGeoEditorProps> = ({
     };
   }, [content]);
 
-  // Links Analysis
   const linksCount = useMemo(() => {
     const hrefs = (content.match(/href=["']([^"']*)["']/gi) || []).map(h => h.toLowerCase());
     const internal = hrefs.filter(h => h.includes('/post/') || h.includes('/category/') || h.includes('/tag/') || h.startsWith('href="/')).length;
@@ -212,7 +206,6 @@ export const SeoAeoGeoEditor: React.FC<SeoAeoGeoEditorProps> = ({
     return { internal, external };
   }, [content]);
 
-  // Readability Analysis
   const readability = useMemo(() => {
     if (wordCount < 40) return { grade: 'POOR', label: 'Insufficient content for readability check', color: 'var(--color-danger)' };
     const sentences = plainContent.split(/[.!?]+/).filter(Boolean);
@@ -226,7 +219,6 @@ export const SeoAeoGeoEditor: React.FC<SeoAeoGeoEditorProps> = ({
     return { grade: 'POOR', label: 'Long, dense sentences. Break paragraphs into bite-sized points.', color: 'var(--color-danger)' };
   }, [wordCount, plainContent, headingsCount]);
 
-  // Focus Keyword Density & Location
   const keywordAnalysis = useMemo(() => {
     if (!focusKw) {
       return {
@@ -251,8 +243,7 @@ export const SeoAeoGeoEditor: React.FC<SeoAeoGeoEditorProps> = ({
     const inTitle = titleText.toLowerCase().includes(focusKw);
     const inDesc = descText.toLowerCase().includes(focusKw);
     const inSlug = (slug || '').toLowerCase().includes(focusKw.replace(/\s+/g, '-'));
-    
-    // First 100 words
+
     const introSnippet = plainContent.split(/\s+/).slice(0, 100).join(' ').toLowerCase();
     const inIntro = introSnippet.includes(focusKw);
 
@@ -285,14 +276,10 @@ export const SeoAeoGeoEditor: React.FC<SeoAeoGeoEditorProps> = ({
     };
   }, [focusKw, plainContent, wordCount, titleText, descText, slug, content]);
 
-  // =========================================================================
-  // COMPREHENSIVE WEIGHTED SEO / AEO / GEO SCORING ALGORITHM
-  // =========================================================================
   const auditResult = useMemo(() => {
     const checks: AuditCheck[] = [];
     let score = 0;
 
-    // 1. Title Checks (15 pts max)
     const tLen = titleText.length;
     if (tLen >= 45 && tLen <= 65) {
       score += 15;
@@ -328,7 +315,6 @@ export const SeoAeoGeoEditor: React.FC<SeoAeoGeoEditorProps> = ({
       });
     }
 
-    // 2. Meta Description Checks (15 pts max)
     const dLen = descText.length;
     if (dLen >= 120 && dLen <= 165) {
       score += 15;
@@ -364,7 +350,6 @@ export const SeoAeoGeoEditor: React.FC<SeoAeoGeoEditorProps> = ({
       });
     }
 
-    // 3. Focus Keyword Inclusion (15 pts max)
     if (focusKw) {
       let kwPoints = 0;
       if (keywordAnalysis.inTitle) kwPoints += 4;
@@ -401,7 +386,6 @@ export const SeoAeoGeoEditor: React.FC<SeoAeoGeoEditorProps> = ({
       });
     }
 
-    // 4. URL Slug & Canonical (10 pts max)
     const cleanSlug = (slug || '').trim();
     if (cleanSlug && /^[a-z0-9-]+$/.test(cleanSlug)) {
       score += 10;
@@ -437,7 +421,6 @@ export const SeoAeoGeoEditor: React.FC<SeoAeoGeoEditorProps> = ({
       });
     }
 
-    // 5. Content Depth & Structure (15 pts max)
     if (wordCount >= 300) {
       score += 15;
       checks.push({
@@ -472,7 +455,6 @@ export const SeoAeoGeoEditor: React.FC<SeoAeoGeoEditorProps> = ({
       });
     }
 
-    // 6. Featured Image & ALT Text (10 pts max)
     if (activeImage) {
       if (imageAlt && imageAlt.length >= 4) {
         score += 10;
@@ -509,7 +491,6 @@ export const SeoAeoGeoEditor: React.FC<SeoAeoGeoEditorProps> = ({
       });
     }
 
-    // 7. AEO Direct Answer & FAQs (10 pts max)
     const directAns = (aeo.directAnswer || '').trim();
     const validFaqs = (aeo.faqList || []).filter(f => f.question.trim() && f.answer.trim());
     if (directAns.length >= 35 && validFaqs.length >= 1) {
@@ -546,7 +527,6 @@ export const SeoAeoGeoEditor: React.FC<SeoAeoGeoEditorProps> = ({
       });
     }
 
-    // 8. GEO Citations & Knowledge Graph (10 pts max)
     const citations = (geo.sourceCitations || '').trim();
     const entities = (geo.entityContext || '').trim();
     if (citations.length >= 10 || entities.length >= 8) {
@@ -587,12 +567,11 @@ export const SeoAeoGeoEditor: React.FC<SeoAeoGeoEditorProps> = ({
     geo,
   ]);
 
-  // Small Circular Score Color (Red: 0-49, Yellow: 50-79, Green: 80-100)
   const score = auditResult.score;
   const scoreTier = useMemo(() => {
     if (score >= 80) {
       return {
-        color: '#10B981', // Emerald Green
+        color: '#10B981',
         bg: 'rgba(16, 185, 129, 0.12)',
         border: 'rgba(16, 185, 129, 0.35)',
         label: 'OPTIMAL',
@@ -601,7 +580,7 @@ export const SeoAeoGeoEditor: React.FC<SeoAeoGeoEditorProps> = ({
     }
     if (score >= 50) {
       return {
-        color: '#F59E0B', // Amber Yellow
+        color: '#F59E0B',
         bg: 'rgba(245, 158, 11, 0.12)',
         border: 'rgba(245, 158, 11, 0.35)',
         label: 'NEEDS WORK',
@@ -609,7 +588,7 @@ export const SeoAeoGeoEditor: React.FC<SeoAeoGeoEditorProps> = ({
       };
     }
     return {
-      color: '#EF4444', // Crimson Red
+      color: '#EF4444',
       bg: 'rgba(239, 68, 68, 0.12)',
       border: 'rgba(239, 68, 68, 0.35)',
       label: 'POOR',
@@ -617,12 +596,10 @@ export const SeoAeoGeoEditor: React.FC<SeoAeoGeoEditorProps> = ({
     };
   }, [score]);
 
-  // SVG Circular Gauge Calculations (Radius = 24, Circumference ~ 150.8)
   const radius = 24;
   const circumference = 2 * Math.PI * radius;
   const strokeDashoffset = circumference - (score / 100) * circumference;
 
-  // Filtered Checklist
   const filteredChecks = useMemo(() => {
     if (filterCategory === 'all') return auditResult.checks;
     return auditResult.checks.filter(c => c.category.toLowerCase() === filterCategory.toLowerCase());
@@ -640,7 +617,7 @@ export const SeoAeoGeoEditor: React.FC<SeoAeoGeoEditorProps> = ({
         width: '100%',
       }}
     >
-      {/* Top Header Bar with Small Circular Score Indicator */}
+
       <div
         style={{
           padding: '0.85rem 1.25rem',
@@ -654,7 +631,7 @@ export const SeoAeoGeoEditor: React.FC<SeoAeoGeoEditorProps> = ({
         }}
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
-          {/* Small Professional Circular Score Indicator */}
+
           <div
             title={`Live SEO Score: ${score}/100 (${scoreTier.label})`}
             style={{
@@ -668,7 +645,7 @@ export const SeoAeoGeoEditor: React.FC<SeoAeoGeoEditorProps> = ({
             }}
           >
             <svg width="58" height="58" viewBox="0 0 58 58" style={{ transform: 'rotate(-90deg)' }}>
-              {/* Background Track */}
+
               <circle
                 cx="29"
                 cy="29"
@@ -677,7 +654,7 @@ export const SeoAeoGeoEditor: React.FC<SeoAeoGeoEditorProps> = ({
                 stroke="var(--color-border)"
                 strokeWidth="4.5"
               />
-              {/* Animated Live Value Ring */}
+
               <circle
                 cx="29"
                 cy="29"
@@ -692,7 +669,6 @@ export const SeoAeoGeoEditor: React.FC<SeoAeoGeoEditorProps> = ({
               />
             </svg>
 
-            {/* Inner Circular Score Content */}
             <div
               style={{
                 position: 'absolute',
@@ -737,7 +713,6 @@ export const SeoAeoGeoEditor: React.FC<SeoAeoGeoEditorProps> = ({
           </div>
         </div>
 
-        {/* Expand / Collapse Button */}
         <button
           type="button"
           onClick={() => setIsExpanded(!isExpanded)}
@@ -766,7 +741,7 @@ export const SeoAeoGeoEditor: React.FC<SeoAeoGeoEditorProps> = ({
 
       {isExpanded && (
         <div style={{ padding: '1.25rem' }}>
-          {/* Quick Metrics Bar: Keyword, Readability & Word Count */}
+
           <div
             style={{
               display: 'grid',
@@ -816,7 +791,6 @@ export const SeoAeoGeoEditor: React.FC<SeoAeoGeoEditorProps> = ({
             </div>
           </div>
 
-          {/* Navigation Tabs */}
           <div
             style={{
               display: 'flex',
@@ -928,10 +902,9 @@ export const SeoAeoGeoEditor: React.FC<SeoAeoGeoEditorProps> = ({
             </button>
           </div>
 
-          {/* TAB 1: SEO & METADATA */}
           {activeTab === 'seo' && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-              {/* Focus Keyword & Search Intent */}
+
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1rem' }}>
                 <div>
                   <label htmlFor="seo-focus-kw" style={{ display: 'block', fontWeight: 600, marginBottom: '0.25rem', fontSize: '0.83rem' }}>
@@ -979,7 +952,6 @@ export const SeoAeoGeoEditor: React.FC<SeoAeoGeoEditorProps> = ({
                 </div>
               </div>
 
-              {/* SEO Title */}
               <div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.25rem' }}>
                   <label htmlFor="seo-meta-title" style={{ fontWeight: 600, fontSize: '0.83rem' }}>
@@ -1000,7 +972,6 @@ export const SeoAeoGeoEditor: React.FC<SeoAeoGeoEditorProps> = ({
                 />
               </div>
 
-              {/* Meta Description */}
               <div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.25rem' }}>
                   <label htmlFor="seo-meta-desc" style={{ fontWeight: 600, fontSize: '0.83rem' }}>
@@ -1021,7 +992,6 @@ export const SeoAeoGeoEditor: React.FC<SeoAeoGeoEditorProps> = ({
                 />
               </div>
 
-              {/* Image ALT Text & Canonical */}
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1rem' }}>
                 <div>
                   <label htmlFor="seo-img-alt" style={{ display: 'block', fontWeight: 600, marginBottom: '0.25rem', fontSize: '0.83rem' }}>
@@ -1068,7 +1038,6 @@ export const SeoAeoGeoEditor: React.FC<SeoAeoGeoEditorProps> = ({
                 </div>
               </div>
 
-              {/* Social Open Graph & Twitter */}
               <div style={{ borderTop: '1px solid var(--color-border)', paddingTop: '1rem', marginTop: '0.5rem' }}>
                 <h4 style={{ fontSize: '0.88rem', fontWeight: 700, marginBottom: '0.65rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
                   <Layers size={14} /> Open Graph & Twitter/X Social Cards
@@ -1101,7 +1070,6 @@ export const SeoAeoGeoEditor: React.FC<SeoAeoGeoEditorProps> = ({
             </div>
           )}
 
-          {/* TAB 2: AEO SETTINGS */}
           {activeTab === 'aeo' && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
               <div>
@@ -1132,7 +1100,6 @@ export const SeoAeoGeoEditor: React.FC<SeoAeoGeoEditorProps> = ({
                 />
               </div>
 
-              {/* Dynamic FAQ List */}
               <div style={{ borderTop: '1px solid var(--color-border)', paddingTop: '1rem' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.65rem' }}>
                   <div>
@@ -1213,7 +1180,6 @@ export const SeoAeoGeoEditor: React.FC<SeoAeoGeoEditorProps> = ({
                 )}
               </div>
 
-              {/* Dynamic How-To Steps */}
               <div style={{ borderTop: '1px solid var(--color-border)', paddingTop: '1rem' }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.65rem' }}>
                   <div>
@@ -1299,7 +1265,6 @@ export const SeoAeoGeoEditor: React.FC<SeoAeoGeoEditorProps> = ({
             </div>
           )}
 
-          {/* TAB 3: GEO SETTINGS */}
           {activeTab === 'geo' && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
               <div>
@@ -1362,7 +1327,6 @@ export const SeoAeoGeoEditor: React.FC<SeoAeoGeoEditorProps> = ({
             </div>
           )}
 
-          {/* TAB 4: SOCIAL & SERP PREVIEWS */}
           {activeTab === 'previews' && (
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
               <div style={{ display: 'flex', gap: '0.5rem' }}>
@@ -1466,10 +1430,9 @@ export const SeoAeoGeoEditor: React.FC<SeoAeoGeoEditorProps> = ({
             </div>
           )}
 
-          {/* TAB 5: COMPACT ACTIONABLE AUDIT CHECKLIST */}
           {activeTab === 'audit' && (
             <div>
-              {/* Category Filter Pills */}
+
               <div style={{ display: 'flex', gap: '0.35rem', marginBottom: '0.85rem', flexWrap: 'wrap' }}>
                 {['all', 'Technical', 'Content', 'Keywords', 'Images', 'AEO', 'GEO'].map(cat => (
                   <button
@@ -1543,3 +1506,4 @@ export const SeoAeoGeoEditor: React.FC<SeoAeoGeoEditorProps> = ({
     </div>
   );
 };
+

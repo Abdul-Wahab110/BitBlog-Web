@@ -6,7 +6,7 @@ import { AuditService } from '../services/auditService';
 import { UserModel } from '../models/userModel';
 
 export class AuthController {
-  // 1. Send Registration 6-Digit OTP to Gmail
+
   public static async sendRegistrationOtp(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const result = await AuthService.sendRegistrationOtp(req.body);
@@ -24,7 +24,6 @@ export class AuthController {
     }
   }
 
-  // 2. Verify 6-Digit OTP & Complete Reader Registration
   public static async verifyRegistrationOtp(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const result = await AuthService.verifyRegistrationOtp(req.body);
@@ -45,7 +44,6 @@ export class AuthController {
     }
   }
 
-  // 3. Resend Registration OTP
   public static async resendRegistrationOtp(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
       const { email } = req.body;
@@ -122,7 +120,7 @@ export class AuthController {
   }
 
   public static async logout(req: Request, res: Response): Promise<void> {
-    // Statelogic logout - client discards stored token
+
     ResponseUtil.success(res, null, 'User logged out successfully');
   }
 
@@ -195,3 +193,4 @@ export class AuthController {
     }
   }
 }
+

@@ -52,7 +52,6 @@ export const UserAvatar: React.FC<UserAvatarProps> = ({
 }) => {
   const [imgError, setImgError] = useState(false);
 
-  // If source changes, reset error state
   React.useEffect(() => {
     setImgError(false);
   }, [src]);
@@ -136,3 +135,4 @@ export const UserAvatar: React.FC<UserAvatarProps> = ({
     </div>
   );
 };
+

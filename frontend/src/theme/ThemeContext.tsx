@@ -25,7 +25,6 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     localStorage.setItem('bitblog_theme', theme);
   }, [theme]);
 
-  // Listen to OS system color scheme changes if no explicit localStorage override is set
   useEffect(() => {
     const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
     const handleSystemThemeChange = (e: MediaQueryListEvent) => {
@@ -63,3 +62,4 @@ export const useTheme = (): ThemeContextType => {
   }
   return context;
 };
+

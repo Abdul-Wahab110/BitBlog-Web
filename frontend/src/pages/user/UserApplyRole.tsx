@@ -41,7 +41,6 @@ export const UserApplyRole: React.FC = () => {
   const [currentApp, setCurrentApp] = useState<any>(null);
   const [reapplyMode, setReapplyMode] = useState(false);
 
-  // Form State: If user is already Author, default to 'Editor'
   const isAuthor = user?.role === 'Author';
   const isEditor = user?.role === 'Editor';
   const isAdmin = user?.role === 'Admin';
@@ -123,10 +122,6 @@ export const UserApplyRole: React.FC = () => {
     return <LoadingState message="Loading your contributor status..." />;
   }
 
-  // Determine if application form should be shown:
-  // - Show if no app, or rejected/reapply
-  // - Show if user is Author (so they can apply for Editor!) unless they already have a pending Editor application
-  // - Hide only if currentApp is pending OR user is already Editor/Admin
   const hasPendingApp = currentApp && currentApp.status === 'pending';
   const isTopRole = isEditor || isAdmin;
   const canShowForm = (!hasPendingApp && !isTopRole) || reapplyMode;
@@ -138,7 +133,6 @@ export const UserApplyRole: React.FC = () => {
         description={`Submit your application to become a verified Author or Editor on ${siteName} digital publication.`}
       />
 
-      {/* Page Header */}
       <div style={{ marginBottom: '2rem' }}>
         <div
           style={{
@@ -165,7 +159,6 @@ export const UserApplyRole: React.FC = () => {
         </p>
       </div>
 
-      {/* Feedback Alert */}
       {feedback && (
         <div
           style={{
@@ -186,7 +179,6 @@ export const UserApplyRole: React.FC = () => {
         </div>
       )}
 
-      {/* 1. Existing Active Staff Badge */}
       {isStaffAlready && (
         <div
           style={{
@@ -250,7 +242,6 @@ export const UserApplyRole: React.FC = () => {
         </div>
       )}
 
-      {/* 2. Existing Application Status Card (Pending / Approved / Rejected) */}
       {currentApp && !reapplyMode && (
         <div
           style={{
@@ -268,7 +259,6 @@ export const UserApplyRole: React.FC = () => {
               <span style={{ fontSize: '0.85rem', fontWeight: 700, color: 'var(--color-text)' }}>#{currentApp.application_id}</span>
             </div>
 
-            {/* Status Pill */}
             {currentApp.status === 'pending' && (
               <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', padding: '0.35rem 0.85rem', borderRadius: 'var(--radius-full)', backgroundColor: 'rgba(245, 158, 11, 0.15)', color: '#F59E0B', fontSize: '0.82rem', fontWeight: 700, border: '1px solid rgba(245, 158, 11, 0.3)' }}>
                 <Clock size={14} /> Pending Administration Review
@@ -339,7 +329,6 @@ export const UserApplyRole: React.FC = () => {
         </div>
       )}
 
-      {/* 3. Application Submission Form */}
       {canShowForm && (
         <form
           onSubmit={handleSubmit}
@@ -362,13 +351,12 @@ export const UserApplyRole: React.FC = () => {
             </p>
           </div>
 
-          {/* Step 1: Role Selection Cards */}
           <div style={{ marginBottom: '1.75rem' }}>
             <label style={{ display: 'block', fontWeight: 700, fontSize: '0.9rem', marginBottom: '0.75rem' }}>
               Select Desired Role *
             </label>
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))', gap: '1rem' }}>
-              {/* Author Card */}
+
               <div
                 onClick={() => {
                   if (!isAuthor) setRoleApplied('Author');
@@ -420,7 +408,6 @@ export const UserApplyRole: React.FC = () => {
                 </p>
               </div>
 
-              {/* Editor Card */}
               <div
                 onClick={() => setRoleApplied('Editor')}
                 style={{
@@ -446,7 +433,6 @@ export const UserApplyRole: React.FC = () => {
             </div>
           </div>
 
-          {/* Applicant Info (Readonly preview) */}
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1rem', marginBottom: '1.5rem' }}>
             <div>
               <label style={{ display: 'block', fontWeight: 600, fontSize: '0.82rem', marginBottom: '0.35rem' }}>Applicant Name</label>
@@ -458,7 +444,6 @@ export const UserApplyRole: React.FC = () => {
             </div>
           </div>
 
-          {/* Bio & Experience */}
           <div style={{ marginBottom: '1.5rem' }}>
             <label style={{ display: 'block', fontWeight: 700, fontSize: '0.88rem', marginBottom: '0.4rem' }}>
               Writing Bio & Technical Experience *
@@ -473,7 +458,6 @@ export const UserApplyRole: React.FC = () => {
             />
           </div>
 
-          {/* Topics of Specialization */}
           <div style={{ marginBottom: '1.5rem' }}>
             <label style={{ display: 'block', fontWeight: 700, fontSize: '0.88rem', marginBottom: '0.5rem' }}>
               Topics You Plan to Cover
@@ -505,7 +489,6 @@ export const UserApplyRole: React.FC = () => {
             </div>
           </div>
 
-          {/* Portfolio & Sample URLs */}
           <div style={{ marginBottom: '1.5rem' }}>
             <label style={{ display: 'block', fontWeight: 700, fontSize: '0.88rem', marginBottom: '0.4rem' }}>
               Sample Work / Portfolio / LinkedIn URLs (Optional)
@@ -519,7 +502,6 @@ export const UserApplyRole: React.FC = () => {
             />
           </div>
 
-          {/* Motivation */}
           <div style={{ marginBottom: '2rem' }}>
             <label style={{ display: 'block', fontWeight: 700, fontSize: '0.88rem', marginBottom: '0.4rem' }}>
               Why do you want to {roleApplied === 'Editor' ? 'become an Editor' : 'write'} for {siteName}? *
@@ -538,7 +520,6 @@ export const UserApplyRole: React.FC = () => {
             />
           </div>
 
-          {/* Submit Button */}
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '1rem' }}>
             {reapplyMode && (
               <button
@@ -586,3 +567,4 @@ export const UserApplyRole: React.FC = () => {
     </div>
   );
 };
+

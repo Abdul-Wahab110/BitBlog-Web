@@ -10,7 +10,6 @@ async function bootstrapAdmin() {
   try {
     await Database.initialize();
 
-    // 1. Ensure 'Admin' role exists in roles table
     let roleId = await UserModel.getRoleIdByName('Admin');
     if (!roleId) {
       console.log('[Bootstrap] Creating "Admin" role in database...');
@@ -21,7 +20,6 @@ async function bootstrapAdmin() {
       roleId = (await UserModel.getRoleIdByName('Admin')) || 1;
     }
 
-    // 2. Check if an Admin user already exists
     const existingAdmin = await UserModel.findByEmail('admin@bitblog.com');
     if (existingAdmin && (existingAdmin.role_name === 'Admin' || existingAdmin.role_id === roleId)) {
       console.log('STATUS: Admin account already exists in database.');
@@ -34,7 +32,6 @@ async function bootstrapAdmin() {
       process.exit(0);
     }
 
-    // 3. Parse CLI flags or use secure defaults
     const args = process.argv.slice(2);
     const getArg = (flag: string, fallback: string) => {
       const idx = args.indexOf(flag);
@@ -46,7 +43,6 @@ async function bootstrapAdmin() {
     const adminEmail = getArg('--email', 'admin@bitblog.com');
     const adminPassword = getArg('--password', 'admin123');
 
-    // 4. Check if username or email is already taken by non-admin
     const existingEmail = await UserModel.findByEmail(adminEmail);
     if (existingEmail) {
       console.log(`[Bootstrap] Account with email '${adminEmail}' found. Elevating role to Admin...`);
@@ -55,10 +51,8 @@ async function bootstrapAdmin() {
       process.exit(0);
     }
 
-    // 5. Hash password with bcrypt
     const passwordHash = await bcrypt.hash(adminPassword, 10);
 
-    // 6. Create initial administrator
     const createdAdmin = await UserModel.createUser({
       roleId,
       name: adminName,
@@ -82,3 +76,4 @@ async function bootstrapAdmin() {
 }
 
 bootstrapAdmin();
+

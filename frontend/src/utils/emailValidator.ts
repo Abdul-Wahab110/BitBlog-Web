@@ -41,7 +41,6 @@ export function validateGmailAddress(email: string): { valid: boolean; error?: s
 
   const [userPart, domainPart] = parts;
 
-  // Typo check
   if (TYPO_DOMAINS[domainPart]) {
     return {
       valid: false,
@@ -49,7 +48,6 @@ export function validateGmailAddress(email: string): { valid: boolean; error?: s
     };
   }
 
-  // Disposable domain check
   if (DISPOSABLE_DOMAINS.has(domainPart)) {
     return {
       valid: false,
@@ -57,7 +55,6 @@ export function validateGmailAddress(email: string): { valid: boolean; error?: s
     };
   }
 
-  // Gmail strict rules
   if (domainPart === 'gmail.com' || domainPart === 'googlemail.com') {
     if (userPart.length < 6) {
       return {
@@ -98,3 +95,4 @@ export function validateGmailAddress(email: string): { valid: boolean; error?: s
 
   return { valid: true };
 }
+

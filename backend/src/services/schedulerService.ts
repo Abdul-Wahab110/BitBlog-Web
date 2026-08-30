@@ -4,10 +4,6 @@ import { Logger } from '../utils/logger';
 export class SchedulerService {
   private static timer: NodeJS.Timeout | null = null;
 
-  /**
-   * Scans store.posts for any article with status === 'scheduled' whose target scheduled_at timestamp is <= current time.
-   * Flips their status to 'published' and updates store.
-   */
   public static async processScheduledPosts(): Promise<number> {
     try {
       const store = Database.getStore();
@@ -32,7 +28,6 @@ export class SchedulerService {
               `[SchedulerService] Auto-published scheduled article #${post.post_id}: "${post.title}" (target: ${post.scheduled_at})`
             );
 
-            // Create notification for post author
             if (store.notifications && post.author_id) {
               store.notifications.unshift({
                 notification_id: Date.now() + Math.floor(Math.random() * 1000),
@@ -58,13 +53,9 @@ export class SchedulerService {
     }
   }
 
-  /**
-   * Starts the background scheduler daemon (runs every 15 seconds)
-   */
   public static start(intervalMs = 5000): void {
     if (this.timer) return;
-    
-    // Immediate initial check
+
     this.processScheduledPosts();
 
     this.timer = setInterval(() => {
@@ -74,9 +65,6 @@ export class SchedulerService {
     Logger.info(`[SchedulerService] Background article publishing daemon active (interval: ${intervalMs / 1000}s).`);
   }
 
-  /**
-   * Stops the background scheduler daemon
-   */
   public static stop(): void {
     if (this.timer) {
       clearInterval(this.timer);
@@ -85,3 +73,4 @@ export class SchedulerService {
     }
   }
 }
+

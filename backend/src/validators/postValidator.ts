@@ -30,3 +30,4 @@ export class PostValidator {
     return errors;
   }
 }
+

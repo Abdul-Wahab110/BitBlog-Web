@@ -10,7 +10,7 @@ export const ResetPassword: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
-  
+
   const { settings } = useSettings();
   const siteName = settings.site_name || 'BitBlog';
 
@@ -141,3 +141,4 @@ export const ResetPassword: React.FC = () => {
     </main>
   );
 };
+

@@ -42,7 +42,7 @@ export const Blog: React.FC = () => {
 
   return (
     <div className="container" style={{ paddingTop: '1.5rem', paddingBottom: '3rem' }}>
-      {/* Blog Archive Header Banner */}
+
       <header
         style={{
           backgroundColor: 'var(--color-card)',
@@ -74,7 +74,6 @@ export const Blog: React.FC = () => {
                 emptyDescription="No articles have been created in the database yet. Stories created in the Admin CMS will appear here."
               />
 
-              {/* Server-Side Pagination */}
               {pagination.totalPages > 1 && (
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', marginTop: '2.5rem' }}>
                   <button
@@ -125,3 +124,4 @@ export const Blog: React.FC = () => {
     </div>
   );
 };
+

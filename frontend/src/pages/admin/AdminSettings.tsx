@@ -84,7 +84,6 @@ export const AdminSettings: React.FC = () => {
         </div>
       )}
 
-      {/* Live Browser Tab Simulation Box */}
       <div
         style={{
           backgroundColor: 'var(--color-surface-alt)',
@@ -134,7 +133,7 @@ export const AdminSettings: React.FC = () => {
       </div>
 
       <form onSubmit={handleSave} style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-        {/* 1. Publication Identity & Brand */}
+
         <div style={{ backgroundColor: 'var(--color-card)', padding: '1.25rem', borderRadius: 'var(--radius-lg)', border: '1px solid var(--color-border)' }}>
           <h3 style={{ fontSize: '1rem', marginBottom: '1rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
             <Globe size={16} color="var(--color-secondary)" /> 1. Publication Identity & Contact
@@ -162,14 +161,13 @@ export const AdminSettings: React.FC = () => {
           </div>
         </div>
 
-        {/* 2. Visual Branding: Favicon & Logo */}
         <div style={{ backgroundColor: 'var(--color-card)', padding: '1.25rem', borderRadius: 'var(--radius-lg)', border: '1px solid var(--color-border)' }}>
           <h3 style={{ fontSize: '1rem', marginBottom: '1rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
             <ImageIcon size={16} color="var(--color-secondary)" /> 2. Favicon & Visual Branding
           </h3>
-          
+
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.25rem' }}>
-            {/* Favicon Upload */}
+
             <div>
               <label style={{ display: 'block', fontWeight: 700, marginBottom: '0.35rem', fontSize: '0.85rem' }}>
                 Website Favicon (Browser Tab Icon)
@@ -185,7 +183,6 @@ export const AdminSettings: React.FC = () => {
               />
             </div>
 
-            {/* Site Logo Upload */}
             <div>
               <label style={{ display: 'block', fontWeight: 700, marginBottom: '0.35rem', fontSize: '0.85rem' }}>
                 Publication Header Logo / Brand Asset
@@ -203,7 +200,6 @@ export const AdminSettings: React.FC = () => {
           </div>
         </div>
 
-        {/* 3. Global SEO & Canonical Settings */}
         <div style={{ backgroundColor: 'var(--color-card)', padding: '1.25rem', borderRadius: 'var(--radius-lg)', border: '1px solid var(--color-border)' }}>
           <h3 style={{ fontSize: '1rem', marginBottom: '1rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
             <Shield size={16} color="var(--color-secondary)" /> 3. Global SEO Defaults & Canonical Base URL
@@ -242,7 +238,6 @@ export const AdminSettings: React.FC = () => {
           </div>
         </div>
 
-        {/* 4. Social Profiles */}
         <div style={{ backgroundColor: 'var(--color-card)', padding: '1.25rem', borderRadius: 'var(--radius-lg)', border: '1px solid var(--color-border)' }}>
           <h3 style={{ fontSize: '1rem', marginBottom: '1rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
             <Share2 size={16} color="var(--color-secondary)" /> 4. Official Social Channels
@@ -259,7 +254,6 @@ export const AdminSettings: React.FC = () => {
           </div>
         </div>
 
-        {/* 5. Feature Toggles */}
         <div style={{ backgroundColor: 'var(--color-card)', padding: '1.25rem', borderRadius: 'var(--radius-lg)', border: '1px solid var(--color-border)' }}>
           <h3 style={{ fontSize: '1rem', marginBottom: '1rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
             <Sparkles size={16} color="var(--color-secondary)" /> 5. Publication Feature Controls & Toggles
@@ -294,13 +288,11 @@ export const AdminSettings: React.FC = () => {
           </div>
         </div>
 
-        {/* 6. Editorial Desk & Public Contact Module Configuration */}
         <div style={{ backgroundColor: 'var(--color-card)', padding: '1.25rem', borderRadius: 'var(--radius-lg)', border: '1px solid var(--color-border)' }}>
           <h3 style={{ fontSize: '1rem', marginBottom: '1rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
             <Mail size={16} color="var(--color-secondary)" /> 6. Editorial Desk & Contact Module Management
           </h3>
 
-          {/* Department Direct Email Addresses */}
           <div style={{ marginBottom: '1.25rem' }}>
             <span style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--color-secondary)', display: 'block', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
               A. Direct Newsroom Email Inboxes
@@ -323,7 +315,6 @@ export const AdminSettings: React.FC = () => {
             </div>
           </div>
 
-          {/* Inquiry Department Labels */}
           <div style={{ marginBottom: '1.25rem' }}>
             <span style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--color-secondary)', display: 'block', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
               B. Inquiry Department Selector Button Labels
@@ -351,7 +342,6 @@ export const AdminSettings: React.FC = () => {
             </div>
           </div>
 
-          {/* Guarantees & SLA Badges */}
           <div style={{ marginBottom: '1.25rem' }}>
             <span style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--color-secondary)', display: 'block', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
               C. Editorial Badges & SLA Response Texts
@@ -374,7 +364,6 @@ export const AdminSettings: React.FC = () => {
             </div>
           </div>
 
-          {/* "Want to Write for Us" CTA Banner Controls */}
           <div style={{ marginBottom: '1.25rem' }}>
             <span style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--color-secondary)', display: 'block', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
               D. "Want to Write for Us?" Call-to-Action Card
@@ -402,13 +391,12 @@ export const AdminSettings: React.FC = () => {
             </div>
           </div>
 
-          {/* Editorial FAQs Editor */}
           <div>
             <span style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--color-secondary)', display: 'block', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
               E. Editorial FAQ Questions & Answers
             </span>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-              {/* FAQ 1 */}
+
               <div style={{ padding: '0.85rem', backgroundColor: 'var(--color-surface-alt)', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)' }}>
                 <label htmlFor="faq_1_q" style={{ display: 'block', fontWeight: 600, marginBottom: '0.25rem', fontSize: '0.82rem' }}>FAQ 1 Question</label>
                 <input id="faq_1_q" type="text" value={settings.contact_faq_1_q || 'How do I pitch a story or apply as a contributing writer?'} onChange={e => handleChange('contact_faq_1_q', e.target.value)} style={{ width: '100%', padding: '0.45rem 0.65rem', fontSize: '0.85rem', marginBottom: '0.45rem' }} />
@@ -416,7 +404,6 @@ export const AdminSettings: React.FC = () => {
                 <textarea id="faq_1_a" rows={2} value={settings.contact_faq_1_a || 'We welcome original tech journalism, deep-dives, and tutorials! You can apply directly through our Contributor Program portal or use this form under "Story Pitch".'} onChange={e => handleChange('contact_faq_1_a', e.target.value)} style={{ width: '100%', padding: '0.45rem 0.65rem', fontSize: '0.85rem' }} />
               </div>
 
-              {/* FAQ 2 */}
               <div style={{ padding: '0.85rem', backgroundColor: 'var(--color-surface-alt)', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)' }}>
                 <label htmlFor="faq_2_q" style={{ display: 'block', fontWeight: 600, marginBottom: '0.25rem', fontSize: '0.82rem' }}>FAQ 2 Question</label>
                 <input id="faq_2_q" type="text" value={settings.contact_faq_2_q || 'What is the standard editorial response time?'} onChange={e => handleChange('contact_faq_2_q', e.target.value)} style={{ width: '100%', padding: '0.45rem 0.65rem', fontSize: '0.85rem', marginBottom: '0.45rem' }} />
@@ -424,7 +411,6 @@ export const AdminSettings: React.FC = () => {
                 <textarea id="faq_2_a" rows={2} value={settings.contact_faq_2_a || 'Our editors review incoming tips and inquiries Monday through Friday. Standard responses are delivered within 24 business hours.'} onChange={e => handleChange('contact_faq_2_a', e.target.value)} style={{ width: '100%', padding: '0.45rem 0.65rem', fontSize: '0.85rem' }} />
               </div>
 
-              {/* FAQ 3 */}
               <div style={{ padding: '0.85rem', backgroundColor: 'var(--color-surface-alt)', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)' }}>
                 <label htmlFor="faq_3_q" style={{ display: 'block', fontWeight: 600, marginBottom: '0.25rem', fontSize: '0.82rem' }}>FAQ 3 Question</label>
                 <input id="faq_3_q" type="text" value={settings.contact_faq_3_q || 'Can I submit an anonymous news tip or confidential whistleblower material?'} onChange={e => handleChange('contact_faq_3_q', e.target.value)} style={{ width: '100%', padding: '0.45rem 0.65rem', fontSize: '0.85rem', marginBottom: '0.45rem' }} />
@@ -435,7 +421,6 @@ export const AdminSettings: React.FC = () => {
           </div>
         </div>
 
-        {/* Save Actions */}
         <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem' }}>
           <button
             type="submit"
@@ -462,3 +447,4 @@ export const AdminSettings: React.FC = () => {
     </div>
   );
 };
+

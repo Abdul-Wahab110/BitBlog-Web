@@ -30,10 +30,8 @@ export const AuthModal: React.FC = () => {
   const { settings } = useSettings();
   const navigate = useNavigate();
 
-  // Mode: 'login' | 'register' | 'otp' | 'forgot'
   const [mode, setMode] = useState<'login' | 'register' | 'otp' | 'forgot'>(authModalMode);
 
-  // Form fields
   const [emailOrUsername, setEmailOrUsername] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
@@ -42,7 +40,6 @@ export const AuthModal: React.FC = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [forgotEmail, setForgotEmail] = useState('');
 
-  // OTP State
   const [otpDigits, setOtpDigits] = useState<string[]>(['', '', '', '', '', '']);
   const [verifyingOtp, setVerifyingOtp] = useState(false);
   const [resendingOtp, setResendingOtp] = useState(false);
@@ -57,7 +54,6 @@ export const AuthModal: React.FC = () => {
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
 
-  // Sync mode and wipe prefilled fields when modal opens
   useEffect(() => {
     setMode(authModalMode);
     setEmailOrUsername('');
@@ -72,7 +68,6 @@ export const AuthModal: React.FC = () => {
     setSuccessMsg(null);
   }, [authModalMode, isAuthModalOpen]);
 
-  // Resend countdown timer for OTP
   useEffect(() => {
     let interval: any;
     if (mode === 'otp' && resendTimer > 0) {
@@ -89,7 +84,6 @@ export const AuthModal: React.FC = () => {
     return () => clearInterval(interval);
   }, [mode, resendTimer]);
 
-  // Focus first OTP box when entering OTP mode
   useEffect(() => {
     if (mode === 'otp') {
       setTimeout(() => {
@@ -98,7 +92,6 @@ export const AuthModal: React.FC = () => {
     }
   }, [mode]);
 
-  // Handle ESC key to close modal
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
       if (e.key === 'Escape' && isAuthModalOpen) {
@@ -113,7 +106,6 @@ export const AuthModal: React.FC = () => {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [handleKeyDown]);
 
-  // Lock body scroll when modal is open
   useEffect(() => {
     if (isAuthModalOpen) {
       document.body.style.overflow = 'hidden';
@@ -127,7 +119,6 @@ export const AuthModal: React.FC = () => {
 
   if (!isAuthModalOpen) return null;
 
-  // 1-Click Google Sign-In
   const handleGoogleAuth = async () => {
     setGoogleLoading(true);
     setErrorMsg(null);
@@ -149,7 +140,6 @@ export const AuthModal: React.FC = () => {
     }
   };
 
-  // Handle Login submission
   const handleLoginSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const inputLogin = emailOrUsername.trim().toLowerCase();
@@ -163,7 +153,7 @@ export const AuthModal: React.FC = () => {
     setSuccessMsg(null);
 
     try {
-      // 1. Check if Firebase verified login works
+
       if (inputLogin.includes('@')) {
         try {
           const fbSession = await FirebaseAuthService.loginWithEmail(inputLogin, password);
@@ -185,7 +175,6 @@ export const AuthModal: React.FC = () => {
         }
       }
 
-      // 2. Direct database auth fallback
       const res = await fetch('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -214,7 +203,6 @@ export const AuthModal: React.FC = () => {
     }
   };
 
-  // Handle Register -> Send OTP to Gmail
   const handleRegisterSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!name.trim() || !username.trim() || !email.trim() || !password) {
@@ -266,7 +254,6 @@ export const AuthModal: React.FC = () => {
     }
   };
 
-  // Handle OTP digit changes
   const handleOtpChange = (index: number, val: string) => {
     const clean = val.replace(/[^0-9]/g, '');
     const newDigits = [...otpDigits];
@@ -296,7 +283,6 @@ export const AuthModal: React.FC = () => {
     }
   };
 
-  // Handle Verify OTP & Create Account
   const handleVerifyOtpSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const fullOtp = otpDigits.join('').trim();
@@ -333,7 +319,6 @@ export const AuthModal: React.FC = () => {
     }
   };
 
-  // Resend OTP in Modal
   const handleResendOtp = async () => {
     if (!canResend || resendingOtp) return;
     setResendingOtp(true);
@@ -354,7 +339,6 @@ export const AuthModal: React.FC = () => {
     }
   };
 
-  // Handle Forgot Password submission
   const handleForgotSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!forgotEmail.trim()) {
@@ -415,7 +399,7 @@ export const AuthModal: React.FC = () => {
         }}
         onClick={(e) => e.stopPropagation()}
       >
-        {/* Modal Header */}
+
         <div
           style={{
             padding: '1.25rem 1.5rem 1rem 1.5rem',
@@ -462,9 +446,8 @@ export const AuthModal: React.FC = () => {
           </button>
         </div>
 
-        {/* Modal Body */}
         <div style={{ padding: '1.5rem' }}>
-          {/* Status Alerts */}
+
           {errorMsg && (
             <div
               role="alert"
@@ -507,7 +490,6 @@ export const AuthModal: React.FC = () => {
             </div>
           )}
 
-          {/* 1-Click Google Button for Login & Register modes */}
           {(mode === 'login' || mode === 'register') && (
             <>
               <button
@@ -549,9 +531,6 @@ export const AuthModal: React.FC = () => {
             </>
           )}
 
-          {/* =========================================================================
-             1. LOGIN MODE
-             ========================================================================= */}
           {mode === 'login' && (
             <form onSubmit={handleLoginSubmit} autoComplete="off">
               <div style={{ marginBottom: '0.85rem' }}>
@@ -651,9 +630,6 @@ export const AuthModal: React.FC = () => {
             </form>
           )}
 
-          {/* =========================================================================
-             2. REGISTRATION MODE (SENDS 6-DIGIT OTP)
-             ========================================================================= */}
           {mode === 'register' && (
             <form onSubmit={handleRegisterSubmit}>
               <div style={{ marginBottom: '0.75rem' }}>
@@ -718,9 +694,6 @@ export const AuthModal: React.FC = () => {
             </form>
           )}
 
-          {/* =========================================================================
-             3. 6-DIGIT OTP VERIFICATION MODE
-             ========================================================================= */}
           {mode === 'otp' && (
             <div style={{ textAlign: 'center' }}>
               <p style={{ fontSize: '0.85rem', color: 'var(--color-text-secondary)', marginBottom: '1.25rem', lineHeight: 1.5 }}>
@@ -829,9 +802,6 @@ export const AuthModal: React.FC = () => {
             </div>
           )}
 
-          {/* =========================================================================
-             4. FORGOT PASSWORD MODE
-             ========================================================================= */}
           {mode === 'forgot' && (
             <form onSubmit={handleForgotSubmit}>
               <p style={{ fontSize: '0.85rem', color: 'var(--color-text-secondary)', marginBottom: '1rem', lineHeight: 1.5 }}>
@@ -870,7 +840,6 @@ export const AuthModal: React.FC = () => {
             </form>
           )}
 
-          {/* Modal Footer Toggle */}
           <div
             style={{
               marginTop: '1.25rem',
@@ -920,3 +889,4 @@ export const AuthModal: React.FC = () => {
     </div>
   );
 };
+

@@ -11,3 +11,4 @@ export const generateToken = (payload: JwtPayload): string => {
 export const verifyToken = (token: string): JwtPayload => {
   return jwt.verify(token, config.jwtSecret) as JwtPayload;
 };
+

@@ -44,7 +44,6 @@ export class ApiService {
     return { success: true };
   }
 
-  // Auth Profile / Role Sync
   public static async getMe() {
     const res = await fetch(`${API_BASE_URL}/auth/me`, {
       headers: this.getHeaders(),
@@ -52,7 +51,6 @@ export class ApiService {
     return this.handleResponse(res);
   }
 
-  // Articles Endpoints (Public)
   public static async getPosts(options: {
     page?: number;
     limit?: number;
@@ -91,11 +89,9 @@ export class ApiService {
     return this.handleResponse(res);
   }
 
-  // In-memory cache store
   private static categoriesCache: { data: any; expiresAt: number } | null = null;
   private static tagsCache: { data: any; expiresAt: number } | null = null;
 
-  // Categories Endpoints
   public static async getCategories(search?: string) {
     const now = Date.now();
     if (!search && this.categoriesCache && this.categoriesCache.expiresAt > now) {
@@ -107,7 +103,7 @@ export class ApiService {
     });
     const data = await this.handleResponse(res);
     if (!search && data && data.success) {
-      this.categoriesCache = { data, expiresAt: now + 30000 }; // 30s cache
+      this.categoriesCache = { data, expiresAt: now + 30000 };
     }
     return data;
   }
@@ -148,7 +144,6 @@ export class ApiService {
     return this.handleResponse(res);
   }
 
-  // Tags Endpoints
   public static async getTags(search?: string) {
     const now = Date.now();
     if (!search && this.tagsCache && this.tagsCache.expiresAt > now) {
@@ -160,7 +155,7 @@ export class ApiService {
     });
     const data = await this.handleResponse(res);
     if (!search && data && data.success) {
-      this.tagsCache = { data, expiresAt: now + 30000 }; // 30s cache
+      this.tagsCache = { data, expiresAt: now + 30000 };
     }
     return data;
   }
@@ -201,7 +196,6 @@ export class ApiService {
     return this.handleResponse(res);
   }
 
-  // Engagement Endpoints
   public static async getPostComments(postId: number) {
     const res = await fetch(`${API_BASE_URL}/comments/post/${postId}`, {
       headers: this.getHeaders(),
@@ -282,7 +276,6 @@ export class ApiService {
     return this.handleResponse(res);
   }
 
-  // SEO & AEO/GEO Endpoints
   public static async getSeoByPost(postId: number) {
     const res = await fetch(`${API_BASE_URL}/seo/${postId}`, {
       headers: this.getHeaders(),
@@ -315,7 +308,6 @@ export class ApiService {
     return this.handleResponse(res);
   }
 
-  // Newsletter Endpoints
   public static async subscribeNewsletter(payload: string | { email: string; name?: string; topics?: string[] }) {
     const body = typeof payload === 'string' ? { email: payload } : payload;
     const res = await fetch(`${API_BASE_URL}/newsletter/subscribe`, {
@@ -400,7 +392,6 @@ export class ApiService {
     return this.handleResponse(res);
   }
 
-  // Contact Endpoints
   public static async getContactMessages() {
     const res = await fetch(`${API_BASE_URL}/admin/messages`, {
       headers: this.getHeaders(),
@@ -425,7 +416,6 @@ export class ApiService {
     return this.handleResponse(res);
   }
 
-  // Settings Endpoints
   public static async getSettings() {
     const res = await fetch(`${API_BASE_URL}/settings`, {
       headers: this.getHeaders(),
@@ -442,7 +432,6 @@ export class ApiService {
     return this.handleResponse(res);
   }
 
-  // Privacy-Aware View Tracker Endpoint
   public static async recordView(postId: number) {
     const res = await fetch(`${API_BASE_URL}/analytics/record`, {
       method: 'POST',
@@ -452,7 +441,6 @@ export class ApiService {
     return this.handleResponse(res);
   }
 
-  // User Article Submissions Endpoints
   public static async getUserArticles() {
     const res = await fetch(`${API_BASE_URL}/users/articles`, {
       headers: this.getHeaders(),
@@ -493,7 +481,6 @@ export class ApiService {
     return this.handleResponse(res);
   }
 
-  // Admin CMS Endpoints
   public static async getAdminDashboardStats() {
     const res = await fetch(`${API_BASE_URL}/admin/dashboard/stats`, {
       headers: this.getHeaders(),
@@ -698,7 +685,6 @@ export class ApiService {
     return this.handleResponse(res);
   }
 
-  // Role Applications API (Reader Apply & Admin Review)
   public static async applyRole(data: {
     roleApplied: 'Author' | 'Editor';
     bio: string;
@@ -738,7 +724,6 @@ export class ApiService {
     return this.handleResponse(res);
   }
 
-  // Admin System Audit Trail API
   public static async getAuditLogs(params?: { category?: string; severity?: string; search?: string; limit?: number }) {
     const searchParams = new URLSearchParams();
     if (params?.category && params.category !== 'all') searchParams.append('category', params.category);
@@ -762,7 +747,6 @@ export class ApiService {
     return this.handleResponse(res);
   }
 
-  // 6-Digit Registration OTP Verification API
   public static async sendRegistrationOtp(data: {
     name: string;
     username: string;
@@ -798,3 +782,4 @@ export class ApiService {
     return this.handleResponse(res);
   }
 }
+

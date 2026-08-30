@@ -84,7 +84,7 @@ export const Search: React.FC = () => {
 
   return (
     <div className="container" style={{ paddingTop: '1.5rem', paddingBottom: '3rem' }}>
-      {/* Search Header Form Banner */}
+
       <header
         style={{
           backgroundColor: 'var(--color-card)',
@@ -111,14 +111,12 @@ export const Search: React.FC = () => {
           </button>
         </form>
 
-        {/* Filter Controls Bar */}
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', alignItems: 'center', justifyContent: 'space-between', paddingTop: '0.75rem', borderTop: '1px solid var(--color-border)' }}>
           <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '0.75rem' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.85rem', color: 'var(--color-text-secondary)', fontWeight: 600 }}>
               <SlidersHorizontal size={15} /> Filters:
             </div>
 
-            {/* Category Filter */}
             <select
               value={categoryParam}
               onChange={e => updateParam('category', e.target.value)}
@@ -131,7 +129,6 @@ export const Search: React.FC = () => {
             </select>
           </div>
 
-          {/* Sort Dropdown */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
             <span style={{ fontSize: '0.85rem', color: 'var(--color-text-secondary)', fontWeight: 600 }}>Sort By:</span>
             <select
@@ -204,3 +201,4 @@ export const Search: React.FC = () => {
     </div>
   );
 };
+

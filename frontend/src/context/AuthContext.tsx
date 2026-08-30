@@ -42,7 +42,7 @@ interface AuthContextType {
   updateUser: (user: Partial<UserContextData>) => void;
   refreshUser: () => Promise<void>;
   recordActivity: () => void;
-  // Auth Modal State & Controls
+
   isAuthModalOpen: boolean;
   authModalMode: AuthModalMode;
   openAuthModal: (mode?: AuthModalMode) => void;
@@ -51,13 +51,11 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-// 15 Minutes Inactivity Limit (in milliseconds)
 const INACTIVITY_TIMEOUT_MS = 15 * 60 * 1000;
 const STORAGE_KEY_TOKEN = 'bitblog_token';
 const STORAGE_KEY_USER = 'bitblog_user';
 const STORAGE_KEY_LAST_ACTIVITY = 'bitblog_last_activity';
 
-// Helper to decode JWT and check if expired
 const isTokenExpired = (token: string | null): boolean => {
   if (!token) return true;
   try {
@@ -72,7 +70,7 @@ const isTokenExpired = (token: string | null): boolean => {
     );
     const parsed = JSON.parse(jsonPayload);
     if (parsed && typeof parsed.exp === 'number') {
-      // Return true if expired or expiring in less than 2 seconds
+
       return parsed.exp * 1000 <= Date.now() + 2000;
     }
     return false;
@@ -110,10 +108,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const lastActivityThrottledRef = useRef<number>(Date.now());
 
-  // Record user activity timestamp
   const recordActivity = useCallback(() => {
     const now = Date.now();
-    // Throttle writing to localStorage to once every 10 seconds
+
     if (now - lastActivityThrottledRef.current > 10000) {
       lastActivityThrottledRef.current = now;
       localStorage.setItem(STORAGE_KEY_LAST_ACTIVITY, now.toString());
@@ -177,7 +174,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     });
   }, []);
 
-  // Fetch latest profile & role from backend to keep active session synchronized
   const refreshUser = useCallback(async () => {
     const currentToken = localStorage.getItem(STORAGE_KEY_TOKEN) || localStorage.getItem('modernblog_token');
     if (!currentToken) return;
@@ -199,11 +195,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         }
       }
     } catch {
-      // Background sync, suppress network errors
+
     }
   }, []);
 
-  // Synchronize user role upon initial mount if authenticated
   useEffect(() => {
     if (token) {
       refreshUser();
@@ -217,7 +212,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const isAuthor = role === 'Author' || isEditor;
   const isStaff = isAuthor;
 
-  // 1. Cross-tab synchronization via storage event
   useEffect(() => {
     const handleStorageChange = (e: StorageEvent) => {
       if (e.key === STORAGE_KEY_TOKEN || e.key === STORAGE_KEY_USER) {
@@ -246,11 +240,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return () => window.removeEventListener('storage', handleStorageChange);
   }, []);
 
-  // 2. User activity tracking listeners
   useEffect(() => {
     if (!isAuthenticated) return;
 
-    // Initialize activity timestamp if not set
     if (!localStorage.getItem(STORAGE_KEY_LAST_ACTIVITY)) {
       const now = Date.now();
       localStorage.setItem(STORAGE_KEY_LAST_ACTIVITY, now.toString());
@@ -273,18 +265,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     };
   }, [isAuthenticated, recordActivity]);
 
-  // 3. Inactivity & JWT Expiration background timer
   useEffect(() => {
     if (!isAuthenticated || !token) return;
 
     const checkExpiration = () => {
-      // Check 1: JWT token expiration
+
       if (isTokenExpired(token)) {
         logout('token_expired');
         return;
       }
 
-      // Check 2: 15-minute inactivity limit
       const lastActiveStr = localStorage.getItem(STORAGE_KEY_LAST_ACTIVITY);
       const lastActive = lastActiveStr ? parseInt(lastActiveStr, 10) : lastActivityThrottledRef.current;
       const now = Date.now();
@@ -294,14 +284,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       }
     };
 
-    // Check immediately and every 5 seconds
     checkExpiration();
     const interval = setInterval(checkExpiration, 5000);
 
     return () => clearInterval(interval);
   }, [isAuthenticated, token, logout]);
 
-  // 4. Listen to global 401 Session-Expired custom events from api.ts
   useEffect(() => {
     const handleSessionExpiredEvent = (e: CustomEvent<{ message?: string }>) => {
       if (isAuthenticated) {
@@ -338,7 +326,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     >
       {children}
 
-      {/* Floating Session Expiration Alert Modal/Toast */}
       {sessionExpired && (
         <div
           role="alert"

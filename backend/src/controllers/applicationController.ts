@@ -9,7 +9,7 @@ import { ApiError } from '../utils/apiError';
 import { AuditService } from '../services/auditService';
 
 export class ApplicationController {
-  // 1. Submit Application (Reader Portal)
+
   public static async apply(req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> {
     try {
       if (!req.user) {
@@ -30,23 +30,19 @@ export class ApplicationController {
         throw new ApiError('Please describe your motivation and experience (minimum 10 characters).', 400);
       }
 
-      // Check if user already has a pending application
       const existing = await ApplicationModel.findLatestByUserId(req.user.userId);
       if (existing && existing.status === 'pending') {
         throw new ApiError('You already have a pending application currently under editorial review. Please wait for our decision.', 400);
       }
 
-      // If user is already an Admin, prevent redundant application
       if (req.user.role === 'Admin') {
         throw new ApiError('You already hold Super Administrator privileges with full system permissions.', 400);
       }
 
-      // If user is already an Editor, prevent re-applying
       if (req.user.role === 'Editor') {
         throw new ApiError('You already hold Editor privileges with full editorial review access.', 400);
       }
 
-      // If user is already an Author and applying for Author again
       if (req.user.role === 'Author' && roleApplied === 'Author') {
         throw new ApiError('You already hold Author privileges. You can apply for the Editor role below.', 400);
       }
@@ -63,7 +59,6 @@ export class ApplicationController {
         motivation,
       });
 
-      // Send User Confirmation Notification
       await NotificationModel.createNotification({
         userId: req.user.userId,
         type: 'SYSTEM',
@@ -72,7 +67,6 @@ export class ApplicationController {
         linkUrl: '/user/apply',
       });
 
-      // Notify all Administrators so an instant alert pops up upon opening Admin Portal
       const store = Database.getStore();
       const adminUsers = store.users.filter((u: any) => u.role_id === 1 || u.role_name === 'Admin');
       for (const admin of adminUsers) {
@@ -85,7 +79,6 @@ export class ApplicationController {
         });
       }
 
-      // Record Audit Trail
       await AuditService.log(req, {
         action: 'APPLICATION_SUBMITTED',
         category: 'APPLICATION',
@@ -99,7 +92,6 @@ export class ApplicationController {
     }
   }
 
-  // 2. Get Current User's Application Status (Reader Portal)
   public static async getMyApplication(req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> {
     try {
       if (!req.user) {
@@ -118,7 +110,6 @@ export class ApplicationController {
     }
   }
 
-  // 3. Admin: Get All Applications with Stats Summary
   public static async getAdminApplications(req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> {
     try {
       const statusFilter = req.query.status as any;
@@ -144,7 +135,6 @@ export class ApplicationController {
     }
   }
 
-  // 4. Admin: Review Application (Accept / Reject & Auto-Promote Role)
   public static async reviewApplication(req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> {
     try {
       if (!req.user) {
@@ -166,11 +156,10 @@ export class ApplicationController {
       const updated = await ApplicationModel.updateStatus(id, status, req.user.userId, feedback);
 
       if (status === 'approved') {
-        // Automatically promote applicant's role in database!
-        const targetRoleId = app.role_applied === 'Editor' ? 2 : 3; // 2: Editor, 3: Author
+
+        const targetRoleId = app.role_applied === 'Editor' ? 2 : 3;
         await UserModel.updateUserRole(app.user_id, targetRoleId);
 
-        // Notify user about approval and role promotion
         await NotificationModel.createNotification({
           userId: app.user_id,
           type: 'SYSTEM',
@@ -179,12 +168,11 @@ export class ApplicationController {
           linkUrl: '/admin',
         });
       } else {
-        // If application was previously approved, revoke role and demote back to Reader (4)
+
         if (app.status === 'approved') {
-          await UserModel.updateUserRole(app.user_id, 4); // 4: Reader
+          await UserModel.updateUserRole(app.user_id, 4);
         }
 
-        // Rejected/Revoked notification with feedback
         const reason = feedback ? ` Reason: ${feedback}` : '';
         await NotificationModel.createNotification({
           userId: app.user_id,
@@ -197,7 +185,6 @@ export class ApplicationController {
         });
       }
 
-      // Record Audit Trail
       await AuditService.log(req, {
         action: status === 'approved' ? 'ROLE_APPLICATION_APPROVED' : 'ROLE_APPLICATION_REJECTED',
         category: 'APPLICATION',
@@ -213,3 +200,4 @@ export class ApplicationController {
     }
   }
 }
+

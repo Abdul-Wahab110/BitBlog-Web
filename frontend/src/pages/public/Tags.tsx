@@ -26,7 +26,6 @@ export const Tags: React.FC = () => {
       });
   }, []);
 
-  // Filter and Sort
   const filteredAndSortedTags = useMemo(() => {
     let list = tags.filter(t => {
       const q = search.trim().toLowerCase();
@@ -46,7 +45,6 @@ export const Tags: React.FC = () => {
     return list;
   }, [tags, search, sortBy]);
 
-  // Top trending tags (with >= 1 post)
   const popularTags = useMemo(() => {
     return [...tags]
       .sort((a, b) => (b.post_count || 0) - (a.post_count || 0))
@@ -59,7 +57,7 @@ export const Tags: React.FC = () => {
 
   return (
     <div className="container" style={{ paddingTop: '2rem', paddingBottom: '4rem' }}>
-      {/* Hero Header */}
+
       <header
         style={{
           background: 'linear-gradient(135deg, var(--color-surface), var(--color-surface-alt))',
@@ -95,7 +93,6 @@ export const Tags: React.FC = () => {
           Discover articles curated across {tags.length} specialized topics, technologies, and editorial keywords ({totalStoriesTagged} published story links).
         </p>
 
-        {/* Quick Search & Sort Control Bar */}
         <div
           style={{
             display: 'flex',
@@ -186,7 +183,6 @@ export const Tags: React.FC = () => {
         </div>
       </header>
 
-      {/* Featured / Popular Tags Bar */}
       {!search && popularTags.length > 0 && (
         <section style={{ marginBottom: '2.5rem' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', marginBottom: '0.85rem', fontSize: '0.9rem', fontWeight: 800, color: 'var(--color-text)' }}>
@@ -232,7 +228,6 @@ export const Tags: React.FC = () => {
         </section>
       )}
 
-      {/* Main Tags Grid */}
       {loading ? (
         <LoadingState message="Fetching publication tags..." />
       ) : filteredAndSortedTags.length === 0 ? (

@@ -34,3 +34,4 @@ export const Input: React.FC<InputProps> = ({ label, error, id, style, ...props 
     </div>
   );
 };
+

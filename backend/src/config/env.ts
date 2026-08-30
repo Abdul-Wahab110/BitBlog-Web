@@ -25,3 +25,4 @@ export const config = {
     poolMax: parseInt(process.env.DB_POOL_MAX || '10', 10),
   },
 };
+

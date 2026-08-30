@@ -23,7 +23,6 @@ export const Header: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Track scroll position and calculate real-time reading progress percentage
   const handleScroll = useCallback(() => {
     const scrollTop = window.scrollY || document.documentElement.scrollTop;
     setScrolled(scrollTop > 8);
@@ -72,7 +71,7 @@ export const Header: React.FC = () => {
         borderBottom: scrolled ? undefined : '1px solid var(--color-border)',
       }}
     >
-      {/* Dynamic Animated Scroll Progress Line */}
+
       {scrolled && scrollProgress > 0 && (
         <div
           className="scroll-progress-bar"
@@ -82,13 +81,10 @@ export const Header: React.FC = () => {
         />
       )}
 
-      {/* Ambient subtle glow line when sticky scrolled */}
       {scrolled && <div className="header-scrolled-ambient-line" />}
 
-      {/* Top Utility Bar on Desktop */}
       <TopBar />
 
-      {/* Main Navigation Bar */}
       <div className="container">
         <div
           style={{
@@ -100,9 +96,9 @@ export const Header: React.FC = () => {
             position: 'relative',
           }}
         >
-          {/* Left: Mobile Hamburger & Logo */}
+
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-            {/* Hamburger Button (Mobile / Tablet) */}
+
             <button
               onClick={() => setMobileOpen(true)}
               aria-label="Open mobile navigation menu"
@@ -120,7 +116,6 @@ export const Header: React.FC = () => {
               <Menu size={24} />
             </button>
 
-            {/* Brand Logo */}
             <Link
               to="/"
               className="header-brand-link"
@@ -155,14 +150,12 @@ export const Header: React.FC = () => {
             </Link>
           </div>
 
-          {/* Center: Desktop Navigation */}
           <div className="header-nav-center">
             <Navigation />
           </div>
 
-          {/* Right: Actions (Search, Theme, Auth) */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.6rem', flexShrink: 0 }}>
-            {/* Search Toggle Button */}
+
             <button
               onClick={() => setSearchOpen(!searchOpen)}
               aria-label={searchOpen ? 'Close search bar' : 'Open search bar'}
@@ -182,7 +175,6 @@ export const Header: React.FC = () => {
               {searchOpen ? <X size={17} /> : <Search size={17} />}
             </button>
 
-            {/* Write Story Quick Action for Authors/Editors/Admins */}
             {isAuthenticated && isStaff && (
               <Link
                 to="/admin/posts/new"
@@ -205,10 +197,8 @@ export const Header: React.FC = () => {
               </Link>
             )}
 
-            {/* Theme Toggle (Available on both desktop & mobile) */}
             <ThemeToggle />
 
-            {/* Auth / Account Controls */}
             {isAuthenticated && user ? (
               <div style={{ position: 'relative' }}>
                 <button
@@ -239,7 +229,6 @@ export const Header: React.FC = () => {
                   <ChevronDown size={13} color="var(--color-muted)" />
                 </button>
 
-                {/* User Dropdown Menu */}
                 {userDropdownOpen && (
                   <div
                     style={{
@@ -409,7 +398,6 @@ export const Header: React.FC = () => {
               </button>
             )}
 
-            {/* CMS Admin Link (desktop only for quick staff access) */}
             {isStaff && (
               <Link
                 to="/admin"
@@ -433,7 +421,6 @@ export const Header: React.FC = () => {
           </div>
         </div>
 
-        {/* Expandable Slide-Down Search Drawer */}
         <div
           style={{
             maxHeight: searchOpen ? '70px' : '0',
@@ -484,8 +471,8 @@ export const Header: React.FC = () => {
         </div>
       </div>
 
-      {/* Slide-In Mobile / Tablet Navigation Drawer */}
       <MobileMenu isOpen={mobileOpen} onClose={() => setMobileOpen(false)} />
     </header>
   );
 };
+

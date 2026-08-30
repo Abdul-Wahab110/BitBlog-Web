@@ -11,7 +11,6 @@ export const AdminApplications: React.FC = () => {
   const [filter, setFilter] = useState<'all' | 'pending' | 'approved' | 'rejected'>('pending');
   const [searchQuery, setSearchQuery] = useState('');
 
-  // Review Modal / Action State
   const [selectedApp, setSelectedApp] = useState<any | null>(null);
   const [actionType, setActionType] = useState<'approved' | 'rejected' | null>(null);
   const [feedback, setFeedback] = useState('');
@@ -84,7 +83,7 @@ export const AdminApplications: React.FC = () => {
 
   return (
     <div>
-      {/* Header */}
+
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.5rem', flexWrap: 'wrap', gap: '1rem' }}>
         <div>
           <h1 style={{ fontSize: '1.6rem', marginBottom: '0.2rem', fontFamily: 'var(--font-heading)' }}>
@@ -96,7 +95,6 @@ export const AdminApplications: React.FC = () => {
         </div>
       </div>
 
-      {/* Alert Banner */}
       {alertMsg && (
         <div
           style={{
@@ -117,7 +115,6 @@ export const AdminApplications: React.FC = () => {
         </div>
       )}
 
-      {/* Stats Cards */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1.25rem', marginBottom: '1.75rem' }}>
         <div style={{ backgroundColor: 'var(--color-card)', padding: '1.25rem', borderRadius: 'var(--radius-lg)', border: '1px solid var(--color-border)' }}>
           <p style={{ fontSize: '0.8rem', color: 'var(--color-muted)', fontWeight: 700, margin: 0, textTransform: 'uppercase' }}>Total Submissions</p>
@@ -140,9 +137,8 @@ export const AdminApplications: React.FC = () => {
         </div>
       </div>
 
-      {/* Filter Tabs & Search Bar */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1.5rem', flexWrap: 'wrap', gap: '1rem' }}>
-        {/* Filter Buttons */}
+
         <div style={{ display: 'flex', gap: '0.5rem', backgroundColor: 'var(--color-surface-alt)', padding: '0.25rem', borderRadius: 'var(--radius-md)' }}>
           {(['pending', 'all', 'approved', 'rejected'] as const).map(tab => (
             <button
@@ -165,7 +161,6 @@ export const AdminApplications: React.FC = () => {
           ))}
         </div>
 
-        {/* Search */}
         <div style={{ position: 'relative', minWidth: '260px' }}>
           <Search size={16} color="var(--color-muted)" style={{ position: 'absolute', left: '0.75rem', top: '50%', transform: 'translateY(-50%)' }} />
           <input
@@ -178,7 +173,6 @@ export const AdminApplications: React.FC = () => {
         </div>
       </div>
 
-      {/* Applications List */}
       {loading ? (
         <LoadingState message="Loading role applications from Oracle database..." />
       ) : filteredApplications.length === 0 ? (
@@ -201,7 +195,7 @@ export const AdminApplications: React.FC = () => {
               }}
             >
               <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem', marginBottom: '1rem' }}>
-                {/* Applicant Profile */}
+
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
                   <div style={{ width: '42px', height: '42px', borderRadius: 'var(--radius-full)', backgroundColor: 'var(--color-surface-alt)', border: '1px solid var(--color-border)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 800, color: 'var(--color-secondary)' }}>
                     {app.name ? app.name[0].toUpperCase() : 'A'}
@@ -215,7 +209,6 @@ export const AdminApplications: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Role & Status Badges */}
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
                   <span
                     style={{
@@ -253,13 +246,11 @@ export const AdminApplications: React.FC = () => {
                 </div>
               </div>
 
-              {/* Bio & Background */}
               <div style={{ marginBottom: '1rem' }}>
                 <p style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--color-muted)', margin: '0 0 0.3rem 0', textTransform: 'uppercase' }}>Bio & Background</p>
                 <p style={{ fontSize: '0.88rem', color: 'var(--color-text)', lineHeight: 1.5, margin: 0 }}>{app.bio}</p>
               </div>
 
-              {/* Topics & Samples */}
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1rem', marginBottom: '1rem', padding: '0.85rem 1rem', backgroundColor: 'var(--color-surface-alt)', borderRadius: 'var(--radius-md)' }}>
                 <div>
                   <p style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--color-muted)', margin: '0 0 0.25rem 0', textTransform: 'uppercase' }}>Specialization Topics</p>
@@ -288,13 +279,11 @@ export const AdminApplications: React.FC = () => {
                 )}
               </div>
 
-              {/* Motivation */}
               <div style={{ marginBottom: '1.25rem' }}>
                 <p style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--color-muted)', margin: '0 0 0.3rem 0', textTransform: 'uppercase' }}>Why join our editorial staff?</p>
                 <p style={{ fontSize: '0.88rem', color: 'var(--color-text-secondary)', fontStyle: 'italic', margin: 0 }}>"{app.motivation}"</p>
               </div>
 
-              {/* Admin Review Feedback (if already processed) */}
               {app.feedback && (
                 <div style={{ padding: '0.75rem 1rem', backgroundColor: 'rgba(255, 255, 255, 0.03)', borderLeft: '3px solid var(--color-secondary)', borderRadius: 'var(--radius-sm)', marginBottom: '1.25rem' }}>
                   <p style={{ fontSize: '0.78rem', fontWeight: 700, color: 'var(--color-text)', margin: '0 0 0.2rem 0' }}>Feedback Provided to Applicant:</p>
@@ -302,7 +291,6 @@ export const AdminApplications: React.FC = () => {
                 </div>
               )}
 
-              {/* Action Buttons for Applications */}
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '0.75rem', borderTop: '1px solid var(--color-border)', paddingTop: '1rem', flexWrap: 'wrap' }}>
                 {app.status === 'pending' && (
                   <>
@@ -395,7 +383,6 @@ export const AdminApplications: React.FC = () => {
         </div>
       )}
 
-      {/* Confirmation & Review Modal */}
       {selectedApp && actionType && (
         <div
           style={{
@@ -511,3 +498,4 @@ export const AdminApplications: React.FC = () => {
     </div>
   );
 };
+

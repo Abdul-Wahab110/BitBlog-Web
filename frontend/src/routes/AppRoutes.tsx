@@ -1,15 +1,12 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 
-// Layouts
 import { PublicLayout } from '../components/layout/PublicLayout';
 import { UserLayout } from '../components/layout/UserLayout';
 import { AdminLayout } from '../components/layout/AdminLayout';
 
-// Protected Route Guards
 import { ProtectedRoute, GuestRoute } from './ProtectedRoute';
 
-// Public Pages
 import { Home } from '../pages/public/Home';
 import { Blog } from '../pages/public/Blog';
 import { SingleArticle } from '../pages/public/SingleArticle';
@@ -32,7 +29,6 @@ import { Terms } from '../pages/public/Terms';
 import { Disclaimer } from '../pages/public/Disclaimer';
 import { NotFound } from '../pages/public/NotFound';
 
-// User Dashboard Pages
 import { UserDashboard } from '../pages/user/UserDashboard';
 import { UserArticles } from '../pages/user/UserArticles';
 import { UserAddArticle } from '../pages/user/UserAddArticle';
@@ -44,7 +40,6 @@ import { Notifications } from '../pages/user/Notifications';
 import { UserSettings } from '../pages/user/UserSettings';
 import { UserApplyRole } from '../pages/user/UserApplyRole';
 
-// Admin CMS Pages
 import { AdminDashboard } from '../pages/admin/AdminDashboard';
 import { AdminPosts } from '../pages/admin/AdminPosts';
 import { AddPost } from '../pages/admin/AddPost';
@@ -69,7 +64,7 @@ import { AdminLogin } from '../pages/admin/AdminLogin';
 export const AppRoutes: React.FC = () => {
   return (
     <Routes>
-      {/* Public Publication Site Routes */}
+
       <Route element={<PublicLayout />}>
         <Route path="/" element={<Home />} />
         <Route path="/blog" element={<Blog />} />
@@ -88,7 +83,6 @@ export const AppRoutes: React.FC = () => {
         <Route path="/user/apply-role" element={<ApplyContributor />} />
         <Route path="/contact" element={<Contact />} />
 
-        {/* Guest-only Auth Pages (redirect to dashboard if already authenticated) */}
         <Route path="/login" element={<GuestRoute><Login /></GuestRoute>} />
         <Route path="/super-admin" element={<GuestRoute><AdminLogin /></GuestRoute>} />
         <Route path="/superadmin" element={<GuestRoute><AdminLogin /></GuestRoute>} />
@@ -106,7 +100,6 @@ export const AppRoutes: React.FC = () => {
         <Route path="*" element={<NotFound />} />
       </Route>
 
-      {/* Reader User Center Routes (Protected for authenticated Users) */}
       <Route
         element={
           <ProtectedRoute requiredRole="User">
@@ -123,7 +116,6 @@ export const AppRoutes: React.FC = () => {
         <Route path="/user/settings" element={<UserSettings />} />
       </Route>
 
-      {/* WordPress-Inspired Admin CMS Routes (Protected for Author/Editor/Admin) */}
       <Route
         element={
           <ProtectedRoute requiredRole="Author">
@@ -156,3 +148,4 @@ export const AppRoutes: React.FC = () => {
     </Routes>
   );
 };
+

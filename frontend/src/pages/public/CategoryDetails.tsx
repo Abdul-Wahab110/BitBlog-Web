@@ -71,7 +71,7 @@ export const CategoryDetails: React.FC = () => {
 
   return (
     <div className="container" style={{ paddingTop: '1.5rem', paddingBottom: '3rem' }}>
-      {/* Category SEO Head */}
+
       <SeoHead
         title={`${category?.name || 'Category'} Articles & Stories | ${settings.site_name || 'BitBlog'}`}
         description={category?.description || `Explore latest articles, reporting and analysis in ${category?.name || slug}.`}
@@ -83,7 +83,6 @@ export const CategoryDetails: React.FC = () => {
         breadcrumbs={breadcrumbs}
       />
 
-      {/* Semantic Breadcrumbs Navigation */}
       <nav aria-label="Breadcrumb" style={{ fontSize: '0.82rem', color: 'var(--color-text-secondary)', marginBottom: '1.25rem', display: 'flex', alignItems: 'center', gap: '0.4rem', flexWrap: 'wrap' }}>
         <Link to="/" style={{ color: 'var(--color-text-secondary)', textDecoration: 'none' }}>Home</Link>
         <span>/</span>
@@ -98,7 +97,6 @@ export const CategoryDetails: React.FC = () => {
         <span style={{ color: 'var(--color-secondary)', fontWeight: 700 }}>{category?.name || slug}</span>
       </nav>
 
-      {/* Dynamic Category Hero Banner */}
       <header
         style={{
           position: 'relative',
@@ -156,7 +154,6 @@ export const CategoryDetails: React.FC = () => {
             </p>
           )}
 
-          {/* Subcategories Chips */}
           {subCategories.length > 0 && (
             <div style={{ marginTop: '1.25rem', paddingTop: '1rem', borderTop: '1px solid var(--color-border)', display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
               <span style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--color-muted)', display: 'flex', alignItems: 'center', gap: '0.3rem' }}>
@@ -188,7 +185,6 @@ export const CategoryDetails: React.FC = () => {
         </div>
       </header>
 
-      {/* Main Content & Sidebar Grid */}
       <div className="grid-main-sidebar">
         <main style={{ minHeight: 'auto' }}>
           {loading ? (
@@ -202,7 +198,6 @@ export const CategoryDetails: React.FC = () => {
                 emptyDescription={`No published articles have been assigned to '${category?.name || slug}' yet.`}
               />
 
-              {/* Server-Side Pagination */}
               {pagination.totalPages > 1 && (
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', marginTop: '2.5rem' }}>
                   <button
@@ -257,3 +252,4 @@ export const CategoryDetails: React.FC = () => {
     </div>
   );
 };
+

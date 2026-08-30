@@ -54,3 +54,4 @@ export class SettingModel {
     return Database.execute(`SELECT * FROM site_settings`);
   }
 }
+

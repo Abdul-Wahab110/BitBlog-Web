@@ -19,7 +19,6 @@ export const AdminLogin: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // If already authenticated, redirect straight to the portal dashboard directly
   useEffect(() => {
     if (isAuthenticated) {
       const redirectUrl = new URLSearchParams(location.search).get('redirect');
@@ -63,7 +62,6 @@ export const AdminLogin: React.FC = () => {
         const user = res.data.user;
         const token = res.data.token;
 
-        // Enforce Super Administrator / Admin / Editor access clearance
         const role = user?.role;
         if (role !== 'Admin' && role !== 'Editor') {
           setErrorMsg('Access Denied: This secure gateway is restricted exclusively to Admin and Editorial staff.');
@@ -102,14 +100,13 @@ export const AdminLogin: React.FC = () => {
         transition: 'background-color var(--transition-normal), color var(--transition-normal)',
       }}
     >
-      {/* Search Engine Cloaking: Invisible to crawlers and public sitemaps */}
+
       <SeoHead
         title={`Secure Super Admin Gateway | ${settings.site_name || 'BitBlog'}`}
         description="Private Super Administrator Gateway"
         robots="noindex, nofollow, noarchive"
       />
 
-      {/* Ambient background light orb animation */}
       <div
         style={{
           position: 'absolute',
@@ -139,7 +136,7 @@ export const AdminLogin: React.FC = () => {
           animation: 'fadeInUp 0.35s cubic-bezier(0.16, 1, 0.3, 1)',
         }}
       >
-        {/* Gateway Header Banner */}
+
         <div
           style={{
             padding: '2.25rem 2rem 1.75rem 2rem',
@@ -149,7 +146,7 @@ export const AdminLogin: React.FC = () => {
             position: 'relative',
           }}
         >
-          {/* Glowing Shield Monogram */}
+
           <div
             style={{
               width: '56px',
@@ -186,7 +183,6 @@ export const AdminLogin: React.FC = () => {
           </p>
         </div>
 
-        {/* Form Container */}
         <div style={{ padding: '2rem' }}>
           {errorMsg && (
             <div
@@ -399,7 +395,6 @@ export const AdminLogin: React.FC = () => {
             </button>
           </form>
 
-          {/* Security Notice */}
           <div
             style={{
               marginTop: '1.5rem',
@@ -416,7 +411,6 @@ export const AdminLogin: React.FC = () => {
             🔒 This private gateway URL is unlisted and restricted exclusively to the Super Administrator.
           </div>
 
-          {/* Public Return Link */}
           <div style={{ marginTop: '1.25rem', textAlign: 'center' }}>
             <Link
               to="/"
@@ -441,3 +435,4 @@ export const AdminLogin: React.FC = () => {
     </div>
   );
 };
+

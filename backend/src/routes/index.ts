@@ -23,7 +23,6 @@ import {
 
 const router = Router();
 
-// Mount all API endpoints under /api
 router.use('/health', healthRoutes);
 router.use('/auth', authRoutes);
 router.use('/users', userRoutes);
@@ -45,3 +44,4 @@ router.use('/admin', adminRoutes);
 router.use('/applications', applicationRoutes);
 
 export default router;
+

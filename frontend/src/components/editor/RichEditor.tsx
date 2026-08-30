@@ -60,10 +60,9 @@ export const RichEditor: React.FC<RichEditorProps> = ({
   placeholder = 'Start writing your story here... You can type freely or use the toolbar above to add headings, images, quotes, and callouts.',
   minHeight = '380px',
 }) => {
-  // Modes: 'visual' (Word-like WYSIWYG), 'preview' (Live Article View), 'source' (Raw HTML)
+
   const [activeTab, setActiveTab] = useState<'visual' | 'preview' | 'source'>('visual');
 
-  // Modals state
   const [imageModalOpen, setImageModalOpen] = useState(false);
   const [linkModalOpen, setLinkModalOpen] = useState(false);
   const [videoModalOpen, setVideoModalOpen] = useState(false);
@@ -72,17 +71,14 @@ export const RichEditor: React.FC<RichEditorProps> = ({
   const [cropOriginalSrc, setCropOriginalSrc] = useState('');
   const [cropInitialState, setCropInitialState] = useState<CropStateData | null>(null);
 
-  // Link form state
   const [linkText, setLinkText] = useState('');
   const [linkUrl, setLinkUrl] = useState('');
   const [selectedLinkNode, setSelectedLinkNode] = useState<HTMLAnchorElement | null>(null);
   const [savedRange, setSavedRange] = useState<Range | null>(null);
 
-  // Video form state & Caption
   const [videoUrl, setVideoUrl] = useState('');
   const [videoCaption, setVideoCaption] = useState('');
 
-  // Image form state: URL, Alt, Alignment & Sizing Controls
   const [uploading, setUploading] = useState(false);
   const [uploadedPreview, setUploadedPreview] = useState('');
   const [imageUrlInput, setImageUrlInput] = useState('');
@@ -94,13 +90,11 @@ export const RichEditor: React.FC<RichEditorProps> = ({
   const [imageBorderRadius, setImageBorderRadius] = useState<'none' | 'sm' | 'md' | 'lg'>('md');
   const [uploadError, setUploadError] = useState<string | null>(null);
 
-  // In-Editor Selected Image State for Instant Live Editing, Resizing & Deletion
   const [selectedFigure, setSelectedFigure] = useState<HTMLElement | null>(null);
   const [selectedFigureAlign, setSelectedFigureAlign] = useState<'left' | 'center' | 'right' | 'full'>('center');
   const [selectedFigureWidth, setSelectedFigureWidth] = useState<number>(60);
   const [isEditingExisting, setIsEditingExisting] = useState<boolean>(false);
 
-  // Interactive MS Word Mouse/Pointer Drag Resize State
   const [isResizing, setIsResizing] = useState<boolean>(false);
   const [overlayBox, setOverlayBox] = useState<{ top: number; left: number; width: number; height: number } | null>(null);
   const [dragFeedback, setDragFeedback] = useState<{ percent: number; px: number } | null>(null);
@@ -110,7 +104,6 @@ export const RichEditor: React.FC<RichEditorProps> = ({
   const textareaRef = useRef<HTMLTextAreaElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  // Synchronize incoming value into contentEditable when needed
   useEffect(() => {
     if (visualEditorRef.current && activeTab === 'visual') {
       if (visualEditorRef.current.innerHTML !== value) {
@@ -119,7 +112,6 @@ export const RichEditor: React.FC<RichEditorProps> = ({
     }
   }, [value, activeTab]);
 
-  // Execute standard formatting command
   const formatDoc = (command: string, arg: string | undefined = undefined) => {
     if (activeTab !== 'visual') {
       setActiveTab('visual');
@@ -133,12 +125,10 @@ export const RichEditor: React.FC<RichEditorProps> = ({
     }, 10);
   };
 
-  // Format Block Element (h1, h2, h3, p, blockquote)
   const formatBlock = (tag: string) => {
     formatDoc('formatBlock', `<${tag}>`);
   };
 
-  // Insert HTML Snippet directly at cursor
   const insertHtmlAtCursor = (html: string) => {
     if (activeTab === 'source') {
       if (textareaRef.current) {
@@ -158,7 +148,6 @@ export const RichEditor: React.FC<RichEditorProps> = ({
     }
   };
 
-  // Insert Quick Block Templates (Callout, Quote, Checklist, Table, Divider)
   const insertCalloutBox = (type: 'tip' | 'info' | 'warning' = 'tip') => {
     const bgColors = {
       tip: 'rgba(16, 185, 129, 0.08)',
@@ -243,7 +232,6 @@ export const RichEditor: React.FC<RichEditorProps> = ({
     insertHtmlAtCursor('<hr style="border:none;border-top:2px dashed var(--color-border, #cbd5e1);margin:2.5rem 0;" /><p><br></p>');
   };
 
-  // In-Editor Image Selection Detection
   const handleEditorClick = (e: React.MouseEvent<HTMLDivElement>) => {
     const target = e.target as HTMLElement;
     const figure = target.closest('figure') as HTMLElement | null;
@@ -252,7 +240,6 @@ export const RichEditor: React.FC<RichEditorProps> = ({
     if (figure && img) {
       setSelectedFigure(figure);
 
-      // Determine current alignment
       const fStyle = figure.getAttribute('style') || '';
       let align: 'left' | 'center' | 'right' | 'full' = 'center';
       if (fStyle.includes('align-items:flex-start') || fStyle.includes('margin:1.5rem auto 1.5rem 0') || fStyle.includes('margin-right:auto')) {
@@ -264,7 +251,6 @@ export const RichEditor: React.FC<RichEditorProps> = ({
       }
       setSelectedFigureAlign(align);
 
-      // Determine width
       const widthMatch = fStyle.match(/width:\s*(\d+)%/);
       const width = widthMatch ? parseInt(widthMatch[1], 10) : 60;
       setSelectedFigureWidth(width);
@@ -273,7 +259,6 @@ export const RichEditor: React.FC<RichEditorProps> = ({
     }
   };
 
-  // 1. Instant In-Editor Alignment Mutation
   const updateSelectedFigureAlignment = (newAlign: 'left' | 'center' | 'right' | 'full') => {
     if (!selectedFigure || !visualEditorRef.current) return;
     const width = selectedFigureWidth || 60;
@@ -294,7 +279,6 @@ export const RichEditor: React.FC<RichEditorProps> = ({
     onChange(visualEditorRef.current.innerHTML);
   };
 
-  // 2. Instant In-Editor Resizing Mutation
   const updateSelectedFigureWidth = (newWidth: number) => {
     if (!selectedFigure || !visualEditorRef.current) return;
     const clamped = Math.max(20, Math.min(100, newWidth));
@@ -316,7 +300,6 @@ export const RichEditor: React.FC<RichEditorProps> = ({
     onChange(visualEditorRef.current.innerHTML);
   };
 
-  // 3. Instant In-Editor Delete Mutation
   const deleteSelectedFigure = () => {
     if (!selectedFigure || !visualEditorRef.current) return;
     selectedFigure.remove();
@@ -324,7 +307,6 @@ export const RichEditor: React.FC<RichEditorProps> = ({
     onChange(visualEditorRef.current.innerHTML);
   };
 
-  // 4. Open Modal for Existing Image Edit
   const openEditModalForSelectedFigure = () => {
     if (!selectedFigure) return;
     const img = selectedFigure.querySelector('img');
@@ -341,7 +323,6 @@ export const RichEditor: React.FC<RichEditorProps> = ({
     }
   };
 
-  // 5. Open Modal for Interactive Pointer Crop (Non-Destructive)
   const openCropModalForSelectedFigure = () => {
     if (!selectedFigure) return;
     const img = selectedFigure.querySelector('img');
@@ -375,7 +356,6 @@ export const RichEditor: React.FC<RichEditorProps> = ({
     }
   };
 
-  // Revert Crop & Restore Full Original Upload Photo
   const handleRevertOriginalPhoto = () => {
     if (!selectedFigure || !visualEditorRef.current) return;
     const img = selectedFigure.querySelector('img');
@@ -390,7 +370,6 @@ export const RichEditor: React.FC<RichEditorProps> = ({
     }
   };
 
-  // 6. Reset Selected Figure to Clean Default Upload Look
   const handleResetSelectedFigure = () => {
     if (!selectedFigure || !visualEditorRef.current) return;
     const img = selectedFigure.querySelector('img');
@@ -418,13 +397,11 @@ export const RichEditor: React.FC<RichEditorProps> = ({
     updateOverlayBox();
   };
 
-  // 7. Apply MS Word Picture Format Studio Changes
   const applyPictureFormatStudio = (fmt: PictureFormatState) => {
     if (!selectedFigure || !visualEditorRef.current) return;
     const img = selectedFigure.querySelector('img');
     const figcaption = selectedFigure.querySelector('figcaption');
 
-    // Calculate Figure Layout
     let figureStyle = '';
     if (fmt.wrapText === 'left') {
       figureStyle = `display:flex;flex-direction:column;align-items:flex-start;float:left;width:${fmt.widthPercent}%;max-width:100%;margin:0.5rem 1.5rem 1rem 0;text-align:left;`;
@@ -435,13 +412,12 @@ export const RichEditor: React.FC<RichEditorProps> = ({
     } else if (fmt.wrapText === 'break') {
       figureStyle = `display:flex;flex-direction:column;align-items:center;clear:both;width:${fmt.widthPercent}%;max-width:100%;margin:2rem auto;text-align:center;`;
     } else {
-      // inline center
+
       figureStyle = `display:flex;flex-direction:column;align-items:center;width:${fmt.widthPercent}%;max-width:100%;margin:1.75rem auto;text-align:center;`;
     }
 
     selectedFigure.setAttribute('style', figureStyle);
 
-    // Apply Picture Styles, Border, Shadow, Filters to <img>
     if (img) {
       const radius = fmt.borderRadius === 9999 ? '9999px' : `${fmt.borderRadius}px`;
       let border = 'none';
@@ -479,7 +455,6 @@ export const RichEditor: React.FC<RichEditorProps> = ({
     onChange(visualEditorRef.current.innerHTML);
   };
 
-  // Image Upload & Insertion/Update Handling
   const handleInsertImageHtml = (
     url: string,
     altText?: string,
@@ -521,7 +496,7 @@ export const RichEditor: React.FC<RichEditorProps> = ({
     }
 
     if (isEditingExisting && selectedFigure && visualEditorRef.current) {
-      // Update existing figure in place
+
       const img = selectedFigure.querySelector('img');
       if (img) {
         img.setAttribute('src', url);
@@ -544,7 +519,7 @@ export const RichEditor: React.FC<RichEditorProps> = ({
       setIsEditingExisting(false);
       setSelectedFigure(null);
     } else {
-      // Insert new image figure
+
       const imageHtml = `
         <figure style="${figureStyle}">
           <img src="${url}" alt="${alt}" data-original-src="${url}" style="width:100%;max-width:100%;height:auto;border-radius:${radiusPx};box-shadow:0 4px 16px rgba(0,0,0,0.12);object-fit:cover;" />
@@ -599,7 +574,7 @@ export const RichEditor: React.FC<RichEditorProps> = ({
           setImageAltInput(file.name.replace(/\.[^/.]+$/, ''));
         }
       } else {
-        // Fallback for demo mode (base64 preview)
+
         const reader = new FileReader();
         reader.onload = () => {
           const b64 = reader.result as string;
@@ -609,7 +584,7 @@ export const RichEditor: React.FC<RichEditorProps> = ({
         reader.readAsDataURL(file);
       }
     } catch {
-      // Fallback base64 for offline preview
+
       const reader = new FileReader();
       reader.onload = () => {
         const b64 = reader.result as string;
@@ -622,7 +597,6 @@ export const RichEditor: React.FC<RichEditorProps> = ({
     }
   };
 
-  // Overlay Box tracking for MS Word style mouse pointer resize handles
   const updateOverlayBox = useCallback(() => {
     if (!selectedFigure || !editorContainerRef.current) {
       setOverlayBox(null);
@@ -649,7 +623,6 @@ export const RichEditor: React.FC<RichEditorProps> = ({
     };
   }, [updateOverlayBox]);
 
-  // Interactive Pointer / Mouse Drag-to-Resize Handler
   const handleStartResize = (e: React.PointerEvent, direction: 'se' | 'sw' | 'ne' | 'nw' | 'e' | 'w') => {
     e.preventDefault();
     e.stopPropagation();
@@ -668,7 +641,6 @@ export const RichEditor: React.FC<RichEditorProps> = ({
       const newWidthPx = Math.max(120, Math.min(editorWidth, initialWidthPx + effectiveDelta * 1.5));
       const newPercent = Math.max(20, Math.min(100, Math.round((newWidthPx / editorWidth) * 100)));
 
-      // Realtime inline style update
       selectedFigure.style.width = `${newPercent}%`;
       setSelectedFigureWidth(newPercent);
       setDragFeedback({ percent: newPercent, px: Math.round(newWidthPx) });
@@ -690,7 +662,6 @@ export const RichEditor: React.FC<RichEditorProps> = ({
     window.addEventListener('pointerup', onPointerUp);
   };
 
-  // Open Link Modal with selection pre-population
   const openLinkModal = () => {
     const selection = window.getSelection();
     let text = '';
@@ -701,7 +672,6 @@ export const RichEditor: React.FC<RichEditorProps> = ({
       setSavedRange(selection.getRangeAt(0).cloneRange());
       text = selection.toString();
 
-      // Check if inside <a>
       let node: Node | null = selection.anchorNode;
       while (node && node !== visualEditorRef.current) {
         if (node.nodeName === 'A') {
@@ -725,7 +695,6 @@ export const RichEditor: React.FC<RichEditorProps> = ({
     setLinkModalOpen(true);
   };
 
-  // Link Modal Submit with proper protocol formatting and anchor creation
   const handleLinkSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!linkUrl.trim()) return;
@@ -764,7 +733,6 @@ export const RichEditor: React.FC<RichEditorProps> = ({
     setSavedRange(null);
   };
 
-  // Unlink / Remove Link
   const handleUnlink = () => {
     if (selectedLinkNode && visualEditorRef.current) {
       const text = selectedLinkNode.textContent || '';
@@ -777,12 +745,10 @@ export const RichEditor: React.FC<RichEditorProps> = ({
     setLinkText('');
   };
 
-  // Robust Video Embed Parser (YouTube Shorts, Standard, Vimeo, Direct MP4/WebM)
   const parseVideoEmbed = (inputUrl: string): { type: 'youtube' | 'vimeo' | 'html5' | 'embed'; embedUrl: string } => {
     const trimmed = inputUrl.trim();
     if (!trimmed) return { type: 'embed', embedUrl: '' };
 
-    // YouTube formats (standard, watch?v=, youtu.be, shorts, embed, live)
     const ytMatch = trimmed.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?|shorts|live)\/|.*[?&]v=)|youtu\.be\/)([^"&?/\s]{11})/i);
     if (ytMatch && ytMatch[1]) {
       return {
@@ -1751,7 +1717,6 @@ export const RichEditor: React.FC<RichEditorProps> = ({
               />
             </div>
 
-            {/* 1. Image Alignment Selector */}
             <div style={{ marginBottom: '1.25rem' }}>
               <label style={{ display: 'block', fontSize: '0.82rem', fontWeight: 700, marginBottom: '0.4rem' }}>
                 Image Alignment
@@ -1795,7 +1760,6 @@ export const RichEditor: React.FC<RichEditorProps> = ({
               </div>
             </div>
 
-            {/* 2. Image Size Presets & Custom Width Slider */}
             <div style={{ marginBottom: '1.25rem' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.4rem' }}>
                 <label style={{ fontSize: '0.82rem', fontWeight: 700, margin: 0 }}>
@@ -1812,7 +1776,6 @@ export const RichEditor: React.FC<RichEditorProps> = ({
                 </span>
               </div>
 
-              {/* Preset Buttons */}
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '0.5rem', marginBottom: '0.75rem' }}>
                 {[
                   { id: 'small', label: 'Small (35%)' },
@@ -1850,7 +1813,6 @@ export const RichEditor: React.FC<RichEditorProps> = ({
                 })}
               </div>
 
-              {/* Fine-tune Width Slider */}
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '0.5rem 0.75rem', backgroundColor: 'var(--color-surface-alt)', borderRadius: 'var(--radius-sm)' }}>
                 <span style={{ fontSize: '0.75rem', color: 'var(--color-muted)', fontWeight: 600 }}>Custom:</span>
                 <input
@@ -1885,7 +1847,6 @@ export const RichEditor: React.FC<RichEditorProps> = ({
               </div>
             </div>
 
-            {/* 3. Live Preview Box */}
             {(imageUrlInput || uploadedPreview) && (
               <div style={{ marginBottom: '1.5rem' }}>
                 <label style={{ display: 'block', fontSize: '0.78rem', fontWeight: 700, color: 'var(--color-muted)', marginBottom: '0.35rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
@@ -1964,7 +1925,6 @@ export const RichEditor: React.FC<RichEditorProps> = ({
         </div>
       )}
 
-      {/* Modal 2: Insert or Edit Link */}
       {linkModalOpen && (
         <div
           role="dialog"
@@ -2076,7 +2036,6 @@ export const RichEditor: React.FC<RichEditorProps> = ({
         </div>
       )}
 
-      {/* Modal 3: Embed Video */}
       {videoModalOpen && (
         <div
           role="dialog"
@@ -2145,7 +2104,6 @@ export const RichEditor: React.FC<RichEditorProps> = ({
               />
             </div>
 
-            {/* Live Video Embed Preview */}
             {videoUrl.trim() && (
               <div style={{ marginBottom: '1.25rem' }}>
                 <label style={{ display: 'block', fontSize: '0.76rem', fontWeight: 700, color: 'var(--color-muted)', marginBottom: '0.35rem', textTransform: 'uppercase' }}>
@@ -2189,7 +2147,6 @@ export const RichEditor: React.FC<RichEditorProps> = ({
         </div>
       )}
 
-      {/* Modal 4: Interactive Non-Destructive Image Crop Studio */}
       <ImageCropModal
         isOpen={cropModalOpen}
         imageSrc={cropImageSrc}
@@ -2200,7 +2157,6 @@ export const RichEditor: React.FC<RichEditorProps> = ({
         onRevertOriginal={handleRevertOriginalPhoto}
       />
 
-      {/* Editor CSS helper styles */}
       <style>{`
         [contenteditable]:empty:before {
           content: attr(data-placeholder);
@@ -2225,3 +2181,4 @@ export const RichEditor: React.FC<RichEditorProps> = ({
     </div>
   );
 };
+

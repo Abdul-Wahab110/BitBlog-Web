@@ -11,3 +11,4 @@ export class Logger {
     console.error(`[ERROR] [${new Date().toISOString()}] ${message}`, error || '');
   }
 }
+

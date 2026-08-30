@@ -121,9 +121,8 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({ chil
     reloadSettings();
   }, [reloadSettings]);
 
-  // Synchronize browser tab Favicon and Title in real-time
   useEffect(() => {
-    // 1. Update Favicon
+
     if (settings.site_favicon) {
       let faviconLink: HTMLLinkElement | null = document.querySelector("link[rel*='icon']");
       if (!faviconLink) {
@@ -134,7 +133,6 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       faviconLink.href = settings.site_favicon;
     }
 
-    // 2. Update Default Document Title
     if (settings.site_name) {
       if (document.title.includes('BitBlog') || document.title.includes('BitBlog') || document.title === '') {
         document.title = settings.default_seo_title || `${settings.site_name} - Publication & Content Platform`;
@@ -143,7 +141,7 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({ chil
   }, [settings.site_favicon, settings.site_name, settings.default_seo_title]);
 
   const updateSettings = async (newSettings: Partial<SiteSettings>) => {
-    // 1. Optimistically update local state so UI reacts instantly
+
     setSettings(prev => ({
       ...prev,
       ...newSettings,
@@ -152,7 +150,6 @@ export const SettingsProvider: React.FC<{ children: React.ReactNode }> = ({ chil
       posts_per_page: newSettings.posts_per_page ? Number(newSettings.posts_per_page) : prev.posts_per_page,
     }));
 
-    // 2. Persist to Backend & Database
     const res = await ApiService.updateSettings(newSettings);
     if (res && res.data) {
       setSettings(prev => ({
@@ -180,3 +177,4 @@ export const useSettings = () => {
   }
   return context;
 };
+

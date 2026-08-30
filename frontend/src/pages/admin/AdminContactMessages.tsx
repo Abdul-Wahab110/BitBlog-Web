@@ -24,7 +24,6 @@ export const AdminContactMessages: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [selectedMsg, setSelectedMsg] = useState<any | null>(null);
 
-  // Reply Compose Modal State
   const [replyModalMsg, setReplyModalMsg] = useState<any | null>(null);
   const [replySubject, setReplySubject] = useState('');
   const [replyBody, setReplyBody] = useState('');
@@ -80,7 +79,7 @@ export const AdminContactMessages: React.FC = () => {
       }
     } catch (err: any) {
       console.warn('Backend email dispatch error, falling back to local mailto:', err);
-      // Fallback: Copy to clipboard & launch mailto client
+
       if (navigator.clipboard) {
         navigator.clipboard.writeText(replyBody);
       }
@@ -263,7 +262,6 @@ export const AdminContactMessages: React.FC = () => {
         </div>
       )}
 
-      {/* View Message Modal */}
       {selectedMsg && (
         <div style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.75)', backdropFilter: 'blur(4px)', zIndex: 300, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1rem' }}>
           <div style={{ width: '100%', maxWidth: '550px', backgroundColor: 'var(--color-surface)', border: '1px solid var(--color-border)', borderRadius: 'var(--radius-lg)', padding: '1.5rem', boxShadow: 'var(--shadow-xl)', boxSizing: 'border-box' }}>
@@ -322,7 +320,6 @@ export const AdminContactMessages: React.FC = () => {
         </div>
       )}
 
-      {/* Compose & Send Reply Modal */}
       {replyModalMsg && (
         <div style={{ position: 'fixed', inset: 0, backgroundColor: 'rgba(0,0,0,0.8)', backdropFilter: 'blur(5px)', zIndex: 350, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '1rem' }}>
           <div style={{ width: '100%', maxWidth: '580px', backgroundColor: 'var(--color-surface)', border: '1px solid var(--color-border)', borderRadius: 'var(--radius-lg)', padding: '1.75rem', boxShadow: 'var(--shadow-xl)', boxSizing: 'border-box' }}>
@@ -449,3 +446,4 @@ export const AdminContactMessages: React.FC = () => {
     </div>
   );
 };
+

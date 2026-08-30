@@ -464,7 +464,8 @@ export class Database {
   }
 
   public static async execute<T = any>(sql: string, params: any[] = []): Promise<T[]> {
-    // SQL compatibility wrapper returning empty array for direct fallback
+
     return [];
   }
 }
+

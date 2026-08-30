@@ -61,7 +61,7 @@ export class PostModel {
 
     if (authorUsername) {
       const q = String(authorUsername).trim().toLowerCase();
-      // Try to find the user if q is user_id, username, or name
+
       const matchedUser = (store.users || []).find(
         u => String(u.user_id) === q || u.username?.toLowerCase() === q || u.name?.toLowerCase() === q
       );
@@ -108,7 +108,6 @@ export class PostModel {
       );
     }
 
-    // Sort
     switch (sort.toLowerCase()) {
       case 'oldest':
         list.sort((a, b) => new Date(a.published_at || a.created_at).getTime() - new Date(b.published_at || b.created_at).getTime());
@@ -385,3 +384,4 @@ export class PostModel {
     };
   }
 }
+

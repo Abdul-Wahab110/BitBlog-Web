@@ -8,7 +8,6 @@ if (!fs.existsSync(uploadDir)) {
   fs.mkdirSync(uploadDir, { recursive: true });
 }
 
-// Storage Configuration
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, uploadDir);
@@ -20,7 +19,6 @@ const storage = multer.diskStorage({
   },
 });
 
-// File Type Filter
 const fileFilter = (req: Request, file: Express.Multer.File, cb: multer.FileFilterCallback) => {
   const allowedMimeTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp', 'image/gif'];
   const allowedExtensions = ['.jpg', '.jpeg', '.png', '.webp', '.gif'];
@@ -38,6 +36,7 @@ export const uploadMiddleware = multer({
   storage,
   fileFilter,
   limits: {
-    fileSize: 5 * 1024 * 1024, // 5 MB maximum file size limit
+    fileSize: 5 * 1024 * 1024,
   },
 });
+

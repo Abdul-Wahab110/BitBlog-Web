@@ -20,8 +20,8 @@ export interface SeoMetadataRecord {
   search_intent?: string;
   image_alt_text?: string;
   direct_answer?: string;
-  faq_data?: string; // JSON string of [{ question, answer }]
-  howto_data?: string; // JSON string of { title, description, time, steps: [{ title, description }] }
+  faq_data?: string;
+  howto_data?: string;
   key_takeaways?: string;
   references_data?: string;
   entity_context?: string;
@@ -229,3 +229,4 @@ export class SeoModel {
     });
   }
 }
+

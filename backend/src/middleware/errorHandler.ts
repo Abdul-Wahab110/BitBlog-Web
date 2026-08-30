@@ -18,3 +18,4 @@ export const errorHandler = (
 
   ResponseUtil.error(res, 'Internal server unexpected error', 500);
 };
+

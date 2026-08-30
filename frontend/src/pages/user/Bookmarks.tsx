@@ -45,3 +45,4 @@ export const Bookmarks: React.FC = () => {
     </div>
   );
 };
+

@@ -22,7 +22,7 @@ const getSeenNotificationIds = (): Set<number> => {
 
 const saveSeenNotificationIds = (ids: Set<number>) => {
   try {
-    // Keep last 200 IDs to avoid unbounded growth
+
     const arr = Array.from(ids).slice(-200);
     localStorage.setItem(SEEN_NOTIFS_STORAGE_KEY, JSON.stringify(arr));
   } catch (e) {
@@ -45,24 +45,19 @@ export const PortalNotificationToast: React.FC = () => {
 
         const seenSet = getSeenNotificationIds();
 
-        // Find genuinely new unread notifications that have NEVER been toasted yet
         const brandNew = unread.filter((n: any) => !seenSet.has(Number(n.notification_id)));
 
         if (brandNew.length > 0) {
           const latest = brandNew[0];
 
-          // Mark all brand new notifications as seen in localStorage immediately
-          // so they NEVER toast repeatedly on page refresh or navigation
           for (const item of brandNew) {
             seenSet.add(Number(item.notification_id));
           }
           saveSeenNotificationIds(seenSet);
 
-          // Display single popup toast for this new arrival
           setCurrentNotif(latest);
           setVisible(true);
 
-          // Auto-hide popup smoothly after 9 seconds if ignored
           if (autoDismissTimerRef.current) {
             clearTimeout(autoDismissTimerRef.current);
           }
@@ -72,17 +67,16 @@ export const PortalNotificationToast: React.FC = () => {
         }
       }
     } catch (err) {
-      // Quiet fail in background
+
     }
   };
 
   useEffect(() => {
-    // 1. Initial check after a subtle 800ms page load delay
+
     const initTimer = setTimeout(() => {
       checkForNewNotifications();
     }, 800);
 
-    // 2. Continuous real-time background poll every 20 seconds
     const pollInterval = setInterval(() => {
       checkForNewNotifications();
     }, 20000);
@@ -126,7 +120,6 @@ export const PortalNotificationToast: React.FC = () => {
     return null;
   }
 
-  // Get icon and color badge according to notification category
   const getTypeBadge = (type: string) => {
     switch (type) {
       case 'ARTICLE_SUBMITTED':
@@ -165,7 +158,7 @@ export const PortalNotificationToast: React.FC = () => {
         boxSizing: 'border-box',
       }}
     >
-      {/* Header bar */}
+
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '0.65rem' }}>
         <div
           style={{
@@ -206,7 +199,6 @@ export const PortalNotificationToast: React.FC = () => {
         </button>
       </div>
 
-      {/* Body */}
       <h4
         style={{
           fontSize: '0.95rem',
@@ -233,7 +225,6 @@ export const PortalNotificationToast: React.FC = () => {
         {currentNotif.message}
       </p>
 
-      {/* Footer Controls */}
       <div
         style={{
           display: 'flex',

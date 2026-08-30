@@ -48,7 +48,6 @@ const ArticleCardComponent: React.FC<ArticleCardProps> = (props) => {
   const rawExcerpt = props.excerpt || '';
   const excerpt = rawExcerpt.replace(/<[^>]+>/g, '').trim();
 
-  // Normalize cover image with fallback gradients
   const coverImage = props.featured_image || props.coverImage || props.image;
   const categoryName = props.category_name || props.categoryName || 'General';
   const categorySlug = props.category_slug || props.categorySlug || 'general';
@@ -82,7 +81,7 @@ const ArticleCardComponent: React.FC<ArticleCardProps> = (props) => {
         transition: 'transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s ease, border-color 0.3s ease',
       }}
     >
-      {/* Cover Image Container */}
+
       <Link
         to={`/post/${slug}`}
         style={{
@@ -114,7 +113,7 @@ const ArticleCardComponent: React.FC<ArticleCardProps> = (props) => {
                 display: 'block',
               }}
             />
-            {/* Subtle bottom shadow overlay to guarantee badge readability */}
+
             <div
               style={{
                 position: 'absolute',
@@ -125,7 +124,7 @@ const ArticleCardComponent: React.FC<ArticleCardProps> = (props) => {
             />
           </>
         ) : (
-          /* High-aesthetic gradient fallback cover if image is not supplied */
+
           <div
             style={{
               width: '100%',
@@ -149,7 +148,6 @@ const ArticleCardComponent: React.FC<ArticleCardProps> = (props) => {
           </div>
         )}
 
-        {/* Category Overlay Tag */}
         <div
           style={{
             position: 'absolute',
@@ -162,7 +160,6 @@ const ArticleCardComponent: React.FC<ArticleCardProps> = (props) => {
           <CategoryBadge name={categoryName} slug={categorySlug} colorHex={categoryColor} />
         </div>
 
-        {/* Reading Time Pill Overlay */}
         <div
           style={{
             position: 'absolute',
@@ -185,9 +182,8 @@ const ArticleCardComponent: React.FC<ArticleCardProps> = (props) => {
         </div>
       </Link>
 
-      {/* Card Content Body */}
       <div style={{ padding: '1.25rem', display: 'flex', flexDirection: 'column', flex: 1 }}>
-        {/* Article Headline with 2-line clamp */}
+
         <h3
           style={{
             fontSize: '1.1rem',
@@ -214,7 +210,6 @@ const ArticleCardComponent: React.FC<ArticleCardProps> = (props) => {
           </Link>
         </h3>
 
-        {/* Excerpt with strictly capped 2-line clamp for clean compact height */}
         <p
           style={{
             fontSize: '0.86rem',
@@ -232,7 +227,6 @@ const ArticleCardComponent: React.FC<ArticleCardProps> = (props) => {
           {excerpt || 'Read this in-depth editorial story on BitBlog.'}
         </p>
 
-        {/* Read More Action Button */}
         <div style={{ marginBottom: '0.85rem' }}>
           <Link
             to={`/post/${slug}`}
@@ -258,7 +252,6 @@ const ArticleCardComponent: React.FC<ArticleCardProps> = (props) => {
           </Link>
         </div>
 
-        {/* Card Footer (Author & Published Date) */}
         <footer
           style={{
             display: 'flex',

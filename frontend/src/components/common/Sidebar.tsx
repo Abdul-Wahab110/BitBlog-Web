@@ -33,7 +33,7 @@ export const Sidebar: React.FC = () => {
     'BitBlog is a next-generation digital publishing platform bringing you insightful articles, cutting-edge technology trends, design philosophies, and curated editorial analysis.';
 
   useEffect(() => {
-    // 1. Fetch Categories
+
     ApiService.getCategories()
       .then(res => {
         if (res && res.data) {
@@ -42,7 +42,6 @@ export const Sidebar: React.FC = () => {
       })
       .catch(() => {});
 
-    // 2. Fetch Tags
     ApiService.getTags()
       .then(res => {
         if (res && res.data) {
@@ -51,13 +50,12 @@ export const Sidebar: React.FC = () => {
       })
       .catch(() => {});
 
-    // 3. Fetch Trending / Featured Posts for Sidebar
     ApiService.getPosts({ limit: 4, sort: 'views' })
       .then(res => {
         if (res && res.data && res.data.length > 0) {
           setTrendingPosts(res.data);
         } else {
-          // Fallback to latest posts
+
           return ApiService.getPosts({ limit: 4 });
         }
       })
@@ -87,8 +85,7 @@ export const Sidebar: React.FC = () => {
 
   return (
     <aside style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem', padding: 0, border: 'none', backgroundColor: 'transparent' }}>
-      
-      {/* 1. Social Follow Channels (Links Card) */}
+
       <section
         style={{
           padding: '1.25rem',
@@ -162,7 +159,6 @@ export const Sidebar: React.FC = () => {
         </div>
       </section>
 
-      {/* 2. Trending / Popular Stories Section */}
       <section
         style={{
           padding: '1.25rem',
@@ -339,7 +335,6 @@ export const Sidebar: React.FC = () => {
         </div>
       </section>
 
-      {/* 3. About Our Website & Platform Card */}
       <section
         style={{
           padding: '1.5rem',
@@ -351,7 +346,7 @@ export const Sidebar: React.FC = () => {
           boxShadow: 'var(--shadow-sm)',
         }}
       >
-        {/* Subtle decorative background gradient accent */}
+
         <div
           style={{
             position: 'absolute',
@@ -412,7 +407,6 @@ export const Sidebar: React.FC = () => {
           {siteDescription}
         </p>
 
-        {/* Feature bullets */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', marginBottom: '1.25rem', fontSize: '0.8rem', color: 'var(--color-text)' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem' }}>
             <CheckCircle2 size={14} color="var(--color-success, #10B981)" />
@@ -490,7 +484,6 @@ export const Sidebar: React.FC = () => {
         </div>
       </section>
 
-      {/* 4. Dynamic Categories Section with Images */}
       <section style={{ padding: '1.25rem', backgroundColor: 'var(--color-card)', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', boxShadow: 'var(--shadow-sm)' }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem' }}>
           <h3 style={{ fontSize: '0.92rem', margin: 0, textTransform: 'uppercase', letterSpacing: '0.05em', display: 'flex', alignItems: 'center', gap: '0.4rem', fontWeight: 800 }}>
@@ -500,7 +493,7 @@ export const Sidebar: React.FC = () => {
             All
           </Link>
         </div>
-        
+
         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
           {categories.length > 0 ? (
             categories.map(cat => {
@@ -569,7 +562,6 @@ export const Sidebar: React.FC = () => {
         </div>
       </section>
 
-      {/* 5. Dynamic Tags Cloud */}
       <section style={{ padding: '1.25rem', backgroundColor: 'var(--color-card)', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', boxShadow: 'var(--shadow-sm)' }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '1rem' }}>
           <h3 style={{ fontSize: '0.92rem', margin: 0, textTransform: 'uppercase', letterSpacing: '0.05em', display: 'flex', alignItems: 'center', gap: '0.4rem', fontWeight: 800 }}>
@@ -632,7 +624,6 @@ export const Sidebar: React.FC = () => {
         </div>
       </section>
 
-      {/* 6. Quick Explore / Contributor Links */}
       <section
         style={{
           padding: '1.25rem',
@@ -723,9 +714,9 @@ export const Sidebar: React.FC = () => {
         </div>
       </section>
 
-      {/* 7. Newsletter Widget */}
       <NewsletterForm />
 
     </aside>
   );
 };
+

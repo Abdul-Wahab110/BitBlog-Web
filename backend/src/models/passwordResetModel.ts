@@ -34,9 +34,9 @@ export class PasswordResetModel {
 
   public static async findValidToken(tokenHash: string): Promise<PasswordResetRecord | null> {
     const sql = `
-      SELECT * FROM password_reset_tokens 
-      WHERE token_hash = :1 
-        AND used_at IS NULL 
+      SELECT * FROM password_reset_tokens
+      WHERE token_hash = :1
+        AND used_at IS NULL
         AND expires_at > CURRENT_TIMESTAMP
     `;
     const results = await Database.execute<PasswordResetRecord>(sql, [tokenHash]);
@@ -61,3 +61,4 @@ export class PasswordResetModel {
     }
   }
 }
+

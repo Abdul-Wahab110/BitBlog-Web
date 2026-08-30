@@ -130,7 +130,6 @@ export class PostService {
     return post;
   }
 
-  // Admin / Staff Create Post (Direct Publish or Schedule allowed)
   public static async createPost(user: JwtPayload, data: {
     title: string;
     slug?: string;
@@ -157,7 +156,7 @@ export class PostService {
     }
 
     let finalStatus: PostStatus = data.status || 'draft';
-    // Editorial Pipeline: Authors must submit articles for review; only Editors and Admins can directly publish
+
     if (user.role === 'Author' && (finalStatus === 'published' || !data.status)) {
       finalStatus = 'pending_review';
     }
@@ -178,7 +177,6 @@ export class PostService {
     const publishedAt = finalStatus === 'published' ? new Date() : undefined;
     const scheduledAt = finalStatus === 'scheduled' && data.scheduledAt ? new Date(data.scheduledAt) : undefined;
 
-    // Resolve tag IDs
     const resolvedTagIds = await this.resolveTags(data.tags || data.tagIds);
 
     const newPost = await PostModel.createPost({
@@ -196,7 +194,6 @@ export class PostService {
       tagIds: resolvedTagIds,
     });
 
-    // Save Integrated SEO, AEO, and GEO Settings if provided
     if (data.seo || data.aeo || data.geo) {
       await SeoModel.upsertMetadata(newPost.post_id, {
         metaTitle: data.seo?.metaTitle || data.title,
@@ -213,7 +210,6 @@ export class PostService {
       });
     }
 
-    // Generate Notifications if submitted for review
     if (finalStatus === 'pending_review') {
       await NotificationModel.createNotification({
         userId: user.userId,
@@ -223,7 +219,6 @@ export class PostService {
         linkUrl: `/admin/posts`,
       });
 
-      // Also notify Editors & Admins
       const store = Database.getStore();
       const staffUsers = store.users.filter(u => u.role_id === 1 || u.role_id === 2 || u.role_name === 'Admin' || u.role_name === 'Editor');
       for (const staff of staffUsers) {
@@ -242,7 +237,6 @@ export class PostService {
     return newPost;
   }
 
-  // Update Post
   public static async updatePost(id: number, user: JwtPayload, data: {
     title?: string;
     slug?: string;
@@ -273,7 +267,7 @@ export class PostService {
     if (isStaff) {
       if (data.status) finalStatus = data.status;
     } else {
-      // Normal User updating own article: cannot set published
+
       if (data.status === 'published') {
         finalStatus = 'pending_review';
       } else if (data.status) {
@@ -303,7 +297,6 @@ export class PostService {
       tag_ids: resolvedTagIds,
     });
 
-    // Update SEO/AEO/GEO if provided
     if (data.seo || data.aeo || data.geo) {
       await SeoModel.upsertMetadata(id, {
         metaTitle: data.seo?.metaTitle,
@@ -333,7 +326,6 @@ export class PostService {
     return updated;
   }
 
-  // Admin Approval Workflow: Approve
   public static async approvePost(id: number, adminUser: JwtPayload) {
     const post = await PostModel.findById(id);
     if (!post) throw new ApiError(`Article #${id} not found`, 404);
@@ -346,7 +338,6 @@ export class PostService {
       reviewer_feedback: undefined,
     });
 
-    // Issue Notification to Author
     await NotificationModel.createNotification({
       userId: post.author_id,
       type: 'ARTICLE_APPROVED',
@@ -358,7 +349,6 @@ export class PostService {
     return updated;
   }
 
-  // Admin Approval Workflow: Reject
   public static async rejectPost(id: number, adminUser: JwtPayload, reason?: string) {
     const post = await PostModel.findById(id);
     if (!post) throw new ApiError(`Article #${id} not found`, 404);
@@ -372,7 +362,6 @@ export class PostService {
       reviewer_feedback: feedback,
     });
 
-    // Issue Notification to Author
     await NotificationModel.createNotification({
       userId: post.author_id,
       type: 'ARTICLE_REJECTED',
@@ -384,7 +373,6 @@ export class PostService {
     return updated;
   }
 
-  // Admin Approval Workflow: Request Changes
   public static async requestChangesPost(id: number, adminUser: JwtPayload, feedback: string) {
     const post = await PostModel.findById(id);
     if (!post) throw new ApiError(`Article #${id} not found`, 404);
@@ -398,7 +386,6 @@ export class PostService {
       reviewer_feedback: message,
     });
 
-    // Issue Notification to Author
     await NotificationModel.createNotification({
       userId: post.author_id,
       type: 'CHANGES_REQUESTED',
@@ -410,7 +397,6 @@ export class PostService {
     return updated;
   }
 
-  // Delete Post
   public static async deletePost(id: number, user: JwtPayload) {
     const post = await PostModel.findById(id);
     if (!post) throw new ApiError(`Article #${id} not found`, 404);
@@ -424,3 +410,4 @@ export class PostService {
     return { message: `Article #${id} deleted successfully` };
   }
 }
+

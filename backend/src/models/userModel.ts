@@ -221,7 +221,6 @@ export class UserModel {
     if (data.short_description !== undefined) user.short_description = data.short_description;
     user.updated_at = new Date().toISOString();
 
-    // Also update author_name / author_avatar in posts authored by this user
     if (data.name || data.profile_image !== undefined) {
       store.posts?.forEach(p => {
         if (p.author_id === userId) {
@@ -229,7 +228,7 @@ export class UserModel {
           if (data.profile_image !== undefined) p.author_avatar = data.profile_image;
         }
       });
-      // Also update in comments
+
       store.comments?.forEach((c: any) => {
         if (c.user_id === userId) {
           if (data.name) c.user_name = data.name.trim();
@@ -242,3 +241,4 @@ export class UserModel {
     return user;
   }
 }
+

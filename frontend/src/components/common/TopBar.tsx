@@ -31,7 +31,7 @@ export const TopBar: React.FC = () => {
           padding: '0.4rem 1rem',
         }}
       >
-        {/* Left: Trending publication live status */}
+
         <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem' }}>
           <span
             style={{
@@ -72,7 +72,6 @@ export const TopBar: React.FC = () => {
           </span>
         </div>
 
-        {/* Right: Dynamic Social Channels with micro-animations */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem' }}>
           {socialLinks.map((item, index) => {
             const Icon = item.icon;
@@ -111,3 +110,4 @@ export const TopBar: React.FC = () => {
     </div>
   );
 };
+

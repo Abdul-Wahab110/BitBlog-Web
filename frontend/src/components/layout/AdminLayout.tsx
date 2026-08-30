@@ -75,7 +75,7 @@ export const AdminLayout: React.FC = () => {
 
   return (
     <div style={{ display: 'flex', minHeight: '100vh', backgroundColor: 'var(--color-background)', width: '100%', overflowX: 'hidden' }}>
-      {/* Mobile Drawer Overlay Backdrop */}
+
       {mobileDrawerOpen && (
         <div
           onClick={() => setMobileDrawerOpen(false)}
@@ -90,7 +90,6 @@ export const AdminLayout: React.FC = () => {
         />
       )}
 
-      {/* WordPress-Inspired Admin Side Menu */}
       <aside
         style={{
           width: '240px',
@@ -179,9 +178,8 @@ export const AdminLayout: React.FC = () => {
         </div>
       </aside>
 
-      {/* Main Content Area Wrapper */}
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0 }} className="admin-main-content">
-        {/* Admin Header Bar */}
+
         <header className="cms-portal-header">
           <div className="cms-portal-header-left">
             <button
@@ -223,7 +221,6 @@ export const AdminLayout: React.FC = () => {
         </main>
       </div>
 
-      {/* Real-time Portal Request & Activity Notification Toast */}
       <PortalNotificationToast />
 
       <style>{`
@@ -236,3 +233,4 @@ export const AdminLayout: React.FC = () => {
     </div>
   );
 };
+

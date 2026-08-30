@@ -8,19 +8,16 @@ const PORT = config.port;
 
 const startServer = async () => {
   try {
-    // 1. Initialize Oracle Database connection pool
+
     await Database.initialize();
 
-    // 2. Start background article publishing scheduler (checks every 5 seconds)
     SchedulerService.start(5000);
 
-    // 3. Start HTTP server listener
     const server = app.listen(PORT, () => {
       Logger.info(`[BitBlog REST API] Server listening on port ${PORT} in [${config.nodeEnv}] mode.`);
       Logger.info(`[Health Check Endpoint] http://localhost:${PORT}/api/health`);
     });
 
-    // 4. Graceful Shutdown Handlers (SIGINT & SIGTERM)
     const gracefulShutdown = async (signal: string) => {
       Logger.info(`[Server Shutdown] Received ${signal} signal. Shutting down gracefully...`);
       SchedulerService.stop();
@@ -31,7 +28,6 @@ const startServer = async () => {
         process.exit(0);
       });
 
-      // Force shutdown after 10 seconds timeout
       setTimeout(() => {
         Logger.error('[Server Shutdown] Could not close connections in time, forcing process exit.');
         process.exit(1);
@@ -51,3 +47,4 @@ if (process.env.NODE_ENV !== 'test') {
 }
 
 export default app;
+

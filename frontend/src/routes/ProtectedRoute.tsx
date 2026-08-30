@@ -16,13 +16,10 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   const isAdminRoute = location.pathname.startsWith('/admin') || requiredRole === 'Admin' || requiredRole === 'Editor' || requiredRole === 'Author';
 
   if (!isAuthenticated) {
-    // Keep Super Admin Login gateway 100% private/secret.
-    // Never redirect unauthenticated users to /admin/login automatically.
-    // Always redirect to standard public /login gateway.
+
     return <Navigate to={`/login?redirect=${encodeURIComponent(location.pathname)}`} replace />;
   }
 
-  // RBAC permissions check: if simple user attempts to access /admin routes, block and route to user dashboard
   if (requiredRole === 'Admin' && !isAdmin) {
     return <Navigate to={isStaff ? '/admin' : '/user/dashboard'} replace />;
   }
@@ -38,7 +35,6 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   return children;
 };
 
-// Route wrapper for Guest-only pages (e.g. /login, /register, /forgot-password)
 export const GuestRoute: React.FC<{ children: React.ReactElement }> = ({ children }) => {
   const { isAuthenticated, isStaff } = useAuth();
   const location = useLocation();
@@ -54,3 +50,4 @@ export const GuestRoute: React.FC<{ children: React.ReactElement }> = ({ childre
 
   return children;
 };
+

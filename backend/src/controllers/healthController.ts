@@ -16,3 +16,4 @@ export class HealthController {
     ResponseUtil.success(res, statusData, 'BitBlog CMS REST API is running');
   }
 }
+

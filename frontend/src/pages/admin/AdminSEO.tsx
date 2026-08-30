@@ -25,7 +25,6 @@ export const AdminSEO: React.FC = () => {
   const [msg, setMsg] = useState<string | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
-  // Live Technical SEO File Viewer Modal
   const [viewerModal, setViewerModal] = useState<{
     isOpen: boolean;
     type: 'sitemap' | 'robots';
@@ -44,7 +43,6 @@ export const AdminSEO: React.FC = () => {
     copied: false,
   });
 
-  // SEO, AEO, and GEO state
   const [seo, setSeo] = useState<SeoData>({
     metaTitle: '',
     metaDescription: '',
@@ -98,7 +96,6 @@ export const AdminSEO: React.FC = () => {
   useEffect(() => {
     if (!selectedPostId || !currentPost) return;
 
-    // Fetch existing SEO metadata for selected article
     ApiService.getSeoByPost(selectedPostId)
       .then(res => {
         const data = res?.data;
@@ -154,7 +151,7 @@ export const AdminSEO: React.FC = () => {
             factualContext: data.factual_context || '',
           });
         } else {
-          // Initialize with current post defaults
+
           setSeo({
             metaTitle: currentPost.title || '',
             metaDescription: currentPost.excerpt || '',
@@ -189,7 +186,7 @@ export const AdminSEO: React.FC = () => {
         }
       })
       .catch(() => {
-        // Safe fallback initialization
+
         setSeo({
           metaTitle: currentPost.title || '',
           metaDescription: currentPost.excerpt || '',
@@ -210,7 +207,6 @@ export const AdminSEO: React.FC = () => {
       });
   }, [selectedPostId, posts]);
 
-  // Open Live Viewer for Sitemap / Robots
   const handleOpenViewer = async (type: 'sitemap' | 'robots') => {
     const isSitemap = type === 'sitemap';
     const targetUrl = isSitemap ? '/sitemap.xml' : '/robots.txt';
@@ -319,7 +315,7 @@ export const AdminSEO: React.FC = () => {
 
   return (
     <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-      {/* Header Section */}
+
       <div style={{ marginBottom: '1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '0.75rem' }}>
         <div>
           <h1 style={{ fontSize: '1.6rem', marginBottom: '0.2rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
@@ -330,7 +326,6 @@ export const AdminSEO: React.FC = () => {
           </p>
         </div>
 
-        {/* Technical Sitemap & Robots Action Buttons */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
           <button
             type="button"
@@ -388,7 +383,6 @@ export const AdminSEO: React.FC = () => {
         </div>
       )}
 
-      {/* Target Article Selector */}
       <div style={{ backgroundColor: 'var(--color-card)', padding: '1rem 1.25rem', borderRadius: 'var(--radius-lg)', border: '1px solid var(--color-border)', marginBottom: '1.25rem' }}>
         <label htmlFor="select-article" style={{ display: 'block', fontWeight: 700, marginBottom: '0.4rem', fontSize: '0.85rem' }}>
           Select Target Publication Article *
@@ -407,7 +401,6 @@ export const AdminSEO: React.FC = () => {
         </select>
       </div>
 
-      {/* Comprehensive Live SEO / AEO / GEO Editor */}
       {currentPost && (
         <form onSubmit={handleSaveSeo}>
           <SeoAeoGeoEditor
@@ -451,7 +444,6 @@ export const AdminSEO: React.FC = () => {
         </form>
       )}
 
-      {/* Live Technical SEO Viewer Modal */}
       {viewerModal.isOpen && (
         <div
           style={{
@@ -482,7 +474,7 @@ export const AdminSEO: React.FC = () => {
             }}
             onClick={e => e.stopPropagation()}
           >
-            {/* Modal Header */}
+
             <div
               style={{
                 padding: '1rem 1.25rem',
@@ -563,7 +555,6 @@ export const AdminSEO: React.FC = () => {
               </div>
             </div>
 
-            {/* Modal Body / Code Viewer */}
             <div style={{ padding: '1.25rem', overflowY: 'auto', flex: 1, backgroundColor: 'var(--color-background)' }}>
               {viewerModal.loading ? (
                 <LoadingState message={`Fetching real-time ${viewerModal.type === 'sitemap' ? 'sitemap.xml' : 'robots.txt'} output...`} />
@@ -590,7 +581,6 @@ export const AdminSEO: React.FC = () => {
               )}
             </div>
 
-            {/* Modal Footer */}
             <div
               style={{
                 padding: '0.75rem 1.25rem',
@@ -612,3 +602,4 @@ export const AdminSEO: React.FC = () => {
     </div>
   );
 };
+

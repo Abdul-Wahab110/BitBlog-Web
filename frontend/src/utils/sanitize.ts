@@ -5,12 +5,11 @@ export const sanitizeHtml = (htmlContent: string): string => {
     const parser = new DOMParser();
     const doc = parser.parseFromString(htmlContent, 'text/html');
 
-    // Remove dangerous executable elements
     const dangerousTags = ['script', 'iframe', 'object', 'embed', 'form'];
     dangerousTags.forEach(tag => {
       const elements = doc.body.getElementsByTagName(tag);
       for (let i = elements.length - 1; i >= 0; i--) {
-        // Keep safe youtube/vimeo embed iframes if needed
+
         if (tag === 'iframe') {
           const src = elements[i].getAttribute('src') || '';
           if (src.includes('youtube.com') || src.includes('vimeo.com')) {
@@ -21,7 +20,6 @@ export const sanitizeHtml = (htmlContent: string): string => {
       }
     });
 
-    // Remove inline javascript handlers (onerror, onload, onclick, etc.)
     const allElements = doc.body.getElementsByTagName('*');
     for (let i = 0; i < allElements.length; i++) {
       const el = allElements[i];
@@ -38,3 +36,4 @@ export const sanitizeHtml = (htmlContent: string): string => {
     return htmlContent.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '');
   }
 };
+

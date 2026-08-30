@@ -36,13 +36,11 @@ export const AdminUsers: React.FC = () => {
   const [search, setSearch] = useState('');
   const [roleFilter, setRoleFilter] = useState('all');
 
-  // Create User Modal State
   const [createModalOpen, setCreateModalOpen] = useState(false);
   const [creating, setCreating] = useState(false);
   const [createError, setCreateError] = useState<string | null>(null);
   const [createSuccess, setCreateSuccess] = useState<string | null>(null);
 
-  // Edit User Modal State
   const [editModalOpen, setEditModalOpen] = useState(false);
   const [editingUser, setEditingUser] = useState<any | null>(null);
   const [editName, setEditName] = useState('');
@@ -61,7 +59,6 @@ export const AdminUsers: React.FC = () => {
   const [actionMessage, setActionMessage] = useState<{ text: string; type: 'success' | 'error' } | null>(null);
   const editFileInputRef = useRef<HTMLInputElement | null>(null);
 
-  // New User Form Fields
   const [newName, setNewName] = useState('');
   const [newUsername, setNewUsername] = useState('');
   const [newEmail, setNewEmail] = useState('');
@@ -199,7 +196,7 @@ export const AdminUsers: React.FC = () => {
       const res = await ApiService.createAdminUser(payload);
       if (res && res.success) {
         setCreateSuccess(`Account for '${newName}' created successfully with role ${newRole}!`);
-        // Reset form
+
         setNewName('');
         setNewUsername('');
         setNewEmail('');
@@ -271,7 +268,6 @@ export const AdminUsers: React.FC = () => {
         }
       }
 
-      // Update Profile Details (Including optional password reset)
       await ApiService.updateAdminUserProfile(editingUser.user_id, {
         name: editName.trim(),
         bio: editBio.trim(),
@@ -282,7 +278,6 @@ export const AdminUsers: React.FC = () => {
         password: editPassword.trim() ? editPassword.trim() : undefined,
       });
 
-      // Update Role & Status if Admin and not system admin
       if (isAdmin && !isSystemAdmin(editingUser)) {
         if (editRole !== editingUser.role) {
           await ApiService.updateUserRole(editingUser.user_id, editRole);
@@ -371,7 +366,6 @@ export const AdminUsers: React.FC = () => {
         </div>
       )}
 
-      {/* Filter Controls */}
       <div
         style={{
           display: 'flex',
@@ -413,7 +407,6 @@ export const AdminUsers: React.FC = () => {
         </div>
       </div>
 
-      {/* Users Table */}
       {loading ? (
         <LoadingState message="Fetching system user records from Oracle DB..." />
       ) : filteredUsers.length === 0 ? (
@@ -577,7 +570,6 @@ export const AdminUsers: React.FC = () => {
         </div>
       )}
 
-      {/* Admin Create User Modal */}
       {createModalOpen && (
         <div
           role="dialog"
@@ -612,7 +604,7 @@ export const AdminUsers: React.FC = () => {
               maxHeight: '90vh',
             }}
           >
-            {/* Modal Header */}
+
             <div
               style={{
                 padding: '1.25rem 1.5rem',
@@ -638,7 +630,6 @@ export const AdminUsers: React.FC = () => {
               </button>
             </div>
 
-            {/* Modal Body */}
             <div style={{ padding: '1.5rem', overflowY: 'auto' }}>
               {createError && (
                 <div
@@ -814,7 +805,6 @@ export const AdminUsers: React.FC = () => {
         </div>
       )}
 
-      {/* Admin Edit User Profile Modal */}
       {editModalOpen && editingUser && (
         <div
           role="dialog"
@@ -849,7 +839,7 @@ export const AdminUsers: React.FC = () => {
               maxHeight: '90vh',
             }}
           >
-            {/* Modal Header */}
+
             <div
               style={{
                 padding: '1.25rem 1.5rem',
@@ -875,10 +865,9 @@ export const AdminUsers: React.FC = () => {
               </button>
             </div>
 
-            {/* Modal Scrollable Body */}
             <div style={{ padding: '1.5rem', overflowY: 'auto', flex: 1 }}>
               <form onSubmit={handleSaveEditedUser}>
-                {/* Profile Image & Avatar Upload Section */}
+
                 <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', marginBottom: '1.5rem', padding: '1rem', backgroundColor: 'var(--color-card)', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)' }}>
                   <UserAvatar
                     src={editImagePreview || editProfileImage}
@@ -944,7 +933,6 @@ export const AdminUsers: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Name & Username */}
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1rem' }}>
                   <div>
                     <label style={{ display: 'block', fontWeight: 600, fontSize: '0.82rem', marginBottom: '0.35rem' }}>
@@ -971,7 +959,6 @@ export const AdminUsers: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Role & Status (Editable for Admin) */}
                 <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '1rem' }}>
                   <div>
                     <label style={{ display: 'block', fontWeight: 600, fontSize: '0.82rem', marginBottom: '0.35rem' }}>
@@ -1005,7 +992,6 @@ export const AdminUsers: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Password Reset Option for Admin */}
                 <div style={{ marginBottom: '1rem', backgroundColor: 'var(--color-surface-alt)', padding: '0.75rem 1rem', borderRadius: 'var(--radius-md)', border: '1px dashed var(--color-border)' }}>
                   <label style={{ display: 'block', fontWeight: 700, fontSize: '0.83rem', marginBottom: '0.3rem', color: 'var(--color-secondary)' }}>
                     Reset User Password (Optional)
@@ -1184,3 +1170,4 @@ export const AdminUsers: React.FC = () => {
     </div>
   );
 };
+

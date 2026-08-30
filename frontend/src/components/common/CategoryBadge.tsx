@@ -27,3 +27,4 @@ export const CategoryBadge: React.FC<CategoryBadgeProps> = ({ name, slug, colorH
     </Link>
   );
 };
+

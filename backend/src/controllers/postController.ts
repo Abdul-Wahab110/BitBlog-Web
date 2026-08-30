@@ -45,7 +45,6 @@ export class PostController {
     }
   }
 
-  // Admin CMS: All Articles List
   public static async getAdminPosts(req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> {
     try {
       if (!req.user) {
@@ -59,7 +58,6 @@ export class PostController {
     }
   }
 
-  // Admin CMS: Pending Approvals List
   public static async getPendingPosts(req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> {
     try {
       if (!req.user) {
@@ -73,7 +71,6 @@ export class PostController {
     }
   }
 
-  // User Dashboard: My Articles
   public static async getUserArticles(req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> {
     try {
       if (!req.user) {
@@ -166,7 +163,6 @@ export class PostController {
     }
   }
 
-  // Admin Approval: Approve
   public static async approvePost(req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> {
     try {
       if (!req.user) {
@@ -189,7 +185,6 @@ export class PostController {
     }
   }
 
-  // Admin Approval: Reject
   public static async rejectPost(req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> {
     try {
       if (!req.user) {
@@ -213,7 +208,6 @@ export class PostController {
     }
   }
 
-  // Admin Approval: Request Changes
   public static async requestChangesPost(req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> {
     try {
       if (!req.user) {
@@ -237,3 +231,4 @@ export class PostController {
     }
   }
 }
+

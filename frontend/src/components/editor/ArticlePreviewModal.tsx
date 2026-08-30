@@ -54,7 +54,7 @@ export const ArticlePreviewModal: React.FC<ArticlePreviewModalProps> = ({
           overflow: 'hidden',
         }}
       >
-        {/* Modal Header */}
+
         <div style={{ padding: '1rem 1.5rem', borderBottom: '1px solid var(--color-border)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
             <span style={{ fontSize: '0.75rem', fontWeight: 800, textTransform: 'uppercase', backgroundColor: 'var(--color-secondary)', color: '#FFF', padding: '0.2rem 0.6rem', borderRadius: '4px' }}>
@@ -67,7 +67,6 @@ export const ArticlePreviewModal: React.FC<ArticlePreviewModalProps> = ({
           </button>
         </div>
 
-        {/* Modal Body Preview Content */}
         <div style={{ flex: 1, overflowY: 'auto', padding: '2rem' }}>
           <span style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--color-secondary)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
             {categoryName}
@@ -102,7 +101,6 @@ export const ArticlePreviewModal: React.FC<ArticlePreviewModalProps> = ({
           />
         </div>
 
-        {/* Modal Footer */}
         <div style={{ padding: '1rem 1.5rem', borderTop: '1px solid var(--color-border)', display: 'flex', justifyContent: 'flex-end' }}>
           <button onClick={onClose} style={{ backgroundColor: 'var(--color-secondary)', color: '#FFF', padding: '0.5rem 1.25rem', borderRadius: 'var(--radius-sm)', border: 'none', cursor: 'pointer', fontWeight: 600 }}>
             Close Preview
@@ -112,3 +110,4 @@ export const ArticlePreviewModal: React.FC<ArticlePreviewModalProps> = ({
     </div>
   );
 };
+

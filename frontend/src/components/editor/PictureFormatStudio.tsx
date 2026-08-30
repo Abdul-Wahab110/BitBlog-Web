@@ -63,7 +63,6 @@ export const PictureFormatStudio: React.FC<PictureFormatStudioProps> = ({
 }) => {
   const [activeTab, setActiveTab] = useState<'styles' | 'border' | 'effects' | 'wrap' | 'size'>('styles');
 
-  // Format State
   const [format, setFormat] = useState<PictureFormatState>({
     stylePreset: 'default',
     borderWidth: 0,
@@ -79,7 +78,6 @@ export const PictureFormatStudio: React.FC<PictureFormatStudioProps> = ({
     caption: '',
   });
 
-  // Read current figure styles on mount / selection change
   useEffect(() => {
     if (!selectedFigure) return;
 
@@ -88,24 +86,20 @@ export const PictureFormatStudio: React.FC<PictureFormatStudioProps> = ({
     const fStyle = selectedFigure.getAttribute('style') || '';
     const imgStyle = img?.getAttribute('style') || '';
 
-    // Extract width
     const widthMatch = fStyle.match(/width:\s*(\d+)%/);
     const widthPercent = widthMatch ? parseInt(widthMatch[1], 10) : 65;
 
-    // Extract wrap
     let wrapText: 'inline' | 'left' | 'right' | 'break' | 'full' = 'inline';
     if (fStyle.includes('float: left') || fStyle.includes('float:left')) wrapText = 'left';
     else if (fStyle.includes('float: right') || fStyle.includes('float:right')) wrapText = 'right';
     else if (fStyle.includes('display:block;width:100%') || fStyle.includes('margin:2.5rem 0')) wrapText = 'full';
     else if (fStyle.includes('clear: both') || fStyle.includes('clear:both')) wrapText = 'break';
 
-    // Extract border radius
     let borderRadius = 8;
     if (imgStyle.includes('border-radius: 9999px') || imgStyle.includes('border-radius:9999px')) borderRadius = 9999;
     else if (imgStyle.includes('border-radius: 16px') || imgStyle.includes('border-radius:16px')) borderRadius = 16;
     else if (imgStyle.includes('border-radius: 0px') || imgStyle.includes('border-radius:0px')) borderRadius = 0;
 
-    // Extract filter
     let filter: 'none' | 'grayscale' | 'sepia' | 'contrast' | 'vibrant' = 'none';
     if (imgStyle.includes('grayscale(100%)')) filter = 'grayscale';
     else if (imgStyle.includes('sepia(')) filter = 'sepia';
@@ -183,7 +177,7 @@ export const PictureFormatStudio: React.FC<PictureFormatStudioProps> = ({
         scrollbarWidth: 'thin',
       }}
     >
-      {/* 1. MS Word Ribbon Header Tabs (Horizontal Scrollable) */}
+
       <div
         style={{
           display: 'flex',
@@ -218,7 +212,6 @@ export const PictureFormatStudio: React.FC<PictureFormatStudioProps> = ({
             <Sparkles size={12} /> Picture Format
           </span>
 
-          {/* Sub Navigation Tabs */}
           {[
             { id: 'styles', label: 'Picture Styles' },
             { id: 'border', label: 'Border' },
@@ -248,7 +241,6 @@ export const PictureFormatStudio: React.FC<PictureFormatStudioProps> = ({
           ))}
         </div>
 
-        {/* Action Controls: Reset, Crop, Replace, Delete, Close */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', flexShrink: 0 }}>
           <button
             type="button"
@@ -273,7 +265,6 @@ export const PictureFormatStudio: React.FC<PictureFormatStudioProps> = ({
             <RotateCcw size={13} color="var(--color-secondary)" /> Reset Picture
           </button>
 
-          {/* Revert Full Uncropped Photo Action */}
           {onRevertOriginalPhoto && (hasCropHistory || selectedFigure?.querySelector('img')?.hasAttribute('data-crop-state')) && (
             <button
               type="button"
@@ -388,9 +379,8 @@ export const PictureFormatStudio: React.FC<PictureFormatStudioProps> = ({
         </div>
       </div>
 
-      {/* 2. Ribbon Content Area by Tab */}
       <div style={{ padding: '0.65rem 1rem', overflowX: 'auto' }}>
-        {/* Tab 1: Picture Styles Quick Gallery */}
+
         {activeTab === 'styles' && (
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
             <span style={{ fontSize: '0.75rem', color: 'var(--color-muted)', fontWeight: 700, textTransform: 'uppercase' }}>
@@ -425,7 +415,7 @@ export const PictureFormatStudio: React.FC<PictureFormatStudioProps> = ({
                     transition: 'all 0.15s ease',
                   }}
                 >
-                  {/* Visual Miniature Preview */}
+
                   <div
                     style={{
                       width: '42px',
@@ -446,10 +436,9 @@ export const PictureFormatStudio: React.FC<PictureFormatStudioProps> = ({
           </div>
         )}
 
-        {/* Tab 2: Picture Border Customizer */}
         {activeTab === 'border' && (
           <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', flexWrap: 'wrap' }}>
-            {/* Border Thickness */}
+
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
               <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--color-muted)' }}>Width:</span>
               {[0, 1, 2, 4, 6].map(w => (
@@ -473,7 +462,6 @@ export const PictureFormatStudio: React.FC<PictureFormatStudioProps> = ({
               ))}
             </div>
 
-            {/* Border Color */}
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
               <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--color-muted)' }}>Color:</span>
               {[
@@ -503,7 +491,6 @@ export const PictureFormatStudio: React.FC<PictureFormatStudioProps> = ({
               ))}
             </div>
 
-            {/* Border Dash Style */}
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
               <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--color-muted)' }}>Pattern:</span>
               {(['solid', 'dashed', 'dotted', 'double'] as const).map(st => (
@@ -530,10 +517,9 @@ export const PictureFormatStudio: React.FC<PictureFormatStudioProps> = ({
           </div>
         )}
 
-        {/* Tab 3: Picture Effects & Visual Filters */}
         {activeTab === 'effects' && (
           <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', flexWrap: 'wrap' }}>
-            {/* Color Filter */}
+
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
               <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--color-muted)' }}>Color Filter:</span>
               {[
@@ -563,7 +549,6 @@ export const PictureFormatStudio: React.FC<PictureFormatStudioProps> = ({
               ))}
             </div>
 
-            {/* Shadow Depth */}
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
               <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--color-muted)' }}>Shadow:</span>
               {[
@@ -594,7 +579,6 @@ export const PictureFormatStudio: React.FC<PictureFormatStudioProps> = ({
           </div>
         )}
 
-        {/* Tab 4: Wrap Text & Alignment Positioning */}
         {activeTab === 'wrap' && (
           <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', flexWrap: 'wrap' }}>
             <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--color-muted)' }}>Text Wrap:</span>
@@ -633,10 +617,9 @@ export const PictureFormatStudio: React.FC<PictureFormatStudioProps> = ({
           </div>
         )}
 
-        {/* Tab 5: Size, Width & Aspect Ratio */}
         {activeTab === 'size' && (
           <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', flexWrap: 'wrap' }}>
-            {/* Width Percentage Quick Buttons */}
+
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
               <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--color-muted)' }}>Width:</span>
               {[
@@ -698,7 +681,6 @@ export const PictureFormatStudio: React.FC<PictureFormatStudioProps> = ({
               </span>
             </div>
 
-            {/* Corner Radius */}
             <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
               <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--color-muted)' }}>Corners:</span>
               {[
@@ -727,7 +709,6 @@ export const PictureFormatStudio: React.FC<PictureFormatStudioProps> = ({
               ))}
             </div>
 
-            {/* Interactive Crop Tool Launcher */}
             {onCropImage && (
               <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', borderLeft: '1px solid var(--color-border)', paddingLeft: '0.75rem' }}>
                 <button
@@ -780,3 +761,4 @@ export const PictureFormatStudio: React.FC<PictureFormatStudioProps> = ({
     </div>
   );
 };
+

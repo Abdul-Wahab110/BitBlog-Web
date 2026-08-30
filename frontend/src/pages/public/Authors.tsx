@@ -47,7 +47,6 @@ export const Authors: React.FC = () => {
         description={`Meet the journalists, editors, and industry analysts writing for ${siteName}.`}
       />
 
-      {/* Hero Header */}
       <header
         style={{
           backgroundColor: 'var(--color-card)',
@@ -68,7 +67,6 @@ export const Authors: React.FC = () => {
           Meet the journalists, editors, columnists, and technical contributors driving high-impact stories across {siteName}.
         </p>
 
-        {/* Live Search Bar */}
         <div style={{ marginTop: '1.5rem', position: 'relative', maxWidth: '420px' }}>
           <Search size={16} color="var(--color-muted)" style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)' }} />
           <input
@@ -126,7 +124,7 @@ export const Authors: React.FC = () => {
               }}
             >
               <div>
-                {/* Top Author Header */}
+
                 <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem' }}>
                   <UserAvatar
                     src={author.profile_image}
@@ -156,7 +154,6 @@ export const Authors: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Tagline / Bio Snippet */}
                 <p
                   style={{
                     color: 'var(--color-text-secondary)',
@@ -172,7 +169,6 @@ export const Authors: React.FC = () => {
                   {author.short_description || author.bio || 'Contributing author and analyst at BitBlog.'}
                 </p>
 
-                {/* Author Tags / Expertise Pills */}
                 {author.author_tags && author.author_tags.length > 0 && (
                   <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.35rem', marginBottom: '1rem' }}>
                     {author.author_tags.slice(0, 3).map((t: string) => (
@@ -200,7 +196,6 @@ export const Authors: React.FC = () => {
                 )}
               </div>
 
-              {/* Bottom Meta & Arrow */}
               <div
                 style={{
                   borderTop: '1px solid var(--color-border)',
@@ -234,3 +229,4 @@ export const Authors: React.FC = () => {
     </div>
   );
 };
+

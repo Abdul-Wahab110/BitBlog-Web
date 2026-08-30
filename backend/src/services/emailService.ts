@@ -18,7 +18,6 @@ export class EmailService {
     return this.transporter;
   }
 
-  // 1. Send 6-Digit Registration OTP Email
   public static async sendRegistrationOtpEmail(toEmail: string, userName: string, otpCode: string): Promise<boolean> {
     try {
       const transporter = this.getTransporter();
@@ -37,7 +36,7 @@ export class EmailService {
     <tr>
       <td align="center">
         <table width="100%" max-width="560px" cellpadding="0" cellspacing="0" style="max-width: 560px; background-color: #111827; border-radius: 16px; border: 1px solid #1F2937; overflow: hidden; box-shadow: 0 12px 30px rgba(0,0,0,0.6);">
-          
+
           <!-- Header Branding -->
           <tr>
             <td style="padding: 36px 36px 20px; text-align: center; background: linear-gradient(180deg, rgba(99,102,241,0.18) 0%, rgba(17,24,39,0) 100%);">
@@ -117,7 +116,6 @@ export class EmailService {
     }
   }
 
-  // 2. Send Account Email Verification Link
   public static async sendVerificationEmail(toEmail: string, userName: string, token: string): Promise<boolean> {
     try {
       const verifyUrl = `${config.frontendUrl}/verify-email?token=${encodeURIComponent(token)}`;
@@ -136,7 +134,7 @@ export class EmailService {
     <tr>
       <td align="center">
         <table width="100%" max-width="580px" cellpadding="0" cellspacing="0" style="max-width: 580px; background-color: #1E293B; border-radius: 16px; border: 1px solid #334155; overflow: hidden; box-shadow: 0 10px 25px rgba(0,0,0,0.5);">
-          
+
           <!-- Header Branding -->
           <tr>
             <td style="padding: 35px 35px 20px; text-align: center; background: linear-gradient(180deg, rgba(99,102,241,0.15) 0%, rgba(30,41,59,0) 100%);">
@@ -218,7 +216,6 @@ export class EmailService {
     }
   }
 
-  // 2. Send Welcome Confirmation Email
   public static async sendWelcomeEmail(toEmail: string, userName: string): Promise<boolean> {
     try {
       const exploreUrl = `${config.frontendUrl}/blog`;
@@ -280,7 +277,6 @@ export class EmailService {
     }
   }
 
-  // 3. Send Password Reset Email
   public static async sendPasswordResetEmail(toEmail: string, userName: string, resetToken: string): Promise<boolean> {
     try {
       const resetUrl = `${config.frontendUrl}/reset-password?token=${encodeURIComponent(resetToken)}`;
@@ -338,7 +334,6 @@ export class EmailService {
     }
   }
 
-  // 4. Send Direct Contact Message Reply to Reader's Gmail
   public static async sendContactReplyEmail(
     toEmail: string,
     recipientName: string,
@@ -366,7 +361,7 @@ export class EmailService {
     <tr>
       <td align="center">
         <table width="100%" max-width="600px" cellpadding="0" cellspacing="0" style="max-width: 600px; background-color: #111827; border-radius: 16px; border: 1px solid #1F2937; overflow: hidden; box-shadow: 0 12px 30px rgba(0,0,0,0.6);">
-          
+
           <!-- Header Branding -->
           <tr>
             <td style="padding: 32px 36px 20px; text-align: center; background: linear-gradient(180deg, rgba(99,102,241,0.2) 0%, rgba(17,24,39,0) 100%);">
@@ -440,3 +435,4 @@ export class EmailService {
     }
   }
 }
+

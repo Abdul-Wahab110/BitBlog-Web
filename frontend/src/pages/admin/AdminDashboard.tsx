@@ -52,7 +52,6 @@ export const AdminDashboard: React.FC = () => {
       });
   }, []);
 
-  // Configure Dynamic Cards According to Role
   let statCards: Array<{ label: string; value: number; icon: any; color: string; link: string }> = [];
   let pageTitle = 'CMS Admin Overview';
   let pageSubtitle = 'Real-time publication database metrics, pending article approvals & system status';
@@ -83,7 +82,7 @@ export const AdminDashboard: React.FC = () => {
       { label: 'Total Article Views', value: stats.totalViews, icon: Eye, color: '#06B6D4', link: '/admin/posts' },
     ];
   } else {
-    // Super Administrator
+
     pageTitle = 'CMS Admin Overview';
     pageSubtitle = 'Real-time publication database metrics, pending article approvals & system status';
     statCards = [
@@ -175,7 +174,6 @@ export const AdminDashboard: React.FC = () => {
         </div>
       </div>
 
-      {/* Pending Applications Alert Banner for Admin */}
       {userRole === 'Admin' && (stats.pendingApplications || 0) > 0 && (
         <div
           style={{
@@ -224,7 +222,6 @@ export const AdminDashboard: React.FC = () => {
         </div>
       )}
 
-      {/* Real Oracle Database Stat Cards Grid */}
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1.25rem', marginBottom: '2rem' }}>
         {statCards.map(card => {
           const Icon = card.icon;
@@ -261,3 +258,4 @@ export const AdminDashboard: React.FC = () => {
     </div>
   );
 };
+

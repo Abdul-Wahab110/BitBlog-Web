@@ -49,7 +49,6 @@ export class AuditLogModel {
       created_at: now,
     };
 
-    // Keep latest 2000 records in memory/disk
     store.audit_logs.unshift(record);
     if (store.audit_logs.length > 2000) {
       store.audit_logs = store.audit_logs.slice(0, 2000);
@@ -119,3 +118,4 @@ export class AuditLogModel {
     Database.saveStore();
   }
 }
+

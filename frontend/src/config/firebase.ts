@@ -11,14 +11,12 @@ const firebaseConfig = {
   measurementId: "G-GC12RWJVR3"
 };
 
-// Initialize Firebase
 export const firebaseApp = initializeApp(firebaseConfig);
 
-// Initialize Firebase Authentication
 export const firebaseAuth = getAuth(firebaseApp);
 
-// Configure Google Auth Provider
 export const googleAuthProvider = new GoogleAuthProvider();
 googleAuthProvider.setCustomParameters({
   prompt: 'select_account',
 });
+

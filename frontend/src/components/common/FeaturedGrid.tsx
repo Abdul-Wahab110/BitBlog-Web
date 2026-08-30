@@ -65,7 +65,7 @@ export const FeaturedGrid: React.FC<FeaturedGridProps> = ({ articles = [] }) => 
   return (
     <section style={{ padding: '0 0 1.5rem 0' }}>
       <div className="featured-grid-container">
-        {/* Main Hero Featured Article Card */}
+
         {mainArticle && (
           <article
             style={{
@@ -113,7 +113,6 @@ export const FeaturedGrid: React.FC<FeaturedGridProps> = ({ articles = [] }) => 
           </article>
         )}
 
-        {/* 4 Sub-Featured Cards (2x2 Grid) */}
         <div className="featured-grid-sub">
           {subArticles.map(art => (
             <article

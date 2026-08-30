@@ -93,14 +93,14 @@ export class SettingModel {
     try {
       const sql = `SELECT setting_key, setting_value FROM site_settings`;
       const rows = await Database.execute<{ SETTING_KEY?: string; setting_key?: string; SETTING_VALUE?: string; setting_value?: string }>(sql, []);
-      
+
       const dbSettings: Record<string, any> = {};
       if (rows && rows.length > 0) {
         for (const row of rows) {
           const key = row.SETTING_KEY || row.setting_key;
           const val = row.SETTING_VALUE || row.setting_value;
           if (key) {
-            // Parse boolean/numbers if applicable
+
             if (val === 'true') dbSettings[key] = true;
             else if (val === 'false') dbSettings[key] = false;
             else if (val !== null && val !== undefined && !isNaN(Number(val)) && val.trim() !== '' && !val.startsWith('http') && !val.includes('@')) {
@@ -150,7 +150,6 @@ export class SettingModel {
     const store = Database.getStore();
     if (!store.settings) store.settings = {};
 
-    // 1. Update In-Memory / File Persistent Store
     for (const [key, value] of Object.entries(data)) {
       if (value !== undefined) {
         store.settings[key] = String(value);
@@ -158,7 +157,6 @@ export class SettingModel {
     }
     Database.saveStore();
 
-    // 2. Persist to Oracle SQL site_settings Table
     try {
       for (const [key, value] of Object.entries(data)) {
         if (value !== undefined) {
@@ -182,3 +180,4 @@ export class SettingModel {
     return this.getSettings();
   }
 }
+

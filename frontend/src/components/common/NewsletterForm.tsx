@@ -177,7 +177,6 @@ export const NewsletterForm: React.FC<NewsletterFormProps> = ({
               </div>
             </div>
 
-            {/* Topic preference badges */}
             <div style={{ textAlign: 'left', marginTop: '0.5rem' }}>
               <button
                 type="button"
@@ -257,7 +256,6 @@ export const NewsletterForm: React.FC<NewsletterFormProps> = ({
     );
   }
 
-  // Default 'card' style for Sidebars and standard blocks
   return (
     <div
       className={`newsletter-card ${className}`}
@@ -359,7 +357,6 @@ export const NewsletterForm: React.FC<NewsletterFormProps> = ({
           />
         </div>
 
-        {/* Topic tags toggle */}
         <div style={{ marginTop: '0.2rem' }}>
           <button
             type="button"

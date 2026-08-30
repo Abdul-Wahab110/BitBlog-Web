@@ -1,6 +1,5 @@
 import dns from 'dns';
 
-// Common typo domains
 const TYPO_DOMAINS: { [key: string]: string } = {
   'gmial.com': 'gmail.com',
   'gamil.com': 'gmail.com',
@@ -17,7 +16,6 @@ const TYPO_DOMAINS: { [key: string]: string } = {
   'outlok.com': 'outlook.com',
 };
 
-// Known temporary / disposable fake email domains
 const DISPOSABLE_DOMAINS = new Set([
   'mailinator.com',
   '10minutemail.com',
@@ -42,7 +40,6 @@ export class AuthValidator {
     if (!email || typeof email !== 'string') return false;
     const cleanEmail = email.trim().toLowerCase();
 
-    // Standard RFC-compliant regex check
     const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$/;
     if (!emailRegex.test(cleanEmail)) return false;
 
@@ -210,3 +207,4 @@ export class AuthValidator {
     return errors;
   }
 }
+

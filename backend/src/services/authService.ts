@@ -7,7 +7,6 @@ import { AuthValidator } from '../validators/authValidator';
 import { JwtPayload, UserRole } from '../types';
 import { EmailService } from './emailService';
 
-// Temporary memory store for pending OTP registrations (valid for 10 minutes)
 interface PendingRegistration {
   name: string;
   username: string;
@@ -22,14 +21,14 @@ interface PendingRegistration {
 const pendingRegistrations = new Map<string, PendingRegistration>();
 
 export class AuthService {
-  // 1. Send 6-Digit OTP to User's Gmail for Registration
+
   public static async sendRegistrationOtp(data: {
     name: string;
     username: string;
     email: string;
     password: string;
   }) {
-    // 1. Payload validation
+
     const validationErrors = AuthValidator.validateRegistrationPayload(data);
     if (validationErrors.length > 0) {
       throw new ApiError('Registration validation failed', 400, validationErrors);
@@ -38,35 +37,29 @@ export class AuthService {
     const normalizedEmail = data.email.trim().toLowerCase();
     const normalizedUsername = data.username.trim().toLowerCase();
 
-    // 2. Live DNS MX verification (verifies email domain actually exists and accepts emails)
     const isDomainActive = await AuthValidator.verifyEmailDomainLive(normalizedEmail);
     if (!isDomainActive) {
       throw new ApiError('Invalid email domain: This email address domain cannot receive mail. Please enter a valid and active Gmail address.', 400, ['Email domain is unreachable or non-existent']);
     }
 
-    // 3. Duplicate email check in DB
     const existingEmail = await UserModel.findByEmail(normalizedEmail);
     if (existingEmail) {
       throw new ApiError('An account with this email address already exists', 409, ['Email is already registered']);
     }
 
-    // 3. Duplicate username check in DB
     const existingUsername = await UserModel.findByUsername(normalizedUsername);
     if (existingUsername) {
       throw new ApiError('This username is already taken', 409, ['Username is already taken']);
     }
 
-    // 4. Hash password with bcrypt
     const passwordHash = await hashPassword(data.password);
 
-    // 5. Generate secure 6-digit numeric OTP
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
-    const expiresAt = Date.now() + 10 * 60 * 1000; // 10 minutes
+    const expiresAt = Date.now() + 10 * 60 * 1000;
 
     let roleId = await UserModel.getRoleIdByName('User');
     if (!roleId) roleId = 4;
 
-    // 6. Save in pending registrations store
     pendingRegistrations.set(normalizedEmail, {
       name: data.name.trim(),
       username: normalizedUsername,
@@ -78,7 +71,6 @@ export class AuthService {
       attempts: 0,
     });
 
-    // 7. Dispatch OTP to user's real Gmail
     await EmailService.sendRegistrationOtpEmail(normalizedEmail, data.name.trim(), otp);
 
     return {
@@ -96,7 +88,6 @@ export class AuthService {
     };
   }
 
-  // 2. Verify 6-Digit OTP and Create Reader Account in DB
   public static async verifyRegistrationOtp(data: {
     email: string;
     otp: string;
@@ -122,13 +113,11 @@ export class AuthService {
       throw new ApiError('Too many invalid attempts. Please register again.', 429);
     }
 
-    // Check OTP Match
     if (pending.otp !== data.otp.trim()) {
       pending.attempts += 1;
       throw new ApiError('Invalid verification code. Please check your Gmail and try again.', 400);
     }
 
-    // OTP is 100% Valid & Verified! Create user in DB
     const newUser = await UserModel.createUser({
       roleId: pending.roleId,
       name: pending.name,
@@ -138,7 +127,6 @@ export class AuthService {
       isVerified: true,
     });
 
-    // Remove from pending store
     pendingRegistrations.delete(normalizedEmail);
 
     const userRecord = newUser || {
@@ -154,7 +142,6 @@ export class AuthService {
       updated_at: new Date().toISOString(),
     };
 
-    // Generate signed JWT token
     const payload: JwtPayload = {
       userId: userRecord.user_id,
       email: userRecord.email,
@@ -181,7 +168,6 @@ export class AuthService {
     };
   }
 
-  // 3. Resend 6-Digit OTP
   public static async resendRegistrationOtp(email: string) {
     if (!email) {
       throw new ApiError('Email address is required', 400);
@@ -194,7 +180,6 @@ export class AuthService {
       throw new ApiError('No pending registration found for this email. Please fill out the registration form.', 400);
     }
 
-    // Generate new OTP
     const newOtp = Math.floor(100000 + Math.random() * 900000).toString();
     pending.otp = newOtp;
     pending.expiresAt = Date.now() + 10 * 60 * 1000;
@@ -214,7 +199,7 @@ export class AuthService {
     email: string;
     password: string;
   }) {
-    // Strictly require 6-digit OTP verification for all registrations!
+
     return await this.sendRegistrationOtp(data);
   }
 
@@ -229,7 +214,6 @@ export class AuthService {
       throw new ApiError('Email and password are required', 400, ['Email and password are required']);
     }
 
-    // 1. Fetch user by email or username
     let user = await UserModel.findByEmail(identifier);
     if (!user) {
       user = await UserModel.findByUsername(identifier);
@@ -238,33 +222,28 @@ export class AuthService {
       throw new ApiError('Invalid email or password credentials', 401, ['Invalid email or password']);
     }
 
-    // 2. Verify account status
     if (user.status !== 'ACTIVE') {
       throw new ApiError(`Your account is currently ${user.status.toLowerCase()}`, 403, [`Account status: ${user.status}`]);
     }
 
-    // 3. Bcrypt password comparison
     const isPasswordValid = await comparePassword(credentials.password, user.password_hash);
     if (!isPasswordValid) {
       throw new ApiError('Invalid email or password credentials', 401, ['Invalid email or password']);
     }
 
-    // 4. Account Type Validation against real database role
     if (credentials.accountType === 'Admin') {
       if (user.role_name !== 'Admin' && user.role_name !== 'Editor' && user.role_name !== 'Author') {
         throw new ApiError('This account does not have Administrator privileges. Access restricted to Staff accounts.', 403, ['Selected account type mismatch']);
       }
     } else if (credentials.accountType === 'User') {
-      // Complete Cloaking Security: If Super Admin attempts to sign in via public reader portal, silently reject as invalid credentials without leaking existence
+
       if (user.role_name === 'Admin') {
         throw new ApiError('Invalid email or password credentials', 401, ['Invalid email or password']);
       }
     }
 
-    // 5. Update last_login timestamp
     await UserModel.updateLastLogin(user.user_id);
 
-    // 6. Generate signed JWT token
     const payload: JwtPayload = {
       userId: user.user_id,
       email: user.email,
@@ -361,7 +340,6 @@ export class AuthService {
     return { message: 'Password updated successfully' };
   }
 
-  // Sync / Login via Firebase Verified Google Account
   public static async syncFirebaseUser(data: {
     email: string;
     name?: string;
@@ -377,7 +355,7 @@ export class AuthService {
     let user = await UserModel.findByEmail(normalizedEmail);
 
     if (!user) {
-      // Auto-provision reader account in database
+
       const baseUsername = normalizedEmail.split('@')[0].replace(/[^a-z0-9_]/g, '') || 'reader';
       let uniqueUsername = baseUsername;
       let counter = 1;
@@ -388,7 +366,7 @@ export class AuthService {
 
       const dummyPasswordHash = await hashPassword(`Firebase_${Date.now()}_${Math.random()}`);
       user = await UserModel.createUser({
-        roleId: 4, // Reader Role
+        roleId: 4,
         name: data.name?.trim() || uniqueUsername,
         username: uniqueUsername,
         email: normalizedEmail,
@@ -435,3 +413,4 @@ export class AuthService {
     };
   }
 }
+

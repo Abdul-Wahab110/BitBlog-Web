@@ -15,7 +15,6 @@ export const AdminTags: React.FC = () => {
   const [submitting, setSubmitting] = useState(false);
   const [msg, setMsg] = useState<{ text: string; type: 'success' | 'error' } | null>(null);
 
-  // Editing state
   const [editingTagId, setEditingTagId] = useState<number | null>(null);
   const [editName, setEditName] = useState('');
   const [editSlug, setEditSlug] = useState('');
@@ -159,7 +158,7 @@ export const AdminTags: React.FC = () => {
       )}
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(290px, 1fr))', gap: '1.5rem', alignItems: 'start' }}>
-        {/* Add Tag Form */}
+
         <div
           style={{
             backgroundColor: 'var(--color-card)',
@@ -234,7 +233,6 @@ export const AdminTags: React.FC = () => {
           </form>
         </div>
 
-        {/* Tags List Table */}
         <div
           style={{
             backgroundColor: 'var(--color-card)',

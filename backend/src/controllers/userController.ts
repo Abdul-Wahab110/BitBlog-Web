@@ -11,3 +11,4 @@ export class UserController {
     ResponseUtil.success(res, [], 'User bookmarks retrieved');
   }
 }
+

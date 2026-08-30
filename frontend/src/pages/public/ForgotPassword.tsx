@@ -150,3 +150,4 @@ export const ForgotPassword: React.FC = () => {
     </main>
   );
 };
+

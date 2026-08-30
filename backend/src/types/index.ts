@@ -29,3 +29,4 @@ export interface HealthStatus {
   uptimeSeconds: number;
   timestamp: string;
 }
+

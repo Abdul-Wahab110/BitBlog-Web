@@ -95,10 +95,9 @@ export const SeoHead: React.FC<SeoProps> = ({
   const finalTwitterImage = twitterImage || ogImage;
 
   useEffect(() => {
-    // 1. Update Document Title
+
     document.title = finalTitle;
 
-    // Helper to update or create meta tags
     const updateMeta = (selector: string, attr: string, value: string) => {
       let el = document.querySelector(selector);
       if (!el) {
@@ -115,14 +114,12 @@ export const SeoHead: React.FC<SeoProps> = ({
       el.setAttribute(attr, value);
     };
 
-    // 2. Standard Meta Tags
     updateMeta('meta[name="description"]', 'content', finalDescription);
     updateMeta('meta[name="robots"]', 'content', robots);
     if (focusKeyword) {
       updateMeta('meta[name="keywords"]', 'content', focusKeyword);
     }
 
-    // 3. Canonical Link
     let canonicalLink = document.querySelector('link[rel="canonical"]') as HTMLLinkElement;
     if (!canonicalLink) {
       canonicalLink = document.createElement('link');
@@ -131,7 +128,6 @@ export const SeoHead: React.FC<SeoProps> = ({
     }
     canonicalLink.setAttribute('href', currentUrl);
 
-    // 4. OpenGraph Social Tags
     updateMeta('meta[property="og:title"]', 'content', finalOgTitle || finalTitle);
     updateMeta('meta[property="og:description"]', 'content', finalOgDescription || finalDescription);
     updateMeta('meta[property="og:url"]', 'content', currentUrl);
@@ -144,7 +140,6 @@ export const SeoHead: React.FC<SeoProps> = ({
       }
     }
 
-    // 5. Twitter Card Tags
     updateMeta('meta[name="twitter:card"]', 'content', twitterCard);
     updateMeta('meta[name="twitter:title"]', 'content', finalTwitterTitle || finalTitle);
     updateMeta('meta[name="twitter:description"]', 'content', finalTwitterDescription || finalDescription);
@@ -155,7 +150,6 @@ export const SeoHead: React.FC<SeoProps> = ({
       }
     }
 
-    // 6. Article Specific Meta (for Google News & Blog Indexing)
     if (type === 'article' || ogType === 'article') {
       if (publishedAt) {
         updateMeta('meta[property="article:published_time"]', 'content', publishedAt);
@@ -168,7 +162,6 @@ export const SeoHead: React.FC<SeoProps> = ({
       }
     }
 
-    // 7. AEO Direct Answer & Key Takeaways Meta
     if (directAnswer) {
       updateMeta('meta[name="direct-answer"]', 'content', directAnswer);
     }
@@ -176,11 +169,9 @@ export const SeoHead: React.FC<SeoProps> = ({
       updateMeta('meta[name="key-takeaways"]', 'content', keyTakeaways);
     }
 
-    // 8. JSON-LD Structured Data Injection
     const origin = window.location.origin;
     const schemas: any[] = [];
 
-    // BlogPosting / Article Schema
     if (type === 'article' || ogType === 'article') {
       const authorSchema: any = {
         '@type': 'Person',
@@ -215,7 +206,6 @@ export const SeoHead: React.FC<SeoProps> = ({
       });
     }
 
-    // WebSite & SearchAction Schema
     schemas.push({
       '@context': 'https://schema.org',
       '@type': 'WebSite',
@@ -228,7 +218,6 @@ export const SeoHead: React.FC<SeoProps> = ({
       },
     });
 
-    // Organization Schema
     schemas.push({
       '@context': 'https://schema.org',
       '@type': 'Organization',
@@ -240,7 +229,6 @@ export const SeoHead: React.FC<SeoProps> = ({
       },
     });
 
-    // BreadcrumbList Schema
     if (breadcrumbs && breadcrumbs.length > 0) {
       schemas.push({
         '@context': 'https://schema.org',
@@ -254,7 +242,6 @@ export const SeoHead: React.FC<SeoProps> = ({
       });
     }
 
-    // FAQPage Schema (ONLY generated when actual FAQ items exist!)
     const validFaqs = (faqList || []).filter(item => item.question && item.question.trim() && item.answer && item.answer.trim());
     if (validFaqs.length > 0) {
       schemas.push({
@@ -271,7 +258,6 @@ export const SeoHead: React.FC<SeoProps> = ({
       });
     }
 
-    // HowTo Schema (ONLY generated when valid HowTo data exists!)
     if (howToData && Array.isArray(howToData.steps) && howToData.steps.length > 0) {
       const validSteps = howToData.steps.filter(s => s.title && s.title.trim());
       if (validSteps.length > 0) {
@@ -292,11 +278,9 @@ export const SeoHead: React.FC<SeoProps> = ({
       }
     }
 
-    // Clean up existing dynamic JSON-LD script tags
     const oldScripts = document.querySelectorAll('script[data-seo-jsonld="true"]');
     oldScripts.forEach(s => s.remove());
 
-    // Inject new JSON-LD scripts
     schemas.forEach(schemaObj => {
       const script = document.createElement('script');
       script.type = 'application/ld+json';
@@ -336,3 +320,4 @@ export const SeoHead: React.FC<SeoProps> = ({
 
   return null;
 };
+

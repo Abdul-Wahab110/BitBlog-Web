@@ -38,7 +38,6 @@ export const Home: React.FC = () => {
     slug: p.slug,
   }));
 
-  // Top 3 highest-viewed articles for Recommended Reads
   const recommendedPosts = [...posts]
     .sort((a, b) => (b.views_count || 0) - (a.views_count || 0))
     .slice(0, 3);
@@ -49,11 +48,11 @@ export const Home: React.FC = () => {
         title={settings.default_seo_title || `${siteName} - Digital Journal & Publication`}
         description={settings.default_meta_description || 'Discover editorial stories, technology commentary, and curated digital journalism.'}
       />
-      {/* Breaking News Bar */}
+
       {breakingNewsItems.length > 0 && <BreakingNews items={breakingNewsItems} />}
 
       <div className="container" style={{ paddingTop: '1.5rem', paddingBottom: '3rem' }}>
-        {/* Featured Hero Grid: Top 5 Highest Viewed & Most Popular Articles */}
+
         {(featuredPosts.length > 0 || posts.length > 0) && (
           <FeaturedGrid
             articles={
@@ -64,14 +63,13 @@ export const Home: React.FC = () => {
           />
         )}
 
-        {/* Main Content & Sidebar Column Grid */}
         <div className="grid-main-sidebar">
           <main style={{ minHeight: 'auto' }}>
             {loading ? (
               <LoadingState message="Loading latest publication stories from Oracle database..." />
             ) : (
               <>
-                {/* Latest Articles Section */}
+
                 <ArticleGrid
                   title="LATEST ARTICLES"
                   articles={posts}
@@ -79,9 +77,6 @@ export const Home: React.FC = () => {
                   emptyDescription="No articles have been published in the database yet. Stories published in the Admin CMS will appear here automatically."
                 />
 
-
-
-                {/* Recommended Articles Section */}
                 {recommendedPosts.length > 0 && (
                   <div style={{ marginTop: '2.5rem' }}>
                     <ArticleGrid
@@ -96,10 +91,10 @@ export const Home: React.FC = () => {
             )}
           </main>
 
-          {/* Sidebar */}
           <Sidebar />
         </div>
       </div>
     </div>
   );
 };
+

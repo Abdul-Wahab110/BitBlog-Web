@@ -38,7 +38,6 @@ export class MediaController {
 
       let uploadedByFilter: number | undefined = undefined;
 
-      // Strict Admin Access: ONLY Administrator accounts can view all portal media
       if (userRole !== 'Admin') {
         uploadedByFilter = userId;
       } else if (req.query.scope === 'mine') {
@@ -67,7 +66,6 @@ export class MediaController {
         return;
       }
 
-      // ONLY Admin can modify media assets uploaded by other users
       if (userRole !== 'Admin' && Number(mediaRecord.uploaded_by) !== Number(userId)) {
         ResponseUtil.error(res, 'Access Denied: Only Administrators have permission to modify all portal media assets.', 403);
         return;
@@ -92,7 +90,6 @@ export class MediaController {
         return;
       }
 
-      // ONLY Admin can delete media assets uploaded by other users
       if (userRole !== 'Admin' && Number(mediaRecord.uploaded_by) !== Number(userId)) {
         ResponseUtil.error(res, 'Access Denied: Only Administrators have permission to delete all portal media assets.', 403);
         return;
@@ -114,3 +111,4 @@ export class MediaController {
     }
   }
 }
+

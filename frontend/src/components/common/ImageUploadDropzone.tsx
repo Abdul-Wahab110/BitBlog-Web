@@ -147,7 +147,6 @@ export const ImageUploadDropzone: React.FC<ImageUploadDropzoneProps> = ({
           {label}
         </label>
 
-        {/* Mode Tabs */}
         {!value && (
           <div style={{ display: 'flex', gap: '0.3rem', backgroundColor: 'var(--color-surface-alt)', padding: '2px', borderRadius: 'var(--radius-sm)', flexWrap: 'wrap' }}>
             <button
@@ -254,7 +253,7 @@ export const ImageUploadDropzone: React.FC<ImageUploadDropzoneProps> = ({
       )}
 
       {value ? (
-        /* Image Preview & Controls */
+
         <div
           style={{
             border: '1px solid var(--color-border)',
@@ -302,7 +301,7 @@ export const ImageUploadDropzone: React.FC<ImageUploadDropzoneProps> = ({
           </div>
         </div>
       ) : activeTab === 'url' ? (
-        /* Image URL Input Form */
+
         <div
           style={{
             border: '1px solid var(--color-border)',
@@ -341,7 +340,7 @@ export const ImageUploadDropzone: React.FC<ImageUploadDropzoneProps> = ({
           </div>
         </div>
       ) : activeTab === 'presets' ? (
-        /* Curated Presets Grid */
+
         <div
           style={{
             border: '1px solid var(--color-border)',
@@ -392,7 +391,7 @@ export const ImageUploadDropzone: React.FC<ImageUploadDropzoneProps> = ({
           </div>
         </div>
       ) : (
-        /* Drag and Drop Zone */
+
         <div
           onDragEnter={handleDrag}
           onDragLeave={handleDrag}

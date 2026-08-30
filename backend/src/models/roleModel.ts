@@ -9,3 +9,4 @@ export class RoleModel {
     return Database.execute(`SELECT * FROM roles WHERE role_name = :1`, [roleName]);
   }
 }
+

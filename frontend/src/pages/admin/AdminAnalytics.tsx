@@ -71,7 +71,7 @@ export const AdminAnalytics: React.FC = () => {
 
   return (
     <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
-      {/* Header Bar */}
+
       <div
         style={{
           display: 'flex',
@@ -119,7 +119,6 @@ export const AdminAnalytics: React.FC = () => {
         </div>
       </div>
 
-      {/* Traffic Summary Cards - Compact 2x2 on Mobile, 4 Cols on Desktop */}
       <div
         style={{
           display: 'grid',
@@ -204,7 +203,6 @@ export const AdminAnalytics: React.FC = () => {
         })}
       </div>
 
-      {/* Top Performing Articles Section */}
       <div
         style={{
           backgroundColor: 'var(--color-card)',
@@ -229,7 +227,7 @@ export const AdminAnalytics: React.FC = () => {
           </p>
         ) : (
           <>
-            {/* Desktop Table View */}
+
             <div className="analytics-desktop-table" style={{ display: 'block' }}>
               <div className="table-responsive">
                 <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.85rem' }}>
@@ -281,7 +279,6 @@ export const AdminAnalytics: React.FC = () => {
               </div>
             </div>
 
-            {/* Mobile Optimized Cards List View */}
             <div className="analytics-mobile-list" style={{ display: 'none', flexDirection: 'column', gap: '0.75rem' }}>
               {topPosts.map((post, index) => (
                 <div
@@ -334,7 +331,6 @@ export const AdminAnalytics: React.FC = () => {
         )}
       </div>
 
-      {/* Responsive Media Queries */}
       <style>{`
         @media (max-width: 640px) {
           .analytics-desktop-table {

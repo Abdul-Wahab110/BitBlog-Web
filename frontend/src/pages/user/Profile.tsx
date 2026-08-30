@@ -33,10 +33,8 @@ export const Profile: React.FC = () => {
   const { settings } = useSettings();
   const siteName = settings.site_name || 'BitBlog';
 
-  // Active Tab: 'profile' | 'security'
   const [activeTab, setActiveTab] = useState<'profile' | 'security'>('profile');
 
-  // Profile Fields State
   const [name, setName] = useState(user?.name || '');
   const [bio, setBio] = useState(user?.bio || '');
   const [website, setWebsite] = useState(user?.website || '');
@@ -45,7 +43,6 @@ export const Profile: React.FC = () => {
   const [authorTags, setAuthorTags] = useState<string[]>(user?.author_tags || []);
   const [tagInput, setTagInput] = useState('');
 
-  // Social Links
   const [socialLinks, setSocialLinks] = useState<{
     twitter?: string;
     github?: string;
@@ -55,13 +52,11 @@ export const Profile: React.FC = () => {
     youtube?: string;
   }>(user?.social_links || {});
 
-  // Direct Image Upload State
   const [uploadingImage, setUploadingImage] = useState(false);
   const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [imageFile, setImageFile] = useState<File | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
-  // Password Change State
   const [currentPassword, setCurrentPassword] = useState('');
   const [newPassword, setNewPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -69,12 +64,10 @@ export const Profile: React.FC = () => {
   const [showNewPass, setShowNewPass] = useState(false);
   const [changingPass, setChangingPass] = useState(false);
 
-  // Status Alerts
   const [saving, setSaving] = useState(false);
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
-  // Load latest full profile from backend on mount
   useEffect(() => {
     ApiService.getUserProfile()
       .then(res => {
@@ -105,7 +98,6 @@ export const Profile: React.FC = () => {
       .catch(() => { });
   }, []);
 
-  // Handle direct file selection & client-side validation
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     setErrorMsg(null);
     if (!e.target.files || !e.target.files[0]) return;
@@ -117,7 +109,7 @@ export const Profile: React.FC = () => {
       return;
     }
 
-    const maxSizeBytes = 5 * 1024 * 1024; // 5 MB
+    const maxSizeBytes = 5 * 1024 * 1024;
     if (file.size > maxSizeBytes) {
       setErrorMsg(`File size (${(file.size / (1024 * 1024)).toFixed(1)} MB) exceeds 5 MB limit.`);
       return;
@@ -128,7 +120,6 @@ export const Profile: React.FC = () => {
     setImagePreview(objectUrl);
   };
 
-  // Upload image to server immediately or upon save
   const handleUploadImageNow = async () => {
     if (!imageFile) return;
     setUploadingImage(true);
@@ -160,7 +151,6 @@ export const Profile: React.FC = () => {
     setProfileImage('');
   };
 
-  // Add / Remove Author Tags
   const handleAddTag = () => {
     const clean = tagInput.trim().replace(/^#/, '');
     if (clean && !authorTags.includes(clean)) {
@@ -173,7 +163,6 @@ export const Profile: React.FC = () => {
     setAuthorTags(authorTags.filter(t => t !== tagToRemove));
   };
 
-  // Save General Profile
   const handleSaveProfile = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMsg(null);
@@ -189,7 +178,6 @@ export const Profile: React.FC = () => {
     try {
       let finalImageUrl = profileImage;
 
-      // If user selected a new file but didn't click upload button separately, upload it first
       if (imageFile) {
         const uploadRes = await ApiService.uploadAvatar(imageFile);
         if (uploadRes && uploadRes.success && uploadRes.data) {
@@ -233,7 +221,6 @@ export const Profile: React.FC = () => {
     }
   };
 
-  // Save Password
   const handleSavePassword = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMsg(null);
@@ -288,7 +275,6 @@ export const Profile: React.FC = () => {
         robots="noindex, nofollow"
       />
 
-      {/* Header Bar */}
       <header
         style={{
           display: 'flex',
@@ -317,7 +303,6 @@ export const Profile: React.FC = () => {
           </p>
         </div>
 
-        {/* Tab Navigation Controls */}
         <div
           style={{
             display: 'flex',
@@ -385,7 +370,6 @@ export const Profile: React.FC = () => {
         </div>
       </header>
 
-      {/* Global Status Alerts */}
       {errorMsg && (
         <div
           role="alert"
@@ -430,7 +414,7 @@ export const Profile: React.FC = () => {
 
       {activeTab === 'profile' ? (
         <form onSubmit={handleSaveProfile}>
-          {/* Main Grid: Avatar Card + Profile Details Card */}
+
           <div
             style={{
               display: 'grid',
@@ -439,7 +423,7 @@ export const Profile: React.FC = () => {
               marginBottom: '1.5rem',
             }}
           >
-            {/* Left Column: Profile Picture & Avatar Uploader */}
+
             <div
               style={{
                 backgroundColor: 'var(--color-card)',
@@ -458,7 +442,6 @@ export const Profile: React.FC = () => {
                 Displayed across stories, editorial bylines, and discussion comments
               </p>
 
-              {/* Large Avatar Preview with Clean Initials Fallback */}
               <div style={{ position: 'relative', marginBottom: '1.25rem' }}>
                 <UserAvatar
                   src={displayAvatar}
@@ -472,7 +455,6 @@ export const Profile: React.FC = () => {
                 />
               </div>
 
-              {/* Image Information Badge */}
               <div style={{ marginBottom: '1rem' }}>
                 <span
                   style={{
@@ -488,7 +470,6 @@ export const Profile: React.FC = () => {
                 </span>
               </div>
 
-              {/* Upload & Management Actions */}
               <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem', width: '100%', maxWidth: '280px' }}>
                 <button
                   type="button"
@@ -582,7 +563,6 @@ export const Profile: React.FC = () => {
               </p>
             </div>
 
-            {/* Right Column: Identity & Contact Fields */}
             <div
               style={{
                 backgroundColor: 'var(--color-card)',
@@ -598,7 +578,6 @@ export const Profile: React.FC = () => {
             >
               <h2 style={{ fontSize: '1.1rem', fontWeight: 700, marginBottom: '0.1rem' }}>Account Identity</h2>
 
-              {/* Full Name */}
               <div>
                 <label htmlFor="profile-fullname" style={{ display: 'block', fontWeight: 700, marginBottom: '0.35rem', fontSize: '0.85rem' }}>
                   Full Name *
@@ -614,7 +593,6 @@ export const Profile: React.FC = () => {
                 />
               </div>
 
-              {/* Username (Locked) */}
               <div>
                 <label
                   htmlFor="profile-username"
@@ -634,7 +612,6 @@ export const Profile: React.FC = () => {
                 />
               </div>
 
-              {/* Email Address (Locked) */}
               <div>
                 <label
                   htmlFor="profile-email"
@@ -654,7 +631,6 @@ export const Profile: React.FC = () => {
                 />
               </div>
 
-              {/* Role & Account Level (Locked) */}
               <div>
                 <label style={{ display: 'block', fontWeight: 700, marginBottom: '0.35rem', fontSize: '0.85rem' }}>
                   Assigned Platform Role
@@ -679,7 +655,6 @@ export const Profile: React.FC = () => {
             </div>
           </div>
 
-          {/* Extended Bio & Author Settings Card */}
           <div
             style={{
               backgroundColor: 'var(--color-card)',
@@ -696,7 +671,6 @@ export const Profile: React.FC = () => {
           >
             <h2 style={{ fontSize: '1.1rem', fontWeight: 700, marginBottom: '0.1rem' }}>Biography & Author Profile</h2>
 
-            {/* Short Tagline / Description */}
             <div>
               <label htmlFor="profile-tagline" style={{ display: 'block', fontWeight: 700, marginBottom: '0.35rem', fontSize: '0.85rem' }}>
                 Professional Tagline / Headline
@@ -711,7 +685,6 @@ export const Profile: React.FC = () => {
               />
             </div>
 
-            {/* Extended Biography */}
             <div>
               <label htmlFor="profile-bio" style={{ display: 'block', fontWeight: 700, marginBottom: '0.35rem', fontSize: '0.85rem' }}>
                 About You / Full Biography
@@ -726,7 +699,6 @@ export const Profile: React.FC = () => {
               />
             </div>
 
-            {/* Author Tags / Topics of Interest */}
             <div>
               <label style={{ display: 'block', fontWeight: 700, marginBottom: '0.35rem', fontSize: '0.85rem' }}>
                 <Tag size={13} style={{ display: 'inline', marginRight: '4px' }} /> Author Topics & Expertise Tags
@@ -802,12 +774,11 @@ export const Profile: React.FC = () => {
               )}
             </div>
 
-            {/* Website & Social Links Grid */}
             <div style={{ marginTop: '0.5rem', borderTop: '1px solid var(--color-border)', paddingTop: '1.25rem' }}>
               <h3 style={{ fontSize: '0.95rem', fontWeight: 700, marginBottom: '0.85rem' }}>Public Website & Social Channels</h3>
 
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1rem' }}>
-                {/* Website */}
+
                 <div>
                   <label htmlFor="social-website" style={{ display: 'flex', alignItems: 'center', gap: '0.3rem', fontWeight: 600, fontSize: '0.82rem', marginBottom: '0.3rem' }}>
                     <Globe size={14} color="var(--color-secondary)" /> Personal Website / Portfolio
@@ -822,7 +793,6 @@ export const Profile: React.FC = () => {
                   />
                 </div>
 
-                {/* Twitter / X */}
                 <div>
                   <label htmlFor="social-twitter" style={{ display: 'flex', alignItems: 'center', gap: '0.3rem', fontWeight: 600, fontSize: '0.82rem', marginBottom: '0.3rem' }}>
                     <Twitter size={14} color="#1DA1F2" /> Twitter / X Profile
@@ -837,7 +807,6 @@ export const Profile: React.FC = () => {
                   />
                 </div>
 
-                {/* GitHub */}
                 <div>
                   <label htmlFor="social-github" style={{ display: 'flex', alignItems: 'center', gap: '0.3rem', fontWeight: 600, fontSize: '0.82rem', marginBottom: '0.3rem' }}>
                     <Github size={14} /> GitHub Profile
@@ -852,7 +821,6 @@ export const Profile: React.FC = () => {
                   />
                 </div>
 
-                {/* LinkedIn */}
                 <div>
                   <label htmlFor="social-linkedin" style={{ display: 'flex', alignItems: 'center', gap: '0.3rem', fontWeight: 600, fontSize: '0.82rem', marginBottom: '0.3rem' }}>
                     <Linkedin size={14} color="#0A66C2" /> LinkedIn Profile
@@ -870,7 +838,6 @@ export const Profile: React.FC = () => {
             </div>
           </div>
 
-          {/* Bottom Save Action Button */}
           <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem', flexWrap: 'wrap' }}>
             <button
               type="button"
@@ -929,7 +896,7 @@ export const Profile: React.FC = () => {
           </div>
         </form>
       ) : (
-        /* Password & Security Tab */
+
         <form onSubmit={handleSavePassword}>
           <div
             style={{
@@ -952,7 +919,6 @@ export const Profile: React.FC = () => {
               Ensure your account uses a secure password of at least 6 characters.
             </p>
 
-            {/* Current Password */}
             <div>
               <label htmlFor="current-pass" style={{ display: 'block', fontWeight: 700, marginBottom: '0.35rem', fontSize: '0.85rem' }}>
                 Current Password *
@@ -986,7 +952,6 @@ export const Profile: React.FC = () => {
               </div>
             </div>
 
-            {/* New Password */}
             <div>
               <label htmlFor="new-pass" style={{ display: 'block', fontWeight: 700, marginBottom: '0.35rem', fontSize: '0.85rem' }}>
                 New Password *
@@ -1020,7 +985,6 @@ export const Profile: React.FC = () => {
               </div>
             </div>
 
-            {/* Confirm Password */}
             <div>
               <label htmlFor="confirm-pass" style={{ display: 'block', fontWeight: 700, marginBottom: '0.35rem', fontSize: '0.85rem' }}>
                 Confirm New Password *
@@ -1073,3 +1037,4 @@ export const Profile: React.FC = () => {
     </div>
   );
 };
+

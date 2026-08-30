@@ -45,7 +45,7 @@ export const ImageCropModal: React.FC<ImageCropModalProps> = ({
   onCropComplete,
   onRevertOriginal,
 }) => {
-  // Always use original uncropped source if available so cropping is 100% non-destructive
+
   const effectiveSource = originalSrc || imageSrc;
 
   const [loading, setLoading] = useState(true);
@@ -55,7 +55,6 @@ export const ImageCropModal: React.FC<ImageCropModalProps> = ({
   const [flipH, setFlipH] = useState<boolean>(false);
   const [flipV, setFlipV] = useState<boolean>(false);
 
-  // Normalized Crop Box in Percentages (0 to 100)
   const [cropBox, setCropBox] = useState<{ x: number; y: number; width: number; height: number }>({
     x: 5,
     y: 5,
@@ -73,7 +72,6 @@ export const ImageCropModal: React.FC<ImageCropModalProps> = ({
   const containerRef = useRef<HTMLDivElement>(null);
   const imgRef = useRef<HTMLImageElement>(null);
 
-  // Initialize or restore saved crop state when opening
   const initCrop = useCallback(() => {
     if (initialCropState) {
       setCropBox({
@@ -102,7 +100,6 @@ export const ImageCropModal: React.FC<ImageCropModalProps> = ({
     }
   }, [isOpen, effectiveSource, initCrop]);
 
-  // Apply Aspect Ratio Constraints
   const applyAspectPreset = (preset: AspectPreset) => {
     setAspectPreset(preset);
     if (!imgRef.current) return;
@@ -143,7 +140,6 @@ export const ImageCropModal: React.FC<ImageCropModalProps> = ({
     });
   };
 
-  // Pointer Drag Handlers for Crop Box and Handles
   const handlePointerDown = (e: React.PointerEvent, handle: string) => {
     e.preventDefault();
     e.stopPropagation();
@@ -167,11 +163,11 @@ export const ImageCropModal: React.FC<ImageCropModalProps> = ({
       let nextBox = { ...startBox };
 
       if (handle === 'move') {
-        // Move entire crop box
+
         nextBox.x = Math.max(0, Math.min(100 - startBox.width, startBox.x + deltaXPct));
         nextBox.y = Math.max(0, Math.min(100 - startBox.height, startBox.y + deltaYPct));
       } else {
-        // Handle resizing
+
         if (handle.includes('e')) {
           nextBox.width = Math.max(10, Math.min(100 - startBox.x, startBox.width + deltaXPct));
         }
@@ -206,7 +202,6 @@ export const ImageCropModal: React.FC<ImageCropModalProps> = ({
     window.addEventListener('pointerup', onPointerUp);
   };
 
-  // Perform High-Resolution HTML5 Canvas Cropping from the Original Full Image
   const handlePerformCrop = async () => {
     if (!imgRef.current) return;
     setSaving(true);
@@ -221,22 +216,18 @@ export const ImageCropModal: React.FC<ImageCropModalProps> = ({
         img.onerror = reject;
       });
 
-      // Create offscreen canvas for transformations and cropping
       const canvas = document.createElement('canvas');
       const ctx = canvas.getContext('2d');
       if (!ctx) throw new Error('Canvas 2D context not available');
 
-      // Native Image Dimensions
       const nw = img.naturalWidth;
       const nh = img.naturalHeight;
 
-      // Crop coordinates in native pixels
       const cropPxX = (cropBox.x / 100) * nw;
       const cropPxY = (cropBox.y / 100) * nh;
       const cropPxW = (cropBox.width / 100) * nw;
       const cropPxH = (cropBox.height / 100) * nh;
 
-      // Adjust for Rotation
       const isRotated90or270 = rotation === 90 || rotation === 270;
       canvas.width = isRotated90or270 ? cropPxH : cropPxW;
       canvas.height = isRotated90or270 ? cropPxW : cropPxH;
@@ -246,7 +237,6 @@ export const ImageCropModal: React.FC<ImageCropModalProps> = ({
       ctx.rotate((rotation * Math.PI) / 180);
       ctx.scale(flipH ? -1 : 1, flipV ? -1 : 1);
 
-      // Draw cropped slice
       const drawWidth = isRotated90or270 ? canvas.height : canvas.width;
       const drawHeight = isRotated90or270 ? canvas.width : canvas.height;
 
@@ -274,7 +264,6 @@ export const ImageCropModal: React.FC<ImageCropModalProps> = ({
         flipV,
       };
 
-      // Convert canvas to Blob and upload to server
       const blob = await new Promise<Blob | null>(res => canvas.toBlob(res, 'image/jpeg', 0.92));
 
       if (blob) {
@@ -296,7 +285,7 @@ export const ImageCropModal: React.FC<ImageCropModalProps> = ({
             return;
           }
         } catch {
-          // Fallback to Base64 Data URL if offline / upload fails
+
         }
 
         const dataUrl = canvas.toDataURL('image/jpeg', 0.92);
@@ -311,7 +300,6 @@ export const ImageCropModal: React.FC<ImageCropModalProps> = ({
     }
   };
 
-  // Revert Crop and Restore Original Upload Look
   const handleRevertToOriginal = () => {
     if (onRevertOriginal) {
       onRevertOriginal();
@@ -361,7 +349,7 @@ export const ImageCropModal: React.FC<ImageCropModalProps> = ({
           overflow: 'hidden',
         }}
       >
-        {/* Modal Header */}
+
         <div
           style={{
             display: 'flex',
@@ -430,7 +418,6 @@ export const ImageCropModal: React.FC<ImageCropModalProps> = ({
           </button>
         </div>
 
-        {/* Toolbar: Aspect Ratios & Transform Controls */}
         <div
           style={{
             display: 'flex',
@@ -443,7 +430,7 @@ export const ImageCropModal: React.FC<ImageCropModalProps> = ({
             gap: '0.75rem',
           }}
         >
-          {/* Aspect Ratio Buttons */}
+
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem', flexWrap: 'wrap' }}>
             <span style={{ fontSize: '0.74rem', fontWeight: 700, color: 'var(--color-muted)', textTransform: 'uppercase', marginRight: '0.2rem' }}>
               Aspect:
@@ -470,7 +457,6 @@ export const ImageCropModal: React.FC<ImageCropModalProps> = ({
             ))}
           </div>
 
-          {/* Transformation Controls: Rotate, Flip & Revert */}
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
             <button
               type="button"
@@ -533,7 +519,6 @@ export const ImageCropModal: React.FC<ImageCropModalProps> = ({
               <FlipHorizontal size={13} /> Flip H
             </button>
 
-            {/* Revert to Full Uncropped Original */}
             <button
               type="button"
               onClick={handleRevertToOriginal}
@@ -557,7 +542,6 @@ export const ImageCropModal: React.FC<ImageCropModalProps> = ({
           </div>
         </div>
 
-        {/* Interactive Viewport Canvas */}
         <div
           style={{
             flex: 1,
@@ -579,7 +563,6 @@ export const ImageCropModal: React.FC<ImageCropModalProps> = ({
             </div>
           )}
 
-          {/* Image Container with Interactive Crop Overlay */}
           <div
             ref={containerRef}
             style={{
@@ -606,19 +589,17 @@ export const ImageCropModal: React.FC<ImageCropModalProps> = ({
               }}
             />
 
-            {/* Dark Mask Overlays Outside Crop Area */}
             {!loading && (
               <>
-                {/* Top Mask */}
+
                 <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: `${cropBox.y}%`, backgroundColor: 'rgba(0,0,0,0.65)', pointerEvents: 'none' }} />
-                {/* Bottom Mask */}
+
                 <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: `${100 - (cropBox.y + cropBox.height)}%`, backgroundColor: 'rgba(0,0,0,0.65)', pointerEvents: 'none' }} />
-                {/* Left Mask */}
+
                 <div style={{ position: 'absolute', top: `${cropBox.y}%`, left: 0, width: `${cropBox.x}%`, height: `${cropBox.height}%`, backgroundColor: 'rgba(0,0,0,0.65)', pointerEvents: 'none' }} />
-                {/* Right Mask */}
+
                 <div style={{ position: 'absolute', top: `${cropBox.y}%`, right: 0, width: `${100 - (cropBox.x + cropBox.width)}%`, height: `${cropBox.height}%`, backgroundColor: 'rgba(0,0,0,0.65)', pointerEvents: 'none' }} />
 
-                {/* Active Interactive Crop Box */}
                 <div
                   onPointerDown={e => handlePointerDown(e, 'move')}
                   style={{
@@ -632,14 +613,12 @@ export const ImageCropModal: React.FC<ImageCropModalProps> = ({
                     touchAction: 'none',
                   }}
                 >
-                  {/* Rule of Thirds 3x3 Grid Lines */}
+
                   <div style={{ position: 'absolute', top: '33.33%', left: 0, right: 0, height: '1px', borderTop: '1px dashed rgba(255,255,255,0.4)', pointerEvents: 'none' }} />
                   <div style={{ position: 'absolute', top: '66.66%', left: 0, right: 0, height: '1px', borderTop: '1px dashed rgba(255,255,255,0.4)', pointerEvents: 'none' }} />
                   <div style={{ position: 'absolute', left: '33.33%', top: 0, bottom: 0, width: '1px', borderLeft: '1px dashed rgba(255,255,255,0.4)', pointerEvents: 'none' }} />
                   <div style={{ position: 'absolute', left: '66.66%', top: 0, bottom: 0, width: '1px', borderLeft: '1px dashed rgba(255,255,255,0.4)', pointerEvents: 'none' }} />
 
-                  {/* Corner Handles */}
-                  {/* Top-Left */}
                   <div
                     onPointerDown={e => handlePointerDown(e, 'nw')}
                     title="Drag to crop Top-Left"
@@ -654,7 +633,7 @@ export const ImageCropModal: React.FC<ImageCropModalProps> = ({
                       cursor: 'nwse-resize',
                     }}
                   />
-                  {/* Top-Right */}
+
                   <div
                     onPointerDown={e => handlePointerDown(e, 'ne')}
                     title="Drag to crop Top-Right"
@@ -669,7 +648,7 @@ export const ImageCropModal: React.FC<ImageCropModalProps> = ({
                       cursor: 'nesw-resize',
                     }}
                   />
-                  {/* Bottom-Left */}
+
                   <div
                     onPointerDown={e => handlePointerDown(e, 'sw')}
                     title="Drag to crop Bottom-Left"
@@ -684,7 +663,7 @@ export const ImageCropModal: React.FC<ImageCropModalProps> = ({
                       cursor: 'nesw-resize',
                     }}
                   />
-                  {/* Bottom-Right */}
+
                   <div
                     onPointerDown={e => handlePointerDown(e, 'se')}
                     title="Drag to crop Bottom-Right"
@@ -700,8 +679,6 @@ export const ImageCropModal: React.FC<ImageCropModalProps> = ({
                     }}
                   />
 
-                  {/* Edge Handles */}
-                  {/* Top */}
                   <div
                     onPointerDown={e => handlePointerDown(e, 'n')}
                     title="Drag to crop Top"
@@ -716,7 +693,7 @@ export const ImageCropModal: React.FC<ImageCropModalProps> = ({
                       cursor: 'ns-resize',
                     }}
                   />
-                  {/* Bottom */}
+
                   <div
                     onPointerDown={e => handlePointerDown(e, 's')}
                     title="Drag to crop Bottom"
@@ -731,7 +708,7 @@ export const ImageCropModal: React.FC<ImageCropModalProps> = ({
                       cursor: 'ns-resize',
                     }}
                   />
-                  {/* Left */}
+
                   <div
                     onPointerDown={e => handlePointerDown(e, 'w')}
                     title="Drag to crop Left"
@@ -746,7 +723,7 @@ export const ImageCropModal: React.FC<ImageCropModalProps> = ({
                       cursor: 'ew-resize',
                     }}
                   />
-                  {/* Right */}
+
                   <div
                     onPointerDown={e => handlePointerDown(e, 'e')}
                     title="Drag to crop Right"
@@ -767,7 +744,6 @@ export const ImageCropModal: React.FC<ImageCropModalProps> = ({
           </div>
         </div>
 
-        {/* Footer Actions */}
         <div
           style={{
             display: 'flex',
@@ -836,3 +812,4 @@ export const ImageCropModal: React.FC<ImageCropModalProps> = ({
     </div>
   );
 };
+

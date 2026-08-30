@@ -33,7 +33,6 @@ export const UserLayout: React.FC = () => {
   const [unreadNotifications, setUnreadNotifications] = useState<number>(0);
   const { user, logout } = useAuth();
 
-  // Fetch real unread notifications count from Oracle DB
   useEffect(() => {
     ApiService.getUserNotifications()
       .then(res => {
@@ -45,7 +44,6 @@ export const UserLayout: React.FC = () => {
       .catch(() => {});
   }, [location.pathname]);
 
-  // Handle ESC key to close mobile drawer
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
       if (e.key === 'Escape' && mobileDrawerOpen) {
@@ -60,7 +58,6 @@ export const UserLayout: React.FC = () => {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [handleKeyDown]);
 
-  // Lock body scroll when mobile drawer is open
   useEffect(() => {
     if (mobileDrawerOpen) {
       document.body.style.overflow = 'hidden';
@@ -72,7 +69,6 @@ export const UserLayout: React.FC = () => {
     };
   }, [mobileDrawerOpen]);
 
-  // Close drawer on route navigation
   useEffect(() => {
     setMobileDrawerOpen(false);
   }, [location.pathname]);
@@ -104,7 +100,7 @@ export const UserLayout: React.FC = () => {
 
   return (
     <div style={{ display: 'flex', minHeight: '100vh', backgroundColor: 'var(--color-background)', width: '100%', overflowX: 'hidden' }}>
-      {/* Mobile Drawer Overlay Backdrop */}
+
       {mobileDrawerOpen && (
         <div
           onClick={() => setMobileDrawerOpen(false)}
@@ -119,7 +115,6 @@ export const UserLayout: React.FC = () => {
         />
       )}
 
-      {/* Reader Portal Unified Sidebar (Matches Admin CMS Design System) */}
       <aside
         style={{
           width: '240px',
@@ -138,7 +133,7 @@ export const UserLayout: React.FC = () => {
         }}
         className={mobileDrawerOpen ? '' : 'desktop-only'}
       >
-        {/* Brand Header */}
+
         <div style={{ padding: '1.25rem 1rem', borderBottom: '1px solid var(--color-border)', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <Link to="/user/dashboard" style={{ textDecoration: 'none' }}>
             <BrandLogo size={32} textSuffix="Reader" />
@@ -149,7 +144,6 @@ export const UserLayout: React.FC = () => {
           </button>
         </div>
 
-        {/* Sidebar Nav Items */}
         <nav style={{ flex: 1, overflowY: 'auto', padding: '0.75rem 0.5rem', display: 'flex', flexDirection: 'column', gap: '0.2rem', alignItems: 'stretch' }} onClick={() => setMobileDrawerOpen(false)}>
           {navItems.map(item => {
             const Icon = item.icon;
@@ -193,7 +187,6 @@ export const UserLayout: React.FC = () => {
           })}
         </nav>
 
-        {/* Sidebar Bottom Footer Actions */}
         <div style={{ padding: '1rem', borderTop: '1px solid var(--color-border)', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
           <Link
             to="/"
@@ -229,9 +222,8 @@ export const UserLayout: React.FC = () => {
         </div>
       </aside>
 
-      {/* Main Content Area Wrapper */}
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0 }} className="user-main-content">
-        {/* Unified Top Header Bar */}
+
         <header className="cms-portal-header">
           <div className="cms-portal-header-left">
             <button
@@ -273,7 +265,6 @@ export const UserLayout: React.FC = () => {
         </main>
       </div>
 
-      {/* Real-time Reader Activity & Role Approval Notification Toast */}
       <PortalNotificationToast />
 
       <style>{`
@@ -286,3 +277,4 @@ export const UserLayout: React.FC = () => {
     </div>
   );
 };
+

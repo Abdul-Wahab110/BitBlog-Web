@@ -15,7 +15,6 @@ export const TagDetails: React.FC = () => {
   const [pagination, setPagination] = useState({ page: 1, limit: 9, total: 0, totalPages: 1 });
   const [loading, setLoading] = useState(true);
 
-  // Fetch all tags for related tags bar
   useEffect(() => {
     ApiService.getTags()
       .then(res => {
@@ -30,7 +29,6 @@ export const TagDetails: React.FC = () => {
     if (!slug) return;
     setLoading(true);
 
-    // Fetch tag metadata
     ApiService.getTagBySlug(slug)
       .then(res => {
         if (res && res.data) {
@@ -41,7 +39,6 @@ export const TagDetails: React.FC = () => {
         setTagInfo({ name: slug, slug, post_count: 0 });
       });
 
-    // Fetch articles for this tag
     ApiService.getPosts({ tag: slug, page: pageNumber, limit: 9, sort: sortOption })
       .then(res => {
         if (res && res.data) {
@@ -77,7 +74,7 @@ export const TagDetails: React.FC = () => {
 
   return (
     <div className="container" style={{ paddingTop: '1.5rem', paddingBottom: '3.5rem' }}>
-      {/* Breadcrumb Bar */}
+
       <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.82rem', color: 'var(--color-muted)', marginBottom: '1.25rem' }}>
         <Link to="/" style={{ color: 'var(--color-text-secondary)', textDecoration: 'none' }}>Home</Link>
         <span>/</span>
@@ -86,7 +83,6 @@ export const TagDetails: React.FC = () => {
         <span style={{ color: 'var(--color-secondary)', fontWeight: 700 }}>#{slug}</span>
       </div>
 
-      {/* Tag Hero Header */}
       <header
         style={{
           background: 'linear-gradient(135deg, var(--color-surface), var(--color-surface-alt))',
@@ -133,7 +129,6 @@ export const TagDetails: React.FC = () => {
           </Link>
         </div>
 
-        {/* Other Related Tags Bar */}
         {otherTags.length > 0 && (
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginTop: '1.25rem', flexWrap: 'wrap', borderTop: '1px solid var(--color-border)', paddingTop: '1rem' }}>
             <span style={{ fontSize: '0.78rem', fontWeight: 700, color: 'var(--color-muted)', display: 'inline-flex', alignItems: 'center', gap: '0.3rem' }}>
@@ -162,10 +157,9 @@ export const TagDetails: React.FC = () => {
         )}
       </header>
 
-      {/* Main Content + Sidebar Grid */}
       <div className="grid-main-sidebar">
         <main style={{ minHeight: 'auto' }}>
-          {/* Controls Bar: Sort Selector */}
+
           <div
             style={{
               display: 'flex',

@@ -34,7 +34,7 @@ export const Footer: React.FC = () => {
   return (
     <footer style={{ backgroundColor: 'var(--color-surface)', borderTop: '1px solid var(--color-border)', padding: '3rem 0 1.5rem', marginTop: 'auto' }}>
       <div className="container" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '2.5rem', marginBottom: '2.5rem' }}>
-        {/* Brand Info */}
+
         <div>
           <BrandLogo size={32} style={{ marginBottom: '0.75rem' }} />
           <p style={{ fontSize: '0.875rem', color: 'var(--color-text-secondary)', lineHeight: 1.6, marginBottom: '1rem' }}>
@@ -42,7 +42,6 @@ export const Footer: React.FC = () => {
           </p>
         </div>
 
-        {/* Quick Navigation Links */}
         <div>
           <h4 style={{ fontSize: '0.95rem', fontWeight: 700, marginBottom: '1rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Publication</h4>
           <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.5rem', fontSize: '0.875rem' }}>
@@ -53,7 +52,6 @@ export const Footer: React.FC = () => {
           </ul>
         </div>
 
-        {/* Legal & Policy */}
         <div>
           <h4 style={{ fontSize: '0.95rem', fontWeight: 700, marginBottom: '1rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Legal & Policies</h4>
           <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.5rem', fontSize: '0.875rem' }}>
@@ -63,7 +61,6 @@ export const Footer: React.FC = () => {
           </ul>
         </div>
 
-        {/* Newsletter Subscription */}
         <div>
           <h4 style={{ fontSize: '0.95rem', fontWeight: 700, marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Daily Digest Newsletter</h4>
           <p style={{ fontSize: '0.85rem', color: 'var(--color-text-secondary)', marginBottom: '0.85rem' }}>
@@ -103,3 +100,4 @@ export const Footer: React.FC = () => {
     </footer>
   );
 };
+

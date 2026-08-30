@@ -27,12 +27,10 @@ export const UserEditArticle: React.FC = () => {
   const [status, setStatus] = useState<string>('draft');
   const [reviewerFeedback, setReviewerFeedback] = useState<string | undefined>(undefined);
 
-  // Topic Tags
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [availableTags, setAvailableTags] = useState<any[]>([]);
   const [tagInput, setTagInput] = useState('');
 
-  // SEO, AEO, and GEO Integrated Metadata
   const [seo, setSeo] = useState<SeoData>({
     metaTitle: '',
     metaDescription: '',
@@ -185,7 +183,6 @@ export const UserEditArticle: React.FC = () => {
         robots="noindex, nofollow"
       />
 
-      {/* Header Bar */}
       <div
         style={{
           display: 'flex',
@@ -218,7 +215,6 @@ export const UserEditArticle: React.FC = () => {
           </h1>
         </div>
 
-        {/* Actions */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
           <button
             type="button"
@@ -291,7 +287,6 @@ export const UserEditArticle: React.FC = () => {
         </div>
       </div>
 
-      {/* Reviewer Feedback Banner if changes requested or rejected */}
       {reviewerFeedback && (
         <div
           role="alert"
@@ -359,9 +354,8 @@ export const UserEditArticle: React.FC = () => {
         </div>
       )}
 
-      {/* Main Authoring Form */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-        {/* Title & Slug Section */}
+
         <div
           style={{
             padding: '1.5rem',
@@ -418,7 +412,6 @@ export const UserEditArticle: React.FC = () => {
             </div>
           </div>
 
-          {/* Topic Tags Input Field */}
           <div style={{ marginTop: '1.25rem', borderTop: '1px solid var(--color-border)', paddingTop: '1rem' }}>
             <label style={{ display: 'block', fontWeight: 600, marginBottom: '0.35rem', fontSize: '0.82rem' }}>
               <Tag size={13} style={{ display: 'inline', marginRight: '4px' }} /> Topic Tags (Keywords)
@@ -465,7 +458,6 @@ export const UserEditArticle: React.FC = () => {
               </button>
             </div>
 
-            {/* Selected Tags */}
             {selectedTags.length > 0 && (
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem', marginBottom: '0.5rem' }}>
                 {selectedTags.map(tagName => (
@@ -504,7 +496,6 @@ export const UserEditArticle: React.FC = () => {
               </div>
             )}
 
-            {/* Quick Pick Available Tags */}
             {availableTags.length > 0 && (
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.3rem', marginTop: '0.4rem' }}>
                 <span style={{ fontSize: '0.72rem', color: 'var(--color-muted)', alignSelf: 'center', fontWeight: 600 }}>Suggestions:</span>
@@ -541,7 +532,6 @@ export const UserEditArticle: React.FC = () => {
           </div>
         </div>
 
-        {/* Featured Image Section */}
         <div
           style={{
             padding: '1.5rem',
@@ -561,7 +551,6 @@ export const UserEditArticle: React.FC = () => {
           />
         </div>
 
-        {/* Excerpt Section */}
         <div
           style={{
             padding: '1.5rem',
@@ -583,7 +572,6 @@ export const UserEditArticle: React.FC = () => {
           />
         </div>
 
-        {/* Rich Text Editor Content Section */}
         <div
           style={{
             padding: '1.5rem',
@@ -603,7 +591,6 @@ export const UserEditArticle: React.FC = () => {
           />
         </div>
 
-        {/* Integrated SEO, AEO, and GEO Settings Section Below Content */}
         <SeoAeoGeoEditor
           seo={seo}
           onChangeSeo={setSeo}
@@ -620,7 +607,6 @@ export const UserEditArticle: React.FC = () => {
           tags={selectedTags}
         />
 
-        {/* Bottom Submission Action Bar */}
         <div
           style={{
             display: 'flex',
@@ -665,7 +651,6 @@ export const UserEditArticle: React.FC = () => {
         </div>
       </div>
 
-      {/* Article Preview Modal */}
       <ArticlePreviewModal
         isOpen={previewOpen}
         onClose={() => setPreviewOpen(false)}
@@ -677,3 +662,4 @@ export const UserEditArticle: React.FC = () => {
     </div>
   );
 };
+

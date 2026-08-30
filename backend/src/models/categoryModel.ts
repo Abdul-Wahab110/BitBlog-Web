@@ -115,7 +115,6 @@ export class CategoryModel {
     store.categories.push(record);
     Database.saveStore();
 
-    // Oracle SQL DB sync
     try {
       const sql = `INSERT INTO categories (name, slug, description, image, parent_id) VALUES (:1, :2, :3, :4, :5)`;
       await Database.execute(sql, [record.name, record.slug, record.description || null, record.image || null, record.parent_id || null]);
@@ -147,7 +146,7 @@ export class CategoryModel {
     if (data.name !== undefined) cat.name = data.name ? data.name.trim() : cat.name;
     if (data.slug !== undefined) cat.slug = data.slug ? data.slug.trim().toLowerCase() : cat.slug;
     if (data.description !== undefined) cat.description = data.description || undefined;
-    
+
     if (data.image !== undefined) {
       const finalImg = data.image || undefined;
       cat.image = finalImg;
@@ -178,7 +177,6 @@ export class CategoryModel {
 
     cat.updated_at = new Date().toISOString();
 
-    // Update matching posts
     store.posts.forEach(p => {
       if (p.category_id === id) {
         if (data.name) p.category_name = data.name;
@@ -188,7 +186,6 @@ export class CategoryModel {
 
     Database.saveStore();
 
-    // Oracle SQL DB sync
     try {
       const sql = `UPDATE categories SET name = :1, slug = :2, description = :3, image = :4, parent_id = :5, updated_at = CURRENT_TIMESTAMP WHERE category_id = :6`;
       await Database.execute(sql, [cat.name, cat.slug, cat.description || null, cat.image || null, cat.parent_id || null, id]);
@@ -202,8 +199,7 @@ export class CategoryModel {
   public static async deleteCategory(id: number): Promise<boolean> {
     const store = Database.getStore();
     store.categories = store.categories.filter(c => c.category_id !== id);
-    
-    // Safely reassign posts so articles are never accidentally deleted or orphaned
+
     store.posts.forEach(p => {
       if (p.category_id === id) {
         p.category_id = undefined;
@@ -214,7 +210,6 @@ export class CategoryModel {
 
     Database.saveStore();
 
-    // Oracle SQL DB sync
     try {
       await Database.execute(`UPDATE posts SET category_id = NULL WHERE category_id = :1`, [id]);
       await Database.execute(`DELETE FROM categories WHERE category_id = :1`, [id]);
@@ -225,3 +220,4 @@ export class CategoryModel {
     return true;
   }
 }
+

@@ -16,7 +16,7 @@ export interface NotificationRecord {
   title: string;
   message: string;
   link_url?: string;
-  is_read: number; // 0 or 1
+  is_read: number;
   created_at: string;
 }
 
@@ -86,3 +86,4 @@ export class NotificationModel {
     }
   }
 }
+

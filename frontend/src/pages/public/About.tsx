@@ -33,7 +33,7 @@ export const About: React.FC = () => {
   });
 
   useEffect(() => {
-    // 1. Fetch Authors
+
     ApiService.getAuthors()
       .then((res: any) => {
         if (res && res.data && Array.isArray(res.data) && res.data.length > 0) {
@@ -46,7 +46,6 @@ export const About: React.FC = () => {
       })
       .catch(() => {});
 
-    // 2. Fetch Articles & Categories stats
     Promise.all([
       ApiService.getPosts({ limit: 1 }).catch(() => null),
       ApiService.getCategories().catch(() => null),
@@ -125,7 +124,6 @@ export const About: React.FC = () => {
         description={siteDescription}
       />
 
-      {/* 1. HERO SECTION */}
       <section
         style={{
           position: 'relative',
@@ -297,7 +295,6 @@ export const About: React.FC = () => {
         </div>
       </section>
 
-      {/* 2. KEY STATS COUNTER BAR */}
       <section style={{ transform: 'translateY(-1.5rem)', padding: '0 1rem', marginBottom: '2rem' }}>
         <div className="container" style={{ maxWidth: '1000px' }}>
           <div
@@ -387,7 +384,6 @@ export const About: React.FC = () => {
         </div>
       </section>
 
-      {/* 3. OUR MISSION & CORE VALUES */}
       <section className="container" style={{ maxWidth: '1000px', paddingTop: '2rem', paddingBottom: '3.5rem' }}>
         <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
           <span
@@ -491,7 +487,6 @@ export const About: React.FC = () => {
         </div>
       </section>
 
-      {/* 4. OUR STORY & TIMELINE */}
       <section
         style={{
           backgroundColor: 'var(--color-surface)',
@@ -575,7 +570,6 @@ export const About: React.FC = () => {
         </div>
       </section>
 
-      {/* 5. MEET OUR AUTHORS & EDITORS */}
       {authors.length > 0 && (
         <section className="container" style={{ maxWidth: '1000px', paddingTop: '4rem', paddingBottom: '3rem' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '2.5rem' }}>
@@ -708,7 +702,6 @@ export const About: React.FC = () => {
         </section>
       )}
 
-      {/* 6. EDITORIAL STANDARDS & PUBLISHING ETHICS */}
       <section className="container" style={{ maxWidth: '1000px', paddingTop: '1.5rem', paddingBottom: '3.5rem' }}>
         <div
           style={{
@@ -796,7 +789,6 @@ export const About: React.FC = () => {
         </div>
       </section>
 
-      {/* 7. BOTTOM CALL TO ACTION */}
       <section className="container" style={{ maxWidth: '1000px' }}>
         <div
           style={{
@@ -875,3 +867,4 @@ export const About: React.FC = () => {
     </div>
   );
 };
+

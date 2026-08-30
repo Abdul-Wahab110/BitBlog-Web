@@ -114,21 +114,10 @@ export class MediaModel {
     return this.findById(id);
   }
 
-  /**
-   * Complete Global Cascading Deletion:
-   * When any media asset is deleted from Media Library, it is completely removed from:
-   * 1. Physical Server Storage (uploads folder)
-   * 2. Media Database & Store
-   * 3. All Articles / Posts (Featured Cover Images & Inline HTML Images/Videos)
-   * 4. User & Author Profiles (Avatar & Profile Images)
-   * 5. Categories (Category Cover Banners & Thumbnails)
-   * 6. System Settings (Site Logo, Favicon, Default OG Image)
-   * 7. Oracle SQL Database Tables
-   */
   public static async deleteMedia(id: number): Promise<{ success: boolean; affected: { posts: number; users: number; categories: number; settings: boolean; diskDeleted: boolean } }> {
     const store = Database.getStore();
     const mediaItem: any = (store.media || []).find(m => m.media_id === id);
-    
+
     const affected = {
       posts: 0,
       users: 0,
@@ -144,7 +133,6 @@ export class MediaModel {
     const filePath = mediaItem.url || mediaItem.file_path || '';
     const fileName = mediaItem.filename || mediaItem.file_name || path.basename(filePath);
 
-    // 1. Delete physical file from disk storage (checks all uploads locations)
     if (fileName) {
       const possiblePaths = [
         path.join(process.cwd(), 'uploads', fileName),
@@ -175,7 +163,6 @@ export class MediaModel {
       }
     }
 
-    // Helper matcher function
     const isMatchingAsset = (targetUrl?: string | null): boolean => {
       if (!targetUrl || typeof targetUrl !== 'string') return false;
       const t = targetUrl.trim();
@@ -186,18 +173,15 @@ export class MediaModel {
       return false;
     };
 
-    // 2. Cascade Clean: Posts (Featured Images & Inline Body Media)
     if (store.posts && Array.isArray(store.posts)) {
       store.posts.forEach(post => {
         let postChanged = false;
 
-        // Check featured image
         if (isMatchingAsset(post.featured_image)) {
           post.featured_image = undefined;
           postChanged = true;
         }
 
-        // Check and clean inline content images/videos
         if (post.content && typeof post.content === 'string' && fileName) {
           const escapedName = fileName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
           const figureRegex = new RegExp(`<figure[^>]*>.*?<img[^>]*src=["'][^"']*${escapedName}[^"']*["'][^>]*>.*?</figure>`, 'gis');
@@ -224,7 +208,6 @@ export class MediaModel {
       });
     }
 
-    // 3. Cascade Clean: Users & Authors (Profile Images / Avatars)
     if (store.users && Array.isArray(store.users)) {
       store.users.forEach(user => {
         let userChanged = false;
@@ -239,7 +222,6 @@ export class MediaModel {
       });
     }
 
-    // 4. Cascade Clean: Categories (Banners & Covers)
     if (store.categories && Array.isArray(store.categories)) {
       store.categories.forEach(cat => {
         let catChanged = false;
@@ -255,7 +237,6 @@ export class MediaModel {
       });
     }
 
-    // 5. Cascade Clean: System Settings (Logo, Favicon, OG Image)
     if (store.settings) {
       if (isMatchingAsset(store.settings.site_logo)) {
         store.settings.site_logo = '';
@@ -271,7 +252,6 @@ export class MediaModel {
       }
     }
 
-    // 6. Cascade Clean: SEO Metadata
     if (store.seo && Array.isArray(store.seo)) {
       store.seo.forEach((s: any) => {
         if (isMatchingAsset(s.og_image)) s.og_image = null;
@@ -279,11 +259,9 @@ export class MediaModel {
       });
     }
 
-    // 7. Remove from Media Library
     store.media = (store.media || []).filter(m => m.media_id !== id);
     Database.saveStore();
 
-    // 8. Oracle SQL Database Clean-up (Graceful Execution)
     try {
       if (fileName) {
         const pattern = `%${fileName}%`;
@@ -300,3 +278,4 @@ export class MediaModel {
     return { success: true, affected };
   }
 }
+

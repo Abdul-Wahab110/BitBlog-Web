@@ -102,7 +102,7 @@ export const AdminPosts: React.FC = () => {
 
   const handleReject = async (id: number, title: string) => {
     const reason = window.prompt(`Please provide a rejection reason for '${title}':`);
-    if (reason === null) return; // cancelled
+    if (reason === null) return;
     setActionLoading(id);
     try {
       await ApiService.rejectPost(id, reason);
@@ -289,7 +289,6 @@ export const AdminPosts: React.FC = () => {
         </Link>
       </div>
 
-      {/* Filter and Tab Bar */}
       <div
         style={{
           display: 'flex',
@@ -341,7 +340,6 @@ export const AdminPosts: React.FC = () => {
             <span>Pending Approvals ({pendingCount})</span>
           </button>
 
-          {/* Custom Styled Status Filter Dropdown */}
           <div ref={dropdownRef} style={{ position: 'relative' }}>
             <button
               type="button"
@@ -440,7 +438,6 @@ export const AdminPosts: React.FC = () => {
         </div>
       </div>
 
-      {/* Articles Table */}
       {loading ? (
         <LoadingState message="Fetching article database records..." />
       ) : filteredPosts.length === 0 ? (
@@ -544,7 +541,7 @@ export const AdminPosts: React.FC = () => {
 
                   <td className="cms-td-actions" style={{ padding: '0.85rem 1rem', textAlign: 'right' }}>
                     <div className="cms-actions-group">
-                      {/* Approval Workflow Controls for Pending Articles */}
+
                       {post.status === 'pending_review' && (
                         <>
                           <button
@@ -616,3 +613,4 @@ export const AdminPosts: React.FC = () => {
     </div>
   );
 };
+

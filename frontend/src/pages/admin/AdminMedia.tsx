@@ -32,7 +32,6 @@ export const AdminMedia: React.FC = () => {
   const [msg, setMsg] = useState<string | null>(null);
   const [copiedId, setCopiedId] = useState<number | null>(null);
 
-  // Edit Alt Text Modal State
   const [editingItem, setEditingItem] = useState<any | null>(null);
   const [newAltText, setNewAltText] = useState('');
   const [updatingAlt, setUpdatingAlt] = useState(false);
@@ -184,7 +183,6 @@ export const AdminMedia: React.FC = () => {
         </div>
       )}
 
-      {/* Direct File Upload Dropzone */}
       <div
         style={{
           backgroundColor: 'var(--color-card)',
@@ -204,7 +202,6 @@ export const AdminMedia: React.FC = () => {
         />
       </div>
 
-      {/* Filter Bar & Media Assets Grid */}
       <div
         style={{
           display: 'flex',
@@ -220,7 +217,6 @@ export const AdminMedia: React.FC = () => {
             Uploaded Assets ({mediaList.length})
           </h3>
 
-          {/* Admin-Exclusive All Portal Media Toggle */}
           {isAdmin ? (
             <div style={{ display: 'flex', alignItems: 'center', backgroundColor: 'var(--color-surface-alt)', padding: '0.2rem', borderRadius: 'var(--radius-sm)', border: '1px solid var(--color-border)' }}>
               <button
@@ -323,7 +319,7 @@ export const AdminMedia: React.FC = () => {
                   flexDirection: 'column',
                 }}
               >
-                {/* Image Preview Container */}
+
                 <div
                   style={{
                     height: '160px',
@@ -347,7 +343,6 @@ export const AdminMedia: React.FC = () => {
                   />
                 </div>
 
-                {/* Metadata & Controls */}
                 <div style={{ padding: '0.85rem', flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
                   <div>
                     <h4
@@ -379,7 +374,6 @@ export const AdminMedia: React.FC = () => {
                     </div>
                   </div>
 
-                  {/* Actions Bar */}
                   <div
                     style={{
                       display: 'flex',
@@ -431,7 +425,6 @@ export const AdminMedia: React.FC = () => {
         </div>
       )}
 
-      {/* Edit Alt Text Modal */}
       {editingItem && (
         <div
           role="dialog"
@@ -503,3 +496,4 @@ export const AdminMedia: React.FC = () => {
     </div>
   );
 };
+

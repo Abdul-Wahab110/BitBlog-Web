@@ -119,3 +119,4 @@ export class ApplicationModel {
     return list.filter(a => a.status === 'pending').length;
   }
 }
+

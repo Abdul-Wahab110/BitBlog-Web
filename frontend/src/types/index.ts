@@ -52,3 +52,4 @@ export interface AdminStats {
   draftPosts: number;
   scheduledPosts: number;
 }
+

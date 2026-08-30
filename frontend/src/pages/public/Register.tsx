@@ -34,13 +34,11 @@ export const Register: React.FC = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
 
-  // States
   const [loading, setLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
   const [successMsg, setSuccessMsg] = useState<string | null>(null);
 
-  // OTP Step State
   const [isOtpStep, setIsOtpStep] = useState(false);
   const [otpDigits, setOtpDigits] = useState<string[]>(['', '', '', '', '', '']);
   const [verifyingOtp, setVerifyingOtp] = useState(false);
@@ -52,7 +50,6 @@ export const Register: React.FC = () => {
   const navigate = useNavigate();
   const { login } = useAuth();
 
-  // Resend Countdown Timer
   useEffect(() => {
     let interval: any;
     if (isOtpStep && resendTimer > 0) {
@@ -69,7 +66,6 @@ export const Register: React.FC = () => {
     return () => clearInterval(interval);
   }, [isOtpStep, resendTimer]);
 
-  // Focus first OTP input when step opens
   useEffect(() => {
     if (isOtpStep) {
       setTimeout(() => {
@@ -78,7 +74,6 @@ export const Register: React.FC = () => {
     }
   }, [isOtpStep]);
 
-  // 1. 1-Click Verified Google Sign-In / Sign-Up
   const handleGoogleSignUp = async () => {
     setGoogleLoading(true);
     setErrorMsg(null);
@@ -98,7 +93,6 @@ export const Register: React.FC = () => {
     }
   };
 
-  // 2. Submit Form -> Send 6-Digit OTP to Gmail
   const handleSendOtp = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!name.trim() || !username.trim() || !email.trim() || !password) {
@@ -149,14 +143,13 @@ export const Register: React.FC = () => {
     }
   };
 
-  // 3. Handle Individual OTP Input Box Change
   const handleOtpChange = (index: number, value: string) => {
-    // Only accept numbers
+
     const cleanVal = value.replace(/[^0-9]/g, '');
     const newDigits = [...otpDigits];
 
     if (cleanVal.length > 1) {
-      // User pasted full OTP code (e.g. 6 digits)
+
       const pasted = cleanVal.slice(0, 6).split('');
       pasted.forEach((char, i) => {
         newDigits[i] = char;
@@ -170,20 +163,17 @@ export const Register: React.FC = () => {
     newDigits[index] = cleanVal;
     setOtpDigits(newDigits);
 
-    // Auto-advance to next input
     if (cleanVal && index < 5) {
       otpInputRefs.current[index + 1]?.focus();
     }
   };
 
-  // Handle Backspace Key navigation
   const handleOtpKeyDown = (index: number, e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Backspace' && !otpDigits[index] && index > 0) {
       otpInputRefs.current[index - 1]?.focus();
     }
   };
 
-  // 4. Verify 6-Digit OTP & Create User in Database
   const handleVerifyOtp = async (e?: React.FormEvent) => {
     if (e) e.preventDefault();
     const fullOtp = otpDigits.join('').trim();
@@ -223,7 +213,6 @@ export const Register: React.FC = () => {
     }
   };
 
-  // 5. Resend 6-Digit OTP
   const handleResendOtp = async () => {
     if (!canResend || resendingOtp) return;
     setResendingOtp(true);
@@ -275,9 +264,7 @@ export const Register: React.FC = () => {
         }}
       >
         {isOtpStep ? (
-          /* =========================================================================
-             STEP 2: 6-DIGIT GMAIL OTP VERIFICATION SCREEN
-             ========================================================================= */
+
           <div style={{ textAlign: 'center' }}>
             <div
               style={{
@@ -373,7 +360,7 @@ export const Register: React.FC = () => {
             )}
 
             <form onSubmit={handleVerifyOtp}>
-              {/* 6 Individual OTP Boxes */}
+
               <div
                 style={{
                   display: 'flex',
@@ -451,7 +438,6 @@ export const Register: React.FC = () => {
               </button>
             </form>
 
-            {/* Resend & Gmail Shortcuts */}
             <div
               style={{
                 display: 'flex',
@@ -508,9 +494,7 @@ export const Register: React.FC = () => {
             </div>
           </div>
         ) : (
-          /* =========================================================================
-             STEP 1: REGISTRATION FORM
-             ========================================================================= */
+
           <>
             <div style={{ textAlign: 'center', marginBottom: '1.75rem' }}>
               <div style={{ display: 'inline-flex', justifyContent: 'center', marginBottom: '0.85rem' }}>
@@ -545,7 +529,6 @@ export const Register: React.FC = () => {
               </div>
             )}
 
-            {/* 1-Click Verified Google Sign-In */}
             <button
               type="button"
               onClick={handleGoogleSignUp}
@@ -807,3 +790,4 @@ export const Register: React.FC = () => {
     </div>
   );
 };
+

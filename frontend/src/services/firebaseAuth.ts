@@ -12,13 +12,12 @@ import { firebaseAuth, googleAuthProvider } from '../config/firebase';
 const API_BASE_URL = '/api';
 
 export class FirebaseAuthService {
-  // 1. One-Click Verified Sign-In / Sign-Up with Google (Instantly Verified by Google)
+
   public static async signInWithGoogle() {
     try {
       const result = await signInWithPopup(firebaseAuth, googleAuthProvider);
       const user = result.user;
 
-      // Sync verified Google reader account with local CMS database
       const syncRes = await fetch(`${API_BASE_URL}/auth/firebase-sync`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -36,7 +35,7 @@ export class FirebaseAuthService {
         throw new Error(data.message || 'Failed to synchronize with server.');
       }
 
-      return data.data; // { token, user }
+      return data.data;
     } catch (error: any) {
       console.error('[Firebase Auth] Google Sign-In error:', error);
       let msg = error.message || 'Google sign-in failed. Please try again.';
@@ -57,18 +56,15 @@ export class FirebaseAuthService {
     }
   }
 
-  // 2. Email & Password Registration with Strict Google Email Verification
   public static async registerWithEmail(name: string, email: string, password: string) {
     try {
       const userCredential = await createUserWithEmailAndPassword(firebaseAuth, email.trim(), password);
       const user = userCredential.user;
 
-      // Set display name in Firebase
       if (name.trim()) {
         await updateProfile(user, { displayName: name.trim() });
       }
 
-      // Send official Google verification email immediately
       await sendEmailVerification(user);
 
       return {
@@ -90,14 +86,12 @@ export class FirebaseAuthService {
     }
   }
 
-  // Check if current user verified the email via link and activate session
   public static async checkVerificationStatus(name?: string) {
     const user = firebaseAuth.currentUser;
     if (!user) {
       throw new Error('No active registration session found. Please sign in.');
     }
 
-    // Refresh user tokens from Google to check if user clicked verify link
     await user.reload();
 
     if (!user.emailVerified) {
@@ -107,7 +101,6 @@ export class FirebaseAuthService {
       };
     }
 
-    // Email is verified! Create / activate account in database
     const syncRes = await fetch(`${API_BASE_URL}/auth/firebase-sync`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -126,11 +119,10 @@ export class FirebaseAuthService {
 
     return {
       verified: true,
-      session: data.data, // { token, user }
+      session: data.data,
     };
   }
 
-  // Resend verification link
   public static async resendVerificationEmail() {
     const user = firebaseAuth.currentUser;
     if (!user) {
@@ -140,19 +132,17 @@ export class FirebaseAuthService {
     return { message: 'A fresh Google verification link has been dispatched to your Gmail!' };
   }
 
-  // 3. Email & Password Login with Strict Verification Guard
   public static async loginWithEmail(email: string, password: string) {
     try {
       const userCredential = await signInWithEmailAndPassword(firebaseAuth, email.trim(), password);
       const user = userCredential.user;
 
-      // STRICT VERIFICATION CHECK: If user hasn't clicked verification link in Gmail, block entry
       if (!user.emailVerified) {
-        // Send a fresh verification email automatically
+
         try {
           await sendEmailVerification(user);
         } catch (e) {
-          // ignore rate limits
+
         }
 
         const unverifiedErr: any = new Error(
@@ -162,7 +152,6 @@ export class FirebaseAuthService {
         throw unverifiedErr;
       }
 
-      // User is verified! Sync and issue session
       const syncRes = await fetch(`${API_BASE_URL}/auth/firebase-sync`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -180,7 +169,7 @@ export class FirebaseAuthService {
         throw new Error(data.message || 'Failed to sign in.');
       }
 
-      return data.data; // { token, user }
+      return data.data;
     } catch (error: any) {
       console.error('[Firebase Auth] Login error:', error);
       if (error.code === 'EMAIL_NOT_VERIFIED') {
@@ -196,7 +185,6 @@ export class FirebaseAuthService {
     }
   }
 
-  // 4. Send Password Reset Link
   public static async sendPasswordReset(email: string) {
     try {
       await sendPasswordResetEmail(firebaseAuth, email.trim());
@@ -207,7 +195,6 @@ export class FirebaseAuthService {
     }
   }
 
-  // 5. Sign out
   public static async signOut() {
     try {
       await signOut(firebaseAuth);
@@ -216,3 +203,4 @@ export class FirebaseAuthService {
     }
   }
 }
+

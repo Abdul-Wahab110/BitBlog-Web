@@ -410,12 +410,10 @@ export class SeoController {
         sourceCitations = '',
       } = req.body;
 
-      // Calculate score & audit checks
       const checks: Array<{ id: string; label: string; status: 'pass' | 'warning' | 'fail'; detail: string }> = [];
       let totalScore = 0;
       const keyword = (focusKeyword || '').trim().toLowerCase();
 
-      // 1. Title checks (15 pts)
       const t = (metaTitle || title || '').trim();
       if (t.length >= 40 && t.length <= 65) {
         totalScore += 15;
@@ -427,7 +425,6 @@ export class SeoController {
         checks.push({ id: 'title-length', label: 'SEO Title Length', status: 'fail', detail: 'Missing SEO Title' });
       }
 
-      // Keyword in title
       if (keyword) {
         if (t.toLowerCase().includes(keyword)) {
           totalScore += 5;
@@ -437,7 +434,6 @@ export class SeoController {
         }
       }
 
-      // 2. Meta description (15 pts)
       const d = (metaDescription || '').trim();
       if (d.length >= 120 && d.length <= 165) {
         totalScore += 15;
@@ -449,7 +445,6 @@ export class SeoController {
         checks.push({ id: 'desc-length', label: 'Meta Description Length', status: 'fail', detail: 'Missing Meta Description' });
       }
 
-      // 3. Slug check (10 pts)
       const s = (slug || '').trim();
       const isCleanSlug = /^[a-z0-9-]+$/.test(s);
       if (s && isCleanSlug && s.length <= 60) {
@@ -462,7 +457,6 @@ export class SeoController {
         checks.push({ id: 'slug', label: 'URL Slug Structure', status: 'fail', detail: 'Missing URL slug' });
       }
 
-      // 4. Content length & structure (20 pts)
       const plainContent = (content || '').replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
       const wordCount = plainContent ? plainContent.split(' ').length : 0;
       if (wordCount >= 300) {
@@ -475,7 +469,6 @@ export class SeoController {
         checks.push({ id: 'content-length', label: 'Content Word Count', status: 'fail', detail: 'Thin content. Write at least 100-300 words.' });
       }
 
-      // 5. Image & ALT text (15 pts)
       if (featuredImage) {
         if (imageAltText && imageAltText.trim().length >= 3) {
           totalScore += 15;
@@ -488,7 +481,6 @@ export class SeoController {
         checks.push({ id: 'img-alt', label: 'Featured Image & ALT Text', status: 'fail', detail: 'No featured cover image selected' });
       }
 
-      // 6. AEO & GEO Signals (20 pts)
       if (directAnswer && directAnswer.trim().length >= 30) {
         totalScore += 10;
         checks.push({ id: 'aeo-direct', label: 'AEO Direct Answer', status: 'pass', detail: 'Direct answer summary ready for AI answers' });
@@ -680,12 +672,11 @@ export class ContactController {
         message: message.trim(),
       });
 
-      // Notify Admins & Editors about new inquiry
       try {
         const store = Database.getStore();
-        const staffUsers = (store.users || []).filter((u: any) => 
-          u.role_id === 1 || u.role_id === 2 || 
-          u.role === 'Admin' || u.role === 'Editor' || 
+        const staffUsers = (store.users || []).filter((u: any) =>
+          u.role_id === 1 || u.role_id === 2 ||
+          u.role === 'Admin' || u.role === 'Editor' ||
           u.role_name === 'Admin' || u.role_name === 'Editor'
         );
         for (const staff of staffUsers) {
@@ -828,3 +819,4 @@ export class MediaController {
     ResponseUtil.success(res, [], 'Media library retrieved');
   }
 }
+

@@ -28,12 +28,10 @@ export const AddPost: React.FC = () => {
   );
   const [scheduledAt, setScheduledAt] = useState('');
 
-  // Topic Tags
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [availableTags, setAvailableTags] = useState<any[]>([]);
   const [tagInput, setTagInput] = useState('');
 
-  // Integrated SEO, AEO, and GEO Settings
   const [seo, setSeo] = useState<SeoData>({
     metaTitle: '',
     metaDescription: '',
@@ -177,7 +175,7 @@ export const AddPost: React.FC = () => {
 
   return (
     <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-      {/* Header Bar with Action Buttons */}
+
       <div
         style={{
           display: 'flex',
@@ -319,7 +317,6 @@ export const AddPost: React.FC = () => {
         </div>
       </div>
 
-      {/* Feedback Status Alerts */}
       {errorMsg && (
         <div
           role="alert"
@@ -362,12 +359,11 @@ export const AddPost: React.FC = () => {
         </div>
       )}
 
-      {/* Main Two-Column Layout */}
       <form onSubmit={e => handleSubmit(e)}>
         <div className="editor-layout-grid">
-          {/* Main Column */}
+
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-            {/* Title & Slug */}
+
             <div
               style={{
                 backgroundColor: 'var(--color-card)',
@@ -409,7 +405,6 @@ export const AddPost: React.FC = () => {
               </div>
             </div>
 
-            {/* Direct Featured Image Upload */}
             <div
               style={{
                 backgroundColor: 'var(--color-card)',
@@ -428,7 +423,6 @@ export const AddPost: React.FC = () => {
               />
             </div>
 
-            {/* Excerpt */}
             <div
               style={{
                 backgroundColor: 'var(--color-card)',
@@ -450,7 +444,6 @@ export const AddPost: React.FC = () => {
               />
             </div>
 
-            {/* Rich Editor */}
             <div
               style={{
                 backgroundColor: 'var(--color-card)',
@@ -470,7 +463,6 @@ export const AddPost: React.FC = () => {
               />
             </div>
 
-            {/* Integrated SEO, AEO, and GEO Settings Section Below Content on Same Page */}
             <SeoAeoGeoEditor
               seo={seo}
               onChangeSeo={setSeo}
@@ -488,9 +480,8 @@ export const AddPost: React.FC = () => {
             />
           </div>
 
-          {/* Right Sidebar Publishing Controls */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-            {/* Publishing Status Card */}
+
             <div
               style={{
                 backgroundColor: 'var(--color-card)',
@@ -508,7 +499,6 @@ export const AddPost: React.FC = () => {
                   Publication Status
                 </label>
 
-                {/* Modern Interactive Status Grid */}
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: '0.45rem' }}>
                   {(isAuthor
                     ? [
@@ -603,7 +593,6 @@ export const AddPost: React.FC = () => {
                     }}
                   />
 
-                  {/* Quick Presets */}
                   <div style={{ display: 'flex', gap: '0.35rem', flexWrap: 'wrap', marginBottom: '0.5rem' }}>
                     <button
                       type="button"
@@ -694,7 +683,6 @@ export const AddPost: React.FC = () => {
               </button>
             </div>
 
-            {/* Category Selection Card */}
             <div
               style={{
                 backgroundColor: 'var(--color-card)',
@@ -714,7 +702,6 @@ export const AddPost: React.FC = () => {
                 )}
               </div>
 
-              {/* Interactive Category Chips Grid */}
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.45rem', maxHeight: '220px', overflowY: 'auto', padding: '0.15rem' }}>
                 {categories.map(cat => {
                   const isSelected = categoryId === cat.category_id;
@@ -747,7 +734,6 @@ export const AddPost: React.FC = () => {
               </div>
             </div>
 
-            {/* Keyword & Topic Tags Card */}
             <div
               style={{
                 backgroundColor: 'var(--color-card)',
@@ -760,7 +746,6 @@ export const AddPost: React.FC = () => {
                 <Tag size={16} color="var(--color-secondary)" /> Topic Tags
               </h3>
 
-              {/* Tag Input Field */}
               <div style={{ display: 'flex', gap: '0.35rem', marginBottom: '0.75rem' }}>
                 <input
                   type="text"
@@ -803,7 +788,6 @@ export const AddPost: React.FC = () => {
                 </button>
               </div>
 
-              {/* Selected Tags Pills */}
               {selectedTags.length > 0 && (
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem', marginBottom: '0.85rem' }}>
                   {selectedTags.map(tagName => (
@@ -842,7 +826,6 @@ export const AddPost: React.FC = () => {
                 </div>
               )}
 
-              {/* Available Tags Quick Suggestions */}
               {availableTags.length > 0 && (
                 <div>
                   <span style={{ fontSize: '0.72rem', color: 'var(--color-muted)', display: 'block', marginBottom: '0.35rem', fontWeight: 600 }}>
@@ -882,7 +865,6 @@ export const AddPost: React.FC = () => {
               )}
             </div>
 
-            {/* Editorial Tools Suite: Health Score, Content Metrics, Outline & Checklist */}
             <EditorSidebarTools
               title={title}
               excerpt={excerpt}
@@ -895,7 +877,6 @@ export const AddPost: React.FC = () => {
         </div>
       </form>
 
-      {/* Article Preview Modal */}
       <ArticlePreviewModal
         isOpen={previewOpen}
         onClose={() => setPreviewOpen(false)}
@@ -907,3 +888,4 @@ export const AddPost: React.FC = () => {
     </div>
   );
 };
+

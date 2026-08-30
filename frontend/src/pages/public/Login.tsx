@@ -33,7 +33,6 @@ export const Login: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // If already authenticated, redirect straight to the appropriate portal dashboard directly
   useEffect(() => {
     if (isAuthenticated) {
       const redirectUrl = new URLSearchParams(location.search).get('redirect');
@@ -47,7 +46,6 @@ export const Login: React.FC = () => {
     }
   }, [isAuthenticated, isStaff, user, navigate, location.search]);
 
-  // 1. Google 1-Click Login
   const handleGoogleSignIn = async () => {
     setGoogleLoading(true);
     setErrorMsg(null);
@@ -69,7 +67,6 @@ export const Login: React.FC = () => {
     }
   };
 
-  // 2. Direct Email/Username & Password Login
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     const inputLogin = emailOrUsername.trim().toLowerCase();
@@ -83,7 +80,7 @@ export const Login: React.FC = () => {
     setSuccessMsg(null);
 
     try {
-      // 1. Attempt Firebase authentication with strict email verification check
+
       if (inputLogin.includes('@')) {
         try {
           const fbSession = await FirebaseAuthService.loginWithEmail(inputLogin, password);
@@ -101,11 +98,10 @@ export const Login: React.FC = () => {
             setErrorMsg(fbErr.message);
             return;
           }
-          // If not in Firebase, fallback to local DB (for staff / existing accounts)
+
         }
       }
 
-      // 2. Direct database authentication fallback
       const response = await fetch('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -226,7 +222,6 @@ export const Login: React.FC = () => {
           </div>
         )}
 
-        {/* 1-Click Google Sign-In Button */}
         <button
           type="button"
           onClick={handleGoogleSignIn}
@@ -435,3 +430,4 @@ export const Login: React.FC = () => {
     </div>
   );
 };
+

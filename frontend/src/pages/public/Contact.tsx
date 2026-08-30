@@ -146,7 +146,6 @@ export const Contact: React.FC = () => {
         description={`Get in touch with the ${siteName} editorial desk, pitch stories, or send publication inquiries.`}
       />
 
-      {/* Hero Header Section */}
       <header
         style={{
           textAlign: 'center',
@@ -199,7 +198,6 @@ export const Contact: React.FC = () => {
           Reach our journalism and editorial team directly.
         </p>
 
-        {/* Quick Editorial Guarantees */}
         <div
           style={{
             display: 'flex',
@@ -224,7 +222,6 @@ export const Contact: React.FC = () => {
         </div>
       </header>
 
-      {/* Main 2-Column Responsive Grid */}
       <div
         style={{
           display: 'grid',
@@ -233,7 +230,7 @@ export const Contact: React.FC = () => {
           alignItems: 'start',
         }}
       >
-        {/* Left Column: Interactive Contact Form Card */}
+
         <div
           style={{
             backgroundColor: 'var(--color-card)',
@@ -253,7 +250,6 @@ export const Contact: React.FC = () => {
             </p>
           </div>
 
-          {/* Department Selection Pills */}
           <div style={{ marginBottom: '1.5rem' }}>
             <label style={{ display: 'block', fontWeight: 600, fontSize: '0.82rem', color: 'var(--color-text)', marginBottom: '0.5rem' }}>
               Inquiry Department
@@ -355,7 +351,6 @@ export const Contact: React.FC = () => {
                 </div>
               )}
 
-              {/* Name & Email Row */}
               <div
                 style={{
                   display: 'grid',
@@ -410,7 +405,6 @@ export const Contact: React.FC = () => {
                 </div>
               </div>
 
-              {/* Subject */}
               <div>
                 <label htmlFor="contact-subject" style={{ display: 'block', fontWeight: 600, marginBottom: '0.35rem', fontSize: '0.84rem' }}>
                   Subject Line
@@ -433,7 +427,6 @@ export const Contact: React.FC = () => {
                 </div>
               </div>
 
-              {/* Message */}
               <div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.35rem' }}>
                   <label htmlFor="contact-message" style={{ fontWeight: 600, fontSize: '0.84rem' }}>
@@ -461,7 +454,6 @@ export const Contact: React.FC = () => {
                 />
               </div>
 
-              {/* Submit Button */}
               <button
                 type="submit"
                 disabled={submitting}
@@ -490,9 +482,8 @@ export const Contact: React.FC = () => {
           )}
         </div>
 
-        {/* Right Column: Direct Newsroom Channels & FAQ */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-          {/* Direct Editorial Email Channels Card */}
+
           <div
             style={{
               backgroundColor: 'var(--color-card)',
@@ -545,7 +536,6 @@ export const Contact: React.FC = () => {
             </div>
           </div>
 
-          {/* Become a Contributor Banner */}
           <div
             style={{
               padding: '1.25rem 1.5rem',
@@ -588,7 +578,6 @@ export const Contact: React.FC = () => {
             </Link>
           </div>
 
-          {/* Frequently Asked Questions */}
           <div
             style={{
               backgroundColor: 'var(--color-card)',
@@ -651,6 +640,4 @@ export const Contact: React.FC = () => {
     </div>
   );
 };
-
-
 

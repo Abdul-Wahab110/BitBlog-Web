@@ -27,7 +27,6 @@ export const Categories: React.FC = () => {
       });
   }, []);
 
-  // Separate top-level categories and subcategories
   const topLevelCategories = categories.filter(c => !c.parent_category_id && !c.parent_id);
 
   return (
@@ -91,7 +90,7 @@ export const Categories: React.FC = () => {
                   transition: 'transform var(--transition-fast), box-shadow var(--transition-fast)',
                 }}
               >
-                {/* Category Cover Image Banner */}
+
                 <Link to={`/category/${cat.slug}`} style={{ textDecoration: 'none', display: 'block', height: '160px', position: 'relative', overflow: 'hidden', backgroundColor: 'var(--color-surface-alt)' }}>
                   {catImage ? (
                     <img
@@ -125,7 +124,6 @@ export const Categories: React.FC = () => {
                     </div>
                   )}
 
-                  {/* Article Count Tag */}
                   <span
                     style={{
                       position: 'absolute',
@@ -144,7 +142,6 @@ export const Categories: React.FC = () => {
                   </span>
                 </Link>
 
-                {/* Category Details */}
                 <div style={{ padding: '1.25rem', display: 'flex', flexDirection: 'column', flex: 1, justifyContent: 'space-between' }}>
                   <div>
                     {cat.parent_category_name && (
@@ -163,7 +160,6 @@ export const Categories: React.FC = () => {
                       {cat.description || `Discover in-depth reporting, editorial analysis, and stories in ${cat.name}.`}
                     </p>
 
-                    {/* Subcategories List */}
                     {subCategories.length > 0 && (
                       <div style={{ marginBottom: '1rem', display: 'flex', flexWrap: 'wrap', gap: '0.35rem' }}>
                         {subCategories.map(sub => (
@@ -212,3 +208,4 @@ export const Categories: React.FC = () => {
     </div>
   );
 };
+

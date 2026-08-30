@@ -25,3 +25,4 @@ export const authenticate = (req: AuthenticatedRequest, res: Response, next: Nex
     }
   }
 };
+

@@ -35,7 +35,7 @@ export const EditorSidebarTools: React.FC<EditorSidebarToolsProps> = ({
   tagsCount,
   onInsertSnippet,
 }) => {
-  // Editorial Pre-publish Checklist state
+
   const [checklist, setChecklist] = useState({
     grammarChecked: true,
     citationsAdded: false,
@@ -43,27 +43,23 @@ export const EditorSidebarTools: React.FC<EditorSidebarToolsProps> = ({
     previewReviewed: false,
   });
 
-  // Calculate live stats
   const textOnly = content.replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim();
   const words = textOnly ? textOnly.split(' ').length : 0;
   const chars = textOnly.length;
   const readingTime = Math.max(1, Math.ceil(words / 200));
   const speakingTime = Math.max(1, Math.ceil(words / 130));
 
-  // Count headings & images
   const h2Count = (content.match(/<h2/gi) || []).length;
   const h3Count = (content.match(/<h3/gi) || []).length;
   const imageCount = (content.match(/<img/gi) || []).length + (featuredImage ? 1 : 0);
   const paragraphCount = (content.match(/<p/gi) || []).length;
 
-  // Extract outline headings for Table of Contents
   const headings = Array.from(content.matchAll(/<(h[23])[^>]*>(.*?)<\/\1>/gi)).map((m, idx) => ({
     id: idx,
     level: m[1].toLowerCase(),
     text: m[2].replace(/<[^>]*>/g, '').trim(),
   })).filter(h => h.text.length > 0);
 
-  // Calculate Publishing Health Score (0 - 100)
   let healthScore = 0;
   if (title.trim().length >= 10 && title.trim().length <= 90) healthScore += 20;
   else if (title.trim().length > 3) healthScore += 10;
@@ -97,7 +93,7 @@ export const EditorSidebarTools: React.FC<EditorSidebarToolsProps> = ({
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem', width: '100%' }}>
-      {/* 1. Article Health & Readiness Score Card */}
+
       <div
         style={{
           backgroundColor: 'var(--color-card)',
@@ -125,7 +121,6 @@ export const EditorSidebarTools: React.FC<EditorSidebarToolsProps> = ({
           </span>
         </div>
 
-        {/* Health Progress Bar */}
         <div style={{ width: '100%', height: '6px', backgroundColor: 'var(--color-surface-alt)', borderRadius: 'var(--radius-full)', overflow: 'hidden', marginBottom: '1rem' }}>
           <div
             style={{
@@ -138,7 +133,6 @@ export const EditorSidebarTools: React.FC<EditorSidebarToolsProps> = ({
           />
         </div>
 
-        {/* Readiness Checklist */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.45rem', fontSize: '0.78rem' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: title.length >= 10 ? 'var(--color-success)' : 'var(--color-muted)' }}>
             {title.length >= 10 ? <CheckCircle2 size={13} /> : <XCircle size={13} />}
@@ -172,7 +166,6 @@ export const EditorSidebarTools: React.FC<EditorSidebarToolsProps> = ({
         </div>
       </div>
 
-      {/* 2. Content Metrics & Readability Card */}
       <div
         style={{
           backgroundColor: 'var(--color-card)',
@@ -207,7 +200,6 @@ export const EditorSidebarTools: React.FC<EditorSidebarToolsProps> = ({
           </div>
         </div>
 
-        {/* Readability Indicator */}
         <div style={{ padding: '0.65rem 0.8rem', backgroundColor: 'var(--color-surface-alt)', borderRadius: 'var(--radius-sm)', border: '1px solid var(--color-border)' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.2rem' }}>
             <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--color-text)' }}>Readability Level:</span>
@@ -217,7 +209,6 @@ export const EditorSidebarTools: React.FC<EditorSidebarToolsProps> = ({
         </div>
       </div>
 
-      {/* 3. Article Structure & Live Table of Contents */}
       <div
         style={{
           backgroundColor: 'var(--color-card)',
@@ -263,7 +254,6 @@ export const EditorSidebarTools: React.FC<EditorSidebarToolsProps> = ({
         )}
       </div>
 
-      {/* 4. Editorial Pre-Publishing Checklist */}
       <div
         style={{
           backgroundColor: 'var(--color-card)',
@@ -329,3 +319,4 @@ export const EditorSidebarTools: React.FC<EditorSidebarToolsProps> = ({
     </div>
   );
 };
+

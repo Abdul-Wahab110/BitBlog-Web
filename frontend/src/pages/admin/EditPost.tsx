@@ -27,12 +27,10 @@ export const EditPost: React.FC = () => {
   const [status, setStatus] = useState<'draft' | 'published' | 'pending_review' | 'changes_requested' | 'rejected' | 'scheduled' | 'archived'>('draft');
   const [scheduledAt, setScheduledAt] = useState('');
 
-  // Topic Tags
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const [availableTags, setAvailableTags] = useState<any[]>([]);
   const [tagInput, setTagInput] = useState('');
 
-  // SEO, AEO, GEO Integrated State
   const [seo, setSeo] = useState<SeoData>({
     metaTitle: '',
     metaDescription: '',
@@ -415,9 +413,9 @@ export const EditPost: React.FC = () => {
 
       <form onSubmit={e => handleSubmit(e)}>
         <div className="editor-layout-grid">
-          {/* Main Column */}
+
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-            {/* Title & Slug */}
+
             <div
               style={{
                 backgroundColor: 'var(--color-card)',
@@ -457,7 +455,6 @@ export const EditPost: React.FC = () => {
               </div>
             </div>
 
-            {/* Featured Image */}
             <div
               style={{
                 backgroundColor: 'var(--color-card)',
@@ -476,7 +473,6 @@ export const EditPost: React.FC = () => {
               />
             </div>
 
-            {/* Excerpt */}
             <div
               style={{
                 backgroundColor: 'var(--color-card)',
@@ -497,7 +493,6 @@ export const EditPost: React.FC = () => {
               />
             </div>
 
-            {/* Rich Editor */}
             <div
               style={{
                 backgroundColor: 'var(--color-card)',
@@ -516,7 +511,6 @@ export const EditPost: React.FC = () => {
               />
             </div>
 
-            {/* Integrated SEO, AEO, and GEO Settings Section Below Content on Same Page */}
             <SeoAeoGeoEditor
               seo={seo}
               onChangeSeo={setSeo}
@@ -534,7 +528,6 @@ export const EditPost: React.FC = () => {
             />
           </div>
 
-          {/* Right Sidebar Publishing Controls */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
             <div
               style={{
@@ -553,7 +546,6 @@ export const EditPost: React.FC = () => {
                   Publication Status
                 </label>
 
-                {/* Modern Interactive Status Grid */}
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: '0.45rem' }}>
                   {(isAuthor
                     ? [
@@ -653,7 +645,6 @@ export const EditPost: React.FC = () => {
                     }}
                   />
 
-                  {/* Quick Presets */}
                   <div style={{ display: 'flex', gap: '0.35rem', flexWrap: 'wrap', marginBottom: '0.5rem' }}>
                     <button
                       type="button"
@@ -742,7 +733,6 @@ export const EditPost: React.FC = () => {
               </button>
             </div>
 
-            {/* Category Selection Card */}
             <div
               style={{
                 backgroundColor: 'var(--color-card)',
@@ -762,7 +752,6 @@ export const EditPost: React.FC = () => {
                 )}
               </div>
 
-              {/* Interactive Category Chips Grid */}
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.45rem', maxHeight: '220px', overflowY: 'auto', padding: '0.15rem' }}>
                 {categories.map(cat => {
                   const isSelected = categoryId === cat.category_id;
@@ -795,7 +784,6 @@ export const EditPost: React.FC = () => {
               </div>
             </div>
 
-            {/* Keyword & Topic Tags Card */}
             <div
               style={{
                 backgroundColor: 'var(--color-card)',
@@ -808,7 +796,6 @@ export const EditPost: React.FC = () => {
                 <Tag size={16} color="var(--color-secondary)" /> Topic Tags
               </h3>
 
-              {/* Tag Input Field */}
               <div style={{ display: 'flex', gap: '0.35rem', marginBottom: '0.75rem' }}>
                 <input
                   type="text"
@@ -851,7 +838,6 @@ export const EditPost: React.FC = () => {
                 </button>
               </div>
 
-              {/* Selected Tags Pills */}
               {selectedTags.length > 0 && (
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem', marginBottom: '0.85rem' }}>
                   {selectedTags.map(tagName => (
@@ -890,7 +876,6 @@ export const EditPost: React.FC = () => {
                 </div>
               )}
 
-              {/* Available Tags Quick Suggestions */}
               {availableTags.length > 0 && (
                 <div>
                   <span style={{ fontSize: '0.72rem', color: 'var(--color-muted)', display: 'block', marginBottom: '0.35rem', fontWeight: 600 }}>
@@ -930,7 +915,6 @@ export const EditPost: React.FC = () => {
               )}
             </div>
 
-            {/* Editorial Tools Suite: Health Score, Content Metrics, Outline & Checklist */}
             <EditorSidebarTools
               title={title}
               excerpt={excerpt}
@@ -954,3 +938,4 @@ export const EditPost: React.FC = () => {
     </div>
   );
 };
+

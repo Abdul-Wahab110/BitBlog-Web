@@ -61,12 +61,10 @@ export const AdminNewsletter: React.FC = () => {
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState<string>('ALL');
 
-  // Modals state
   const [showAddModal, setShowAddModal] = useState(false);
   const [editingSub, setEditingSub] = useState<Subscriber | null>(null);
   const [deletingSub, setDeletingSub] = useState<Subscriber | null>(null);
 
-  // Form inputs state (for Add and Edit)
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -290,7 +288,7 @@ export const AdminNewsletter: React.FC = () => {
 
   return (
     <div style={{ paddingBottom: '3rem' }}>
-      {/* Toast Notification Alert */}
+
       {notification && (
         <div
           style={{
@@ -320,7 +318,6 @@ export const AdminNewsletter: React.FC = () => {
         </div>
       )}
 
-      {/* Header Section */}
       <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem' }}>
         <div>
           <h1 style={{ fontSize: '1.6rem', marginBottom: '0.2rem', display: 'flex', alignItems: 'center', gap: '0.6rem' }}>
@@ -374,7 +371,6 @@ export const AdminNewsletter: React.FC = () => {
         </div>
       </div>
 
-      {/* Stats Cards Row */}
       <div
         style={{
           display: 'grid',
@@ -383,7 +379,7 @@ export const AdminNewsletter: React.FC = () => {
           marginBottom: '1.5rem',
         }}
       >
-        {/* Pending Approval Priority Card */}
+
         <div
           onClick={() => setStatusFilter('PENDING')}
           style={{
@@ -408,7 +404,6 @@ export const AdminNewsletter: React.FC = () => {
           </span>
         </div>
 
-        {/* Active Subscribed */}
         <div
           onClick={() => setStatusFilter('SUBSCRIBED')}
           style={{
@@ -430,7 +425,6 @@ export const AdminNewsletter: React.FC = () => {
           <span style={{ fontSize: '0.75rem', color: 'var(--color-text-secondary)' }}>Approved active audience</span>
         </div>
 
-        {/* Rejected */}
         <div
           onClick={() => setStatusFilter('REJECTED')}
           style={{
@@ -452,7 +446,6 @@ export const AdminNewsletter: React.FC = () => {
           <span style={{ fontSize: '0.75rem', color: 'var(--color-text-secondary)' }}>Declined by moderator</span>
         </div>
 
-        {/* Unsubscribed */}
         <div
           onClick={() => setStatusFilter('UNSUBSCRIBED')}
           style={{
@@ -474,7 +467,6 @@ export const AdminNewsletter: React.FC = () => {
           <span style={{ fontSize: '0.75rem', color: 'var(--color-text-secondary)' }}>Self opted out readers</span>
         </div>
 
-        {/* Total Audience */}
         <div
           onClick={() => setStatusFilter('ALL')}
           style={{
@@ -497,7 +489,6 @@ export const AdminNewsletter: React.FC = () => {
         </div>
       </div>
 
-      {/* Filter and Search Bar */}
       <div
         style={{
           backgroundColor: 'var(--color-card)',
@@ -575,7 +566,6 @@ export const AdminNewsletter: React.FC = () => {
         </div>
       </div>
 
-      {/* Main Subscribers Table */}
       {loading ? (
         <LoadingState message="Fetching subscriber records and pending requests..." />
       ) : subscribers.length === 0 ? (
@@ -644,7 +634,7 @@ export const AdminNewsletter: React.FC = () => {
                     onMouseEnter={e => (e.currentTarget.style.backgroundColor = isPending ? 'rgba(245, 158, 11, 0.08)' : 'var(--color-surface-alt)')}
                     onMouseLeave={e => (e.currentTarget.style.backgroundColor = isPending ? 'rgba(245, 158, 11, 0.03)' : 'transparent')}
                   >
-                    {/* Subscriber Info */}
+
                     <td style={{ padding: '0.9rem 1.15rem' }}>
                       <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
                         <div
@@ -705,7 +695,6 @@ export const AdminNewsletter: React.FC = () => {
                       </div>
                     </td>
 
-                    {/* Topics badges */}
                     <td style={{ padding: '0.9rem 1.15rem' }}>
                       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.3rem', maxWidth: '280px' }}>
                         {sub.topics && sub.topics.length > 0 ? (
@@ -731,7 +720,6 @@ export const AdminNewsletter: React.FC = () => {
                       </div>
                     </td>
 
-                    {/* Status with Quick Toggle */}
                     <td style={{ padding: '0.9rem 1.15rem' }}>
                       <select
                         value={sub.status || 'PENDING'}
@@ -754,7 +742,6 @@ export const AdminNewsletter: React.FC = () => {
                       </select>
                     </td>
 
-                    {/* Date */}
                     <td style={{ padding: '0.9rem 1.15rem', color: 'var(--color-text-secondary)', fontSize: '0.82rem' }}>
                       {new Date(sub.subscribed_at).toLocaleDateString(undefined, {
                         year: 'numeric',
@@ -763,12 +750,11 @@ export const AdminNewsletter: React.FC = () => {
                       })}
                     </td>
 
-                    {/* Actions: Approve / Reject 1-click or Edit / Delete */}
                     <td style={{ padding: '0.9rem 1.15rem', textAlign: 'right' }}>
                       <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}>
                         {isPending && (
                           <>
-                            {/* Approve Button */}
+
                             <button
                               onClick={() => handleApprove(sub.subscriber_id, sub.email)}
                               title="Approve Subscriber"
@@ -790,7 +776,6 @@ export const AdminNewsletter: React.FC = () => {
                               <ThumbsUp size={13} /> Approve
                             </button>
 
-                            {/* Reject Button */}
                             <button
                               onClick={() => handleReject(sub.subscriber_id, sub.email)}
                               title="Reject Subscription Request"
@@ -859,7 +844,6 @@ export const AdminNewsletter: React.FC = () => {
         </div>
       )}
 
-      {/* Add / Edit Subscriber Modal Dialog */}
       {(showAddModal || editingSub) && (
         <div
           style={{
@@ -1090,7 +1074,6 @@ export const AdminNewsletter: React.FC = () => {
         </div>
       )}
 
-      {/* Delete Confirmation Modal */}
       {deletingSub && (
         <div
           style={{
@@ -1160,5 +1143,4 @@ export const AdminNewsletter: React.FC = () => {
     </div>
   );
 };
-
 

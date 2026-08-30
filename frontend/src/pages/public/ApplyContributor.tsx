@@ -88,14 +88,12 @@ export const ApplyContributor: React.FC = () => {
   const siteName = settings.site_name || 'BitBlog';
   const navigate = useNavigate();
 
-  // Role classification
   const isAuthor = user?.role === 'Author';
   const isEditor = user?.role === 'Editor';
   const isAdmin = user?.role === 'Admin';
   const isStaffAlready = isAuthor || isEditor || isAdmin;
   const isTopRole = isEditor || isAdmin;
 
-  // Application State
   const [roleApplied, setRoleApplied] = useState<'Author' | 'Editor'>(isAuthor ? 'Editor' : 'Author');
   const [bio, setBio] = useState('');
   const [sampleUrls, setSampleUrls] = useState('');
@@ -117,7 +115,6 @@ export const ApplyContributor: React.FC = () => {
     }
   }, [isAuthor]);
 
-  // Check user application status if logged in
   useEffect(() => {
     if (isAuthenticated) {
       setLoading(true);
@@ -142,7 +139,7 @@ export const ApplyContributor: React.FC = () => {
     e.preventDefault();
 
     if (!isAuthenticated) {
-      // Save draft into session storage and redirect to login
+
       sessionStorage.setItem(
         'contributor_draft',
         JSON.stringify({ roleApplied, bio, sampleUrls, selectedTopics, motivation })
@@ -181,7 +178,7 @@ export const ApplyContributor: React.FC = () => {
         message: res.message || 'Your application was submitted successfully! Our editorial desk will review your portfolio.',
       });
       setReapplyMode(false);
-      // Refresh status
+
       const appRes = await ApiService.getMyApplication();
       if (appRes && appRes.data && appRes.data.latest) {
         setCurrentApp(appRes.data.latest);
@@ -200,7 +197,6 @@ export const ApplyContributor: React.FC = () => {
         description={`Join ${siteName}'s community of verified authors, engineers, and digital journalists. Publish high-impact tech stories and build your writing portfolio.`}
       />
 
-      {/* 1. HERO BANNER */}
       <section
         style={{
           position: 'relative',
@@ -280,7 +276,6 @@ export const ApplyContributor: React.FC = () => {
         </div>
       </section>
 
-      {/* 2. WHY WRITE FOR US (PERKS) */}
       <section className="container" style={{ maxWidth: '1080px', marginTop: '-1.5rem', marginBottom: '3.5rem', padding: '0 1rem' }}>
         <div
           style={{
@@ -332,9 +327,8 @@ export const ApplyContributor: React.FC = () => {
         </div>
       </section>
 
-      {/* 3. MAIN APPLICATION SECTION */}
       <section className="container" style={{ maxWidth: '900px', padding: '0 1rem' }}>
-        {/* Active Staff Alert */}
+
         {isStaffAlready && (
           <div
             style={{
@@ -399,7 +393,6 @@ export const ApplyContributor: React.FC = () => {
           </div>
         )}
 
-        {/* Pending / Existing Application Status */}
         {currentApp && !reapplyMode && (
           <div
             style={{
@@ -526,7 +519,6 @@ export const ApplyContributor: React.FC = () => {
           </div>
         )}
 
-        {/* Main Application Form Container */}
         {((!currentApp || currentApp.status !== 'pending' || reapplyMode) && !isTopRole) && (
           <div
             style={{
@@ -556,7 +548,6 @@ export const ApplyContributor: React.FC = () => {
               </p>
             </div>
 
-            {/* Guest Banner Notice */}
             {!isAuthenticated && (
               <div
                 style={{
@@ -618,7 +609,6 @@ export const ApplyContributor: React.FC = () => {
               </div>
             )}
 
-            {/* Status Feedback alert */}
             {feedback && (
               <div
                 style={{
@@ -640,7 +630,7 @@ export const ApplyContributor: React.FC = () => {
             )}
 
             <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.75rem' }}>
-              {/* Role Selection */}
+
               <div>
                 <label
                   style={{
@@ -654,7 +644,7 @@ export const ApplyContributor: React.FC = () => {
                   Choose Your Desired Contributor Track
                 </label>
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1rem' }}>
-                  {/* Author Track */}
+
                   <div
                     onClick={() => {
                       if (!isAuthor) setRoleApplied('Author');
@@ -716,7 +706,6 @@ export const ApplyContributor: React.FC = () => {
                     </p>
                   </div>
 
-                  {/* Editor Track */}
                   <div
                     onClick={() => setRoleApplied('Editor')}
                     style={{
@@ -748,7 +737,6 @@ export const ApplyContributor: React.FC = () => {
                 </div>
               </div>
 
-              {/* Topics Multi-Select */}
               <div>
                 <label
                   style={{
@@ -789,7 +777,6 @@ export const ApplyContributor: React.FC = () => {
                 </div>
               </div>
 
-              {/* Bio / Background */}
               <div>
                 <label
                   style={{
@@ -823,7 +810,6 @@ export const ApplyContributor: React.FC = () => {
                 />
               </div>
 
-              {/* Sample URLs / Portfolio */}
               <div>
                 <label
                   style={{
@@ -854,7 +840,6 @@ export const ApplyContributor: React.FC = () => {
                 />
               </div>
 
-              {/* Motivation & Article Proposals */}
               <div>
                 <label
                   style={{
@@ -888,7 +873,6 @@ export const ApplyContributor: React.FC = () => {
                 />
               </div>
 
-              {/* Submit CTA */}
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem', paddingTop: '0.5rem' }}>
                 <span style={{ fontSize: '0.8rem', color: 'var(--color-text-secondary)' }}>
                   By submitting, you agree to uphold our editorial and ethical guidelines.
@@ -928,7 +912,6 @@ export const ApplyContributor: React.FC = () => {
         )}
       </section>
 
-      {/* 4. FREQUENTLY ASKED QUESTIONS */}
       <section className="container" style={{ maxWidth: '900px', marginTop: '4rem', padding: '0 1rem' }}>
         <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
           <span
@@ -982,3 +965,4 @@ export const ApplyContributor: React.FC = () => {
     </div>
   );
 };
+

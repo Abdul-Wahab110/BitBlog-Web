@@ -77,7 +77,6 @@ export const AdminComments: React.FC = () => {
           <p style={{ fontSize: '0.85rem', color: 'var(--color-text-secondary)' }}>Review, approve, reject, or mark reader comments as spam</p>
         </div>
 
-        {/* Status Filter */}
         <div style={{ width: '100%', maxWidth: '240px' }}>
           <select
             value={statusFilter}
@@ -239,3 +238,4 @@ export const AdminComments: React.FC = () => {
     </div>
   );
 };
+

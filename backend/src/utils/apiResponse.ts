@@ -22,3 +22,4 @@ export class ResponseUtil {
     return res.status(statusCode).json(payload);
   }
 }
+

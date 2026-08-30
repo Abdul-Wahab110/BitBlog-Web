@@ -34,7 +34,6 @@ export const Navigation: React.FC = () => {
         Articles
       </Link>
 
-      {/* Categories Dropdown with Glassmorphic Animation */}
       <div className="nav-dropdown-wrapper">
         <Link
           to="/categories"
@@ -141,3 +140,4 @@ export const Navigation: React.FC = () => {
     </nav>
   );
 };
+

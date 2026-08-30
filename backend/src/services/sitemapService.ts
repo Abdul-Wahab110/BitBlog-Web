@@ -6,7 +6,6 @@ export class SitemapService {
     const settings = await SettingModel.getSettings();
     const baseUrl = settings.site_canonical_base_url.replace(/\/$/, '');
 
-    // Fetch published articles
     const postsSql = `
       SELECT slug, updated_at, published_at
       FROM posts
@@ -15,15 +14,12 @@ export class SitemapService {
     `;
     const posts = await Database.execute<{ SLUG: string; UPDATED_AT: string; PUBLISHED_AT: string }>(postsSql, []) || [];
 
-    // Fetch public categories
     const categoriesSql = `SELECT slug, updated_at FROM categories ORDER BY name ASC`;
     const categories = await Database.execute<{ SLUG: string; UPDATED_AT: string }>(categoriesSql, []) || [];
 
-    // Fetch public tags
     const tagsSql = `SELECT slug FROM tags ORDER BY name ASC`;
     const tags = await Database.execute<{ SLUG: string }>(tagsSql, []) || [];
 
-    // Fetch public author IDs
     const authorsSql = `
       SELECT u.user_id, MAX(u.updated_at) AS updated_at
       FROM users u
@@ -38,7 +34,6 @@ export class SitemapService {
     let xml = `<?xml version="1.0" encoding="UTF-8"?>\n`;
     xml += `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`;
 
-    // Static Public Pages
     const staticPages = [
       { loc: '/', priority: '1.0', changefreq: 'daily' },
       { loc: '/blog', priority: '0.9', changefreq: 'daily' },
@@ -58,7 +53,6 @@ export class SitemapService {
       xml += `  </url>\n`;
     }
 
-    // Published Articles
     for (const p of posts) {
       const lastmod = (p.UPDATED_AT || p.PUBLISHED_AT || nowIso).split('T')[0];
       xml += `  <url>\n`;
@@ -69,7 +63,6 @@ export class SitemapService {
       xml += `  </url>\n`;
     }
 
-    // Public Categories
     for (const c of categories) {
       const lastmod = (c.UPDATED_AT || nowIso).split('T')[0];
       xml += `  <url>\n`;
@@ -80,7 +73,6 @@ export class SitemapService {
       xml += `  </url>\n`;
     }
 
-    // Public Tags
     for (const t of tags) {
       xml += `  <url>\n`;
       xml += `    <loc>${baseUrl}/tag/${t.SLUG}</loc>\n`;
@@ -90,7 +82,6 @@ export class SitemapService {
       xml += `  </url>\n`;
     }
 
-    // Public Authors
     for (const a of authors) {
       const lastmod = (a.UPDATED_AT || nowIso).split('T')[0];
       xml += `  <url>\n`;
@@ -105,3 +96,4 @@ export class SitemapService {
     return xml;
   }
 }
+

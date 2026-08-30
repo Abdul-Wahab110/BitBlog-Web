@@ -30,7 +30,6 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
   const location = useLocation();
   const { isAuthenticated, user, isStaff, logout, openAuthModal } = useAuth();
 
-  // Handle ESC key to close drawer
   const handleKeyDown = useCallback(
     (e: KeyboardEvent) => {
       if (e.key === 'Escape' && isOpen) {
@@ -45,7 +44,6 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [handleKeyDown]);
 
-  // Lock body scrolling when drawer is open
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = 'hidden';
@@ -57,7 +55,6 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
     };
   }, [isOpen]);
 
-  // Close automatically on route change
   useEffect(() => {
     onClose();
   }, [location.pathname]);
@@ -73,12 +70,12 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
     backgroundColor: active ? 'var(--color-surface-alt)' : 'transparent',
     borderRadius: 'var(--radius-md)',
     transition: 'all var(--transition-fast)',
-    minHeight: '44px', // Comfortable touch target
+    minHeight: '44px',
   });
 
   const drawerContent = (
     <>
-      {/* Backdrop overlay */}
+
       <div
         onClick={onClose}
         aria-hidden="true"
@@ -89,7 +86,6 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
         }}
       />
 
-      {/* Slide-in drawer */}
       <aside
         role="dialog"
         aria-modal="true"
@@ -99,7 +95,7 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
           transform: isOpen ? 'translateX(0)' : 'translateX(-100%)',
         }}
       >
-        {/* Drawer Header */}
+
         <div
           style={{
             display: 'flex',
@@ -139,7 +135,6 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
           </button>
         </div>
 
-        {/* Navigation Links */}
         <nav
           style={{
             flex: 1,
@@ -184,7 +179,6 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
             <Mail size={18} /> Contact
           </Link>
 
-          {/* If staff, show CMS Admin link */}
           {isStaff && (
             <>
               <div style={{ height: '1px', backgroundColor: 'var(--color-border)', margin: '0.5rem 0.25rem' }} />
@@ -203,7 +197,6 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
           )}
         </nav>
 
-        {/* Drawer Footer */}
         <div
           style={{
             padding: '1rem 1.25rem',
@@ -321,3 +314,4 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
   if (typeof document === 'undefined') return null;
   return createPortal(drawerContent, document.body);
 };
+

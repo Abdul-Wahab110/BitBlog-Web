@@ -70,3 +70,4 @@ export class ContactModel {
     return true;
   }
 }
+

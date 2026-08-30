@@ -24,7 +24,6 @@ export const AdminCategories: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
 
-  // Form State
   const [isEditing, setIsEditing] = useState(false);
   const [editId, setEditId] = useState<number | null>(null);
   const [name, setName] = useState('');
@@ -160,7 +159,7 @@ export const AdminCategories: React.FC = () => {
       )}
 
       <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '1.5rem' }}>
-        {/* Create / Edit Category Form */}
+
         <div style={{ backgroundColor: 'var(--color-card)', padding: '1.5rem', borderRadius: 'var(--radius-lg)', border: '1px solid var(--color-border)' }}>
           <h3 style={{ fontSize: '1.1rem', marginBottom: '1.25rem', display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: 700 }}>
             <Layers size={18} color="var(--color-secondary)" /> {isEditing ? `Edit Category #${editId}: ${name}` : 'Add New Category'}
@@ -282,7 +281,6 @@ export const AdminCategories: React.FC = () => {
               />
             </div>
 
-            {/* Category Cover Image & Banner Upload */}
             <div style={{ width: '100%', boxSizing: 'border-box' }}>
               <label style={{ display: 'block', fontWeight: 700, marginBottom: '0.4rem', fontSize: '0.88rem' }}>
                 Category Banner / Cover Image
@@ -335,7 +333,6 @@ export const AdminCategories: React.FC = () => {
           </form>
         </div>
 
-        {/* Categories Database Table */}
         <div style={{ backgroundColor: 'var(--color-card)', padding: '1.25rem', borderRadius: 'var(--radius-lg)', border: '1px solid var(--color-border)', width: '100%', boxSizing: 'border-box' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem', flexWrap: 'wrap', gap: '0.75rem' }}>
             <h3 style={{ fontSize: '1.1rem', fontWeight: 700, margin: 0 }}>
@@ -463,3 +460,4 @@ export const AdminCategories: React.FC = () => {
     </div>
   );
 };
+
