@@ -323,6 +323,34 @@ export class PostService {
       });
     }
 
+    if (isStaff && existing.author_id !== user.userId) {
+      if (finalStatus === 'draft' && existing.status !== 'draft') {
+        await NotificationModel.createNotification({
+          userId: existing.author_id,
+          type: 'ARTICLE_MOVED_TO_DRAFT',
+          title: 'Article Moved to Draft',
+          message: `Your article '${existing.title}' was moved to Drafts by ${user.role} (${user.name || user.username || 'Editorial Staff'}).`,
+          linkUrl: `/user/articles`,
+        });
+      } else if (finalStatus !== existing.status) {
+        await NotificationModel.createNotification({
+          userId: existing.author_id,
+          type: 'ARTICLE_UPDATED',
+          title: 'Article Status Changed',
+          message: `Your article '${existing.title}' status was changed to '${finalStatus.replace(/_/g, ' ')}' by ${user.role}.`,
+          linkUrl: `/user/articles`,
+        });
+      } else {
+        await NotificationModel.createNotification({
+          userId: existing.author_id,
+          type: 'ARTICLE_UPDATED',
+          title: 'Article Edited by Editorial Staff',
+          message: `Your article '${existing.title}' was modified by ${user.role} (${user.name || user.username || 'Editorial Staff'}).`,
+          linkUrl: `/user/articles`,
+        });
+      }
+    }
+
     return updated;
   }
 

@@ -7,6 +7,8 @@ export type NotificationType =
   | 'ARTICLE_APPROVED'
   | 'ARTICLE_REJECTED'
   | 'CHANGES_REQUESTED'
+  | 'ARTICLE_UPDATED'
+  | 'ARTICLE_MOVED_TO_DRAFT'
   | 'SYSTEM';
 
 export interface NotificationRecord {
