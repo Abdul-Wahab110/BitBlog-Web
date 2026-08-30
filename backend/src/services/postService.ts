@@ -267,7 +267,6 @@ export class PostService {
     if (isStaff) {
       if (data.status) finalStatus = data.status;
     } else {
-
       if (data.status === 'published') {
         finalStatus = 'pending_review';
       } else if (data.status) {
