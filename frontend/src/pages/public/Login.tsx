@@ -145,12 +145,13 @@ export const Login: React.FC = () => {
   };
 
   return (
-    <main
-      className="container"
+    <div
       style={{
-        padding: '3rem 1rem 5rem 1rem',
-        maxWidth: '440px',
-        minHeight: 'calc(100vh - 200px)',
+        width: '100%',
+        maxWidth: '460px',
+        margin: '0 auto',
+        padding: '2rem 1rem 3.5rem 1rem',
+        boxSizing: 'border-box',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
@@ -431,6 +432,6 @@ export const Login: React.FC = () => {
           </Link>
         </div>
       </section>
-    </main>
+    </div>
   );
 };

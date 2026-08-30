@@ -247,12 +247,13 @@ export const Register: React.FC = () => {
   };
 
   return (
-    <main
-      className="container"
+    <div
       style={{
-        padding: '3rem 1rem 5rem 1rem',
+        width: '100%',
         maxWidth: '480px',
-        minHeight: 'calc(100vh - 200px)',
+        margin: '0 auto',
+        padding: '2rem 1rem 3.5rem 1rem',
+        boxSizing: 'border-box',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
@@ -803,6 +804,6 @@ export const Register: React.FC = () => {
           </>
         )}
       </section>
-    </main>
+    </div>
   );
 };
