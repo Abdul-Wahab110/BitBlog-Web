@@ -179,13 +179,20 @@ export class ApplicationController {
           linkUrl: '/admin',
         });
       } else {
-        // Rejected notification with feedback
+        // If application was previously approved, revoke role and demote back to Reader (4)
+        if (app.status === 'approved') {
+          await UserModel.updateUserRole(app.user_id, 4); // 4: Reader
+        }
+
+        // Rejected/Revoked notification with feedback
         const reason = feedback ? ` Reason: ${feedback}` : '';
         await NotificationModel.createNotification({
           userId: app.user_id,
           type: 'SYSTEM',
-          title: `Application Update: ${app.role_applied} Submission`,
-          message: `Thank you for your interest in joining as ${app.role_applied}. Your application was not approved at this time.${reason}`,
+          title: app.status === 'approved' ? `Role Revoked: ${app.role_applied} Access` : `Application Update: ${app.role_applied} Submission`,
+          message: app.status === 'approved'
+            ? `Your ${app.role_applied} privileges have been revoked by the administration and account returned to reader status.${reason}`
+            : `Thank you for your interest in joining as ${app.role_applied}. Your application was not approved at this time.${reason}`,
           linkUrl: '/user/apply',
         });
       }

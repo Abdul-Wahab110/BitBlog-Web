@@ -302,9 +302,52 @@ export const AdminApplications: React.FC = () => {
                 </div>
               )}
 
-              {/* Action Buttons for Pending Application */}
-              {app.status === 'pending' && (
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '0.75rem', borderTop: '1px solid var(--color-border)', paddingTop: '1rem' }}>
+              {/* Action Buttons for Applications */}
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '0.75rem', borderTop: '1px solid var(--color-border)', paddingTop: '1rem', flexWrap: 'wrap' }}>
+                {app.status === 'pending' && (
+                  <>
+                    <button
+                      onClick={() => handleOpenReview(app, 'rejected')}
+                      style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '0.4rem',
+                        backgroundColor: 'transparent',
+                        color: 'var(--color-danger)',
+                        border: '1px solid rgba(239, 68, 68, 0.3)',
+                        padding: '0.5rem 1rem',
+                        borderRadius: 'var(--radius-md)',
+                        fontSize: '0.85rem',
+                        fontWeight: 600,
+                        cursor: 'pointer',
+                      }}
+                    >
+                      <X size={15} /> Reject
+                    </button>
+
+                    <button
+                      onClick={() => handleOpenReview(app, 'approved')}
+                      style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '0.4rem',
+                        backgroundColor: 'var(--color-success)',
+                        color: '#FFFFFF',
+                        border: 'none',
+                        padding: '0.5rem 1.25rem',
+                        borderRadius: 'var(--radius-md)',
+                        fontSize: '0.85rem',
+                        fontWeight: 700,
+                        cursor: 'pointer',
+                        boxShadow: '0 2px 8px rgba(16, 185, 129, 0.35)',
+                      }}
+                    >
+                      <Check size={16} /> Accept & Promote to {app.role_applied}
+                    </button>
+                  </>
+                )}
+
+                {app.status === 'approved' && (
                   <button
                     onClick={() => handleOpenReview(app, 'rejected')}
                     style={{
@@ -313,38 +356,40 @@ export const AdminApplications: React.FC = () => {
                       gap: '0.4rem',
                       backgroundColor: 'transparent',
                       color: 'var(--color-danger)',
-                      border: '1px solid rgba(239, 68, 68, 0.3)',
-                      padding: '0.5rem 1rem',
+                      border: '1px solid rgba(239, 68, 68, 0.35)',
+                      padding: '0.45rem 1rem',
                       borderRadius: 'var(--radius-md)',
-                      fontSize: '0.85rem',
+                      fontSize: '0.82rem',
                       fontWeight: 600,
                       cursor: 'pointer',
                     }}
+                    title="Revoke role and demote back to Reader status"
                   >
-                    <X size={15} /> Reject
+                    <X size={14} /> Revoke {app.role_applied} Role & Demote to Reader
                   </button>
+                )}
 
+                {app.status === 'rejected' && (
                   <button
                     onClick={() => handleOpenReview(app, 'approved')}
                     style={{
                       display: 'inline-flex',
                       alignItems: 'center',
                       gap: '0.4rem',
-                      backgroundColor: 'var(--color-success)',
-                      color: '#FFFFFF',
-                      border: 'none',
-                      padding: '0.5rem 1.25rem',
+                      backgroundColor: 'rgba(16, 185, 129, 0.12)',
+                      color: 'var(--color-success)',
+                      border: '1px solid rgba(16, 185, 129, 0.3)',
+                      padding: '0.45rem 1rem',
                       borderRadius: 'var(--radius-md)',
-                      fontSize: '0.85rem',
+                      fontSize: '0.82rem',
                       fontWeight: 700,
                       cursor: 'pointer',
-                      boxShadow: '0 2px 8px rgba(16, 185, 129, 0.35)',
                     }}
                   >
-                    <Check size={16} /> Accept & Promote to {app.role_applied}
+                    <Check size={14} /> Reconsider & Promote to {app.role_applied}
                   </button>
-                </div>
-              )}
+                )}
+              </div>
             </div>
           ))}
         </div>
@@ -388,11 +433,17 @@ export const AdminApplications: React.FC = () => {
               )}
               <div>
                 <h3 style={{ fontSize: '1.15rem', fontWeight: 700, margin: 0 }}>
-                  {actionType === 'approved' ? `Approve ${selectedApp.name}` : `Reject Application`}
+                  {actionType === 'approved'
+                    ? `Approve ${selectedApp.name}`
+                    : selectedApp.status === 'approved'
+                    ? `Revoke ${selectedApp.name}'s Role`
+                    : `Reject Application`}
                 </h3>
                 <p style={{ fontSize: '0.8rem', color: 'var(--color-text-secondary)', margin: 0 }}>
                   {actionType === 'approved'
                     ? `Applicant will be immediately promoted to '${selectedApp.role_applied}' in the database.`
+                    : selectedApp.status === 'approved'
+                    ? `User will be demoted back to 'Reader' status and notified with your feedback.`
                     : 'Applicant will be notified of your editorial decision.'}
                 </p>
               </div>
@@ -406,7 +457,7 @@ export const AdminApplications: React.FC = () => {
                 rows={3}
                 value={feedback}
                 onChange={e => setFeedback(e.target.value)}
-                placeholder="Optional feedback or welcome message..."
+                placeholder={actionType === 'approved' ? 'Optional welcome or onboarding feedback...' : 'Reason for rejection or role revocation...'}
                 style={{ width: '100%', padding: '0.6rem 0.8rem', fontSize: '0.88rem', borderRadius: 'var(--radius-sm)' }}
               />
             </div>
@@ -445,7 +496,13 @@ export const AdminApplications: React.FC = () => {
                   boxShadow: actionType === 'approved' ? '0 2px 8px rgba(16, 185, 129, 0.4)' : '0 2px 8px rgba(239, 68, 68, 0.4)',
                 }}
               >
-                {submitting ? 'Processing...' : actionType === 'approved' ? `Confirm & Promote to ${selectedApp.role_applied}` : 'Confirm Rejection'}
+                {submitting
+                  ? 'Processing...'
+                  : actionType === 'approved'
+                  ? `Confirm & Promote to ${selectedApp.role_applied}`
+                  : selectedApp.status === 'approved'
+                  ? 'Confirm Revocation & Demote to Reader'
+                  : 'Confirm Rejection'}
               </button>
             </div>
           </div>

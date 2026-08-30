@@ -100,7 +100,8 @@ export class PostService {
   }
 
   public static async getAdminPosts(user: JwtPayload) {
-    const authorIdFilter = user.role === 'Author' ? user.userId : undefined;
+    const isStaff = user.role?.toLowerCase() === 'admin' || user.role?.toLowerCase() === 'editor';
+    const authorIdFilter = !isStaff ? user.userId : undefined;
     const posts = await PostModel.findAllAdmin(authorIdFilter);
     return { posts, total: posts.length };
   }

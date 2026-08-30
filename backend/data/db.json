@@ -33,7 +33,7 @@
       "status": "ACTIVE",
       "created_at": "2026-08-19T07:40:57.279Z",
       "updated_at": "2026-08-28T11:50:50.600Z",
-      "last_login": "2026-08-30T19:28:47.454Z",
+      "last_login": "2026-08-30T19:49:41.661Z",
       "profile_image": "/uploads/1787588806977-xexqhoev.png",
       "bio": "",
       "website": "",
@@ -43,16 +43,16 @@
     },
     {
       "user_id": 2,
-      "role_id": 4,
-      "role_name": "User",
+      "role_id": 3,
+      "role_name": "Author",
       "name": "Demo Reader",
       "username": "reader",
       "email": "reader@bitblog.com",
       "password_hash": "$2b$10$hEGpgJFwdN2U917XGH0ocu/I6MP8K.eelqDs2pNBNfutztgW1Ge3.",
       "status": "ACTIVE",
       "created_at": "2026-08-19T07:40:57.279Z",
-      "updated_at": "2026-08-19T08:29:46.677Z",
-      "last_login": "2026-08-30T14:53:42.521Z"
+      "updated_at": "2026-08-30T19:50:02.223Z",
+      "last_login": "2026-08-30T19:51:32.786Z"
     },
     {
       "user_id": 3,
@@ -647,6 +647,36 @@
       "link_url": "/admin",
       "is_read": true,
       "created_at": "2026-08-27T08:05:16.046Z"
+    },
+    {
+      "notification_id": 1788109500936,
+      "user_id": 2,
+      "type": "SYSTEM",
+      "title": "Author Application Received!",
+      "message": "Your application to join the editorial team as an Author has been received. Our administration will review your portfolio.",
+      "link_url": "/user/apply",
+      "is_read": true,
+      "created_at": "2026-08-30T19:48:50.563Z"
+    },
+    {
+      "notification_id": 1788109500937,
+      "user_id": 1,
+      "type": "SYSTEM",
+      "title": "🔔 New Author Application: Demo Reader",
+      "message": "Demo Reader (@reader) has applied to become an Author. Click to review writing samples & portfolio.",
+      "link_url": "/admin/applications",
+      "is_read": true,
+      "created_at": "2026-08-30T19:48:50.568Z"
+    },
+    {
+      "notification_id": 1788109500938,
+      "user_id": 2,
+      "type": "SYSTEM",
+      "title": "🎉 Application Approved — Welcome Author!",
+      "message": "Congratulations! Your application to become a Author has been approved by our Administration. You have been assigned the Author portal.",
+      "link_url": "/admin",
+      "is_read": true,
+      "created_at": "2026-08-30T19:50:02.227Z"
     }
   ],
   "settings": {
@@ -709,6 +739,27 @@
   ],
   "media": [],
   "role_applications": [
+    {
+      "application_id": 5,
+      "user_id": 2,
+      "name": "Demo Reader",
+      "username": "reader",
+      "email": "reader@bitblog.com",
+      "role_applied": "Author",
+      "bio": "sjgbebgjkfbgjkbfkjgbkjgbkjks",
+      "sample_urls": "sbgbjsgbjkgk",
+      "topics": [
+        "Technology & Innovation",
+        "AI & Machine Learning"
+      ],
+      "motivation": "nkdjnldnlbfljnbdjlnblfjnbljnlbndlkngld",
+      "status": "approved",
+      "created_at": "2026-08-30T19:48:50.556Z",
+      "updated_at": "2026-08-30T19:50:02.217Z",
+      "reviewed_by": 1,
+      "reviewed_at": "2026-08-30T19:50:02.217Z",
+      "feedback": "Congratulations! Your writing samples and background have been approved. Welcome to the editorial staff!"
+    },
     {
       "application_id": 4,
       "user_id": 4,
@@ -795,6 +846,78 @@
     }
   ],
   "audit_logs": [
+    {
+      "log_id": 71,
+      "user_id": 2,
+      "user_name": "Demo Reader",
+      "user_role": "Author",
+      "action": "USER_LOGIN_SUCCESS",
+      "category": "AUTH",
+      "details": "Author 'Demo Reader' signed into portal.",
+      "ip_address": "::1",
+      "severity": "success",
+      "created_at": "2026-08-30T19:51:32.794Z"
+    },
+    {
+      "log_id": 70,
+      "user_id": 1,
+      "user_name": "Abdul Wahab",
+      "user_role": "Admin",
+      "action": "ROLE_APPLICATION_APPROVED",
+      "category": "APPLICATION",
+      "details": "Administrator approved Application #5 and automatically promoted 'Demo Reader' to 'Author'.",
+      "ip_address": "::1",
+      "severity": "success",
+      "created_at": "2026-08-30T19:50:02.231Z"
+    },
+    {
+      "log_id": 69,
+      "user_id": 1,
+      "user_name": "Abdul Wahab",
+      "user_role": "Admin",
+      "action": "USER_LOGIN_SUCCESS",
+      "category": "AUTH",
+      "details": "Admin 'Abdul Wahab' signed into portal.",
+      "ip_address": "::1",
+      "severity": "success",
+      "created_at": "2026-08-30T19:49:41.666Z"
+    },
+    {
+      "log_id": 68,
+      "user_id": 2,
+      "user_name": "Demo Reader",
+      "user_role": "User",
+      "action": "APPLICATION_SUBMITTED",
+      "category": "APPLICATION",
+      "details": "Reader 'Demo Reader' submitted an application to become an 'Author'.",
+      "ip_address": "::1",
+      "severity": "info",
+      "created_at": "2026-08-30T19:48:50.572Z"
+    },
+    {
+      "log_id": 67,
+      "user_id": 2,
+      "user_name": "Demo Reader",
+      "user_role": "User",
+      "action": "USER_LOGIN_SUCCESS",
+      "category": "AUTH",
+      "details": "User 'Demo Reader' signed into portal.",
+      "ip_address": "::1",
+      "severity": "success",
+      "created_at": "2026-08-30T19:48:17.878Z"
+    },
+    {
+      "log_id": 66,
+      "user_id": 1,
+      "user_name": "Abdul Wahab",
+      "user_role": "Admin",
+      "action": "USER_LOGIN_SUCCESS",
+      "category": "AUTH",
+      "details": "Admin 'Abdul Wahab' signed into portal.",
+      "ip_address": "::1",
+      "severity": "success",
+      "created_at": "2026-08-30T19:46:38.028Z"
+    },
     {
       "log_id": 65,
       "user_id": 1,
