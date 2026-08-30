@@ -57,7 +57,7 @@ export const Search: React.FC = () => {
       });
   }, [query, categoryParam, tagParam, authorParam, sortParam, pageParam]);
 
-  const updateParam = (key: string, value: string) => {
+  const updateParam = React.useCallback((key: string, value: string) => {
     const newParams = new URLSearchParams(searchParams);
     if (value) {
       newParams.set(key, value);
@@ -66,21 +66,21 @@ export const Search: React.FC = () => {
     }
     newParams.set('page', '1');
     setSearchParams(newParams);
-  };
+  }, [searchParams, setSearchParams]);
 
-  const handleSearchSubmit = (e: React.FormEvent) => {
+  const handleSearchSubmit = React.useCallback((e: React.FormEvent) => {
     e.preventDefault();
     updateParam('q', searchInput);
-  };
+  }, [updateParam, searchInput]);
 
-  const handlePageChange = (newPage: number) => {
+  const handlePageChange = React.useCallback((newPage: number) => {
     if (newPage >= 1 && newPage <= pagination.totalPages) {
       const newParams = new URLSearchParams(searchParams);
       newParams.set('page', String(newPage));
       setSearchParams(newParams);
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
-  };
+  }, [pagination.totalPages, searchParams, setSearchParams]);
 
   return (
     <div className="container" style={{ paddingTop: '1.5rem', paddingBottom: '3rem' }}>

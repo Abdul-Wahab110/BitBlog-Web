@@ -67,21 +67,18 @@ export const SingleArticle: React.FC = () => {
           // Record privacy-aware view metric
           ApiService.recordView(article.post_id).catch(() => {});
 
-          // Fetch SEO, AEO & GEO Metadata
-          try {
-            const seoRes = await ApiService.getSeoByPost(article.post_id);
-            if (seoRes && seoRes.data) {
-              setSeoMeta(seoRes.data);
-            }
-          } catch (e) {}
+          // Fetch SEO, AEO & GEO Metadata and Approved Comments concurrently for optimal load speed
+          const [seoRes, commRes] = await Promise.allSettled([
+            ApiService.getSeoByPost(article.post_id),
+            ApiService.getPostComments(article.post_id),
+          ]);
 
-          // Fetch Approved Comments
-          try {
-            const commRes = await ApiService.getPostComments(article.post_id);
-            if (commRes && commRes.data) {
-              setComments(commRes.data);
-            }
-          } catch (e) {}
+          if (seoRes.status === 'fulfilled' && seoRes.value?.data) {
+            setSeoMeta(seoRes.value.data);
+          }
+          if (commRes.status === 'fulfilled' && commRes.value?.data) {
+            setComments(commRes.value.data);
+          }
         } else {
           setPost(null);
         }

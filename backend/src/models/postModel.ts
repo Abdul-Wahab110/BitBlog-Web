@@ -130,7 +130,8 @@ export class PostModel {
     }
 
     const total = list.length;
-    const paginated = list.slice(offset, offset + limit).map(p => this.attachMeta(p, store));
+    const lookup = this.buildMetaLookup(store);
+    const paginated = list.slice(offset, offset + limit).map(p => this.attachMeta(p, store, lookup));
 
     return { posts: paginated, total };
   }
@@ -161,21 +162,24 @@ export class PostModel {
       list = list.filter(p => p.author_id === authorId);
     }
     list.sort((a, b) => new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime());
-    return list.map(p => this.attachMeta(p, store));
+    const lookup = this.buildMetaLookup(store);
+    return list.map(p => this.attachMeta(p, store, lookup));
   }
 
   public static async findAllPending(): Promise<PostRecord[]> {
     const store = Database.getStore();
     const list = store.posts.filter(p => p.status === 'pending_review');
     list.sort((a, b) => new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime());
-    return list.map(p => this.attachMeta(p, store));
+    const lookup = this.buildMetaLookup(store);
+    return list.map(p => this.attachMeta(p, store, lookup));
   }
 
   public static async findUserArticles(userId: number): Promise<PostRecord[]> {
     const store = Database.getStore();
     const list = store.posts.filter(p => p.author_id === userId);
     list.sort((a, b) => new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime());
-    return list.map(p => this.attachMeta(p, store));
+    const lookup = this.buildMetaLookup(store);
+    return list.map(p => this.attachMeta(p, store, lookup));
   }
 
   public static async countPending(): Promise<number> {
@@ -199,30 +203,34 @@ export class PostModel {
   }): Promise<PostRecord> {
     const store = Database.getStore();
     const now = new Date().toISOString();
-    const author = store.users.find(u => u.user_id === data.authorId);
-    const category = store.categories.find(c => c.category_id === data.categoryId);
 
-    const maxId = store.posts.reduce((max, p) => Math.max(max, p.post_id), 0);
-    const newId = maxId + 1;
+    const author = (store.users || []).find((u: any) => u.user_id === data.authorId);
+    const category = data.categoryId
+      ? (store.categories || []).find((c: any) => c.category_id === data.categoryId)
+      : undefined;
 
-    const record: PostRecord = {
-      post_id: newId,
+    const newPostId = store.posts.length > 0
+      ? Math.max(...store.posts.map(p => p.post_id || 0)) + 1
+      : 1;
+
+    const newPost: any = {
+      post_id: newPostId,
       author_id: data.authorId,
-      author_name: author?.name || 'Editorial Staff',
-      author_username: author?.username || 'admin',
-      author_avatar: author?.profile_image,
+      author_name: author?.name || 'Staff Writer',
+      author_username: author?.username || 'staff',
+      author_avatar: author?.profile_image || '',
       category_id: data.categoryId,
-      category_name: category?.name || 'General',
-      category_slug: category?.slug || 'general',
+      category_name: category?.name,
+      category_slug: category?.slug,
       title: data.title,
       slug: data.slug,
       excerpt: data.excerpt,
       content: data.content,
       featured_image: data.featuredImage,
       status: data.status,
-      published_at: data.publishedAt?.toISOString() || (data.status === 'published' ? now : undefined),
-      scheduled_at: data.scheduledAt?.toISOString(),
-      reading_time: data.readingTime || 2,
+      published_at: data.publishedAt ? data.publishedAt.toISOString() : (data.status === 'published' ? now : undefined),
+      scheduled_at: data.scheduledAt ? data.scheduledAt.toISOString() : undefined,
+      reading_time: data.readingTime || 3,
       views_count: 0,
       comment_count: 0,
       like_count: 0,
@@ -231,42 +239,74 @@ export class PostModel {
       tag_ids: data.tagIds || [],
     };
 
-    store.posts.unshift(record);
+    store.posts.unshift(newPost);
     Database.saveStore();
-    return this.attachMeta(record, store);
+
+    return this.attachMeta(newPost, store);
   }
 
-  public static async updatePost(id: number, data: Partial<PostRecord>): Promise<PostRecord | null> {
+  public static async updatePost(
+    id: number,
+    data: any
+  ): Promise<PostRecord | null> {
     const store = Database.getStore();
-    const post = store.posts.find(p => p.post_id === id);
-    if (!post) return null;
+    const postIndex = store.posts.findIndex(p => p.post_id === id);
+    if (postIndex === -1) return null;
+
+    const post = store.posts[postIndex];
+    const now = new Date().toISOString();
 
     if (data.title !== undefined) post.title = data.title;
     if (data.slug !== undefined) post.slug = data.slug;
     if (data.excerpt !== undefined) post.excerpt = data.excerpt;
     if (data.content !== undefined) post.content = data.content;
-    if (data.featured_image !== undefined) post.featured_image = data.featured_image;
+
+    const featuredImg = data.featuredImage !== undefined ? data.featuredImage : data.featured_image;
+    if (featuredImg !== undefined) post.featured_image = featuredImg;
+
     if (data.status !== undefined) {
       post.status = data.status;
       if (data.status === 'published' && !post.published_at) {
-        post.published_at = new Date().toISOString();
+        post.published_at = now;
       }
     }
-    if (data.category_id !== undefined) {
-      post.category_id = data.category_id;
-      const cat = store.categories.find(c => c.category_id === data.category_id);
-      post.category_name = cat?.name || 'General';
-      post.category_slug = cat?.slug || 'general';
-    }
-    if (data.published_at !== undefined) post.published_at = data.published_at;
-    if (data.scheduled_at !== undefined) post.scheduled_at = data.scheduled_at;
-    if (data.reviewer_feedback !== undefined) post.reviewer_feedback = data.reviewer_feedback;
-    if (data.reviewed_by !== undefined) post.reviewed_by = data.reviewed_by;
-    if (data.reviewed_at !== undefined) post.reviewed_at = data.reviewed_at;
-    if (data.reading_time !== undefined) post.reading_time = data.reading_time;
-    if (data.tag_ids !== undefined) post.tag_ids = data.tag_ids;
 
-    post.updated_at = new Date().toISOString();
+    const pubAt = data.publishedAt !== undefined ? data.publishedAt : data.published_at;
+    if (pubAt !== undefined) {
+      post.published_at = pubAt instanceof Date ? pubAt.toISOString() : pubAt;
+    }
+
+    const schAt = data.scheduledAt !== undefined ? data.scheduledAt : data.scheduled_at;
+    if (schAt !== undefined) {
+      post.scheduled_at = schAt instanceof Date ? schAt.toISOString() : schAt;
+    }
+
+    const readTime = data.readingTime !== undefined ? data.readingTime : data.reading_time;
+    if (readTime !== undefined) post.reading_time = readTime;
+
+    const revFeedback = data.reviewerFeedback !== undefined ? data.reviewerFeedback : data.reviewer_feedback;
+    if (revFeedback !== undefined) post.reviewer_feedback = revFeedback;
+
+    const revBy = data.reviewedBy !== undefined ? data.reviewedBy : data.reviewed_by;
+    if (revBy !== undefined) post.reviewed_by = revBy;
+
+    const revAt = data.reviewedAt !== undefined ? data.reviewedAt : data.reviewed_at;
+    if (revAt !== undefined) {
+      post.reviewed_at = revAt instanceof Date ? revAt.toISOString() : revAt;
+    }
+
+    const tIds = data.tagIds !== undefined ? data.tagIds : data.tag_ids;
+    if (tIds !== undefined) post.tag_ids = tIds;
+
+    const catId = data.categoryId !== undefined ? data.categoryId : data.category_id;
+    if (catId !== undefined) {
+      post.category_id = catId;
+      const category = (store.categories || []).find((c: any) => c.category_id === catId);
+      post.category_name = category?.name;
+      post.category_slug = category?.slug;
+    }
+
+    post.updated_at = now;
     Database.saveStore();
     return this.attachMeta(post, store);
   }
@@ -290,7 +330,46 @@ export class PostModel {
     }
   }
 
-  private static attachMeta(post: PostRecord, store: any): PostRecord {
+  private static buildMetaLookup(store: any) {
+    const commentCountMap = new Map<number, number>();
+    for (const c of (store.comments || [])) {
+      if (c.status === 'APPROVED') {
+        commentCountMap.set(c.post_id, (commentCountMap.get(c.post_id) || 0) + 1);
+      }
+    }
+
+    const likeCountMap = new Map<number, number>();
+    for (const l of (store.likes || [])) {
+      likeCountMap.set(l.post_id, (likeCountMap.get(l.post_id) || 0) + 1);
+    }
+
+    const tagMap = new Map<number, { tag_id: number; name: string; slug: string }>();
+    for (const t of (store.tags || [])) {
+      tagMap.set(t.tag_id, { tag_id: t.tag_id, name: t.name, slug: t.slug });
+    }
+
+    return { commentCountMap, likeCountMap, tagMap };
+  }
+
+  private static attachMeta(
+    post: PostRecord,
+    store: any,
+    lookup?: {
+      commentCountMap: Map<number, number>;
+      likeCountMap: Map<number, number>;
+      tagMap: Map<number, { tag_id: number; name: string; slug: string }>;
+    }
+  ): PostRecord {
+    if (lookup) {
+      const tags = (post.tag_ids || []).map(tid => lookup.tagMap.get(tid)).filter(Boolean);
+      return {
+        ...post,
+        comment_count: lookup.commentCountMap.get(post.post_id) || 0,
+        like_count: lookup.likeCountMap.get(post.post_id) || 0,
+        tags: tags as any,
+      };
+    }
+
     const comments = store.comments?.filter((c: any) => c.post_id === post.post_id && c.status === 'APPROVED') || [];
     const likes = store.likes?.filter((l: any) => l.post_id === post.post_id) || [];
     const tags = (post.tag_ids || []).map((tid: number) => {

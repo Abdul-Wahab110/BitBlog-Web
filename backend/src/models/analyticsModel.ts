@@ -31,13 +31,17 @@ export class AnalyticsModel {
         VIEWS_COUNT: p.views_count || 0,
       }));
 
-    const categoryStatistics = store.categories.map(c => {
-      const count = store.posts.filter(p => p.category_id === c.category_id && p.status === 'published').length;
-      return {
-        CATEGORY_NAME: c.name,
-        ARTICLE_COUNT: count,
-      };
-    });
+    const categoryCountMap = new Map<number, number>();
+    for (const p of published) {
+      if (p.category_id) {
+        categoryCountMap.set(p.category_id, (categoryCountMap.get(p.category_id) || 0) + 1);
+      }
+    }
+
+    const categoryStatistics = (store.categories || []).map(c => ({
+      CATEGORY_NAME: c.name,
+      ARTICLE_COUNT: categoryCountMap.get(c.category_id) || 0,
+    }));
 
     return {
       totalViews,

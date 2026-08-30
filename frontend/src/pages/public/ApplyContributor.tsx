@@ -132,13 +132,11 @@ export const ApplyContributor: React.FC = () => {
     }
   }, [isAuthenticated]);
 
-  const toggleTopic = (topic: string) => {
-    if (selectedTopics.includes(topic)) {
-      setSelectedTopics(selectedTopics.filter(t => t !== topic));
-    } else {
-      setSelectedTopics([...selectedTopics, topic]);
-    }
-  };
+  const toggleTopic = React.useCallback((topic: string) => {
+    setSelectedTopics(prev =>
+      prev.includes(topic) ? prev.filter(t => t !== topic) : [...prev, topic]
+    );
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
