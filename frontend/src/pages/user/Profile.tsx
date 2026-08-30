@@ -325,6 +325,9 @@ export const Profile: React.FC = () => {
             padding: '3px',
             borderRadius: 'var(--radius-md)',
             border: '1px solid var(--color-border)',
+            width: '100%',
+            maxWidth: '380px',
+            boxSizing: 'border-box',
           }}
         >
           <button
@@ -334,7 +337,8 @@ export const Profile: React.FC = () => {
               setErrorMsg(null);
             }}
             style={{
-              padding: '0.45rem 1rem',
+              flex: 1,
+              padding: '0.5rem 0.85rem',
               fontSize: '0.85rem',
               fontWeight: 700,
               border: 'none',
@@ -345,10 +349,12 @@ export const Profile: React.FC = () => {
               boxShadow: activeTab === 'profile' ? 'var(--shadow-sm)' : 'none',
               display: 'flex',
               alignItems: 'center',
+              justifyContent: 'center',
               gap: '0.35rem',
+              transition: 'all 0.15s ease',
             }}
           >
-            <User size={14} /> Profile & Identity
+            <User size={14} /> <span>Profile & Identity</span>
           </button>
           <button
             type="button"
@@ -357,7 +363,8 @@ export const Profile: React.FC = () => {
               setErrorMsg(null);
             }}
             style={{
-              padding: '0.45rem 1rem',
+              flex: 1,
+              padding: '0.5rem 0.85rem',
               fontSize: '0.85rem',
               fontWeight: 700,
               border: 'none',
@@ -368,10 +375,12 @@ export const Profile: React.FC = () => {
               boxShadow: activeTab === 'security' ? 'var(--shadow-sm)' : 'none',
               display: 'flex',
               alignItems: 'center',
+              justifyContent: 'center',
               gap: '0.35rem',
+              transition: 'all 0.15s ease',
             }}
           >
-            <Lock size={14} /> Password & Security
+            <Lock size={14} /> <span>Password & Security</span>
           </button>
         </div>
       </header>
@@ -425,7 +434,7 @@ export const Profile: React.FC = () => {
           <div
             style={{
               display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 280px), 1fr))',
               gap: '1.5rem',
               marginBottom: '1.5rem',
             }}
@@ -584,6 +593,7 @@ export const Profile: React.FC = () => {
                 display: 'flex',
                 flexDirection: 'column',
                 gap: '1.15rem',
+                boxSizing: 'border-box',
               }}
             >
               <h2 style={{ fontSize: '1.1rem', fontWeight: 700, marginBottom: '0.1rem' }}>Account Identity</h2>
@@ -600,7 +610,7 @@ export const Profile: React.FC = () => {
                   onChange={e => setName(e.target.value)}
                   placeholder="e.g. Alex Rivera"
                   required
-                  style={{ width: '100%', padding: '0.65rem 0.85rem', fontSize: '0.9rem' }}
+                  style={{ width: '100%', padding: '0.65rem 0.85rem', fontSize: '0.9rem', boxSizing: 'border-box', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)' }}
                 />
               </div>
 
@@ -620,7 +630,7 @@ export const Profile: React.FC = () => {
                   type="text"
                   value={user?.username || ''}
                   disabled
-                  style={{ width: '100%', padding: '0.65rem 0.85rem', fontSize: '0.9rem', opacity: 0.7, cursor: 'not-allowed' }}
+                  style={{ width: '100%', padding: '0.65rem 0.85rem', fontSize: '0.9rem', opacity: 0.7, cursor: 'not-allowed', boxSizing: 'border-box', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)' }}
                 />
               </div>
 
@@ -640,7 +650,7 @@ export const Profile: React.FC = () => {
                   type="email"
                   value={user?.email || ''}
                   disabled
-                  style={{ width: '100%', padding: '0.65rem 0.85rem', fontSize: '0.9rem', opacity: 0.7, cursor: 'not-allowed' }}
+                  style={{ width: '100%', padding: '0.65rem 0.85rem', fontSize: '0.9rem', opacity: 0.7, cursor: 'not-allowed', boxSizing: 'border-box', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)' }}
                 />
               </div>
 
@@ -659,6 +669,7 @@ export const Profile: React.FC = () => {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'space-between',
+                    boxSizing: 'border-box',
                   }}
                 >
                   <span style={{ fontWeight: 700, color: 'var(--color-secondary)' }}>{user?.role || 'User'}</span>
@@ -680,6 +691,7 @@ export const Profile: React.FC = () => {
               display: 'flex',
               flexDirection: 'column',
               gap: '1.25rem',
+              boxSizing: 'border-box',
             }}
           >
             <h2 style={{ fontSize: '1.1rem', fontWeight: 700, marginBottom: '0.1rem' }}>Biography & Author Profile</h2>
@@ -695,7 +707,7 @@ export const Profile: React.FC = () => {
                 value={shortDescription}
                 onChange={e => setShortDescription(e.target.value)}
                 placeholder={`e.g. Senior Cloud Architect & Tech Columnist at ${siteName}`}
-                style={{ width: '100%', padding: '0.65rem 0.85rem', fontSize: '0.9rem' }}
+                style={{ width: '100%', padding: '0.65rem 0.85rem', fontSize: '0.9rem', boxSizing: 'border-box', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)' }}
               />
             </div>
 
@@ -710,7 +722,7 @@ export const Profile: React.FC = () => {
                 value={bio}
                 onChange={e => setBio(e.target.value)}
                 placeholder="Share your background, areas of expertise, journalistic mission, and recent achievements..."
-                style={{ width: '100%', padding: '0.75rem', fontSize: '0.9rem', lineHeight: '1.5' }}
+                style={{ width: '100%', padding: '0.75rem', fontSize: '0.9rem', lineHeight: '1.5', boxSizing: 'border-box', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)' }}
               />
             </div>
 
@@ -719,7 +731,7 @@ export const Profile: React.FC = () => {
               <label style={{ display: 'block', fontWeight: 700, marginBottom: '0.35rem', fontSize: '0.85rem' }}>
                 <Tag size={13} style={{ display: 'inline', marginRight: '4px' }} /> Author Topics & Expertise Tags
               </label>
-              <div style={{ display: 'flex', gap: '0.4rem', marginBottom: '0.6rem' }}>
+              <div style={{ display: 'flex', gap: '0.4rem', marginBottom: '0.6rem', flexWrap: 'wrap' }}>
                 <input
                   type="text"
                   value={tagInput}
@@ -730,8 +742,8 @@ export const Profile: React.FC = () => {
                       handleAddTag();
                     }
                   }}
-                  placeholder="Type topic tag (e.g. Artificial Intelligence, Cloud, Next.js) and press Enter..."
-                  style={{ flex: 1, padding: '0.55rem 0.75rem', fontSize: '0.85rem' }}
+                  placeholder="Type topic tag and press Enter..."
+                  style={{ flex: 1, minWidth: '200px', padding: '0.55rem 0.75rem', fontSize: '0.85rem', boxSizing: 'border-box', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)' }}
                 />
                 <button
                   type="button"
@@ -794,7 +806,7 @@ export const Profile: React.FC = () => {
             <div style={{ marginTop: '0.5rem', borderTop: '1px solid var(--color-border)', paddingTop: '1.25rem' }}>
               <h3 style={{ fontSize: '0.95rem', fontWeight: 700, marginBottom: '0.85rem' }}>Public Website & Social Channels</h3>
 
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1rem' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1rem' }}>
                 {/* Website */}
                 <div>
                   <label htmlFor="social-website" style={{ display: 'flex', alignItems: 'center', gap: '0.3rem', fontWeight: 600, fontSize: '0.82rem', marginBottom: '0.3rem' }}>
@@ -806,7 +818,7 @@ export const Profile: React.FC = () => {
                     value={website}
                     onChange={e => setWebsite(e.target.value)}
                     placeholder="https://yourwebsite.com"
-                    style={{ width: '100%', padding: '0.55rem 0.75rem', fontSize: '0.85rem' }}
+                    style={{ width: '100%', padding: '0.55rem 0.75rem', fontSize: '0.85rem', boxSizing: 'border-box', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)' }}
                   />
                 </div>
 
@@ -821,7 +833,7 @@ export const Profile: React.FC = () => {
                     value={socialLinks.twitter || ''}
                     onChange={e => setSocialLinks({ ...socialLinks, twitter: e.target.value })}
                     placeholder="https://x.com/username or @username"
-                    style={{ width: '100%', padding: '0.55rem 0.75rem', fontSize: '0.85rem' }}
+                    style={{ width: '100%', padding: '0.55rem 0.75rem', fontSize: '0.85rem', boxSizing: 'border-box', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)' }}
                   />
                 </div>
 
@@ -836,7 +848,7 @@ export const Profile: React.FC = () => {
                     value={socialLinks.github || ''}
                     onChange={e => setSocialLinks({ ...socialLinks, github: e.target.value })}
                     placeholder="https://github.com/username"
-                    style={{ width: '100%', padding: '0.55rem 0.75rem', fontSize: '0.85rem' }}
+                    style={{ width: '100%', padding: '0.55rem 0.75rem', fontSize: '0.85rem', boxSizing: 'border-box', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)' }}
                   />
                 </div>
 
@@ -851,7 +863,7 @@ export const Profile: React.FC = () => {
                     value={socialLinks.linkedin || ''}
                     onChange={e => setSocialLinks({ ...socialLinks, linkedin: e.target.value })}
                     placeholder="https://linkedin.com/in/username"
-                    style={{ width: '100%', padding: '0.55rem 0.75rem', fontSize: '0.85rem' }}
+                    style={{ width: '100%', padding: '0.55rem 0.75rem', fontSize: '0.85rem', boxSizing: 'border-box', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)' }}
                   />
                 </div>
               </div>
@@ -869,6 +881,7 @@ export const Profile: React.FC = () => {
               style={{
                 display: 'flex',
                 alignItems: 'center',
+                justifyContent: 'center',
                 gap: '0.4rem',
                 backgroundColor: 'var(--color-surface-alt)',
                 color: 'var(--color-text)',
@@ -880,7 +893,7 @@ export const Profile: React.FC = () => {
                 cursor: 'pointer',
               }}
             >
-              <KeyRound size={16} color="var(--color-secondary)" /> Change Password
+              <KeyRound size={16} color="var(--color-secondary)" /> <span>Change Password</span>
             </button>
 
             <button
@@ -889,6 +902,7 @@ export const Profile: React.FC = () => {
               style={{
                 display: 'flex',
                 alignItems: 'center',
+                justifyContent: 'center',
                 gap: '0.4rem',
                 backgroundColor: 'var(--color-secondary)',
                 color: '#FFFFFF',
@@ -904,11 +918,11 @@ export const Profile: React.FC = () => {
               {saving ? (
                 <>
                   <Loader2 size={16} className="animate-spin" style={{ animation: 'spin 1s linear infinite' }} />
-                  Saving Profile...
+                  <span>Saving Profile...</span>
                 </>
               ) : (
                 <>
-                  <Save size={16} /> Save Profile Changes
+                  <Save size={16} /> <span>Save Profile Changes</span>
                 </>
               )}
             </button>

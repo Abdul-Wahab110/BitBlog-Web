@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import {
   PlusCircle,
@@ -14,6 +14,10 @@ import {
   Sparkles,
   ExternalLink,
   MessageSquare,
+  ChevronDown,
+  Filter,
+  Check,
+  CheckCircle,
 } from 'lucide-react';
 import { LoadingState } from '../../components/common/LoadingState';
 import { EmptyState } from '../../components/common/EmptyState';
@@ -26,7 +30,19 @@ export const AdminPosts: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement | null>(null);
   const [actionLoading, setActionLoading] = useState<number | null>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setDropdownOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   const fetchAdminPosts = async () => {
     setLoading(true);
@@ -279,61 +295,148 @@ export const AdminPosts: React.FC = () => {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          gap: '1rem',
+          gap: '0.75rem',
           marginBottom: '1.25rem',
           backgroundColor: 'var(--color-card)',
-          padding: '0.85rem 1rem',
+          padding: '0.75rem 0.85rem',
           borderRadius: 'var(--radius-md)',
           border: '1px solid var(--color-border)',
           flexWrap: 'wrap',
+          width: '100%',
+          boxSizing: 'border-box',
+          overflow: 'visible',
         }}
       >
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flex: 1, minWidth: '220px' }}>
-          <Search size={16} color="var(--color-muted)" />
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flex: '1 1 200px', minWidth: 0, width: '100%' }}>
+          <Search size={16} color="var(--color-muted)" style={{ flexShrink: 0 }} />
           <input
             type="search"
             value={search}
             onChange={e => setSearch(e.target.value)}
             placeholder="Search articles by title or author..."
-            style={{ width: '100%', padding: '0.4rem 0.6rem', fontSize: '0.875rem' }}
+            style={{ width: '100%', minWidth: 0, padding: '0.4rem 0.6rem', fontSize: '0.875rem' }}
           />
         </div>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
           <button
             type="button"
-            onClick={() => setStatusFilter('pending_review')}
+            onClick={() => setStatusFilter(statusFilter === 'pending_review' ? 'all' : 'pending_review')}
             style={{
-              padding: '0.35rem 0.75rem',
+              padding: '0.45rem 0.85rem',
               fontSize: '0.82rem',
-              fontWeight: statusFilter === 'pending_review' ? 700 : 500,
+              fontWeight: statusFilter === 'pending_review' ? 700 : 600,
               backgroundColor: statusFilter === 'pending_review' ? 'rgba(245, 158, 11, 0.2)' : 'var(--color-surface)',
               color: statusFilter === 'pending_review' ? 'var(--color-warning)' : 'var(--color-text)',
-              border: '1px solid rgba(245, 158, 11, 0.4)',
-              borderRadius: 'var(--radius-sm)',
+              border: statusFilter === 'pending_review' ? '1px solid var(--color-warning)' : '1px solid var(--color-border)',
+              borderRadius: 'var(--radius-md)',
               display: 'inline-flex',
               alignItems: 'center',
               gap: '0.35rem',
+              cursor: 'pointer',
+              transition: 'all 0.15s ease',
             }}
           >
-            <Clock size={13} /> Pending Approvals ({pendingCount})
+            <Clock size={14} color="var(--color-warning)" />
+            <span>Pending Approvals ({pendingCount})</span>
           </button>
 
-          <span style={{ fontSize: '0.85rem', color: 'var(--color-text-secondary)', fontWeight: 600 }}>Status:</span>
-          <select
-            value={statusFilter}
-            onChange={e => setStatusFilter(e.target.value)}
-            style={{ padding: '0.4rem 0.6rem', fontSize: '0.85rem' }}
-          >
-            <option value="all">All Articles ({posts.length})</option>
-            <option value="pending_review">Pending Review ({pendingCount})</option>
-            <option value="published">Published</option>
-            <option value="changes_requested">Changes Requested</option>
-            <option value="rejected">Rejected</option>
-            <option value="draft">Drafts</option>
-            <option value="scheduled">Scheduled</option>
-            <option value="archived">Archived</option>
-          </select>
+          {/* Custom Styled Status Filter Dropdown */}
+          <div ref={dropdownRef} style={{ position: 'relative' }}>
+            <button
+              type="button"
+              onClick={() => setDropdownOpen(!dropdownOpen)}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.45rem',
+                padding: '0.45rem 0.85rem',
+                backgroundColor: 'var(--color-surface-alt)',
+                border: '1px solid var(--color-border)',
+                borderRadius: 'var(--radius-md)',
+                color: 'var(--color-text)',
+                fontSize: '0.84rem',
+                fontWeight: 600,
+                cursor: 'pointer',
+                transition: 'all 0.15s ease',
+              }}
+            >
+              <Filter size={14} color="var(--color-secondary)" />
+              <span>
+                {statusFilter === 'all'
+                  ? `All Articles (${posts.length})`
+                  : statusFilter === 'pending_review'
+                  ? `Pending Review (${pendingCount})`
+                  : statusFilter === 'published'
+                  ? 'Published'
+                  : statusFilter === 'changes_requested'
+                  ? 'Changes Requested'
+                  : statusFilter === 'rejected'
+                  ? 'Rejected'
+                  : statusFilter === 'draft'
+                  ? 'Drafts'
+                  : statusFilter === 'scheduled'
+                  ? 'Scheduled'
+                  : statusFilter === 'archived'
+                  ? 'Archived'
+                  : 'Status Filter'}
+              </span>
+              <ChevronDown
+                size={14}
+                style={{
+                  transform: dropdownOpen ? 'rotate(180deg)' : 'none',
+                  transition: 'transform 0.2s ease',
+                }}
+              />
+            </button>
+
+            {dropdownOpen && (
+              <div className="cms-filter-dropdown-menu">
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0.35rem 0.6rem 0.45rem', borderBottom: '1px solid var(--color-border)', marginBottom: '0.2rem' }}>
+                  <span style={{ fontSize: '0.75rem', fontWeight: 700, color: 'var(--color-muted)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Filter by Status</span>
+                  <button type="button" onClick={() => setDropdownOpen(false)} style={{ background: 'transparent', border: 'none', color: 'var(--color-muted)', cursor: 'pointer', padding: 0, fontSize: '0.85rem' }}>✕</button>
+                </div>
+                {[
+                  { value: 'all', label: `All Articles (${posts.length})`, color: 'var(--color-secondary)' },
+                  { value: 'pending_review', label: `Pending Review (${pendingCount})`, color: 'var(--color-warning)' },
+                  { value: 'published', label: 'Published', color: 'var(--color-success)' },
+                  { value: 'changes_requested', label: 'Changes Requested', color: '#EC4899' },
+                  { value: 'rejected', label: 'Rejected', color: 'var(--color-danger)' },
+                  { value: 'draft', label: 'Drafts', color: 'var(--color-muted)' },
+                  { value: 'scheduled', label: 'Scheduled', color: '#38BDF8' },
+                  { value: 'archived', label: 'Archived', color: '#9CA3AF' },
+                ].map(opt => {
+                  const isSelected = statusFilter === opt.value;
+                  return (
+                    <button
+                      key={opt.value}
+                      type="button"
+                      onClick={() => {
+                        setStatusFilter(opt.value);
+                        setDropdownOpen(false);
+                      }}
+                      className={`cms-filter-dropdown-item ${isSelected ? 'active' : ''}`}
+                    >
+                      <span style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                        <span
+                          style={{
+                            width: '8px',
+                            height: '8px',
+                            borderRadius: '50%',
+                            backgroundColor: opt.color || 'var(--color-muted)',
+                            display: 'inline-block',
+                            flexShrink: 0,
+                          }}
+                        />
+                        {opt.label}
+                      </span>
+                      {isSelected && <Check size={14} color="var(--color-secondary)" style={{ flexShrink: 0 }} />}
+                    </button>
+                  );
+                })}
+              </div>
+            )}
+          </div>
         </div>
       </div>
 
@@ -352,8 +455,8 @@ export const AdminPosts: React.FC = () => {
           }
         />
       ) : (
-        <div className="table-responsive" style={{ backgroundColor: 'var(--color-card)', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)' }}>
-          <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.875rem' }}>
+        <div className="cms-table-wrapper">
+          <table className="cms-responsive-table">
             <thead>
               <tr style={{ backgroundColor: 'var(--color-surface-alt)', borderBottom: '1px solid var(--color-border)', color: 'var(--color-text-secondary)', fontWeight: 700 }}>
                 <th style={{ padding: '0.75rem 1rem' }}>Title & Status</th>
@@ -368,17 +471,16 @@ export const AdminPosts: React.FC = () => {
               {filteredPosts.map(post => (
                 <tr
                   key={post.post_id}
+                  className="cms-table-row"
                   style={{
-                    borderBottom: '1px solid var(--color-border)',
-                    backgroundColor: post.status === 'pending_review' ? 'rgba(245, 158, 11, 0.04)' : 'transparent',
-                    transition: 'background-color var(--transition-fast)',
+                    backgroundColor: post.status === 'pending_review' ? 'rgba(245, 158, 11, 0.04)' : undefined,
                   }}
                 >
-                  <td style={{ padding: '0.85rem 1rem' }}>
-                    <div style={{ fontWeight: 700, color: 'var(--color-text)', fontSize: '0.92rem', marginBottom: '0.25rem' }}>
+                  <td className="cms-td-title" style={{ padding: '0.85rem 1rem' }}>
+                    <div style={{ fontWeight: 700, color: 'var(--color-text)', fontSize: '0.94rem', marginBottom: '0.35rem', lineHeight: 1.35 }}>
                       {post.title}
                     </div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', flexWrap: 'wrap' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', flexWrap: 'wrap' }}>
                       {getStatusBadge(post.status)}
                       <span style={{ fontSize: '0.75rem', color: 'var(--color-muted)' }}>
                         {post.views_count || 0} views
@@ -401,16 +503,21 @@ export const AdminPosts: React.FC = () => {
                     )}
                   </td>
 
-                  <td style={{ padding: '0.85rem 1rem', color: 'var(--color-text)' }}>
-                    <div style={{ fontWeight: 600, fontSize: '0.85rem' }}>{post.author_name || 'Author'}</div>
-                    <div style={{ fontSize: '0.75rem', color: 'var(--color-muted)' }}>@{post.author_username || 'user'}</div>
+                  <td className="cms-td-author" style={{ padding: '0.85rem 1rem', color: 'var(--color-text)' }}>
+                    <span className="cms-mobile-label">Author</span>
+                    <div>
+                      <div style={{ fontWeight: 600, fontSize: '0.85rem' }}>{post.author_name || 'Author'}</div>
+                      <div style={{ fontSize: '0.75rem', color: 'var(--color-muted)' }}>@{post.author_username || 'user'}</div>
+                    </div>
                   </td>
 
-                  <td style={{ padding: '0.85rem 1rem', color: 'var(--color-text-secondary)' }}>
-                    {post.category_name || 'General'}
+                  <td className="cms-td-category" style={{ padding: '0.85rem 1rem', color: 'var(--color-text-secondary)' }}>
+                    <span className="cms-mobile-label">Category</span>
+                    <span style={{ fontWeight: 600, fontSize: '0.85rem' }}>{post.category_name || 'General'}</span>
                   </td>
 
-                  <td style={{ padding: '0.85rem 1rem' }}>
+                  <td className="cms-td-seo" style={{ padding: '0.85rem 1rem' }}>
+                    <span className="cms-mobile-label">Optimization</span>
                     <div style={{ display: 'flex', gap: '0.25rem', flexWrap: 'wrap' }}>
                       <span style={{ fontSize: '0.7rem', padding: '0.15rem 0.4rem', backgroundColor: 'var(--color-surface-alt)', borderRadius: 'var(--radius-sm)', color: 'var(--color-secondary)', fontWeight: 600 }}>
                         SEO
@@ -424,16 +531,19 @@ export const AdminPosts: React.FC = () => {
                     </div>
                   </td>
 
-                  <td style={{ padding: '0.85rem 1rem', color: 'var(--color-muted)', fontSize: '0.8rem' }}>
-                    {new Date(post.updated_at || post.created_at).toLocaleDateString(undefined, {
-                      month: 'short',
-                      day: 'numeric',
-                      year: 'numeric',
-                    })}
+                  <td className="cms-td-updated" style={{ padding: '0.85rem 1rem', color: 'var(--color-muted)', fontSize: '0.8rem' }}>
+                    <span className="cms-mobile-label">Updated</span>
+                    <span>
+                      {new Date(post.updated_at || post.created_at).toLocaleDateString(undefined, {
+                        month: 'short',
+                        day: 'numeric',
+                        year: 'numeric',
+                      })}
+                    </span>
                   </td>
 
-                  <td style={{ padding: '0.85rem 1rem', textAlign: 'right' }}>
-                    <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem' }}>
+                  <td className="cms-td-actions" style={{ padding: '0.85rem 1rem', textAlign: 'right' }}>
+                    <div className="cms-actions-group">
                       {/* Approval Workflow Controls for Pending Articles */}
                       {post.status === 'pending_review' && (
                         <>
@@ -442,20 +552,9 @@ export const AdminPosts: React.FC = () => {
                             disabled={actionLoading === post.post_id}
                             onClick={() => handleApprove(post.post_id, post.title)}
                             title="Approve & Publish"
-                            style={{
-                              padding: '0.35rem 0.65rem',
-                              backgroundColor: 'rgba(16, 185, 129, 0.15)',
-                              color: 'var(--color-success)',
-                              border: '1px solid rgba(16, 185, 129, 0.4)',
-                              borderRadius: 'var(--radius-sm)',
-                              fontSize: '0.75rem',
-                              fontWeight: 700,
-                              display: 'inline-flex',
-                              alignItems: 'center',
-                              gap: '0.25rem',
-                            }}
+                            className="cms-btn-approve"
                           >
-                            <CheckCircle2 size={13} /> Approve
+                            <CheckCircle2 size={13} /> <span>Approve</span>
                           </button>
 
                           <button
@@ -463,20 +562,9 @@ export const AdminPosts: React.FC = () => {
                             disabled={actionLoading === post.post_id}
                             onClick={() => handleRequestChanges(post.post_id, post.title)}
                             title="Request Revisions"
-                            style={{
-                              padding: '0.35rem 0.65rem',
-                              backgroundColor: 'rgba(236, 72, 153, 0.15)',
-                              color: '#EC4899',
-                              border: '1px solid rgba(236, 72, 153, 0.4)',
-                              borderRadius: 'var(--radius-sm)',
-                              fontSize: '0.75rem',
-                              fontWeight: 700,
-                              display: 'inline-flex',
-                              alignItems: 'center',
-                              gap: '0.25rem',
-                            }}
+                            className="cms-btn-changes"
                           >
-                            <AlertTriangle size={13} /> Changes
+                            <AlertTriangle size={13} /> <span>Changes</span>
                           </button>
 
                           <button
@@ -484,20 +572,9 @@ export const AdminPosts: React.FC = () => {
                             disabled={actionLoading === post.post_id}
                             onClick={() => handleReject(post.post_id, post.title)}
                             title="Reject Story"
-                            style={{
-                              padding: '0.35rem 0.65rem',
-                              backgroundColor: 'rgba(239, 68, 68, 0.15)',
-                              color: 'var(--color-danger)',
-                              border: '1px solid rgba(239, 68, 68, 0.4)',
-                              borderRadius: 'var(--radius-sm)',
-                              fontSize: '0.75rem',
-                              fontWeight: 700,
-                              display: 'inline-flex',
-                              alignItems: 'center',
-                              gap: '0.25rem',
-                            }}
+                            className="cms-btn-reject"
                           >
-                            <XCircle size={13} /> Reject
+                            <XCircle size={13} /> <span>Reject</span>
                           </button>
                         </>
                       )}
@@ -506,44 +583,27 @@ export const AdminPosts: React.FC = () => {
                         <Link
                           to={`/post/${post.slug}`}
                           title="View live article"
-                          style={{
-                            padding: '0.4rem',
-                            color: 'var(--color-secondary)',
-                            backgroundColor: 'var(--color-surface-alt)',
-                            borderRadius: 'var(--radius-sm)',
-                            display: 'inline-flex',
-                          }}
+                          className="cms-btn-view"
                         >
-                          <ExternalLink size={15} />
+                          <ExternalLink size={14} /> <span>View Live</span>
                         </Link>
                       )}
 
                       <Link
                         to={`/admin/posts/${post.post_id}`}
                         title="Edit article"
-                        style={{
-                          padding: '0.4rem',
-                          color: 'var(--color-text-secondary)',
-                          backgroundColor: 'var(--color-surface-alt)',
-                          borderRadius: 'var(--radius-sm)',
-                          display: 'inline-flex',
-                        }}
+                        className="cms-btn-edit"
                       >
-                        <Edit3 size={15} />
+                        <Edit3 size={14} /> <span>Edit Story</span>
                       </Link>
 
                       <button
+                        type="button"
                         onClick={() => handleDelete(post.post_id, post.title)}
                         title="Delete article"
-                        style={{
-                          padding: '0.4rem',
-                          color: 'var(--color-danger)',
-                          backgroundColor: 'var(--color-surface-alt)',
-                          borderRadius: 'var(--radius-sm)',
-                          display: 'inline-flex',
-                        }}
+                        className="cms-btn-delete"
                       >
-                        <Trash2 size={15} />
+                        <Trash2 size={14} /> <span>Delete</span>
                       </button>
                     </div>
                   </td>

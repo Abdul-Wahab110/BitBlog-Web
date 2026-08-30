@@ -142,14 +142,14 @@ export const ImageUploadDropzone: React.FC<ImageUploadDropzoneProps> = ({
 
   return (
     <div style={{ width: '100%' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.6rem' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '0.4rem', marginBottom: '0.6rem' }}>
         <label style={{ fontWeight: 700, fontSize: '0.875rem' }}>
           {label}
         </label>
 
         {/* Mode Tabs */}
         {!value && (
-          <div style={{ display: 'flex', gap: '0.3rem', backgroundColor: 'var(--color-surface-alt)', padding: '2px', borderRadius: 'var(--radius-sm)' }}>
+          <div style={{ display: 'flex', gap: '0.3rem', backgroundColor: 'var(--color-surface-alt)', padding: '2px', borderRadius: 'var(--radius-sm)', flexWrap: 'wrap' }}>
             <button
               type="button"
               onClick={() => setActiveTab('upload')}

@@ -287,122 +287,100 @@ export const UserArticles: React.FC = () => {
           </Link>
         </div>
       ) : (
-        <div
-          style={{
-            backgroundColor: 'var(--color-card)',
-            borderRadius: 'var(--radius-lg)',
-            border: '1px solid var(--color-border)',
-            overflow: 'hidden',
-            boxShadow: 'var(--shadow-sm)',
-          }}
-        >
-          <div style={{ overflowX: 'auto' }}>
-            <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.88rem' }}>
-              <thead>
-                <tr style={{ backgroundColor: 'var(--color-surface-alt)', borderBottom: '1px solid var(--color-border)' }}>
-                  <th style={{ padding: '0.85rem 1.25rem', fontWeight: 700, color: 'var(--color-muted)', fontSize: '0.75rem', textTransform: 'uppercase' }}>Article</th>
-                  <th style={{ padding: '0.85rem 1rem', fontWeight: 700, color: 'var(--color-muted)', fontSize: '0.75rem', textTransform: 'uppercase' }}>Status</th>
-                  <th style={{ padding: '0.85rem 1rem', fontWeight: 700, color: 'var(--color-muted)', fontSize: '0.75rem', textTransform: 'uppercase' }}>Category</th>
-                  <th style={{ padding: '0.85rem 1rem', fontWeight: 700, color: 'var(--color-muted)', fontSize: '0.75rem', textTransform: 'uppercase' }}>Last Updated</th>
-                  <th style={{ padding: '0.85rem 1.25rem', fontWeight: 700, color: 'var(--color-muted)', fontSize: '0.75rem', textTransform: 'uppercase', textAlign: 'right' }}>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {articles.map(article => (
-                  <tr
-                    key={article.post_id}
-                    style={{ borderBottom: '1px solid var(--color-border)', transition: 'background-color var(--transition-fast)' }}
-                  >
-                    <td style={{ padding: '1rem 1.25rem' }}>
-                      <div style={{ fontWeight: 700, color: 'var(--color-text)', fontSize: '0.92rem', marginBottom: '0.2rem' }}>
-                        {article.title}
+        <div className="cms-table-wrapper">
+          <table className="cms-responsive-table">
+            <thead>
+              <tr style={{ backgroundColor: 'var(--color-surface-alt)', borderBottom: '1px solid var(--color-border)' }}>
+                <th style={{ padding: '0.85rem 1.25rem', fontWeight: 700, color: 'var(--color-muted)', fontSize: '0.75rem', textTransform: 'uppercase' }}>Article</th>
+                <th style={{ padding: '0.85rem 1rem', fontWeight: 700, color: 'var(--color-muted)', fontSize: '0.75rem', textTransform: 'uppercase' }}>Status</th>
+                <th style={{ padding: '0.85rem 1rem', fontWeight: 700, color: 'var(--color-muted)', fontSize: '0.75rem', textTransform: 'uppercase' }}>Category</th>
+                <th style={{ padding: '0.85rem 1rem', fontWeight: 700, color: 'var(--color-muted)', fontSize: '0.75rem', textTransform: 'uppercase' }}>Last Updated</th>
+                <th style={{ padding: '0.85rem 1.25rem', fontWeight: 700, color: 'var(--color-muted)', fontSize: '0.75rem', textTransform: 'uppercase', textAlign: 'right' }}>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              {articles.map(article => (
+                <tr
+                  key={article.post_id}
+                  className="cms-table-row"
+                >
+                  <td className="cms-td-title" style={{ padding: '0.85rem 1.25rem' }}>
+                    <div style={{ fontWeight: 700, color: 'var(--color-text)', fontSize: '0.94rem', marginBottom: '0.35rem', lineHeight: 1.35 }}>
+                      {article.title}
+                    </div>
+                    {article.reviewer_feedback && (
+                      <div
+                        style={{
+                          fontSize: '0.78rem',
+                          color: article.status === 'rejected' ? 'var(--color-danger)' : '#EC4899',
+                          backgroundColor: 'var(--color-surface-alt)',
+                          padding: '0.35rem 0.6rem',
+                          borderRadius: 'var(--radius-sm)',
+                          marginTop: '0.35rem',
+                          display: 'inline-flex',
+                          alignItems: 'center',
+                          gap: '0.3rem',
+                        }}
+                      >
+                        <MessageSquare size={13} />
+                        <span>Reviewer note: {article.reviewer_feedback}</span>
                       </div>
-                      {article.reviewer_feedback && (
-                        <div
-                          style={{
-                            fontSize: '0.78rem',
-                            color: article.status === 'rejected' ? 'var(--color-danger)' : '#EC4899',
-                            backgroundColor: 'var(--color-surface-alt)',
-                            padding: '0.35rem 0.6rem',
-                            borderRadius: 'var(--radius-sm)',
-                            marginTop: '0.35rem',
-                            display: 'inline-flex',
-                            alignItems: 'center',
-                            gap: '0.3rem',
-                          }}
-                        >
-                          <MessageSquare size={13} />
-                          <span>Reviewer note: {article.reviewer_feedback}</span>
-                        </div>
-                      )}
-                    </td>
-                    <td style={{ padding: '1rem' }}>
-                      {getStatusBadge(article.status)}
-                    </td>
-                    <td style={{ padding: '1rem', color: 'var(--color-text-secondary)' }}>
-                      {article.category_name || 'General'}
-                    </td>
-                    <td style={{ padding: '1rem', color: 'var(--color-muted)', fontSize: '0.82rem' }}>
+                    )}
+                  </td>
+                  <td className="cms-td-category" style={{ padding: '0.85rem 1rem' }}>
+                    <span className="cms-mobile-label">Status</span>
+                    {getStatusBadge(article.status)}
+                  </td>
+                  <td className="cms-td-category" style={{ padding: '0.85rem 1rem', color: 'var(--color-text-secondary)' }}>
+                    <span className="cms-mobile-label">Category</span>
+                    <span style={{ fontWeight: 600, fontSize: '0.85rem' }}>{article.category_name || 'General'}</span>
+                  </td>
+                  <td className="cms-td-updated" style={{ padding: '0.85rem 1rem', color: 'var(--color-muted)', fontSize: '0.82rem' }}>
+                    <span className="cms-mobile-label">Updated</span>
+                    <span>
                       {new Date(article.updated_at || article.created_at).toLocaleDateString(undefined, {
                         month: 'short',
                         day: 'numeric',
                         year: 'numeric',
                       })}
-                    </td>
-                    <td style={{ padding: '1rem 1.25rem', textAlign: 'right' }}>
-                      <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem' }}>
-                        {article.status === 'published' ? (
-                          <Link
-                            to={`/post/${article.slug}`}
-                            title="View live article"
-                            style={{
-                              padding: '0.4rem',
-                              color: 'var(--color-secondary)',
-                              backgroundColor: 'var(--color-surface-alt)',
-                              borderRadius: 'var(--radius-sm)',
-                              display: 'inline-flex',
-                            }}
-                          >
-                            <ExternalLink size={15} />
-                          </Link>
-                        ) : null}
-
+                    </span>
+                  </td>
+                  <td className="cms-td-actions" style={{ padding: '0.85rem 1.25rem', textAlign: 'right' }}>
+                    <div className="cms-actions-group">
+                      {article.status === 'published' ? (
                         <Link
-                          to={`/user/articles/edit/${article.post_id}`}
-                          title="Edit article"
-                          style={{
-                            padding: '0.4rem',
-                            color: 'var(--color-text-secondary)',
-                            backgroundColor: 'var(--color-surface-alt)',
-                            borderRadius: 'var(--radius-sm)',
-                            display: 'inline-flex',
-                          }}
+                          to={`/post/${article.slug}`}
+                          title="View live article"
+                          className="cms-btn-view"
                         >
-                          <Edit size={15} />
+                          <ExternalLink size={14} /> <span>View Live</span>
                         </Link>
+                      ) : null}
 
-                        {article.status !== 'published' && (
-                          <button
-                            onClick={() => handleDelete(article.post_id, article.title)}
-                            title="Delete article"
-                            style={{
-                              padding: '0.4rem',
-                              color: 'var(--color-danger)',
-                              backgroundColor: 'var(--color-surface-alt)',
-                              borderRadius: 'var(--radius-sm)',
-                              display: 'inline-flex',
-                            }}
-                          >
-                            <Trash2 size={15} />
-                          </button>
-                        )}
-                      </div>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                      <Link
+                        to={`/user/articles/edit/${article.post_id}`}
+                        title="Edit article"
+                        className="cms-btn-edit"
+                      >
+                        <Edit size={14} /> <span>Edit Story</span>
+                      </Link>
+
+                      {article.status !== 'published' && (
+                        <button
+                          type="button"
+                          onClick={() => handleDelete(article.post_id, article.title)}
+                          title="Delete article"
+                          className="cms-btn-delete"
+                        >
+                          <Trash2 size={14} /> <span>Delete</span>
+                        </button>
+                      )}
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       )}
     </div>

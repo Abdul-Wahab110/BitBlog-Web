@@ -98,44 +98,46 @@ export const Search: React.FC = () => {
           <SearchIcon size={24} color="var(--color-secondary)" /> Search Articles & Discovery
         </h1>
 
-        <form onSubmit={handleSearchSubmit} style={{ flexDirection: 'row', gap: '0.5rem', marginBottom: '1.25rem' }}>
+        <form onSubmit={handleSearchSubmit} style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem', marginBottom: '1.25rem' }}>
           <input
             type="search"
             value={searchInput}
             onChange={e => setSearchInput(e.target.value)}
             placeholder="Search titles, content, categories, tags, or authors..."
-            style={{ flex: 1, padding: '0.75rem 1rem', fontSize: '1rem' }}
+            style={{ flex: '1 1 220px', minWidth: '160px', padding: '0.75rem 1rem', fontSize: '1rem' }}
           />
-          <button type="submit" style={{ backgroundColor: 'var(--color-secondary)', color: '#FFF', padding: '0.75rem 1.5rem', fontSize: '0.9rem' }}>
+          <button type="submit" style={{ backgroundColor: 'var(--color-secondary)', color: '#FFF', padding: '0.75rem 1.5rem', fontSize: '0.9rem', whiteSpace: 'nowrap' }}>
             Search
           </button>
         </form>
 
         {/* Filter Controls Bar */}
-        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', alignItems: 'center', paddingTop: '0.75rem', borderTop: '1px solid var(--color-border)' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.85rem', color: 'var(--color-text-secondary)', fontWeight: 600 }}>
-            <SlidersHorizontal size={15} /> Filters:
+        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', alignItems: 'center', justifyContent: 'space-between', paddingTop: '0.75rem', borderTop: '1px solid var(--color-border)' }}>
+          <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '0.75rem' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.85rem', color: 'var(--color-text-secondary)', fontWeight: 600 }}>
+              <SlidersHorizontal size={15} /> Filters:
+            </div>
+
+            {/* Category Filter */}
+            <select
+              value={categoryParam}
+              onChange={e => updateParam('category', e.target.value)}
+              style={{ padding: '0.4rem 0.65rem', fontSize: '0.85rem', maxWidth: '100%' }}
+            >
+              <option value="">All Categories</option>
+              {categories.map(cat => (
+                <option key={cat.category_id} value={cat.slug}>{cat.name}</option>
+              ))}
+            </select>
           </div>
 
-          {/* Category Filter */}
-          <select
-            value={categoryParam}
-            onChange={e => updateParam('category', e.target.value)}
-            style={{ padding: '0.4rem 0.65rem', fontSize: '0.85rem' }}
-          >
-            <option value="">All Categories</option>
-            {categories.map(cat => (
-              <option key={cat.category_id} value={cat.slug}>{cat.name}</option>
-            ))}
-          </select>
-
           {/* Sort Dropdown */}
-          <div style={{ marginLeft: 'auto', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
             <span style={{ fontSize: '0.85rem', color: 'var(--color-text-secondary)', fontWeight: 600 }}>Sort By:</span>
             <select
               value={sortParam}
               onChange={e => updateParam('sort', e.target.value)}
-              style={{ padding: '0.4rem 0.65rem', fontSize: '0.85rem' }}
+              style={{ padding: '0.4rem 0.65rem', fontSize: '0.85rem', maxWidth: '100%' }}
             >
               <option value="newest">Newest First</option>
               <option value="oldest">Oldest First</option>

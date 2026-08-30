@@ -382,6 +382,23 @@ export class ApiService {
     return this.handleResponse(res);
   }
 
+  public static async deleteContactMessage(id: number) {
+    const res = await fetch(`${API_BASE_URL}/admin/messages/${id}`, {
+      method: 'DELETE',
+      headers: this.getHeaders(),
+    });
+    return this.handleResponse(res);
+  }
+
+  public static async replyContactMessage(id: number, data: { toEmail: string; recipientName: string; subject: string; replyMessage: string; originalMessage?: string }) {
+    const res = await fetch(`${API_BASE_URL}/admin/messages/${id}/reply`, {
+      method: 'POST',
+      headers: this.getHeaders(),
+      body: JSON.stringify(data),
+    });
+    return this.handleResponse(res);
+  }
+
   // Settings Endpoints
   public static async getSettings() {
     const res = await fetch(`${API_BASE_URL}/settings`, {

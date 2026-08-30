@@ -1,4 +1,5 @@
 import React, { useEffect, useCallback } from 'react';
+import { createPortal } from 'react-dom';
 import { Link, useLocation } from 'react-router-dom';
 import {
   X,
@@ -75,43 +76,27 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
     minHeight: '44px', // Comfortable touch target
   });
 
-  return (
+  const drawerContent = (
     <>
       {/* Backdrop overlay */}
       <div
         onClick={onClose}
         aria-hidden="true"
+        className="mobile-nav-backdrop"
         style={{
-          position: 'fixed',
-          inset: 0,
-          backgroundColor: 'var(--color-overlay)',
-          zIndex: 200,
           opacity: isOpen ? 1 : 0,
           pointerEvents: isOpen ? 'auto' : 'none',
-          transition: 'opacity var(--transition-normal)',
-          backdropFilter: isOpen ? 'blur(4px)' : 'none',
         }}
       />
 
       {/* Slide-in drawer */}
-      <div
+      <aside
         role="dialog"
         aria-modal="true"
         aria-label="Mobile navigation drawer"
+        className="mobile-nav-drawer"
         style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          bottom: 0,
-          width: '320px',
-          maxWidth: '85vw',
-          backgroundColor: 'var(--color-surface)',
-          zIndex: 210,
-          display: 'flex',
-          flexDirection: 'column',
-          boxShadow: 'var(--shadow-xl)',
           transform: isOpen ? 'translateX(0)' : 'translateX(-100%)',
-          transition: 'transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
         }}
       >
         {/* Drawer Header */}
@@ -120,8 +105,10 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
-            padding: '1.25rem',
+            padding: '1.15rem 1.25rem',
             borderBottom: '1px solid var(--color-border)',
+            backgroundColor: 'var(--color-surface)',
+            flexShrink: 0,
           }}
         >
           <Link
@@ -136,11 +123,16 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
             aria-label="Close navigation drawer"
             style={{
               background: 'transparent',
-              padding: '0.4rem',
-              color: 'var(--color-text-secondary)',
+              border: 'none',
+              padding: '0.45rem',
+              color: 'var(--color-text)',
               borderRadius: 'var(--radius-md)',
-              minHeight: '36px',
-              minWidth: '36px',
+              minHeight: '38px',
+              minWidth: '38px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              cursor: 'pointer',
             }}
           >
             <X size={22} />
@@ -220,6 +212,7 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
             flexDirection: 'column',
             gap: '0.75rem',
             backgroundColor: 'var(--color-surface-alt)',
+            flexShrink: 0,
           }}
         >
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
@@ -321,7 +314,10 @@ export const MobileMenu: React.FC<MobileMenuProps> = ({ isOpen, onClose }) => {
             </button>
           )}
         </div>
-      </div>
+      </aside>
     </>
   );
+
+  if (typeof document === 'undefined') return null;
+  return createPortal(drawerContent, document.body);
 };

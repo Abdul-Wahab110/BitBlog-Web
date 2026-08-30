@@ -39,8 +39,8 @@ export const AdminAuthors: React.FC = () => {
       ) : authors.length === 0 ? (
         <EmptyState title="No Authors Found" description="No accounts with author or editor privileges found in the database." />
       ) : (
-        <div className="table-responsive" style={{ backgroundColor: 'var(--color-card)', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)' }}>
-          <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.875rem' }}>
+        <div className="cms-table-wrapper">
+          <table className="cms-responsive-table">
             <thead>
               <tr style={{ backgroundColor: 'var(--color-surface-alt)', borderBottom: '1px solid var(--color-border)', color: 'var(--color-text-secondary)', fontWeight: 700 }}>
                 <th style={{ padding: '0.75rem 1rem' }}>Author</th>
@@ -53,64 +53,84 @@ export const AdminAuthors: React.FC = () => {
             </thead>
             <tbody>
               {authors.map(author => (
-                <tr key={author.user_id} style={{ borderBottom: '1px solid var(--color-border)' }}>
-                  <td style={{ padding: '0.75rem 1rem', fontWeight: 600 }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem' }}>
+                <tr key={author.user_id} className="cms-table-row">
+                  <td className="cms-td-author" style={{ padding: '0.85rem 1rem', fontWeight: 600 }}>
+                    <span className="cms-mobile-label">Author</span>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
                       <UserAvatar
                         src={author.profile_image}
                         name={author.name}
-                        size={34}
+                        size={38}
                       />
                       <div>
-                        <span>{author.name}</span>
-                        <span style={{ fontSize: '0.75rem', color: 'var(--color-muted)', display: 'block' }}>@{author.username}</span>
+                        <div style={{ fontWeight: 700, color: 'var(--color-text)', fontSize: '0.94rem' }}>{author.name}</div>
+                        <div style={{ fontSize: '0.78rem', color: 'var(--color-muted)' }}>@{author.username}</div>
                       </div>
                     </div>
                   </td>
-                  <td style={{ padding: '0.75rem 1rem', color: 'var(--color-text-secondary)' }}>{author.email}</td>
-                  <td style={{ padding: '0.75rem 1rem', fontWeight: 600, color: 'var(--color-secondary)' }}>{author.role}</td>
-                  <td style={{ padding: '0.75rem 1rem' }}>{author.published_count || 0}</td>
-                  <td style={{ padding: '0.75rem 1rem' }}>{author.total_views || 0}</td>
-                  <td style={{ padding: '0.75rem 1rem', textAlign: 'right' }}>
-                    <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', justifyContent: 'flex-end' }}>
-                      <Link
-                        to="/admin/users"
-                        title="Edit Author Profile & Role"
-                        style={{
-                          display: 'inline-flex',
-                          alignItems: 'center',
-                          gap: '0.25rem',
-                          padding: '0.3rem 0.65rem',
-                          fontSize: '0.78rem',
-                          borderRadius: 'var(--radius-sm)',
-                          backgroundColor: 'var(--color-surface)',
-                          border: '1px solid var(--color-border)',
-                          color: 'var(--color-text)',
-                          fontWeight: 600,
-                          textDecoration: 'none',
-                        }}
-                      >
-                        Edit Profile
-                      </Link>
 
+                  <td className="cms-td-category" style={{ padding: '0.85rem 1rem', color: 'var(--color-text-secondary)' }}>
+                    <span className="cms-mobile-label">Email</span>
+                    <span style={{ fontSize: '0.85rem', wordBreak: 'break-all' }}>{author.email}</span>
+                  </td>
+
+                  <td className="cms-td-category" style={{ padding: '0.85rem 1rem' }}>
+                    <span className="cms-mobile-label">Role</span>
+                    <span
+                      style={{
+                        padding: '0.2rem 0.6rem',
+                        borderRadius: 'var(--radius-full)',
+                        fontSize: '0.78rem',
+                        fontWeight: 700,
+                        backgroundColor:
+                          author.role === 'Admin'
+                            ? 'rgba(239, 68, 68, 0.15)'
+                            : author.role === 'Editor'
+                            ? 'rgba(236, 72, 153, 0.15)'
+                            : 'rgba(99, 102, 241, 0.15)',
+                        color:
+                          author.role === 'Admin'
+                            ? 'var(--color-danger)'
+                            : author.role === 'Editor'
+                            ? '#EC4899'
+                            : 'var(--color-secondary)',
+                      }}
+                    >
+                      {author.role}
+                    </span>
+                  </td>
+
+                  <td className="cms-td-updated" style={{ padding: '0.85rem 1rem' }}>
+                    <span className="cms-mobile-label">Stories</span>
+                    <span style={{ padding: '0.2rem 0.55rem', backgroundColor: 'var(--color-surface-alt)', borderRadius: 'var(--radius-full)', fontSize: '0.78rem', fontWeight: 700, color: 'var(--color-secondary)' }}>
+                      {author.published_count || 0} published
+                    </span>
+                  </td>
+
+                  <td className="cms-td-updated" style={{ padding: '0.85rem 1rem' }}>
+                    <span className="cms-mobile-label">Views</span>
+                    <span style={{ padding: '0.2rem 0.55rem', backgroundColor: 'var(--color-surface-alt)', borderRadius: 'var(--radius-full)', fontSize: '0.78rem', fontWeight: 700, color: 'var(--color-muted)' }}>
+                      {author.total_views || 0} views
+                    </span>
+                  </td>
+
+                  <td className="cms-td-actions" style={{ padding: '0.85rem 1rem', textAlign: 'right' }}>
+                    <div className="cms-actions-group">
                       <Link
                         to={`/author/${author.user_id}`}
                         target="_blank"
-                        style={{
-                          display: 'inline-flex',
-                          alignItems: 'center',
-                          gap: '0.3rem',
-                          padding: '0.3rem 0.65rem',
-                          fontSize: '0.78rem',
-                          borderRadius: 'var(--radius-sm)',
-                          backgroundColor: 'var(--color-surface-alt)',
-                          border: '1px solid var(--color-secondary-glow)',
-                          color: 'var(--color-secondary)',
-                          fontWeight: 600,
-                          textDecoration: 'none',
-                        }}
+                        className="cms-btn-view"
+                        title="View public author profile"
                       >
-                        View <ExternalLink size={12} />
+                        <ExternalLink size={14} /> <span>View Profile</span>
+                      </Link>
+
+                      <Link
+                        to="/admin/users"
+                        className="cms-btn-edit"
+                        title="Edit author profile & privileges"
+                      >
+                        <FileText size={14} /> <span>Manage Access</span>
                       </Link>
                     </div>
                   </td>

@@ -244,20 +244,20 @@ export const AdminTags: React.FC = () => {
             boxShadow: 'var(--shadow-sm)',
           }}
         >
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem', flexWrap: 'wrap', gap: '0.5rem' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.25rem', flexWrap: 'wrap', gap: '0.75rem' }}>
             <div>
               <h3 style={{ fontSize: '1.1rem', fontWeight: 700, margin: 0 }}>Existing Tags ({tags.length})</h3>
               <span style={{ fontSize: '0.78rem', color: 'var(--color-muted)' }}>Click edit or view to manage individual keywords</span>
             </div>
 
-            <div style={{ position: 'relative', width: '220px' }}>
+            <div style={{ position: 'relative', width: '100%', maxWidth: '240px' }}>
               <Search size={15} style={{ position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)', color: 'var(--color-muted)' }} />
               <input
                 type="search"
                 value={search}
                 onChange={e => setSearch(e.target.value)}
                 placeholder="Search tags..."
-                style={{ width: '100%', padding: '0.45rem 0.65rem 0.45rem 2rem', fontSize: '0.82rem' }}
+                style={{ width: '100%', padding: '0.45rem 0.65rem 0.45rem 2rem', fontSize: '0.82rem', boxSizing: 'border-box', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)' }}
               />
             </div>
           </div>
@@ -267,8 +267,8 @@ export const AdminTags: React.FC = () => {
           ) : filteredTags.length === 0 ? (
             <EmptyState title="No Tags Found" description="No taxonomy tags match your search or exist in the database." />
           ) : (
-            <div className="table-responsive">
-              <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.85rem' }}>
+            <div className="cms-table-wrapper">
+              <table className="cms-responsive-table">
                 <thead>
                   <tr style={{ backgroundColor: 'var(--color-surface-alt)', borderBottom: '1px solid var(--color-border)', color: 'var(--color-text-secondary)', fontWeight: 700 }}>
                     <th style={{ padding: '0.65rem 0.85rem' }}>Tag Name</th>
@@ -283,43 +283,66 @@ export const AdminTags: React.FC = () => {
                     const isEditing = editingTagId === id;
 
                     return (
-                      <tr key={id} style={{ borderBottom: '1px solid var(--color-border)' }}>
-                        <td style={{ padding: '0.65rem 0.85rem', fontWeight: 600 }}>
+                      <tr key={id} className="cms-table-row">
+                        <td className="cms-td-title" style={{ padding: '0.75rem 0.85rem', fontWeight: 600 }}>
                           {isEditing ? (
                             <input
                               type="text"
                               value={editName}
                               onChange={e => setEditName(e.target.value)}
-                              style={{ padding: '0.35rem 0.5rem', fontSize: '0.82rem', width: '100%' }}
+                              style={{ padding: '0.45rem 0.6rem', fontSize: '0.85rem', width: '100%', boxSizing: 'border-box' }}
                             />
                           ) : (
-                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                              <Hash size={14} color="var(--color-secondary)" />
-                              <span>{tag.name}</span>
+                            <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', flexWrap: 'wrap' }}>
+                              <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.3rem', color: 'var(--color-text)', fontSize: '0.94rem', fontWeight: 700 }}>
+                                <Hash size={15} color="var(--color-secondary)" />
+                                {tag.name}
+                              </span>
+                              <span
+                                style={{
+                                  backgroundColor: 'rgba(99, 102, 241, 0.12)',
+                                  padding: '0.15rem 0.5rem',
+                                  borderRadius: 'var(--radius-full)',
+                                  fontSize: '0.75rem',
+                                  fontWeight: 700,
+                                  color: 'var(--color-secondary)',
+                                }}
+                              >
+                                {tag.post_count || 0} stories
+                              </span>
                             </div>
                           )}
                         </td>
 
-                        <td style={{ padding: '0.65rem 0.85rem', color: 'var(--color-text-secondary)' }}>
+                        <td className="cms-td-category" style={{ padding: '0.75rem 0.85rem', color: 'var(--color-text-secondary)' }}>
+                          <span className="cms-mobile-label">Slug</span>
                           {isEditing ? (
                             <input
                               type="text"
                               value={editSlug}
                               onChange={e => setEditSlug(e.target.value)}
-                              style={{ padding: '0.35rem 0.5rem', fontSize: '0.82rem', width: '100%' }}
+                              style={{ padding: '0.45rem 0.6rem', fontSize: '0.85rem', width: '100%', boxSizing: 'border-box' }}
                             />
                           ) : (
-                            <code>/tag/{tag.slug}</code>
+                            <a
+                              href={`/tag/${tag.slug}`}
+                              target="_blank"
+                              rel="noreferrer"
+                              style={{ color: 'var(--color-secondary)', display: 'inline-flex', alignItems: 'center', gap: '0.25rem', textDecoration: 'none', fontSize: '0.82rem', fontWeight: 600 }}
+                            >
+                              /tag/{tag.slug} <ExternalLink size={12} />
+                            </a>
                           )}
                         </td>
 
-                        <td style={{ padding: '0.65rem 0.85rem', textAlign: 'center' }}>
+                        <td className="cms-td-updated" style={{ padding: '0.75rem 0.85rem', textAlign: 'center' }}>
+                          <span className="cms-mobile-label">Articles</span>
                           <span
                             style={{
                               backgroundColor: 'var(--color-surface-alt)',
-                              padding: '0.15rem 0.5rem',
+                              padding: '0.15rem 0.55rem',
                               borderRadius: 'var(--radius-full)',
-                              fontSize: '0.75rem',
+                              fontSize: '0.78rem',
                               fontWeight: 700,
                               color: 'var(--color-secondary)',
                             }}
@@ -328,83 +351,52 @@ export const AdminTags: React.FC = () => {
                           </span>
                         </td>
 
-                        <td style={{ padding: '0.65rem 0.85rem', textAlign: 'right' }}>
+                        <td className="cms-td-actions" style={{ padding: '0.75rem 0.85rem', textAlign: 'right' }}>
                           {isEditing ? (
-                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '0.35rem' }}>
+                            <div className="cms-actions-group">
                               <button
                                 type="button"
                                 onClick={() => handleUpdateTag(id)}
                                 title="Save changes"
-                                style={{
-                                  padding: '0.35rem 0.6rem',
-                                  backgroundColor: 'var(--color-success)',
-                                  color: '#FFF',
-                                  borderRadius: 'var(--radius-sm)',
-                                  border: 'none',
-                                  cursor: 'pointer',
-                                }}
+                                className="cms-btn-approve"
                               >
-                                <Check size={14} />
+                                <Check size={14} /> <span>Save</span>
                               </button>
                               <button
                                 type="button"
                                 onClick={cancelEdit}
                                 title="Cancel"
-                                style={{
-                                  padding: '0.35rem 0.6rem',
-                                  backgroundColor: 'var(--color-surface-alt)',
-                                  color: 'var(--color-text)',
-                                  borderRadius: 'var(--radius-sm)',
-                                  border: '1px solid var(--color-border)',
-                                  cursor: 'pointer',
-                                }}
+                                className="cms-btn-delete"
                               >
-                                <X size={14} />
+                                <X size={14} /> <span>Cancel</span>
                               </button>
                             </div>
                           ) : (
-                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '0.4rem' }}>
+                            <div className="cms-actions-group">
                               <a
                                 href={`/tag/${tag.slug}`}
                                 target="_blank"
                                 rel="noreferrer"
                                 title="View public tag page"
-                                style={{
-                                  padding: '0.35rem',
-                                  color: 'var(--color-secondary)',
-                                  borderRadius: 'var(--radius-sm)',
-                                  display: 'inline-flex',
-                                }}
+                                className="cms-btn-view"
                               >
-                                <ExternalLink size={15} />
+                                <ExternalLink size={14} /> <span>View Tag</span>
                               </a>
                               <button
                                 type="button"
                                 onClick={() => startEdit(tag)}
                                 title="Edit tag"
-                                style={{
-                                  padding: '0.35rem',
-                                  background: 'transparent',
-                                  border: 'none',
-                                  color: 'var(--color-text-secondary)',
-                                  cursor: 'pointer',
-                                }}
+                                className="cms-btn-edit"
                               >
-                                <Edit2 size={15} />
+                                <Edit2 size={14} /> <span>Edit</span>
                               </button>
                               <button
                                 type="button"
                                 onClick={() => handleDeleteTag(id, tag.name)}
                                 title="Delete tag"
-                                style={{
-                                  padding: '0.35rem',
-                                  background: 'transparent',
-                                  border: 'none',
-                                  color: 'var(--color-danger)',
-                                  cursor: 'pointer',
-                                }}
+                                className="cms-btn-delete"
                               >
-                                <Trash2 size={15} />
+                                <Trash2 size={14} /> <span>Delete</span>
                               </button>
                             </div>
                           )}

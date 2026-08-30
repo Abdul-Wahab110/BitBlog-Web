@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Save, Eye, Send, Calendar, AlertCircle, CheckCircle2, Folder, Clock, Tag, X, Plus, Hash } from 'lucide-react';
+import { Save, Eye, Send, Calendar, AlertCircle, CheckCircle2, Folder, Clock, Tag, X, Plus, Hash, Archive, FileText, XCircle, AlertTriangle } from 'lucide-react';
 import { RichEditor } from '../../components/editor/RichEditor';
 import { ArticlePreviewModal } from '../../components/editor/ArticlePreviewModal';
 import { ImageUploadDropzone } from '../../components/common/ImageUploadDropzone';
@@ -141,7 +141,7 @@ export const EditPost: React.FC = () => {
       });
   }, [id]);
 
-  const handleSubmit = async (e: React.FormEvent, targetStatus?: 'draft' | 'published' | 'scheduled') => {
+  const handleSubmit = async (e: React.FormEvent, targetStatus?: 'draft' | 'published' | 'pending_review' | 'changes_requested' | 'rejected' | 'scheduled' | 'archived') => {
     if (e) e.preventDefault();
     if (!id) return;
 
@@ -249,17 +249,24 @@ export const EditPost: React.FC = () => {
           </p>
         </div>
 
-        <div style={{ display: 'flex', gap: '0.6rem', flexWrap: 'wrap' }}>
+        <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', alignItems: 'center' }}>
           <button
             type="button"
             onClick={() => setPreviewOpen(true)}
             style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '0.35rem',
               backgroundColor: 'var(--color-surface-alt)',
               color: 'var(--color-text)',
-              padding: '0.5rem 1rem',
+              padding: '0.5rem 0.95rem',
               fontSize: '0.85rem',
+              fontWeight: 600,
               borderRadius: 'var(--radius-md)',
               border: '1px solid var(--color-border)',
+              cursor: 'pointer',
+              whiteSpace: 'nowrap',
             }}
           >
             <Eye size={15} /> Preview
@@ -270,29 +277,68 @@ export const EditPost: React.FC = () => {
             onClick={e => handleSubmit(e, 'draft')}
             disabled={submitting}
             style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              gap: '0.35rem',
               backgroundColor: 'var(--color-surface-alt)',
               color: 'var(--color-text)',
-              padding: '0.5rem 1rem',
+              padding: '0.5rem 0.95rem',
               fontSize: '0.85rem',
+              fontWeight: 600,
               borderRadius: 'var(--radius-md)',
               border: '1px solid var(--color-border)',
+              cursor: submitting ? 'not-allowed' : 'pointer',
+              whiteSpace: 'nowrap',
             }}
           >
             <Save size={15} /> Save Draft
           </button>
 
-          {status === 'scheduled' ? (
+          {isAuthor ? (
+            <button
+              type="button"
+              onClick={e => handleSubmit(e, 'pending_review')}
+              disabled={submitting}
+              style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '0.35rem',
+                backgroundColor: 'var(--color-secondary)',
+                color: '#FFFFFF',
+                padding: '0.5rem 1.25rem',
+                fontSize: '0.85rem',
+                fontWeight: 700,
+                borderRadius: 'var(--radius-md)',
+                boxShadow: '0 2px 8px var(--color-secondary-glow)',
+                cursor: submitting ? 'not-allowed' : 'pointer',
+                whiteSpace: 'nowrap',
+                border: 'none',
+              }}
+            >
+              <Send size={15} /> {submitting ? 'Submitting...' : 'Submit for Review'}
+            </button>
+          ) : status === 'scheduled' ? (
             <button
               type="button"
               onClick={e => handleSubmit(e, 'scheduled')}
               disabled={submitting}
               style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '0.35rem',
                 backgroundColor: 'var(--color-accent)',
                 color: '#FFFFFF',
                 padding: '0.5rem 1.25rem',
                 fontSize: '0.85rem',
+                fontWeight: 700,
                 borderRadius: 'var(--radius-md)',
                 boxShadow: '0 2px 8px rgba(245, 158, 11, 0.35)',
+                cursor: submitting ? 'not-allowed' : 'pointer',
+                whiteSpace: 'nowrap',
+                border: 'none',
               }}
             >
               <Clock size={15} /> {submitting ? 'Scheduling...' : 'Schedule Story'}
@@ -303,12 +349,20 @@ export const EditPost: React.FC = () => {
               onClick={e => handleSubmit(e, 'published')}
               disabled={submitting}
               style={{
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '0.35rem',
                 backgroundColor: 'var(--color-secondary)',
                 color: '#FFFFFF',
                 padding: '0.5rem 1.25rem',
                 fontSize: '0.85rem',
+                fontWeight: 700,
                 borderRadius: 'var(--radius-md)',
                 boxShadow: '0 2px 8px var(--color-secondary-glow)',
+                cursor: submitting ? 'not-allowed' : 'pointer',
+                whiteSpace: 'nowrap',
+                border: 'none',
               }}
             >
               <Send size={15} /> {submitting ? 'Updating...' : 'Publish Update'}
@@ -360,7 +414,7 @@ export const EditPost: React.FC = () => {
       )}
 
       <form onSubmit={e => handleSubmit(e)}>
-        <div style={{ display: 'grid', gridTemplateColumns: 'minmax(0, 1fr) 320px', gap: '1.5rem', alignItems: 'start' }}>
+        <div className="editor-layout-grid">
           {/* Main Column */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
             {/* Title & Slug */}
@@ -494,37 +548,64 @@ export const EditPost: React.FC = () => {
                 <Calendar size={16} /> Publishing Controls
               </h3>
 
-              <div style={{ marginBottom: '1rem' }}>
-                <label htmlFor="edit-status-select" style={{ display: 'block', fontWeight: 600, fontSize: '0.82rem', marginBottom: '0.35rem' }}>
-                  Status
+              <div style={{ marginBottom: '1.25rem' }}>
+                <label style={{ display: 'block', fontWeight: 600, fontSize: '0.82rem', marginBottom: '0.5rem', color: 'var(--color-text-secondary)' }}>
+                  Publication Status
                 </label>
-                <select
-                  id="edit-status-select"
-                  value={status}
-                  onChange={e => setStatus(e.target.value as any)}
-                  style={{ width: '100%', padding: '0.55rem 0.75rem', fontSize: '0.88rem' }}
-                >
-                  {isAuthor ? (
-                    <>
-                      <option value="pending_review">Submit for Editorial Review</option>
-                      <option value="draft">Save as Draft</option>
-                      <option value="scheduled">Schedule Release</option>
-                      {status === 'changes_requested' && (
-                        <option value="changes_requested">Changes Requested (Addressing Feedback)</option>
-                      )}
-                    </>
-                  ) : (
-                    <>
-                      <option value="published">Published</option>
-                      <option value="draft">Draft</option>
-                      <option value="pending_review">Pending Review</option>
-                      <option value="changes_requested">Changes Requested</option>
-                      <option value="rejected">Rejected</option>
-                      <option value="scheduled">Scheduled</option>
-                      <option value="archived">Archived</option>
-                    </>
-                  )}
-                </select>
+
+                {/* Modern Interactive Status Grid */}
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(130px, 1fr))', gap: '0.45rem' }}>
+                  {(isAuthor
+                    ? [
+                        { value: 'pending_review', label: 'Submit Review', icon: Clock, color: '#F59E0B', bg: 'rgba(245, 158, 11, 0.14)', glow: 'rgba(245, 158, 11, 0.25)' },
+                        { value: 'draft', label: 'Save Draft', icon: FileText, color: '#94A3B8', bg: 'rgba(148, 163, 184, 0.14)', glow: 'rgba(148, 163, 184, 0.2)' },
+                        { value: 'scheduled', label: 'Schedule Post', icon: Calendar, color: '#38BDF8', bg: 'rgba(56, 189, 248, 0.14)', glow: 'rgba(56, 189, 248, 0.25)' },
+                        ...(status === 'changes_requested'
+                          ? [{ value: 'changes_requested', label: 'Changes Requested', icon: AlertTriangle, color: '#EC4899', bg: 'rgba(236, 72, 153, 0.14)', glow: 'rgba(236, 72, 153, 0.25)' }]
+                          : []),
+                      ]
+                    : [
+                        { value: 'published', label: 'Published', icon: CheckCircle2, color: '#10B981', bg: 'rgba(16, 185, 129, 0.14)', glow: 'rgba(16, 185, 129, 0.25)' },
+                        { value: 'draft', label: 'Draft', icon: FileText, color: '#94A3B8', bg: 'rgba(148, 163, 184, 0.14)', glow: 'rgba(148, 163, 184, 0.2)' },
+                        { value: 'pending_review', label: 'Pending Review', icon: Clock, color: '#F59E0B', bg: 'rgba(245, 158, 11, 0.14)', glow: 'rgba(245, 158, 11, 0.25)' },
+                        { value: 'changes_requested', label: 'Changes', icon: AlertTriangle, color: '#EC4899', bg: 'rgba(236, 72, 153, 0.14)', glow: 'rgba(236, 72, 153, 0.25)' },
+                        { value: 'rejected', label: 'Rejected', icon: XCircle, color: '#EF4444', bg: 'rgba(239, 68, 68, 0.14)', glow: 'rgba(239, 68, 68, 0.25)' },
+                        { value: 'scheduled', label: 'Scheduled', icon: Calendar, color: '#38BDF8', bg: 'rgba(56, 189, 248, 0.14)', glow: 'rgba(56, 189, 248, 0.25)' },
+                        { value: 'archived', label: 'Archived', icon: Archive, color: '#818CF8', bg: 'rgba(129, 140, 248, 0.14)', glow: 'rgba(129, 140, 248, 0.25)' },
+                      ]
+                  ).map(opt => {
+                    const isActive = status === opt.value;
+                    const Icon = opt.icon;
+                    return (
+                      <button
+                        key={opt.value}
+                        type="button"
+                        onClick={() => setStatus(opt.value as any)}
+                        style={{
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '0.45rem',
+                          padding: '0.55rem 0.75rem',
+                          borderRadius: 'var(--radius-md)',
+                          border: isActive ? `2px solid ${opt.color}` : '1px solid var(--color-border)',
+                          backgroundColor: isActive ? opt.bg : 'var(--color-surface-alt)',
+                          color: isActive ? opt.color : 'var(--color-text)',
+                          fontWeight: isActive ? 700 : 500,
+                          fontSize: '0.82rem',
+                          cursor: 'pointer',
+                          textAlign: 'left',
+                          transition: 'all var(--transition-fast)',
+                          boxShadow: isActive ? `0 0 10px ${opt.glow}` : 'none',
+                        }}
+                      >
+                        <Icon size={15} style={{ flexShrink: 0, color: opt.color }} />
+                        <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                          {opt.label}
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
               </div>
 
               {status === 'scheduled' && (
@@ -661,6 +742,7 @@ export const EditPost: React.FC = () => {
               </button>
             </div>
 
+            {/* Category Selection Card */}
             <div
               style={{
                 backgroundColor: 'var(--color-card)',
@@ -669,21 +751,48 @@ export const EditPost: React.FC = () => {
                 border: '1px solid var(--color-border)',
               }}
             >
-              <h3 style={{ fontSize: '0.95rem', fontWeight: 700, marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                <Folder size={16} /> Category
-              </h3>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.85rem' }}>
+                <h3 style={{ fontSize: '0.95rem', fontWeight: 700, margin: 0, display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+                  <Folder size={16} color="var(--color-secondary)" /> Category
+                </h3>
+                {categoryId && (
+                  <span style={{ fontSize: '0.75rem', color: 'var(--color-secondary)', fontWeight: 700 }}>
+                    Selected: {categories.find(c => c.category_id === categoryId)?.name}
+                  </span>
+                )}
+              </div>
 
-              <select
-                value={categoryId}
-                onChange={e => setCategoryId(Number(e.target.value))}
-                style={{ width: '100%', padding: '0.55rem 0.75rem', fontSize: '0.88rem' }}
-              >
-                {categories.map(cat => (
-                  <option key={cat.category_id} value={cat.category_id}>
-                    {cat.name}
-                  </option>
-                ))}
-              </select>
+              {/* Interactive Category Chips Grid */}
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.45rem', maxHeight: '220px', overflowY: 'auto', padding: '0.15rem' }}>
+                {categories.map(cat => {
+                  const isSelected = categoryId === cat.category_id;
+                  return (
+                    <button
+                      key={cat.category_id}
+                      type="button"
+                      onClick={() => setCategoryId(cat.category_id)}
+                      style={{
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        gap: '0.4rem',
+                        padding: '0.45rem 0.85rem',
+                        borderRadius: 'var(--radius-full)',
+                        border: isSelected ? '1.5px solid var(--color-secondary)' : '1px solid var(--color-border)',
+                        backgroundColor: isSelected ? 'rgba(99, 102, 241, 0.16)' : 'var(--color-surface-alt)',
+                        color: isSelected ? 'var(--color-secondary)' : 'var(--color-text)',
+                        fontWeight: isSelected ? 700 : 500,
+                        fontSize: '0.82rem',
+                        cursor: 'pointer',
+                        transition: 'all var(--transition-fast)',
+                        boxShadow: isSelected ? '0 0 10px rgba(99, 102, 241, 0.25)' : 'none',
+                      }}
+                    >
+                      {isSelected ? <CheckCircle2 size={13} color="var(--color-secondary)" /> : <Folder size={13} style={{ opacity: 0.6 }} />}
+                      <span>{cat.name}</span>
+                    </button>
+                  );
+                })}
+              </div>
             </div>
 
             {/* Keyword & Topic Tags Card */}

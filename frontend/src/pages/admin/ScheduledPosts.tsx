@@ -83,8 +83,8 @@ export const ScheduledPosts: React.FC = () => {
           description="There are currently no articles in the scheduled publishing queue. Choose 'Scheduled' status in the article editor to queue stories for future release."
         />
       ) : (
-        <div className="table-responsive" style={{ backgroundColor: 'var(--color-card)', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)' }}>
-          <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.875rem' }}>
+        <div className="cms-table-wrapper">
+          <table className="cms-responsive-table">
             <thead>
               <tr style={{ backgroundColor: 'var(--color-surface-alt)', borderBottom: '1px solid var(--color-border)', color: 'var(--color-text-secondary)', fontWeight: 700 }}>
                 <th style={{ padding: '0.75rem 1rem' }}>Article Title</th>
@@ -95,21 +95,47 @@ export const ScheduledPosts: React.FC = () => {
             </thead>
             <tbody>
               {scheduled.map(post => (
-                <tr key={post.post_id} style={{ borderBottom: '1px solid var(--color-border)' }}>
-                  <td style={{ padding: '0.75rem 1rem', fontWeight: 600 }}>{post.title}</td>
-                  <td style={{ padding: '0.75rem 1rem', color: 'var(--color-text-secondary)' }}>{post.category_name || 'General'}</td>
-                  <td style={{ padding: '0.75rem 1rem', color: 'var(--color-accent)', fontWeight: 600 }}>
-                    <span style={{ display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
-                      <Calendar size={14} /> {post.scheduled_at ? new Date(post.scheduled_at).toLocaleString() : 'Pending'}
+                <tr key={post.post_id} className="cms-table-row">
+                  <td className="cms-td-title" style={{ padding: '0.85rem 1rem' }}>
+                    <div style={{ fontWeight: 700, color: 'var(--color-text)', fontSize: '0.94rem', marginBottom: '0.35rem', lineHeight: 1.35 }}>
+                      {post.title}
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', flexWrap: 'wrap' }}>
+                      <span style={{ fontSize: '0.72rem', padding: '0.15rem 0.5rem', backgroundColor: 'rgba(56, 189, 248, 0.15)', color: '#38BDF8', borderRadius: 'var(--radius-sm)', fontWeight: 700, display: 'inline-flex', alignItems: 'center', gap: '0.25rem' }}>
+                        <Clock size={11} /> Scheduled
+                      </span>
+                    </div>
+                  </td>
+
+                  <td className="cms-td-category" style={{ padding: '0.85rem 1rem', color: 'var(--color-text-secondary)' }}>
+                    <span className="cms-mobile-label">Category</span>
+                    <span style={{ fontWeight: 600, fontSize: '0.85rem' }}>{post.category_name || 'General'}</span>
+                  </td>
+
+                  <td className="cms-td-updated" style={{ padding: '0.85rem 1rem', color: 'var(--color-accent)', fontWeight: 600, fontSize: '0.82rem' }}>
+                    <span className="cms-mobile-label">Publish Time</span>
+                    <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem' }}>
+                      <Calendar size={13} /> {post.scheduled_at ? new Date(post.scheduled_at).toLocaleString() : 'Pending'}
                     </span>
                   </td>
-                  <td style={{ padding: '0.75rem 1rem', textAlign: 'right' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '0.4rem' }}>
-                      <Link to={`/admin/posts/edit/${post.post_id}`} title="Edit Scheduled Post" style={{ padding: '0.3rem', color: 'var(--color-secondary)' }}>
-                        <Edit3 size={15} />
+
+                  <td className="cms-td-actions" style={{ padding: '0.85rem 1rem', textAlign: 'right' }}>
+                    <div className="cms-actions-group">
+                      <Link
+                        to={`/admin/posts/edit/${post.post_id}`}
+                        title="Edit Scheduled Post"
+                        className="cms-btn-edit"
+                      >
+                        <Edit3 size={14} /> <span>Edit Schedule</span>
                       </Link>
-                      <button onClick={() => handleDelete(post.post_id, post.title)} title="Cancel Scheduled Post" style={{ padding: '0.3rem', background: 'transparent', color: 'var(--color-danger)' }}>
-                        <Trash2 size={15} />
+
+                      <button
+                        type="button"
+                        onClick={() => handleDelete(post.post_id, post.title)}
+                        title="Cancel Scheduled Post"
+                        className="cms-btn-delete"
+                      >
+                        <Trash2 size={14} /> <span>Cancel</span>
                       </button>
                     </div>
                   </td>

@@ -64,8 +64,8 @@ export const UserComments: React.FC = () => {
           description="You have not posted any comments or story replies yet."
         />
       ) : (
-        <div className="table-responsive" style={{ backgroundColor: 'var(--color-card)', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)' }}>
-          <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.875rem' }}>
+        <div className="cms-table-wrapper">
+          <table className="cms-responsive-table">
             <thead>
               <tr style={{ backgroundColor: 'var(--color-surface-alt)', borderBottom: '1px solid var(--color-border)', color: 'var(--color-text-secondary)', fontWeight: 700 }}>
                 <th style={{ padding: '0.75rem 1rem' }}>Article Story</th>
@@ -77,17 +77,36 @@ export const UserComments: React.FC = () => {
             </thead>
             <tbody>
               {comments.map(c => (
-                <tr key={c.comment_id} style={{ borderBottom: '1px solid var(--color-border)' }}>
-                  <td style={{ padding: '0.75rem 1rem', fontWeight: 600 }}>
-                    <Link to={`/post/${c.post_slug}`} style={{ color: 'var(--color-text)' }}>
+                <tr key={c.comment_id} className="cms-table-row">
+                  <td className="cms-td-title" style={{ padding: '0.85rem 1rem', fontWeight: 600 }}>
+                    <span className="cms-mobile-label">Story</span>
+                    <Link to={`/post/${c.post_slug}`} style={{ color: 'var(--color-secondary)', textDecoration: 'none', fontWeight: 700, fontSize: '0.92rem' }}>
                       {c.post_title || `Article #${c.post_id}`}
                     </Link>
                   </td>
-                  <td style={{ padding: '0.75rem 1rem', color: 'var(--color-text-secondary)', maxWidth: '300px' }}>{c.content}</td>
-                  <td style={{ padding: '0.75rem 1rem' }}>
+
+                  <td className="cms-td-title" style={{ padding: '0.85rem 1rem' }}>
+                    <span className="cms-mobile-label">Comment</span>
+                    <div
+                      style={{
+                        fontSize: '0.84rem',
+                        color: 'var(--color-text)',
+                        backgroundColor: 'var(--color-surface)',
+                        padding: '0.5rem 0.75rem',
+                        borderRadius: 'var(--radius-sm)',
+                        borderLeft: '3px solid var(--color-secondary)',
+                        lineHeight: 1.4,
+                      }}
+                    >
+                      "{c.content}"
+                    </div>
+                  </td>
+
+                  <td className="cms-td-category" style={{ padding: '0.85rem 1rem' }}>
+                    <span className="cms-mobile-label">Status</span>
                     <span
                       style={{
-                        padding: '0.15rem 0.5rem',
+                        padding: '0.2rem 0.55rem',
                         borderRadius: 'var(--radius-sm)',
                         fontSize: '0.75rem',
                         fontWeight: 700,
@@ -99,11 +118,29 @@ export const UserComments: React.FC = () => {
                       {c.status}
                     </span>
                   </td>
-                  <td style={{ padding: '0.75rem 1rem', color: 'var(--color-text-secondary)' }}>{new Date(c.created_at).toLocaleDateString()}</td>
-                  <td style={{ padding: '0.75rem 1rem', textAlign: 'right' }}>
-                    <button onClick={() => handleDelete(c.comment_id)} title="Delete Comment" style={{ padding: '0.3rem', background: 'transparent', color: 'var(--color-danger)' }}>
-                      <Trash2 size={15} />
-                    </button>
+
+                  <td className="cms-td-updated" style={{ padding: '0.85rem 1rem', color: 'var(--color-muted)', fontSize: '0.82rem' }}>
+                    <span className="cms-mobile-label">Date</span>
+                    <span>
+                      {new Date(c.created_at).toLocaleDateString(undefined, {
+                        month: 'short',
+                        day: 'numeric',
+                        year: 'numeric',
+                      })}
+                    </span>
+                  </td>
+
+                  <td className="cms-td-actions" style={{ padding: '0.85rem 1rem', textAlign: 'right' }}>
+                    <div className="cms-actions-group">
+                      <button
+                        type="button"
+                        onClick={() => handleDelete(c.comment_id)}
+                        title="Delete Comment"
+                        className="cms-btn-delete"
+                      >
+                        <Trash2 size={14} /> <span>Delete</span>
+                      </button>
+                    </div>
                   </td>
                 </tr>
               ))}

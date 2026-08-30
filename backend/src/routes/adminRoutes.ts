@@ -21,6 +21,8 @@ router.delete('/users/:id', requireAdmin, AdminController.deleteUser);
 router.get('/authors', AdminController.getAuthors);
 router.get('/newsletter', AdminController.getNewsletterSubscribers);
 router.get('/messages', AdminController.getContactMessages);
+router.delete('/messages/:id', AdminController.deleteContactMessage);
+router.post('/messages/:id/reply', AdminController.replyContactMessage);
 router.get('/overview', requireAdmin, AdminController.getSystemOverview);
 
 export default router;

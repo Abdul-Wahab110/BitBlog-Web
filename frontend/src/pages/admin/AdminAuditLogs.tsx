@@ -260,32 +260,32 @@ export const AdminAuditLogs: React.FC = () => {
       )}
 
       {/* Top Stat Cards */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1.25rem', marginBottom: '1.75rem' }}>
-        <div style={{ backgroundColor: 'var(--color-card)', padding: '1.25rem', borderRadius: 'var(--radius-lg)', border: '1px solid var(--color-border)' }}>
-          <p style={{ fontSize: '0.8rem', color: 'var(--color-muted)', fontWeight: 700, margin: 0, textTransform: 'uppercase' }}>Total Logged Events</p>
-          <p style={{ fontSize: '1.8rem', fontWeight: 800, margin: '0.35rem 0 0 0', color: 'var(--color-text)' }}>{stats.totalEvents}</p>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))', gap: '0.85rem', marginBottom: '1.5rem' }}>
+        <div style={{ backgroundColor: 'var(--color-card)', padding: '1rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', boxSizing: 'border-box' }}>
+          <p style={{ fontSize: '0.75rem', color: 'var(--color-muted)', fontWeight: 700, margin: 0, textTransform: 'uppercase' }}>Total Logged Events</p>
+          <p style={{ fontSize: '1.6rem', fontWeight: 800, margin: '0.25rem 0 0 0', color: 'var(--color-text)' }}>{stats.totalEvents}</p>
         </div>
 
-        <div style={{ backgroundColor: 'var(--color-card)', padding: '1.25rem', borderRadius: 'var(--radius-lg)', border: '1px solid var(--color-border)' }}>
-          <p style={{ fontSize: '0.8rem', color: '#818CF8', fontWeight: 700, margin: 0, textTransform: 'uppercase' }}>Story & Publishing Actions</p>
-          <p style={{ fontSize: '1.8rem', fontWeight: 800, margin: '0.35rem 0 0 0', color: '#818CF8' }}>{stats.publishingActions}</p>
+        <div style={{ backgroundColor: 'var(--color-card)', padding: '1rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', boxSizing: 'border-box' }}>
+          <p style={{ fontSize: '0.75rem', color: '#818CF8', fontWeight: 700, margin: 0, textTransform: 'uppercase' }}>Publishing Actions</p>
+          <p style={{ fontSize: '1.6rem', fontWeight: 800, margin: '0.25rem 0 0 0', color: '#818CF8' }}>{stats.publishingActions}</p>
         </div>
 
-        <div style={{ backgroundColor: 'var(--color-card)', padding: '1.25rem', borderRadius: 'var(--radius-lg)', border: '1px solid var(--color-border)' }}>
-          <p style={{ fontSize: '0.8rem', color: '#34D399', fontWeight: 700, margin: 0, textTransform: 'uppercase' }}>Auth & Security Events</p>
-          <p style={{ fontSize: '1.8rem', fontWeight: 800, margin: '0.35rem 0 0 0', color: '#34D399' }}>{stats.securityLogins}</p>
+        <div style={{ backgroundColor: 'var(--color-card)', padding: '1rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', boxSizing: 'border-box' }}>
+          <p style={{ fontSize: '0.75rem', color: '#34D399', fontWeight: 700, margin: 0, textTransform: 'uppercase' }}>Auth & Security</p>
+          <p style={{ fontSize: '1.6rem', fontWeight: 800, margin: '0.25rem 0 0 0', color: '#34D399' }}>{stats.securityLogins}</p>
         </div>
 
-        <div style={{ backgroundColor: 'var(--color-card)', padding: '1.25rem', borderRadius: 'var(--radius-lg)', border: '1px solid var(--color-border)' }}>
-          <p style={{ fontSize: '0.8rem', color: '#F87171', fontWeight: 700, margin: 0, textTransform: 'uppercase' }}>Critical / Sensitive Events</p>
-          <p style={{ fontSize: '1.8rem', fontWeight: 800, margin: '0.35rem 0 0 0', color: '#F87171' }}>{stats.criticalActions}</p>
+        <div style={{ backgroundColor: 'var(--color-card)', padding: '1rem', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)', boxSizing: 'border-box' }}>
+          <p style={{ fontSize: '0.75rem', color: '#F87171', fontWeight: 700, margin: 0, textTransform: 'uppercase' }}>Critical Events</p>
+          <p style={{ fontSize: '1.6rem', fontWeight: 800, margin: '0.25rem 0 0 0', color: '#F87171' }}>{stats.criticalActions}</p>
         </div>
       </div>
 
       {/* Filter Category Toolbar & Search */}
-      <div style={{ backgroundColor: 'var(--color-card)', border: '1px solid var(--color-border)', borderRadius: 'var(--radius-lg)', padding: '1.25rem', marginBottom: '1.5rem' }}>
+      <div style={{ backgroundColor: 'var(--color-card)', border: '1px solid var(--color-border)', borderRadius: 'var(--radius-lg)', padding: '1.25rem', marginBottom: '1.5rem', boxSizing: 'border-box' }}>
         {/* Category Tabs */}
-        <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginBottom: '1rem' }}>
+        <div style={{ display: 'flex', gap: '0.45rem', flexWrap: 'wrap', marginBottom: '1rem' }}>
           {CATEGORIES.map(cat => {
             const isSelected = category === cat.id;
             return (
@@ -293,8 +293,8 @@ export const AdminAuditLogs: React.FC = () => {
                 key={cat.id}
                 onClick={() => setCategory(cat.id)}
                 style={{
-                  padding: '0.4rem 0.85rem',
-                  fontSize: '0.82rem',
+                  padding: '0.35rem 0.8rem',
+                  fontSize: '0.8rem',
                   fontWeight: 600,
                   borderRadius: 'var(--radius-full)',
                   border: `1px solid ${isSelected ? 'var(--color-secondary)' : 'var(--color-border)'}`,
@@ -312,21 +312,21 @@ export const AdminAuditLogs: React.FC = () => {
 
         {/* Search & Severity Filter Bar */}
         <form onSubmit={handleSearchSubmit} style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
-          <div style={{ position: 'relative', flex: 1, minWidth: '240px' }}>
+          <div style={{ position: 'relative', flex: 1, minWidth: '220px' }}>
             <Search size={16} color="var(--color-muted)" style={{ position: 'absolute', left: '0.75rem', top: '50%', transform: 'translateY(-50%)' }} />
             <input
               type="text"
               placeholder="Search by user name, action, detail, or IP address..."
               value={search}
               onChange={e => setSearch(e.target.value)}
-              style={{ width: '100%', padding: '0.55rem 0.75rem 0.55rem 2.2rem', fontSize: '0.85rem' }}
+              style={{ width: '100%', padding: '0.55rem 0.75rem 0.55rem 2.2rem', fontSize: '0.85rem', boxSizing: 'border-box' }}
             />
           </div>
 
           <select
             value={severity}
             onChange={e => setSeverity(e.target.value)}
-            style={{ padding: '0.55rem 1rem', fontSize: '0.85rem', minWidth: '150px' }}
+            style={{ padding: '0.55rem 1rem', fontSize: '0.85rem', minWidth: '140px', boxSizing: 'border-box' }}
           >
             <option value="all">All Severities</option>
             <option value="success">Success</option>
@@ -344,6 +344,7 @@ export const AdminAuditLogs: React.FC = () => {
               borderRadius: 'var(--radius-md)',
               fontWeight: 700,
               fontSize: '0.85rem',
+              cursor: 'pointer',
             }}
           >
             Filter
@@ -360,28 +361,29 @@ export const AdminAuditLogs: React.FC = () => {
           description={search ? 'No audit events match your search query.' : 'Activity logs are clear.'}
         />
       ) : (
-        <div style={{ backgroundColor: 'var(--color-card)', border: '1px solid var(--color-border)', borderRadius: 'var(--radius-lg)', overflow: 'hidden', boxShadow: 'var(--shadow-sm)' }}>
-          <div style={{ overflowX: 'auto' }}>
-            <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.85rem' }}>
-              <thead>
-                <tr style={{ backgroundColor: 'var(--color-surface-alt)', borderBottom: '1px solid var(--color-border)', color: 'var(--color-text-secondary)' }}>
-                  <th style={{ padding: '0.85rem 1rem', fontWeight: 700, width: '190px' }}>Exact Time & Date</th>
-                  <th style={{ padding: '0.85rem 1rem', fontWeight: 700, width: '180px' }}>User & Role</th>
-                  <th style={{ padding: '0.85rem 1rem', fontWeight: 700, width: '220px' }}>Action & Category</th>
-                  <th style={{ padding: '0.85rem 1rem', fontWeight: 700 }}>Activity Description & Details</th>
-                  <th style={{ padding: '0.85rem 1rem', fontWeight: 700, width: '120px', textAlign: 'right' }}>IP Address</th>
-                </tr>
-              </thead>
-              <tbody>
-                {logs.map(log => {
-                  const sevStyle = getSeverityBadge(log.severity);
-                  const roleStyle = getRoleBadgeColor(log.user_role);
-                  const SevIcon = sevStyle.icon;
+        <div className="cms-table-wrapper">
+          <table className="cms-responsive-table">
+            <thead>
+              <tr style={{ backgroundColor: 'var(--color-surface-alt)', borderBottom: '1px solid var(--color-border)', color: 'var(--color-text-secondary)' }}>
+                <th style={{ padding: '0.85rem 1rem', fontWeight: 700, width: '190px' }}>Exact Time & Date</th>
+                <th style={{ padding: '0.85rem 1rem', fontWeight: 700, width: '180px' }}>User & Role</th>
+                <th style={{ padding: '0.85rem 1rem', fontWeight: 700, width: '220px' }}>Action & Category</th>
+                <th style={{ padding: '0.85rem 1rem', fontWeight: 700 }}>Activity Description & Details</th>
+                <th style={{ padding: '0.85rem 1rem', fontWeight: 700, width: '120px', textAlign: 'right' }}>IP Address</th>
+              </tr>
+            </thead>
+            <tbody>
+              {logs.map(log => {
+                const sevStyle = getSeverityBadge(log.severity);
+                const roleStyle = getRoleBadgeColor(log.user_role);
+                const SevIcon = sevStyle.icon;
 
-                  return (
-                    <tr key={log.log_id} style={{ borderBottom: '1px solid var(--color-border)', transition: 'background-color 0.15s ease' }}>
-                      {/* Exact Timestamp & Relative Elapsed Time */}
-                      <td style={{ padding: '0.85rem 1rem', whiteSpace: 'nowrap' }}>
+                return (
+                  <tr key={log.log_id} className="cms-table-row">
+                    {/* Exact Timestamp & Relative Elapsed Time */}
+                    <td className="cms-td-title" style={{ padding: '0.85rem 1rem', whiteSpace: 'nowrap' }}>
+                      <span className="cms-mobile-label">Timestamp</span>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', flexWrap: 'wrap' }}>
                         <div
                           style={{
                             display: 'inline-flex',
@@ -403,35 +405,34 @@ export const AdminAuditLogs: React.FC = () => {
                             {new Date(log.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true })}
                           </span>
                         </div>
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', marginTop: '0.35rem' }}>
-                          <span style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--color-text-secondary)' }}>
-                            {new Date(log.created_at).toLocaleDateString(undefined, { day: '2-digit', month: 'short', year: 'numeric' })}
-                          </span>
-                          <span
-                            style={{
-                              fontSize: '0.7rem',
-                              fontWeight: 700,
-                              padding: '0.05rem 0.4rem',
-                              borderRadius: 'var(--radius-full)',
-                              backgroundColor: 'rgba(56, 189, 248, 0.12)',
-                              color: '#38BDF8',
-                            }}
-                          >
-                            {getRelativeTime(log.created_at)}
-                          </span>
-                        </div>
-                      </td>
+                        <span style={{ fontSize: '0.75rem', fontWeight: 600, color: 'var(--color-text-secondary)' }}>
+                          {new Date(log.created_at).toLocaleDateString(undefined, { day: '2-digit', month: 'short', year: 'numeric' })}
+                        </span>
+                        <span
+                          style={{
+                            fontSize: '0.7rem',
+                            fontWeight: 700,
+                            padding: '0.05rem 0.4rem',
+                            borderRadius: 'var(--radius-full)',
+                            backgroundColor: 'rgba(56, 189, 248, 0.12)',
+                            color: '#38BDF8',
+                          }}
+                        >
+                          {getRelativeTime(log.created_at)}
+                        </span>
+                      </div>
+                    </td>
 
-                      {/* User & Role */}
-                      <td style={{ padding: '0.85rem 1rem' }}>
+                    {/* User & Role */}
+                    <td className="cms-td-author" style={{ padding: '0.85rem 1rem' }}>
+                      <span className="cms-mobile-label">User</span>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', flexWrap: 'wrap' }}>
                         <div style={{ fontWeight: 700, color: 'var(--color-text)', display: 'flex', alignItems: 'center', gap: '0.35rem' }}>
                           <User size={13} color="var(--color-secondary)" />
                           <span>{log.user_name}</span>
                         </div>
                         <span
                           style={{
-                            display: 'inline-block',
-                            marginTop: '0.25rem',
                             padding: '0.1rem 0.5rem',
                             borderRadius: 'var(--radius-full)',
                             fontSize: '0.72rem',
@@ -442,10 +443,13 @@ export const AdminAuditLogs: React.FC = () => {
                         >
                           {log.user_role}
                         </span>
-                      </td>
+                      </div>
+                    </td>
 
-                      {/* Action & Category */}
-                      <td style={{ padding: '0.85rem 1rem' }}>
+                    {/* Action & Category */}
+                    <td className="cms-td-category" style={{ padding: '0.85rem 1rem' }}>
+                      <span className="cms-mobile-label">Action</span>
+                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', flexWrap: 'wrap' }}>
                         <span
                           style={{
                             display: 'inline-flex',
@@ -463,26 +467,32 @@ export const AdminAuditLogs: React.FC = () => {
                           <SevIcon size={12} />
                           {log.action}
                         </span>
-                        <span style={{ display: 'block', fontSize: '0.72rem', color: 'var(--color-muted)', marginTop: '0.2rem', textTransform: 'uppercase', fontWeight: 600 }}>
+                        <span style={{ fontSize: '0.72rem', color: 'var(--color-muted)', textTransform: 'uppercase', fontWeight: 600 }}>
                           {log.category}
                         </span>
-                      </td>
+                      </div>
+                    </td>
 
-                      {/* Activity Details */}
-                      <td style={{ padding: '0.85rem 1rem', color: 'var(--color-text)', lineHeight: 1.5 }}>
+                    {/* Activity Details */}
+                    <td className="cms-td-title" style={{ padding: '0.85rem 1rem' }}>
+                      <span className="cms-mobile-label">Details</span>
+                      <div style={{ fontSize: '0.84rem', color: 'var(--color-text)', lineHeight: 1.45, backgroundColor: 'var(--color-surface)', padding: '0.5rem 0.75rem', borderRadius: 'var(--radius-sm)', borderLeft: '3px solid var(--color-secondary)' }}>
                         {log.details}
-                      </td>
+                      </div>
+                    </td>
 
-                      {/* IP Address */}
-                      <td style={{ padding: '0.85rem 1rem', textAlign: 'right', whiteSpace: 'nowrap', fontSize: '0.78rem', color: 'var(--color-muted)', fontFamily: 'monospace' }}>
+                    {/* IP Address */}
+                    <td className="cms-td-updated" style={{ padding: '0.85rem 1rem' }}>
+                      <span className="cms-mobile-label">IP Address</span>
+                      <span style={{ fontSize: '0.78rem', color: 'var(--color-muted)', fontFamily: 'monospace' }}>
                         {log.ip_address || '127.0.0.1'}
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
+                      </span>
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
         </div>
       )}
 

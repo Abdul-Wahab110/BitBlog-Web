@@ -9,16 +9,18 @@ export const ThemeToggle: React.FC = () => {
     <button
       onClick={toggleTheme}
       aria-label="Toggle color theme"
+      className="cms-theme-toggle-btn"
       style={{
         background: 'transparent',
         border: '1px solid var(--color-border)',
-        padding: '0.4rem 0.8rem',
+        padding: '0.35rem 0.65rem',
         borderRadius: 'var(--radius-md)',
         color: 'var(--color-text)',
+        cursor: 'pointer',
       }}
     >
-      {theme === 'light' ? <Moon size={18} /> : <Sun size={18} />}
-      <span style={{ fontSize: '0.85rem' }}>{theme === 'light' ? 'Dark' : 'Light'}</span>
+      {theme === 'light' ? <Moon size={16} /> : <Sun size={16} />}
+      <span className="cms-theme-label" style={{ fontSize: '0.82rem', fontWeight: 600 }}>{theme === 'light' ? 'Dark' : 'Light'}</span>
     </button>
   );
 };

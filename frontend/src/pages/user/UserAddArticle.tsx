@@ -188,21 +188,24 @@ export const UserAddArticle: React.FC = () => {
         </div>
 
         {/* Action Buttons */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', flexWrap: 'wrap' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
           <button
             type="button"
             onClick={() => setPreviewOpen(true)}
             style={{
               display: 'inline-flex',
               alignItems: 'center',
-              gap: '0.4rem',
-              padding: '0.55rem 1rem',
+              justifyContent: 'center',
+              gap: '0.35rem',
+              padding: '0.5rem 0.95rem',
               backgroundColor: 'var(--color-surface)',
               border: '1px solid var(--color-border)',
               borderRadius: 'var(--radius-md)',
               fontSize: '0.85rem',
               fontWeight: 600,
               color: 'var(--color-text)',
+              cursor: 'pointer',
+              whiteSpace: 'nowrap',
             }}
           >
             <Eye size={15} /> Preview
@@ -215,14 +218,17 @@ export const UserAddArticle: React.FC = () => {
             style={{
               display: 'inline-flex',
               alignItems: 'center',
-              gap: '0.4rem',
-              padding: '0.55rem 1.1rem',
+              justifyContent: 'center',
+              gap: '0.35rem',
+              padding: '0.5rem 0.95rem',
               backgroundColor: 'var(--color-surface-alt)',
               border: '1px solid var(--color-border)',
               borderRadius: 'var(--radius-md)',
               fontSize: '0.85rem',
               fontWeight: 600,
               color: 'var(--color-text)',
+              cursor: submitting ? 'not-allowed' : 'pointer',
+              whiteSpace: 'nowrap',
             }}
           >
             <Save size={15} /> Save Draft
@@ -235,14 +241,18 @@ export const UserAddArticle: React.FC = () => {
             style={{
               display: 'inline-flex',
               alignItems: 'center',
-              gap: '0.4rem',
-              padding: '0.55rem 1.25rem',
+              justifyContent: 'center',
+              gap: '0.35rem',
+              padding: '0.5rem 1.15rem',
               backgroundColor: 'var(--color-secondary)',
               color: '#FFFFFF',
               borderRadius: 'var(--radius-md)',
               fontSize: '0.85rem',
               fontWeight: 700,
               boxShadow: '0 2px 8px var(--color-secondary-glow)',
+              cursor: submitting ? 'not-allowed' : 'pointer',
+              whiteSpace: 'nowrap',
+              border: 'none',
             }}
           >
             <Send size={15} /> {submitting ? 'Submitting...' : 'Submit for Review'}

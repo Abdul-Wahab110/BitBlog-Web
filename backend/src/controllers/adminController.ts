@@ -5,6 +5,7 @@ import { ResponseUtil } from '../utils/apiResponse';
 import { PostModel } from '../models/postModel';
 import { UserModel } from '../models/userModel';
 import { AuditService } from '../services/auditService';
+import { EmailService } from '../services/emailService';
 import { AuthenticatedRequest } from '../types';
 
 export class AdminController {
@@ -354,6 +355,51 @@ export class AdminController {
       ResponseUtil.success(res, store.messages || [], 'Contact messages retrieved');
     } catch (error) {
       next(error);
+    }
+  }
+
+  public static async deleteContactMessage(req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const id = parseInt(req.params.id);
+      const store = Database.getStore();
+      store.messages = (store.messages || []).filter(m => m.message_id !== id);
+      Database.saveStore();
+      ResponseUtil.success(res, null, 'Contact message deleted permanently');
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  public static async replyContactMessage(req: AuthenticatedRequest, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const id = parseInt(req.params.id);
+      const { toEmail, recipientName, subject, replyMessage, originalMessage } = req.body;
+
+      if (!toEmail || !replyMessage) {
+        ResponseUtil.error(res, 'Recipient email and reply message are required', 400);
+        return;
+      }
+
+      await EmailService.sendContactReplyEmail(
+        toEmail,
+        recipientName || 'Reader',
+        subject || 'Re: Editorial Inquiry',
+        replyMessage,
+        originalMessage
+      );
+
+      // Mark message as READ if present
+      const store = Database.getStore();
+      const msg = (store.messages || []).find(m => m.message_id === id);
+      if (msg) {
+        msg.status = 'READ';
+        Database.saveStore();
+      }
+
+      ResponseUtil.success(res, null, `Reply successfully delivered directly to ${toEmail}`);
+    } catch (error: any) {
+      console.error('Failed to dispatch reply email:', error);
+      ResponseUtil.error(res, error.message || 'Failed to dispatch email to Gmail inbox', 500);
     }
   }
 

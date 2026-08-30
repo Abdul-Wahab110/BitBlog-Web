@@ -70,7 +70,7 @@ export const Categories: React.FC = () => {
           description="Categories created in the CMS admin panel will be listed here automatically."
         />
       ) : (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '1.75rem' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 280px), 1fr))', gap: '1.75rem' }}>
           {categories.map(cat => {
             const catImage = cat.image || cat.image_url;
             const subCategories = categories.filter(

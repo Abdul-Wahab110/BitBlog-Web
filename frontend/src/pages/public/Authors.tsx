@@ -96,7 +96,7 @@ export const Authors: React.FC = () => {
           description={searchQuery ? 'Try searching for different keywords or clear your query.' : 'Registered authors and editors will be listed here automatically.'}
         />
       ) : (
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '1.5rem' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(min(100%, 280px), 1fr))', gap: '1.5rem' }}>
           {filteredAuthors.map(author => (
             <Link
               key={author.user_id}

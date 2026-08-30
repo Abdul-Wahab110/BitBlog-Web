@@ -33,7 +33,7 @@
       "status": "ACTIVE",
       "created_at": "2026-08-19T07:40:57.279Z",
       "updated_at": "2026-08-28T11:50:50.600Z",
-      "last_login": "2026-08-29T09:40:21.413Z",
+      "last_login": "2026-08-30T18:15:33.318Z",
       "profile_image": "/uploads/1787588806977-xexqhoev.png",
       "bio": "",
       "website": "",
@@ -52,7 +52,7 @@
       "status": "ACTIVE",
       "created_at": "2026-08-19T07:40:57.279Z",
       "updated_at": "2026-08-19T08:29:46.677Z",
-      "last_login": "2026-08-26T06:17:03.454Z"
+      "last_login": "2026-08-30T14:53:42.521Z"
     },
     {
       "user_id": 3,
@@ -65,7 +65,7 @@
       "status": "ACTIVE",
       "created_at": "2026-08-19T07:40:57.279Z",
       "updated_at": "2026-08-19T08:41:03.426Z",
-      "last_login": "2026-08-26T06:19:44.924Z"
+      "last_login": "2026-08-30T18:09:40.870Z"
     },
     {
       "user_id": 4,
@@ -78,7 +78,7 @@
       "status": "ACTIVE",
       "created_at": "2026-08-19T07:40:57.279Z",
       "updated_at": "2026-08-27T08:05:16.043Z",
-      "last_login": "2026-08-29T09:54:24.421Z"
+      "last_login": "2026-08-30T18:30:45.943Z"
     },
     {
       "user_id": 5,
@@ -231,14 +231,15 @@
       "excerpt": "Content created and reviewed by staff editor....",
       "content": "Content created and reviewed by staff editor.",
       "status": "published",
-      "published_at": "2026-08-25T09:04:25.666Z",
+      "published_at": "2026-08-30T17:05:00.000Z",
       "reading_time": 1,
       "views_count": 0,
       "comment_count": 0,
       "like_count": 0,
       "created_at": "2026-08-25T09:04:25.667Z",
-      "updated_at": "2026-08-25T12:54:35.020Z",
-      "tag_ids": []
+      "updated_at": "2026-08-30T17:05:00.161Z",
+      "tag_ids": [],
+      "scheduled_at": "2026-08-30T17:05:00.000Z"
     },
     {
       "post_id": 6,
@@ -251,13 +252,13 @@
       "slug": "author-exclusive-article-1787648665510",
       "excerpt": "Content authored by verified author....",
       "content": "Content authored by verified author.",
-      "status": "published",
+      "status": "draft",
       "reading_time": 1,
       "views_count": 4,
       "comment_count": 0,
       "like_count": 0,
       "created_at": "2026-08-25T09:04:25.518Z",
-      "updated_at": "2026-08-25T12:54:42.154Z",
+      "updated_at": "2026-08-30T15:56:03.503Z",
       "tag_ids": [],
       "author_avatar": "",
       "published_at": "2026-08-25T12:54:42.153Z"
@@ -426,6 +427,14 @@
   ],
   "notifications": [
     {
+      "notification_id": 1788109500935,
+      "user_id": 7,
+      "title": "Scheduled Article Published",
+      "message": "Your scheduled article \"Editor Verified Story 1787648665664\" has been automatically published.",
+      "is_read": false,
+      "created_at": "2026-08-30T17:05:00.161Z"
+    },
+    {
       "notification_id": 1787137981808,
       "user_id": 1,
       "title": "Scheduled Article Published",
@@ -566,7 +575,7 @@
       "user_id": 2,
       "title": "Author Application Received!",
       "message": "Your application to join the editorial team as an Author has been received. Our administration will review your portfolio.",
-      "is_read": false,
+      "is_read": true,
       "created_at": "2026-08-26T06:18:55.139Z"
     },
     {
@@ -576,7 +585,7 @@
       "title": "Application Update: Author Submission",
       "message": "Thank you for your interest in joining as Author. Your application was not approved at this time. Reason: your are not elligible for this.",
       "link_url": "/user/apply",
-      "is_read": false,
+      "is_read": true,
       "created_at": "2026-08-26T06:28:45.742Z"
     },
     {
@@ -786,6 +795,270 @@
     }
   ],
   "audit_logs": [
+    {
+      "log_id": 63,
+      "user_id": 4,
+      "user_name": "Featured Author",
+      "user_role": "Author",
+      "action": "USER_LOGIN_SUCCESS",
+      "category": "AUTH",
+      "details": "Author 'Featured Author' signed into portal.",
+      "ip_address": "::1",
+      "severity": "success",
+      "created_at": "2026-08-30T18:30:45.993Z"
+    },
+    {
+      "log_id": 62,
+      "user_id": 4,
+      "user_name": "Featured Author",
+      "user_role": "Author",
+      "action": "USER_LOGIN_SUCCESS",
+      "category": "AUTH",
+      "details": "Author 'Featured Author' signed into portal.",
+      "ip_address": "::1",
+      "severity": "success",
+      "created_at": "2026-08-30T18:23:06.947Z"
+    },
+    {
+      "log_id": 61,
+      "user_id": 1,
+      "user_name": "Abdul Wahab",
+      "user_role": "Admin",
+      "action": "USER_LOGIN_SUCCESS",
+      "category": "AUTH",
+      "details": "Admin 'Abdul Wahab' signed into portal.",
+      "ip_address": "::1",
+      "severity": "success",
+      "created_at": "2026-08-30T18:15:33.457Z"
+    },
+    {
+      "log_id": 60,
+      "user_id": 3,
+      "user_name": "Senior Editor",
+      "user_role": "Editor",
+      "action": "USER_LOGIN_SUCCESS",
+      "category": "AUTH",
+      "details": "Editor 'Senior Editor' signed into portal.",
+      "ip_address": "::1",
+      "severity": "success",
+      "created_at": "2026-08-30T18:09:40.877Z"
+    },
+    {
+      "log_id": 59,
+      "user_id": 1,
+      "user_name": "Abdul Wahab",
+      "user_role": "Admin",
+      "action": "USER_LOGIN_SUCCESS",
+      "category": "AUTH",
+      "details": "Admin 'Abdul Wahab' signed into portal.",
+      "ip_address": "::1",
+      "severity": "success",
+      "created_at": "2026-08-30T18:06:52.264Z"
+    },
+    {
+      "log_id": 58,
+      "user_id": 1,
+      "user_name": "Abdul Wahab",
+      "user_role": "Admin",
+      "action": "USER_LOGIN_SUCCESS",
+      "category": "AUTH",
+      "details": "Admin 'Abdul Wahab' signed into portal.",
+      "ip_address": "::1",
+      "severity": "success",
+      "created_at": "2026-08-30T17:45:36.310Z"
+    },
+    {
+      "log_id": 57,
+      "user_id": 3,
+      "user_name": "Senior Editor",
+      "user_role": "Editor",
+      "action": "USER_LOGIN_SUCCESS",
+      "category": "AUTH",
+      "details": "Editor 'Senior Editor' signed into portal.",
+      "ip_address": "::1",
+      "severity": "success",
+      "created_at": "2026-08-30T17:28:50.033Z"
+    },
+    {
+      "log_id": 56,
+      "user_id": 3,
+      "user_name": "Senior Editor",
+      "user_role": "Editor",
+      "action": "USER_LOGIN_SUCCESS",
+      "category": "AUTH",
+      "details": "Editor 'Senior Editor' signed into portal.",
+      "ip_address": "::1",
+      "severity": "success",
+      "created_at": "2026-08-30T16:58:59.102Z"
+    },
+    {
+      "log_id": 55,
+      "user_id": 3,
+      "user_name": "Senior Editor",
+      "user_role": "Editor",
+      "action": "USER_LOGIN_SUCCESS",
+      "category": "AUTH",
+      "details": "Editor 'Senior Editor' signed into portal.",
+      "ip_address": "::1",
+      "severity": "success",
+      "created_at": "2026-08-30T16:49:58.842Z"
+    },
+    {
+      "log_id": 54,
+      "user_id": 3,
+      "user_name": "Senior Editor",
+      "user_role": "Editor",
+      "action": "USER_LOGIN_SUCCESS",
+      "category": "AUTH",
+      "details": "Editor 'Senior Editor' signed into portal.",
+      "ip_address": "::1",
+      "severity": "success",
+      "created_at": "2026-08-30T16:18:44.095Z"
+    },
+    {
+      "log_id": 53,
+      "user_id": 3,
+      "user_name": "Senior Editor",
+      "user_role": "Editor",
+      "action": "POST_UPDATED",
+      "category": "POST",
+      "details": "Editor 'Senior Editor' updated story #7 'Editor Verified Story 1787648665664'.",
+      "ip_address": "::1",
+      "severity": "info",
+      "created_at": "2026-08-30T16:05:28.333Z"
+    },
+    {
+      "log_id": 52,
+      "user_id": 3,
+      "user_name": "Senior Editor",
+      "user_role": "Editor",
+      "action": "USER_LOGIN_SUCCESS",
+      "category": "AUTH",
+      "details": "Editor 'Senior Editor' signed into portal.",
+      "ip_address": "::1",
+      "severity": "success",
+      "created_at": "2026-08-30T16:02:51.232Z"
+    },
+    {
+      "log_id": 51,
+      "user_id": 3,
+      "user_name": "Senior Editor",
+      "user_role": "Editor",
+      "action": "POST_UPDATED",
+      "category": "POST",
+      "details": "Editor 'Senior Editor' updated story #6 'Author Exclusive Article 1787648665510'.",
+      "ip_address": "::1",
+      "severity": "info",
+      "created_at": "2026-08-30T15:56:03.513Z"
+    },
+    {
+      "log_id": 50,
+      "user_id": 3,
+      "user_name": "Senior Editor",
+      "user_role": "Editor",
+      "action": "USER_LOGIN_SUCCESS",
+      "category": "AUTH",
+      "details": "Editor 'Senior Editor' signed into portal.",
+      "ip_address": "::1",
+      "severity": "success",
+      "created_at": "2026-08-30T15:44:43.831Z"
+    },
+    {
+      "log_id": 49,
+      "user_id": 3,
+      "user_name": "Senior Editor",
+      "user_role": "Editor",
+      "action": "USER_LOGIN_SUCCESS",
+      "category": "AUTH",
+      "details": "Editor 'Senior Editor' signed into portal.",
+      "ip_address": "::1",
+      "severity": "success",
+      "created_at": "2026-08-30T15:24:54.088Z"
+    },
+    {
+      "log_id": 48,
+      "user_id": 4,
+      "user_name": "Featured Author",
+      "user_role": "Author",
+      "action": "USER_LOGIN_SUCCESS",
+      "category": "AUTH",
+      "details": "Author 'Featured Author' signed into portal.",
+      "ip_address": "::1",
+      "severity": "success",
+      "created_at": "2026-08-30T15:24:20.582Z"
+    },
+    {
+      "log_id": 47,
+      "user_id": 3,
+      "user_name": "Senior Editor",
+      "user_role": "Editor",
+      "action": "USER_LOGIN_SUCCESS",
+      "category": "AUTH",
+      "details": "Editor 'Senior Editor' signed into portal.",
+      "ip_address": "::1",
+      "severity": "success",
+      "created_at": "2026-08-30T14:55:26.425Z"
+    },
+    {
+      "log_id": 46,
+      "user_id": 2,
+      "user_name": "Demo Reader",
+      "user_role": "User",
+      "action": "USER_LOGIN_SUCCESS",
+      "category": "AUTH",
+      "details": "User 'Demo Reader' signed into portal.",
+      "ip_address": "::1",
+      "severity": "success",
+      "created_at": "2026-08-30T14:53:42.527Z"
+    },
+    {
+      "log_id": 45,
+      "user_id": 4,
+      "user_name": "Featured Author",
+      "user_role": "Author",
+      "action": "USER_LOGIN_SUCCESS",
+      "category": "AUTH",
+      "details": "Author 'Featured Author' signed into portal.",
+      "ip_address": "::1",
+      "severity": "success",
+      "created_at": "2026-08-30T14:38:17.953Z"
+    },
+    {
+      "log_id": 44,
+      "user_id": 4,
+      "user_name": "Featured Author",
+      "user_role": "Author",
+      "action": "USER_LOGIN_SUCCESS",
+      "category": "AUTH",
+      "details": "Author 'Featured Author' signed into portal.",
+      "ip_address": "::1",
+      "severity": "success",
+      "created_at": "2026-08-30T14:27:23.564Z"
+    },
+    {
+      "log_id": 43,
+      "user_id": 1,
+      "user_name": "Abdul Wahab",
+      "user_role": "Admin",
+      "action": "USER_LOGIN_SUCCESS",
+      "category": "AUTH",
+      "details": "Admin 'Abdul Wahab' signed into portal.",
+      "ip_address": "::1",
+      "severity": "success",
+      "created_at": "2026-08-29T10:23:32.938Z"
+    },
+    {
+      "log_id": 42,
+      "user_id": 4,
+      "user_name": "Featured Author",
+      "user_role": "Author",
+      "action": "USER_LOGIN_SUCCESS",
+      "category": "AUTH",
+      "details": "Author 'Featured Author' signed into portal.",
+      "ip_address": "::1",
+      "severity": "success",
+      "created_at": "2026-08-29T10:18:46.271Z"
+    },
     {
       "log_id": 41,
       "user_id": 4,

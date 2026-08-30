@@ -169,6 +169,7 @@ adminRoutes.patch('/newsletter/:id/approve', requireEditor, NewsletterController
 adminRoutes.patch('/newsletter/:id/reject', requireEditor, NewsletterController.rejectAdminSubscriber);
 adminRoutes.delete('/newsletter/:id', requireEditor, NewsletterController.deleteAdminSubscriber);
 adminRoutes.get('/messages', requireEditor, ContactController.getMessages);
+adminRoutes.delete('/messages/:id', requireEditor, ContactController.deleteMessage);
 adminRoutes.get('/analytics', requireEditor, AnalyticsController.getMetrics);
 adminRoutes.get('/overview', requireAdmin, AdminController.getSystemOverview);
 

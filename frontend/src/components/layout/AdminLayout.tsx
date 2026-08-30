@@ -84,7 +84,7 @@ export const AdminLayout: React.FC = () => {
             position: 'fixed',
             inset: 0,
             backgroundColor: 'var(--color-overlay)',
-            zIndex: 150,
+            zIndex: 1100,
             backdropFilter: 'blur(4px)',
           }}
         />
@@ -102,7 +102,7 @@ export const AdminLayout: React.FC = () => {
           top: 0,
           bottom: 0,
           left: 0,
-          zIndex: 160,
+          zIndex: 1200,
           transform: mobileDrawerOpen ? 'translateX(0)' : undefined,
           transition: 'transform var(--transition-normal)',
           boxShadow: mobileDrawerOpen ? 'var(--shadow-xl)' : 'none',
@@ -182,68 +182,43 @@ export const AdminLayout: React.FC = () => {
       {/* Main Content Area Wrapper */}
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0 }} className="admin-main-content">
         {/* Admin Header Bar */}
-        <header style={{ padding: '0.75rem 1.5rem', display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid var(--color-border)', backgroundColor: 'var(--color-surface)', position: 'sticky', top: 0, zIndex: 100, backdropFilter: 'blur(12px)', boxShadow: '0 2px 12px rgba(0,0,0,0.06)' }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+        <header className="cms-portal-header">
+          <div className="cms-portal-header-left">
             <button
               onClick={() => setMobileDrawerOpen(true)}
-              className="mobile-only"
-              style={{ background: 'transparent', padding: '0.35rem', color: 'var(--color-text)' }}
+              className="mobile-only cms-hamburger-btn"
               aria-label="Toggle admin sidebar menu"
             >
-              <Menu size={22} />
+              <Menu size={20} />
             </button>
-            <h2 style={{ fontSize: '1.05rem', margin: 0, display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-              <Shield size={18} color="var(--color-secondary)" />
-              {user?.role === 'Editor' ? 'Editorial Workspace' : user?.role === 'Author' ? 'Author Studio' : 'Admin Control Panel'}
+            <h2 className="cms-portal-title">
+              <Shield size={16} color="var(--color-secondary)" style={{ flexShrink: 0 }} />
+              <span className="cms-title-text">{user?.role === 'Editor' ? 'Editorial Workspace' : user?.role === 'Author' ? 'Author Studio' : 'Admin Control Panel'}</span>
             </h2>
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+          <div className="cms-portal-header-right">
             <ThemeToggle />
             <Link
               to="/admin/profile"
               title="Click to edit your admin profile and picture"
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '0.65rem',
-                fontSize: '0.85rem',
-                fontWeight: 600,
-                color: 'var(--color-text)',
-                textDecoration: 'none',
-                padding: '0.3rem 0.6rem',
-                borderRadius: 'var(--radius-full)',
-                backgroundColor: 'var(--color-surface-alt)',
-                border: '1px solid var(--color-border)',
-              }}
+              className="cms-profile-badge"
             >
               <UserAvatar
                 src={user?.profile_image || user?.profileImage}
                 name={user?.name || 'Administrator'}
-                size={30}
+                size={26}
                 showOnline={true}
               />
-              <span className="desktop-only">{user?.name ? user.name.split(' ')[0] : 'Admin'}</span>
-              <span
-                style={{
-                  fontSize: '0.72rem',
-                  fontWeight: 700,
-                  backgroundColor: 'var(--color-secondary)',
-                  color: '#FFFFFF',
-                  padding: '0.1rem 0.45rem',
-                  borderRadius: 'var(--radius-full)',
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '0.2rem',
-                }}
-              >
-                <Edit size={11} /> Profile
+              <span className="desktop-only cms-user-name">{user?.name ? user.name.split(' ')[0] : 'Admin'}</span>
+              <span className="cms-profile-tag">
+                <Edit size={11} /> <span>Profile</span>
               </span>
             </Link>
           </div>
         </header>
 
-        <main style={{ flex: 1, padding: '1.5rem 1rem', overflowY: 'auto' }}>
+        <main style={{ flex: 1, padding: 'clamp(1rem, 2vw, 1.75rem) clamp(0.6rem, 2vw, 1.25rem)', overflowY: 'auto', width: '100%', maxWidth: '100%', boxSizing: 'border-box' }}>
           <Outlet />
         </main>
       </div>

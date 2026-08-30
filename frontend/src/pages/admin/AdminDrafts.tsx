@@ -83,8 +83,8 @@ export const AdminDrafts: React.FC = () => {
           description="You do not have any unpublished drafts in the system. When you save stories as drafts, they will appear here."
         />
       ) : (
-        <div className="table-responsive" style={{ backgroundColor: 'var(--color-card)', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)' }}>
-          <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.875rem' }}>
+        <div className="cms-table-wrapper">
+          <table className="cms-responsive-table">
             <thead>
               <tr style={{ backgroundColor: 'var(--color-surface-alt)', borderBottom: '1px solid var(--color-border)', color: 'var(--color-text-secondary)', fontWeight: 700 }}>
                 <th style={{ padding: '0.75rem 1rem' }}>Draft Title</th>
@@ -95,17 +95,56 @@ export const AdminDrafts: React.FC = () => {
             </thead>
             <tbody>
               {drafts.map(post => (
-                <tr key={post.post_id} style={{ borderBottom: '1px solid var(--color-border)' }}>
-                  <td style={{ padding: '0.75rem 1rem', fontWeight: 600 }}>{post.title}</td>
-                  <td style={{ padding: '0.75rem 1rem', color: 'var(--color-text-secondary)' }}>{post.category_name || 'General'}</td>
-                  <td style={{ padding: '0.75rem 1rem', color: 'var(--color-text-secondary)' }}>{new Date(post.updated_at || post.created_at).toLocaleDateString()}</td>
-                  <td style={{ padding: '0.75rem 1rem', textAlign: 'right' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', gap: '0.4rem' }}>
-                      <Link to={`/admin/posts/edit/${post.post_id}`} title="Edit & Publish Draft" style={{ padding: '0.3rem', color: 'var(--color-secondary)' }}>
-                        <Edit3 size={15} />
+                <tr key={post.post_id} className="cms-table-row">
+                  <td className="cms-td-title" style={{ padding: '0.85rem 1rem' }}>
+                    <div style={{ fontWeight: 700, color: 'var(--color-text)', fontSize: '0.94rem', marginBottom: '0.35rem', lineHeight: 1.35 }}>
+                      {post.title}
+                    </div>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.45rem', flexWrap: 'wrap' }}>
+                      <span style={{ fontSize: '0.72rem', padding: '0.15rem 0.5rem', backgroundColor: 'rgba(148, 163, 184, 0.15)', color: '#94A3B8', borderRadius: 'var(--radius-sm)', fontWeight: 700 }}>
+                        Draft
+                      </span>
+                      {post.views_count ? (
+                        <span style={{ fontSize: '0.75rem', color: 'var(--color-muted)' }}>
+                          {post.views_count} views
+                        </span>
+                      ) : null}
+                    </div>
+                  </td>
+
+                  <td className="cms-td-category" style={{ padding: '0.85rem 1rem', color: 'var(--color-text-secondary)' }}>
+                    <span className="cms-mobile-label">Category</span>
+                    <span style={{ fontWeight: 600, fontSize: '0.85rem' }}>{post.category_name || 'General'}</span>
+                  </td>
+
+                  <td className="cms-td-updated" style={{ padding: '0.85rem 1rem', color: 'var(--color-muted)', fontSize: '0.82rem' }}>
+                    <span className="cms-mobile-label">Modified</span>
+                    <span>
+                      {new Date(post.updated_at || post.created_at).toLocaleDateString(undefined, {
+                        month: 'short',
+                        day: 'numeric',
+                        year: 'numeric',
+                      })}
+                    </span>
+                  </td>
+
+                  <td className="cms-td-actions" style={{ padding: '0.85rem 1rem', textAlign: 'right' }}>
+                    <div className="cms-actions-group">
+                      <Link
+                        to={`/admin/posts/edit/${post.post_id}`}
+                        title="Edit & Publish Draft"
+                        className="cms-btn-edit"
+                      >
+                        <Edit3 size={14} /> <span>Edit & Publish</span>
                       </Link>
-                      <button onClick={() => handleDelete(post.post_id, post.title)} title="Delete Draft" style={{ padding: '0.3rem', background: 'transparent', color: 'var(--color-danger)' }}>
-                        <Trash2 size={15} />
+
+                      <button
+                        type="button"
+                        onClick={() => handleDelete(post.post_id, post.title)}
+                        title="Delete Draft"
+                        className="cms-btn-delete"
+                      >
+                        <Trash2 size={14} /> <span>Delete</span>
                       </button>
                     </div>
                   </td>

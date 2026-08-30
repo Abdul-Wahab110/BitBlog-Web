@@ -337,4 +337,106 @@ export class EmailService {
       return false;
     }
   }
+
+  // 4. Send Direct Contact Message Reply to Reader's Gmail
+  public static async sendContactReplyEmail(
+    toEmail: string,
+    recipientName: string,
+    subject: string,
+    replyMessage: string,
+    originalMessage?: string
+  ): Promise<boolean> {
+    try {
+      const transporter = this.getTransporter();
+      const siteName = Database.getStore()?.settings?.site_name || 'BitBlog';
+
+      const formattedReply = replyMessage.replace(/\n/g, '<br/>');
+      const formattedOriginal = originalMessage ? originalMessage.replace(/\n/g, '<br/>') : '';
+
+      const html = `
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>${subject}</title>
+</head>
+<body style="margin: 0; padding: 0; background-color: #0B0F19; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; color: #F8FAFC;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background-color: #0B0F19; padding: 40px 15px;">
+    <tr>
+      <td align="center">
+        <table width="100%" max-width="600px" cellpadding="0" cellspacing="0" style="max-width: 600px; background-color: #111827; border-radius: 16px; border: 1px solid #1F2937; overflow: hidden; box-shadow: 0 12px 30px rgba(0,0,0,0.6);">
+          
+          <!-- Header Branding -->
+          <tr>
+            <td style="padding: 32px 36px 20px; text-align: center; background: linear-gradient(180deg, rgba(99,102,241,0.2) 0%, rgba(17,24,39,0) 100%);">
+              <h1 style="margin: 0; font-size: 26px; font-weight: 800; color: #FFFFFF; letter-spacing: -0.5px;">
+                ${siteName}
+              </h1>
+              <p style="margin: 6px 0 0 0; font-size: 13px; color: #818CF8; text-transform: uppercase; letter-spacing: 1.2px; font-weight: 700;">
+                Editorial & Support Response
+              </p>
+            </td>
+          </tr>
+
+          <!-- Main Content -->
+          <tr>
+            <td style="padding: 24px 36px 36px;">
+              <h2 style="margin: 0 0 16px; font-size: 18px; font-weight: 700; color: #FFFFFF;">
+                Hello ${recipientName},
+              </h2>
+
+              <div style="background-color: #1E293B; border-left: 4px solid #6366F1; padding: 18px 20px; border-radius: 8px; font-size: 15px; line-height: 1.7; color: #F1F5F9; margin-bottom: 24px;">
+                ${formattedReply}
+              </div>
+
+              ${originalMessage ? `
+              <div style="margin-top: 24px; padding: 14px 18px; background-color: rgba(255,255,255,0.03); border: 1px dashed #374151; border-radius: 8px;">
+                <p style="margin: 0 0 6px; font-size: 12px; color: #9CA3AF; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px;">
+                  Your Original Inquiry:
+                </p>
+                <p style="margin: 0; font-size: 13px; color: #9CA3AF; font-style: italic; line-height: 1.5;">
+                  "${formattedOriginal}"
+                </p>
+              </div>
+              ` : ''}
+
+              <p style="margin: 28px 0 0; font-size: 14px; color: #D1D5DB;">
+                Best regards,<br/>
+                <strong>${siteName} Editorial Team</strong>
+              </p>
+            </td>
+          </tr>
+
+          <!-- Footer -->
+          <tr>
+            <td style="padding: 20px 36px; background-color: #0B0F19; border-top: 1px solid #1F2937; text-align: center;">
+              <p style="margin: 0; font-size: 12px; color: #6B7280;">
+                © ${new Date().getFullYear()} ${siteName} Digital Publication. All rights reserved.
+              </p>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
+      `;
+
+      await transporter.sendMail({
+        from: `"${siteName} Editorial" <${config.email.user || 'aw419770@gmail.com'}>`,
+        to: toEmail,
+        subject: subject,
+        text: `${replyMessage}\n\n---\nBest regards,\n${siteName} Editorial Team`,
+        html,
+      });
+
+      console.log(`[EmailService] Contact reply dispatched directly to ${toEmail} for subject '${subject}'`);
+      return true;
+    } catch (error) {
+      console.error(`[EmailService] Failed to send contact reply email to ${toEmail}:`, error);
+      throw error;
+    }
+  }
 }

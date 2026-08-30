@@ -16,11 +16,9 @@ export const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   const isAdminRoute = location.pathname.startsWith('/admin') || requiredRole === 'Admin' || requiredRole === 'Editor' || requiredRole === 'Author';
 
   if (!isAuthenticated) {
-    // If attempting to access an Admin route without authentication, redirect to dedicated /admin/login gateway
-    if (isAdminRoute) {
-      return <Navigate to={`/admin/login?redirect=${encodeURIComponent(location.pathname)}`} replace />;
-    }
-    // Otherwise standard public user login
+    // Keep Super Admin Login gateway 100% private/secret.
+    // Never redirect unauthenticated users to /admin/login automatically.
+    // Always redirect to standard public /login gateway.
     return <Navigate to={`/login?redirect=${encodeURIComponent(location.pathname)}`} replace />;
   }
 
