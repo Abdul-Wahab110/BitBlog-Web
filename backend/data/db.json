@@ -33,7 +33,7 @@
       "status": "ACTIVE",
       "created_at": "2026-08-19T07:40:57.279Z",
       "updated_at": "2026-08-28T11:50:50.600Z",
-      "last_login": "2026-08-30T19:49:41.661Z",
+      "last_login": "2026-08-30T20:06:21.270Z",
       "profile_image": "/uploads/1787588806977-xexqhoev.png",
       "bio": "",
       "website": "",
@@ -43,16 +43,16 @@
     },
     {
       "user_id": 2,
-      "role_id": 3,
-      "role_name": "Author",
+      "role_id": 4,
+      "role_name": "User",
       "name": "Demo Reader",
       "username": "reader",
       "email": "reader@bitblog.com",
       "password_hash": "$2b$10$hEGpgJFwdN2U917XGH0ocu/I6MP8K.eelqDs2pNBNfutztgW1Ge3.",
       "status": "ACTIVE",
       "created_at": "2026-08-19T07:40:57.279Z",
-      "updated_at": "2026-08-30T19:50:02.223Z",
-      "last_login": "2026-08-30T19:51:32.786Z"
+      "updated_at": "2026-08-30T20:06:39.066Z",
+      "last_login": "2026-08-30T20:05:32.634Z"
     },
     {
       "user_id": 3,
@@ -677,6 +677,16 @@
       "link_url": "/admin",
       "is_read": true,
       "created_at": "2026-08-30T19:50:02.227Z"
+    },
+    {
+      "notification_id": 1788109500939,
+      "user_id": 2,
+      "type": "SYSTEM",
+      "title": "Role Revoked: Author Access",
+      "message": "Your Author privileges have been revoked by the administration and account returned to reader status.",
+      "link_url": "/user/apply",
+      "is_read": false,
+      "created_at": "2026-08-30T20:06:39.073Z"
     }
   ],
   "settings": {
@@ -753,11 +763,11 @@
         "AI & Machine Learning"
       ],
       "motivation": "nkdjnldnlbfljnbdjlnblfjnbljnlbndlkngld",
-      "status": "approved",
+      "status": "rejected",
       "created_at": "2026-08-30T19:48:50.556Z",
-      "updated_at": "2026-08-30T19:50:02.217Z",
+      "updated_at": "2026-08-30T20:06:39.061Z",
       "reviewed_by": 1,
-      "reviewed_at": "2026-08-30T19:50:02.217Z",
+      "reviewed_at": "2026-08-30T20:06:39.060Z",
       "feedback": "Congratulations! Your writing samples and background have been approved. Welcome to the editorial staff!"
     },
     {
@@ -846,6 +856,42 @@
     }
   ],
   "audit_logs": [
+    {
+      "log_id": 74,
+      "user_id": 1,
+      "user_name": "Abdul Wahab",
+      "user_role": "Admin",
+      "action": "ROLE_APPLICATION_REJECTED",
+      "category": "APPLICATION",
+      "details": "Administrator rejected Application #5 for 'Demo Reader'. Feedback: None provided",
+      "ip_address": "::1",
+      "severity": "warning",
+      "created_at": "2026-08-30T20:06:39.078Z"
+    },
+    {
+      "log_id": 73,
+      "user_id": 1,
+      "user_name": "Abdul Wahab",
+      "user_role": "Admin",
+      "action": "USER_LOGIN_SUCCESS",
+      "category": "AUTH",
+      "details": "Admin 'Abdul Wahab' signed into portal.",
+      "ip_address": "::1",
+      "severity": "success",
+      "created_at": "2026-08-30T20:06:21.279Z"
+    },
+    {
+      "log_id": 72,
+      "user_id": 2,
+      "user_name": "Demo Reader",
+      "user_role": "Author",
+      "action": "USER_LOGIN_SUCCESS",
+      "category": "AUTH",
+      "details": "Author 'Demo Reader' signed into portal.",
+      "ip_address": "::1",
+      "severity": "success",
+      "created_at": "2026-08-30T20:05:32.722Z"
+    },
     {
       "log_id": 71,
       "user_id": 2,

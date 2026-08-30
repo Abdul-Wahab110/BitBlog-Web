@@ -445,9 +445,16 @@ export class Database {
       if (!fs.existsSync(DATA_DIR)) {
         fs.mkdirSync(DATA_DIR, { recursive: true });
       }
-      fs.writeFileSync(DB_FILE, JSON.stringify(this.store, null, 2), 'utf-8');
+      const dataStr = JSON.stringify(this.store, null, 2);
+      const tempFile = path.join(DATA_DIR, `db.tmp.${Date.now()}.${Math.random().toString(36).substring(7)}`);
+      fs.writeFileSync(tempFile, dataStr, 'utf-8');
+      fs.renameSync(tempFile, DB_FILE);
     } catch (err) {
-      console.error('[Database Engine] Failed to save store to disk:', err);
+      try {
+        fs.writeFileSync(DB_FILE, JSON.stringify(this.store, null, 2), 'utf-8');
+      } catch (fallbackErr) {
+        console.error('[Database Engine] Failed to save store to disk:', fallbackErr);
+      }
     }
   }
 
