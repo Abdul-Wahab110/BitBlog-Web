@@ -679,6 +679,28 @@ export class ContactController {
         subject: (subject || 'General Inquiry').trim(),
         message: message.trim(),
       });
+
+      // Notify Admins & Editors about new inquiry
+      try {
+        const store = Database.getStore();
+        const staffUsers = (store.users || []).filter((u: any) => 
+          u.role_id === 1 || u.role_id === 2 || 
+          u.role === 'Admin' || u.role === 'Editor' || 
+          u.role_name === 'Admin' || u.role_name === 'Editor'
+        );
+        for (const staff of staffUsers) {
+          await NotificationModel.createNotification({
+            userId: staff.user_id,
+            type: 'SYSTEM',
+            title: `📬 New Contact Inquiry: ${name.trim()}`,
+            message: `${(subject || 'General Inquiry').trim()} - "${message.trim().slice(0, 80)}..."`,
+            linkUrl: '/admin/messages',
+          });
+        }
+      } catch (notifErr) {
+        console.warn('Failed to notify staff about contact message:', notifErr);
+      }
+
       ResponseUtil.success(res, newMsg, 'Contact message sent successfully', 201);
     } catch (error) {
       next(error);
