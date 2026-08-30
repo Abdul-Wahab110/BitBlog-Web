@@ -37,10 +37,30 @@ export const Contact: React.FC = () => {
   const siteName = settings.site_name || 'BitBlog';
 
   const departments = [
-    { id: 'pitch', label: 'Story Pitch / Tip', icon: Sparkles, defaultSubject: 'Editorial Story Pitch / Tip' },
-    { id: 'general', label: 'General Inquiry', icon: MessageSquare, defaultSubject: 'General Editorial Inquiry' },
-    { id: 'partnership', label: 'Partnership & Ads', icon: Building2, defaultSubject: 'Brand Partnership / Sponsorship Inquiry' },
-    { id: 'correction', label: 'Correction / Press', icon: ShieldCheck, defaultSubject: 'Editorial Correction / Press Release' },
+    {
+      id: 'pitch',
+      label: settings.contact_pitch_dept_name || 'Story Pitch / Tip',
+      icon: Sparkles,
+      defaultSubject: `${settings.contact_pitch_dept_name || 'Story Pitch / Tip'} - Editorial Inquiry`,
+    },
+    {
+      id: 'general',
+      label: settings.contact_general_dept_name || 'General Inquiry',
+      icon: MessageSquare,
+      defaultSubject: `${settings.contact_general_dept_name || 'General Inquiry'} - Contact Desk`,
+    },
+    {
+      id: 'partnership',
+      label: settings.contact_partnership_dept_name || 'Partnership & Ads',
+      icon: Building2,
+      defaultSubject: `${settings.contact_partnership_dept_name || 'Partnership & Ads'} - Business Inquiry`,
+    },
+    {
+      id: 'correction',
+      label: settings.contact_correction_dept_name || 'Correction / Press',
+      icon: ShieldCheck,
+      defaultSubject: `${settings.contact_correction_dept_name || 'Correction / Press'} - Editorial Notice`,
+    },
   ];
 
   const handleDepartmentChange = (deptId: 'pitch' | 'general' | 'partnership' | 'correction') => {
@@ -98,16 +118,16 @@ export const Contact: React.FC = () => {
 
   const faqs = [
     {
-      q: 'How do I pitch a story or apply as a contributing writer?',
-      a: 'We welcome original tech journalism, deep-dives, and tutorials! You can apply directly through our Contributor Program portal or use this form under "Story Pitch".',
+      q: settings.contact_faq_1_q || 'How do I pitch a story or apply as a contributing writer?',
+      a: settings.contact_faq_1_a || 'We welcome original tech journalism, deep-dives, and tutorials! You can apply directly through our Contributor Program portal or use this form under "Story Pitch".',
     },
     {
-      q: 'What is the standard editorial response time?',
-      a: 'Our editors review incoming tips and inquiries Monday through Friday. Standard responses are delivered within 24 business hours.',
+      q: settings.contact_faq_2_q || 'What is the standard editorial response time?',
+      a: settings.contact_faq_2_a || 'Our editors review incoming tips and inquiries Monday through Friday. Standard responses are delivered within 24 business hours.',
     },
     {
-      q: 'Can I submit an anonymous news tip or confidential whistleblower material?',
-      a: 'Yes. All news tips submitted through our editorial desk are handled with strict journalistic confidentiality under our source protection guidelines.',
+      q: settings.contact_faq_3_q || 'Can I submit an anonymous news tip or confidential whistleblower material?',
+      a: settings.contact_faq_3_a || 'Yes. All news tips submitted through our editorial desk are handled with strict journalistic confidentiality under our source protection guidelines.',
     },
   ];
 
@@ -193,13 +213,13 @@ export const Contact: React.FC = () => {
           }}
         >
           <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem' }}>
-            <Clock size={14} color="var(--color-secondary)" /> Response under 24 hours
+            <Clock size={14} color="var(--color-secondary)" /> {settings.contact_sla_text || 'Response under 24 hours'}
           </span>
           <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem' }}>
-            <Lock size={14} color="var(--color-success)" /> Confidential Source Protection
+            <Lock size={14} color="var(--color-success)" /> {settings.contact_confidentiality_text || 'Confidential Source Protection'}
           </span>
           <span style={{ display: 'inline-flex', alignItems: 'center', gap: '0.35rem' }}>
-            <Globe size={14} color="var(--color-accent)" /> Global Tech Coverage
+            <Globe size={14} color="var(--color-accent)" /> {settings.contact_global_coverage_text || 'Global Tech Coverage'}
           </span>
         </div>
       </header>
@@ -504,7 +524,7 @@ export const Contact: React.FC = () => {
                   Partnerships & Sponsorships
                 </div>
                 <div style={{ fontWeight: 600, fontSize: '0.9rem', color: 'var(--color-text)' }}>
-                  partners@bitblog.com
+                  {settings.contact_partnerships_email || 'partners@bitblog.com'}
                 </div>
                 <div style={{ fontSize: '0.75rem', color: 'var(--color-muted)', marginTop: '0.2rem' }}>
                   For brand collaborations, media kits, and newsletter ads.
@@ -516,7 +536,7 @@ export const Contact: React.FC = () => {
                   Corrections & Legal
                 </div>
                 <div style={{ fontWeight: 600, fontSize: '0.9rem', color: 'var(--color-text)' }}>
-                  press@bitblog.com
+                  {settings.contact_press_email || 'press@bitblog.com'}
                 </div>
                 <div style={{ fontSize: '0.75rem', color: 'var(--color-muted)', marginTop: '0.2rem' }}>
                   Formal press releases, DMCA, and factual corrections.
@@ -541,14 +561,14 @@ export const Contact: React.FC = () => {
           >
             <div>
               <div style={{ fontWeight: 800, fontSize: '0.95rem', color: 'var(--color-text)', marginBottom: '0.2rem' }}>
-                Want to Write for BitBlog?
+                {settings.contact_cta_title || 'Want to Write for BitBlog?'}
               </div>
               <div style={{ fontSize: '0.8rem', color: 'var(--color-text-secondary)' }}>
-                Publish your insights to thousands of tech readers worldwide.
+                {settings.contact_cta_desc || 'Publish your insights to thousands of tech readers worldwide.'}
               </div>
             </div>
             <Link
-              to="/apply"
+              to={settings.contact_cta_btn_link || '/apply'}
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
@@ -564,7 +584,7 @@ export const Contact: React.FC = () => {
                 whiteSpace: 'nowrap',
               }}
             >
-              Apply as Author <ArrowRight size={14} />
+              {settings.contact_cta_btn_text || 'Apply as Author'} <ArrowRight size={14} />
             </Link>
           </div>
 
@@ -631,5 +651,6 @@ export const Contact: React.FC = () => {
     </div>
   );
 };
+
 
 

@@ -294,6 +294,147 @@ export const AdminSettings: React.FC = () => {
           </div>
         </div>
 
+        {/* 6. Editorial Desk & Public Contact Module Configuration */}
+        <div style={{ backgroundColor: 'var(--color-card)', padding: '1.25rem', borderRadius: 'var(--radius-lg)', border: '1px solid var(--color-border)' }}>
+          <h3 style={{ fontSize: '1rem', marginBottom: '1rem', fontWeight: 700, display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
+            <Mail size={16} color="var(--color-secondary)" /> 6. Editorial Desk & Contact Module Management
+          </h3>
+
+          {/* Department Direct Email Addresses */}
+          <div style={{ marginBottom: '1.25rem' }}>
+            <span style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--color-secondary)', display: 'block', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+              A. Direct Newsroom Email Inboxes
+            </span>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1rem' }}>
+              <div>
+                <label htmlFor="contact_email" style={{ display: 'block', fontWeight: 600, marginBottom: '0.25rem', fontSize: '0.83rem' }}>Primary News Tips & Pitches Email *</label>
+                <input id="contact_email" type="email" value={settings.contact_email || ''} onChange={e => handleChange('contact_email', e.target.value)} required placeholder="editorial@bitblog.com" style={{ width: '100%', padding: '0.55rem 0.75rem', fontSize: '0.85rem' }} />
+              </div>
+
+              <div>
+                <label htmlFor="contact_partnerships_email" style={{ display: 'block', fontWeight: 600, marginBottom: '0.25rem', fontSize: '0.83rem' }}>Partnerships & Ads Email</label>
+                <input id="contact_partnerships_email" type="email" value={settings.contact_partnerships_email || ''} onChange={e => handleChange('contact_partnerships_email', e.target.value)} placeholder="partners@bitblog.com" style={{ width: '100%', padding: '0.55rem 0.75rem', fontSize: '0.85rem' }} />
+              </div>
+
+              <div>
+                <label htmlFor="contact_press_email" style={{ display: 'block', fontWeight: 600, marginBottom: '0.25rem', fontSize: '0.83rem' }}>Corrections & Press Desk Email</label>
+                <input id="contact_press_email" type="email" value={settings.contact_press_email || ''} onChange={e => handleChange('contact_press_email', e.target.value)} placeholder="press@bitblog.com" style={{ width: '100%', padding: '0.55rem 0.75rem', fontSize: '0.85rem' }} />
+              </div>
+            </div>
+          </div>
+
+          {/* Inquiry Department Labels */}
+          <div style={{ marginBottom: '1.25rem' }}>
+            <span style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--color-secondary)', display: 'block', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+              B. Inquiry Department Selector Button Labels
+            </span>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '0.85rem' }}>
+              <div>
+                <label htmlFor="dept_pitch" style={{ display: 'block', fontWeight: 600, marginBottom: '0.25rem', fontSize: '0.82rem' }}>Dept 1 (Pitches / Tips)</label>
+                <input id="dept_pitch" type="text" value={settings.contact_pitch_dept_name || 'Story Pitch / Tip'} onChange={e => handleChange('contact_pitch_dept_name', e.target.value)} style={{ width: '100%', padding: '0.5rem 0.75rem', fontSize: '0.85rem' }} />
+              </div>
+
+              <div>
+                <label htmlFor="dept_general" style={{ display: 'block', fontWeight: 600, marginBottom: '0.25rem', fontSize: '0.82rem' }}>Dept 2 (General)</label>
+                <input id="dept_general" type="text" value={settings.contact_general_dept_name || 'General Inquiry'} onChange={e => handleChange('contact_general_dept_name', e.target.value)} style={{ width: '100%', padding: '0.5rem 0.75rem', fontSize: '0.85rem' }} />
+              </div>
+
+              <div>
+                <label htmlFor="dept_partner" style={{ display: 'block', fontWeight: 600, marginBottom: '0.25rem', fontSize: '0.82rem' }}>Dept 3 (Partnerships)</label>
+                <input id="dept_partner" type="text" value={settings.contact_partnership_dept_name || 'Partnership & Ads'} onChange={e => handleChange('contact_partnership_dept_name', e.target.value)} style={{ width: '100%', padding: '0.5rem 0.75rem', fontSize: '0.85rem' }} />
+              </div>
+
+              <div>
+                <label htmlFor="dept_correction" style={{ display: 'block', fontWeight: 600, marginBottom: '0.25rem', fontSize: '0.82rem' }}>Dept 4 (Corrections / Press)</label>
+                <input id="dept_correction" type="text" value={settings.contact_correction_dept_name || 'Correction / Press'} onChange={e => handleChange('contact_correction_dept_name', e.target.value)} style={{ width: '100%', padding: '0.5rem 0.75rem', fontSize: '0.85rem' }} />
+              </div>
+            </div>
+          </div>
+
+          {/* Guarantees & SLA Badges */}
+          <div style={{ marginBottom: '1.25rem' }}>
+            <span style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--color-secondary)', display: 'block', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+              C. Editorial Badges & SLA Response Texts
+            </span>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '0.85rem' }}>
+              <div>
+                <label htmlFor="sla_text" style={{ display: 'block', fontWeight: 600, marginBottom: '0.25rem', fontSize: '0.82rem' }}>SLA Guarantee Text</label>
+                <input id="sla_text" type="text" value={settings.contact_sla_text || 'Response under 24 hours'} onChange={e => handleChange('contact_sla_text', e.target.value)} style={{ width: '100%', padding: '0.5rem 0.75rem', fontSize: '0.85rem' }} />
+              </div>
+
+              <div>
+                <label htmlFor="conf_text" style={{ display: 'block', fontWeight: 600, marginBottom: '0.25rem', fontSize: '0.82rem' }}>Confidentiality Badge Text</label>
+                <input id="conf_text" type="text" value={settings.contact_confidentiality_text || 'Confidential Source Protection'} onChange={e => handleChange('contact_confidentiality_text', e.target.value)} style={{ width: '100%', padding: '0.5rem 0.75rem', fontSize: '0.85rem' }} />
+              </div>
+
+              <div>
+                <label htmlFor="cov_text" style={{ display: 'block', fontWeight: 600, marginBottom: '0.25rem', fontSize: '0.82rem' }}>Coverage Badge Text</label>
+                <input id="cov_text" type="text" value={settings.contact_global_coverage_text || 'Global Tech Coverage'} onChange={e => handleChange('contact_global_coverage_text', e.target.value)} style={{ width: '100%', padding: '0.5rem 0.75rem', fontSize: '0.85rem' }} />
+              </div>
+            </div>
+          </div>
+
+          {/* "Want to Write for Us" CTA Banner Controls */}
+          <div style={{ marginBottom: '1.25rem' }}>
+            <span style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--color-secondary)', display: 'block', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+              D. "Want to Write for Us?" Call-to-Action Card
+            </span>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '0.85rem' }}>
+              <div>
+                <label htmlFor="cta_title" style={{ display: 'block', fontWeight: 600, marginBottom: '0.25rem', fontSize: '0.82rem' }}>CTA Title</label>
+                <input id="cta_title" type="text" value={settings.contact_cta_title || 'Want to Write for BitBlog?'} onChange={e => handleChange('contact_cta_title', e.target.value)} style={{ width: '100%', padding: '0.5rem 0.75rem', fontSize: '0.85rem' }} />
+              </div>
+
+              <div>
+                <label htmlFor="cta_desc" style={{ display: 'block', fontWeight: 600, marginBottom: '0.25rem', fontSize: '0.82rem' }}>CTA Description</label>
+                <input id="cta_desc" type="text" value={settings.contact_cta_desc || 'Publish your insights to thousands of tech readers worldwide.'} onChange={e => handleChange('contact_cta_desc', e.target.value)} style={{ width: '100%', padding: '0.5rem 0.75rem', fontSize: '0.85rem' }} />
+              </div>
+
+              <div>
+                <label htmlFor="cta_btn_text" style={{ display: 'block', fontWeight: 600, marginBottom: '0.25rem', fontSize: '0.82rem' }}>Button Text</label>
+                <input id="cta_btn_text" type="text" value={settings.contact_cta_btn_text || 'Apply as Author'} onChange={e => handleChange('contact_cta_btn_text', e.target.value)} style={{ width: '100%', padding: '0.5rem 0.75rem', fontSize: '0.85rem' }} />
+              </div>
+
+              <div>
+                <label htmlFor="cta_btn_link" style={{ display: 'block', fontWeight: 600, marginBottom: '0.25rem', fontSize: '0.82rem' }}>Button Destination URL</label>
+                <input id="cta_btn_link" type="text" value={settings.contact_cta_btn_link || '/apply'} onChange={e => handleChange('contact_cta_btn_link', e.target.value)} style={{ width: '100%', padding: '0.5rem 0.75rem', fontSize: '0.85rem' }} />
+              </div>
+            </div>
+          </div>
+
+          {/* Editorial FAQs Editor */}
+          <div>
+            <span style={{ fontSize: '0.82rem', fontWeight: 700, color: 'var(--color-secondary)', display: 'block', marginBottom: '0.5rem', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+              E. Editorial FAQ Questions & Answers
+            </span>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+              {/* FAQ 1 */}
+              <div style={{ padding: '0.85rem', backgroundColor: 'var(--color-surface-alt)', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)' }}>
+                <label htmlFor="faq_1_q" style={{ display: 'block', fontWeight: 600, marginBottom: '0.25rem', fontSize: '0.82rem' }}>FAQ 1 Question</label>
+                <input id="faq_1_q" type="text" value={settings.contact_faq_1_q || 'How do I pitch a story or apply as a contributing writer?'} onChange={e => handleChange('contact_faq_1_q', e.target.value)} style={{ width: '100%', padding: '0.45rem 0.65rem', fontSize: '0.85rem', marginBottom: '0.45rem' }} />
+                <label htmlFor="faq_1_a" style={{ display: 'block', fontWeight: 600, marginBottom: '0.25rem', fontSize: '0.82rem' }}>FAQ 1 Answer</label>
+                <textarea id="faq_1_a" rows={2} value={settings.contact_faq_1_a || 'We welcome original tech journalism, deep-dives, and tutorials! You can apply directly through our Contributor Program portal or use this form under "Story Pitch".'} onChange={e => handleChange('contact_faq_1_a', e.target.value)} style={{ width: '100%', padding: '0.45rem 0.65rem', fontSize: '0.85rem' }} />
+              </div>
+
+              {/* FAQ 2 */}
+              <div style={{ padding: '0.85rem', backgroundColor: 'var(--color-surface-alt)', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)' }}>
+                <label htmlFor="faq_2_q" style={{ display: 'block', fontWeight: 600, marginBottom: '0.25rem', fontSize: '0.82rem' }}>FAQ 2 Question</label>
+                <input id="faq_2_q" type="text" value={settings.contact_faq_2_q || 'What is the standard editorial response time?'} onChange={e => handleChange('contact_faq_2_q', e.target.value)} style={{ width: '100%', padding: '0.45rem 0.65rem', fontSize: '0.85rem', marginBottom: '0.45rem' }} />
+                <label htmlFor="faq_2_a" style={{ display: 'block', fontWeight: 600, marginBottom: '0.25rem', fontSize: '0.82rem' }}>FAQ 2 Answer</label>
+                <textarea id="faq_2_a" rows={2} value={settings.contact_faq_2_a || 'Our editors review incoming tips and inquiries Monday through Friday. Standard responses are delivered within 24 business hours.'} onChange={e => handleChange('contact_faq_2_a', e.target.value)} style={{ width: '100%', padding: '0.45rem 0.65rem', fontSize: '0.85rem' }} />
+              </div>
+
+              {/* FAQ 3 */}
+              <div style={{ padding: '0.85rem', backgroundColor: 'var(--color-surface-alt)', borderRadius: 'var(--radius-md)', border: '1px solid var(--color-border)' }}>
+                <label htmlFor="faq_3_q" style={{ display: 'block', fontWeight: 600, marginBottom: '0.25rem', fontSize: '0.82rem' }}>FAQ 3 Question</label>
+                <input id="faq_3_q" type="text" value={settings.contact_faq_3_q || 'Can I submit an anonymous news tip or confidential whistleblower material?'} onChange={e => handleChange('contact_faq_3_q', e.target.value)} style={{ width: '100%', padding: '0.45rem 0.65rem', fontSize: '0.85rem', marginBottom: '0.45rem' }} />
+                <label htmlFor="faq_3_a" style={{ display: 'block', fontWeight: 600, marginBottom: '0.25rem', fontSize: '0.82rem' }}>FAQ 3 Answer</label>
+                <textarea id="faq_3_a" rows={2} value={settings.contact_faq_3_a || 'Yes. All news tips submitted through our editorial desk are handled with strict journalistic confidentiality under our source protection guidelines.'} onChange={e => handleChange('contact_faq_3_a', e.target.value)} style={{ width: '100%', padding: '0.45rem 0.65rem', fontSize: '0.85rem' }} />
+              </div>
+            </div>
+          </div>
+        </div>
+
         {/* Save Actions */}
         <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '0.75rem' }}>
           <button
@@ -314,7 +455,7 @@ export const AdminSettings: React.FC = () => {
               boxShadow: '0 2px 8px var(--color-secondary-glow)',
             }}
           >
-            <Save size={18} /> {saving ? 'Saving to Database...' : 'Save System & Favicon Settings'}
+            <Save size={18} /> {saving ? 'Saving to Database...' : 'Save System & Publication Settings'}
           </button>
         </div>
       </form>

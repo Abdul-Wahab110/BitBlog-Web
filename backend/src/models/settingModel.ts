@@ -6,6 +6,25 @@ export interface SiteSettings {
   site_favicon?: string;
   site_description: string;
   contact_email: string;
+  contact_partnerships_email?: string;
+  contact_press_email?: string;
+  contact_sla_text?: string;
+  contact_confidentiality_text?: string;
+  contact_global_coverage_text?: string;
+  contact_pitch_dept_name?: string;
+  contact_general_dept_name?: string;
+  contact_partnership_dept_name?: string;
+  contact_correction_dept_name?: string;
+  contact_cta_title?: string;
+  contact_cta_desc?: string;
+  contact_cta_btn_text?: string;
+  contact_cta_btn_link?: string;
+  contact_faq_1_q?: string;
+  contact_faq_1_a?: string;
+  contact_faq_2_q?: string;
+  contact_faq_2_a?: string;
+  contact_faq_3_q?: string;
+  contact_faq_3_a?: string;
   social_facebook?: string;
   social_twitter?: string;
   social_linkedin?: string;
@@ -31,6 +50,25 @@ const defaultSettings: SiteSettings = {
   site_favicon: '',
   site_description: 'A high-performance digital publication platform and content management system.',
   contact_email: 'editorial@bitblog.com',
+  contact_partnerships_email: 'partners@bitblog.com',
+  contact_press_email: 'press@bitblog.com',
+  contact_sla_text: 'Response under 24 hours',
+  contact_confidentiality_text: 'Confidential Source Protection',
+  contact_global_coverage_text: 'Global Tech Coverage',
+  contact_pitch_dept_name: 'Story Pitch / Tip',
+  contact_general_dept_name: 'General Inquiry',
+  contact_partnership_dept_name: 'Partnership & Ads',
+  contact_correction_dept_name: 'Correction / Press',
+  contact_cta_title: 'Want to Write for BitBlog?',
+  contact_cta_desc: 'Publish your insights to thousands of tech readers worldwide.',
+  contact_cta_btn_text: 'Apply as Author',
+  contact_cta_btn_link: '/apply',
+  contact_faq_1_q: 'How do I pitch a story or apply as a contributing writer?',
+  contact_faq_1_a: 'We welcome original tech journalism, deep-dives, and tutorials! You can apply directly through our Contributor Program portal or use this form under "Story Pitch".',
+  contact_faq_2_q: 'What is the standard editorial response time?',
+  contact_faq_2_a: 'Our editors review incoming tips and inquiries Monday through Friday. Standard responses are delivered within 24 business hours.',
+  contact_faq_3_q: 'Can I submit an anonymous news tip or confidential whistleblower material?',
+  contact_faq_3_a: 'Yes. All news tips submitted through our editorial desk are handled with strict journalistic confidentiality under our source protection guidelines.',
   social_facebook: 'https://facebook.com',
   social_twitter: 'https://x.com',
   social_linkedin: 'https://linkedin.com',
