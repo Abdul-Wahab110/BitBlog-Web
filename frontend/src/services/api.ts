@@ -91,13 +91,25 @@ export class ApiService {
     return this.handleResponse(res);
   }
 
+  // In-memory cache store
+  private static categoriesCache: { data: any; expiresAt: number } | null = null;
+  private static tagsCache: { data: any; expiresAt: number } | null = null;
+
   // Categories Endpoints
   public static async getCategories(search?: string) {
+    const now = Date.now();
+    if (!search && this.categoriesCache && this.categoriesCache.expiresAt > now) {
+      return this.categoriesCache.data;
+    }
     const query = search ? `?search=${encodeURIComponent(search)}` : '';
     const res = await fetch(`${API_BASE_URL}/categories${query}`, {
       headers: this.getHeaders(),
     });
-    return this.handleResponse(res);
+    const data = await this.handleResponse(res);
+    if (!search && data && data.success) {
+      this.categoriesCache = { data, expiresAt: now + 30000 }; // 30s cache
+    }
+    return data;
   }
 
   public static async getCategoryBySlug(slug: string) {
@@ -108,6 +120,7 @@ export class ApiService {
   }
 
   public static async createCategory(data: any) {
+    this.categoriesCache = null;
     const res = await fetch(`${API_BASE_URL}/categories`, {
       method: 'POST',
       headers: this.getHeaders(),
@@ -117,6 +130,7 @@ export class ApiService {
   }
 
   public static async updateCategory(id: number, data: any) {
+    this.categoriesCache = null;
     const res = await fetch(`${API_BASE_URL}/categories/${id}`, {
       method: 'PUT',
       headers: this.getHeaders(),
@@ -126,6 +140,7 @@ export class ApiService {
   }
 
   public static async deleteCategory(id: number) {
+    this.categoriesCache = null;
     const res = await fetch(`${API_BASE_URL}/categories/${id}`, {
       method: 'DELETE',
       headers: this.getHeaders(),
@@ -135,11 +150,19 @@ export class ApiService {
 
   // Tags Endpoints
   public static async getTags(search?: string) {
+    const now = Date.now();
+    if (!search && this.tagsCache && this.tagsCache.expiresAt > now) {
+      return this.tagsCache.data;
+    }
     const query = search ? `?search=${encodeURIComponent(search)}` : '';
     const res = await fetch(`${API_BASE_URL}/tags${query}`, {
       headers: this.getHeaders(),
     });
-    return this.handleResponse(res);
+    const data = await this.handleResponse(res);
+    if (!search && data && data.success) {
+      this.tagsCache = { data, expiresAt: now + 30000 }; // 30s cache
+    }
+    return data;
   }
 
   public static async getTagBySlug(slug: string) {
@@ -150,6 +173,7 @@ export class ApiService {
   }
 
   public static async createTag(data: { name: string; slug?: string }) {
+    this.tagsCache = null;
     const res = await fetch(`${API_BASE_URL}/tags`, {
       method: 'POST',
       headers: this.getHeaders(),
@@ -159,6 +183,7 @@ export class ApiService {
   }
 
   public static async updateTag(id: number, data: { name: string; slug?: string }) {
+    this.tagsCache = null;
     const res = await fetch(`${API_BASE_URL}/tags/${id}`, {
       method: 'PUT',
       headers: this.getHeaders(),
@@ -168,6 +193,7 @@ export class ApiService {
   }
 
   public static async deleteTag(id: number) {
+    this.tagsCache = null;
     const res = await fetch(`${API_BASE_URL}/tags/${id}`, {
       method: 'DELETE',
       headers: this.getHeaders(),

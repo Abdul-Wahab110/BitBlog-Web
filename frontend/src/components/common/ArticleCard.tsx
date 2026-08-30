@@ -37,7 +37,7 @@ export interface ArticleCardProps {
   className?: string;
 }
 
-export const ArticleCard: React.FC<ArticleCardProps> = (props) => {
+const ArticleCardComponent: React.FC<ArticleCardProps> = (props) => {
   const [isHovered, setIsHovered] = useState(false);
   const [imgError, setImgError] = useState(false);
   const { settings } = useSettings();
@@ -294,4 +294,6 @@ export const ArticleCard: React.FC<ArticleCardProps> = (props) => {
     </article>
   );
 };
+
+export const ArticleCard = React.memo(ArticleCardComponent);
 
