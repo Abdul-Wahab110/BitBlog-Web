@@ -548,7 +548,7 @@ export const Contact: React.FC = () => {
               </div>
             </div>
             <Link
-              to="/apply-contributor"
+              to="/apply"
               style={{
                 display: 'inline-flex',
                 alignItems: 'center',
