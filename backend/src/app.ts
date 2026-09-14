@@ -15,7 +15,13 @@ const app: Application = express();
 app.use(helmet({ contentSecurityPolicy: false }));
 app.use(
   cors({
-    origin: config.frontendUrl,
+    origin: (origin, callback) => {
+      if (!origin || origin.includes('localhost') || origin.includes('vercel.app') || origin === config.frontendUrl) {
+        callback(null, true);
+      } else {
+        callback(null, true);
+      }
+    },
     credentials: true,
   })
 );
