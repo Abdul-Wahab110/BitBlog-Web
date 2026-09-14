@@ -22,11 +22,26 @@ app.use(
 
 app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')));
 
+app.get('/', (req, res) => {
+  res.status(200).json({
+    name: 'BitBlog CMS REST API',
+    status: 'online',
+    message: 'BitBlog backend server is active and running successfully.',
+    endpoints: {
+      health: '/healthz',
+      apiHealth: '/api/health',
+      posts: '/api/posts',
+      categories: '/api/categories'
+    },
+    timestamp: new Date().toISOString()
+  });
+});
 app.get('/sitemap.xml', SitemapController.getSitemapXml);
 app.get('/robots.txt', RobotsController.getRobotsTxt);
 app.get('/api/sitemap.xml', SitemapController.getSitemapXml);
 app.get('/api/robots.txt', RobotsController.getRobotsTxt);
 app.get('/healthz', (req, res) => res.status(200).json({ status: 'healthy', timestamp: new Date().toISOString() }));
+
 
 
 app.use('/api', apiRateLimiter);
