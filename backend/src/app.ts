@@ -26,6 +26,8 @@ app.get('/sitemap.xml', SitemapController.getSitemapXml);
 app.get('/robots.txt', RobotsController.getRobotsTxt);
 app.get('/api/sitemap.xml', SitemapController.getSitemapXml);
 app.get('/api/robots.txt', RobotsController.getRobotsTxt);
+app.get('/healthz', (req, res) => res.status(200).json({ status: 'healthy', timestamp: new Date().toISOString() }));
+
 
 app.use('/api', apiRateLimiter);
 
